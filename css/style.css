@@ -38,8 +38,13 @@
   /* Letter Spacing (display tracking is part of the measured 9.03em ratio) */
   --ls-display: -0.02em;
   --ls-title: -0.01em;
-  /* Spacing */
-  --spacing-layout: 20px; /* Grid gap */
+  /* --- Spacing System ---
+     s: within a group (= grid gap), m: between related elements, l: between sections (always 2 × m)
+     m grows 40px @320 → 60px @1440 → 80px @2560 */
+  --space-s: 20px;
+  --space-m: clamp(40px, 1.786vw + 34.29px, 80px);
+  --space-l: calc(var(--space-m) * 2);
+  --spacing-layout: var(--space-s); /* Grid gap */
   /* --- Grid System --- */
   --grid-columns: 12;
   --page-margin: 25px; /* Left/right page margin (body, nav, footer) */
@@ -120,7 +125,7 @@ h1 {
 }
 
 /* --- 12-Column Grid --- */
-.pd-footer-nav, .pd-gallery, .pd-media-pair, .pd-title-row, #project-detail, .grid-overlay, .main-nav, .about-section, .home-container {
+.pd-footer-nav, .pd-media, .pd-title-row, #project-detail, .grid-overlay, .main-nav, .about-section, .home-container {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   -moz-column-gap: var(--spacing-layout);
@@ -496,7 +501,7 @@ body.show-grid .grid-overlay {
 
 /* --- Media Reveal (images + videos, site-wide) ---
    A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
-   Markup + loading: pictureHTML() / initMediaReveal() in main.js */
+   Markup + loading: mediaHTML() / initMediaReveal() in main.js */
 .media-reveal {
   display: block;
   overflow: hidden;
@@ -505,9 +510,17 @@ body.show-grid .grid-overlay {
 .media-reveal img, .media-reveal video {
   display: block;
   filter: blur(var(--reveal-blur));
+  -o-object-position: var(--focus, 50% 50%);
+     object-position: var(--focus, 50% 50%); /* Focus point for cover crops, e.g. --focus: 30% 50% */
 }
 .media-reveal.is-loaded img, .media-reveal.is-loaded video {
   filter: blur(0);
+}
+.media-reveal {
+  /* Missing file: keep the colour field instead of a broken image icon */
+}
+.media-reveal.is-error img {
+  visibility: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -679,7 +692,7 @@ body.show-grid .grid-overlay {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   max-width: var(--measure);
-  margin-bottom: 48px;
+  margin-bottom: var(--space-m);
 }
 .about-section .about-text .contact-info a {
   color: #fff;
@@ -705,16 +718,17 @@ body.show-grid .grid-overlay {
     aspect-ratio: 1/1; /* Square portrait */
   }
   .about-section .about-text {
-    margin-top: var(--spacing-layout); /* Gap below the image (the -0.333em alignment is desktop only) */
+    margin-top: var(--space-s); /* Gap below the image (the -0.333em alignment is desktop only) */
   }
 }
-/* --- Project Detail --- */
+/* --- Project Detail ---
+   Hero, title block, modules from the kit (media rows, text, accordions), more projects.
+   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md */
 #project-detail {
   /* Left half: columns 1–6, right half: columns 7–12 */
-  /* Use auto rows, specific spacing handled by margins or gap */
   row-gap: 0;
   padding-top: 5vh; /* Standard top offset */
-  padding-bottom: 15vh; /* Space for footer */
+  padding-bottom: var(--space-l); /* Page end; the body padding keeps it clear of the footer */
   width: 100%;
   box-sizing: border-box;
 }
@@ -725,14 +739,42 @@ body.show-grid .grid-overlay {
   grid-column: 1/-1;
 }
 
-/* 1. Hero Full Width */
+/* Vertical rhythm: spacing belongs to the relation between neighbours
+   (--space-s within a group, --space-m between related elements, --space-l between sections) */
+.pd-title-row {
+  margin-top: var(--space-m);
+} /* Hero → title block */
+.pd-block {
+  margin-top: var(--space-l);
+} /* Title block → module, module → module */
+.pd-media + .pd-media {
+  margin-top: var(--space-s);
+} /* Consecutive media rows form one grid */
+.pd-text + .pd-accordions {
+  margin-top: var(--space-m);
+} /* Text and its details belong together */
+.pd-footer-nav-title {
+  margin-top: var(--space-l);
+} /* Last module → more projects */
+.pd-footer-nav {
+  margin-top: var(--space-m);
+} /* Heading → cards */
+/* 1. Hero: teaser loop or image; the Vimeo film is loaded on click (initHeroPlayer) */
 .pd-hero {
   width: 100%;
   aspect-ratio: 16/9;
   background: #111;
-  margin-bottom: 40px;
-  position: relative; /* Context for custom controls */
+  position: relative; /* Context for media, film and custom controls */
+  overflow: hidden;
   grid-column: 1/-1;
+}
+.pd-hero > .media-reveal,
+.pd-hero iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .pd-hero iframe, .pd-hero video, .pd-hero img {
   width: 100%;
@@ -744,6 +786,16 @@ body.show-grid .grid-overlay {
   pointer-events: none; /* Disable direct interaction with iframe to rely on custom controls */
 }
 .pd-hero {
+  /* Film fades in over the teaser once it plays */
+}
+.pd-hero iframe {
+  opacity: 0;
+  transition: opacity var(--duration-reveal) var(--ease-reveal);
+}
+.pd-hero.film-visible iframe {
+  opacity: 1;
+}
+.pd-hero {
   /* Custom Controls overlay */
 }
 .pd-hero .hero-controls {
@@ -751,7 +803,8 @@ body.show-grid .grid-overlay {
   bottom: var(--page-margin); /* Same inset as the page margin */
   right: var(--page-margin);
   display: flex;
-  gap: 20px; /* Space between buttons */
+  align-items: baseline;
+  gap: var(--space-s); /* Space between hint and buttons */
   z-index: 10;
   mix-blend-mode: difference;
 }
@@ -774,6 +827,21 @@ body.show-grid .grid-overlay {
 .pd-hero .hero-controls button:hover {
   font-family: var(--font-family-lining); /* Match Nav hover style */
   text-decoration: none;
+}
+.pd-hero .hero-controls button[hidden] {
+  display: none;
+}
+.pd-hero {
+  /* Privacy hint until the film is loaded: nothing is sent to Vimeo before the click */
+}
+.pd-hero .hero-hint {
+  color: #fff;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+.pd-hero .hero-hint[hidden] {
+  display: none;
 }
 .pd-hero {
   /* Big Play Overlay (Initial & Pause State) */
@@ -823,10 +891,9 @@ body.show-grid .grid-overlay {
 }
 
 /* 2.–4. Title block: title + meta, subtitle as second row
-   (full-width block, so the description always starts below it) */
+   (full-width block, so the modules always start below it) */
 .pd-title-row {
   align-items: start;
-  margin-bottom: 60px;
   grid-column: 1/-1;
 }
 .pd-title-row h1.pd-title {
@@ -869,8 +936,7 @@ body.show-grid .grid-overlay {
   line-height: var(--lh-ui);
   font-family: var(--font-family-book);
   color: #fff;
-  margin-top: 10px;
-  margin-bottom: 0; /* Spacing below comes from .pd-title-row */
+  margin-top: var(--space-s);
   grid-column: 1/7;
 }
 @media (max-width: 768px) {
@@ -882,47 +948,76 @@ body.show-grid .grid-overlay {
   /* Left half */
 }
 
-/* 5. Media Pair */
-.pd-media-pair {
-  margin-bottom: 60px;
+/* 5. Media row: cells on the 12 columns (--col-start / --col-span).
+   The largest cell sets the row height (--row-ratio), the others stretch to it and crop (cover).
+   Mobile: stacked at full width, each in its own exported format (--ratio). */
+.pd-media {
   grid-column: 1/-1;
 }
-.pd-media-pair > * {
-  grid-column: span 6;
+.pd-media .pd-cell {
+  grid-column: var(--col-start, auto)/span var(--col-span, 12);
+  position: relative; /* Media lies absolute inside, so only the lead cell sizes the row */
+  overflow: hidden;
+}
+.pd-media .pd-cell.is-lead {
+  aspect-ratio: var(--row-ratio);
+}
+.pd-media .pd-cell > .media-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.pd-media .pd-cell img, .pd-media .pd-cell video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 @media (max-width: 768px) {
-  .pd-media-pair > * {
+  .pd-media {
+    row-gap: var(--space-s);
+  }
+  .pd-media .pd-cell,
+  .pd-media .pd-cell.is-lead {
+    grid-column: 1/-1;
+    aspect-ratio: var(--ratio); /* Also the lead cell: its own format instead of the row format */
+  }
+  .pd-media .pd-cell.is-empty {
+    display: none;
+  }
+}
+
+/* 6. Text (right half), optional heading */
+.pd-text {
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-text {
     grid-column: 1/-1;
   }
 }
-.pd-media-pair img, .pd-media-pair video {
-  width: 100%;
-  height: auto;
-  display: block;
+.pd-text {
+  /* Right half */
 }
-
-/* 6. Text Block (Right) */
-.pd-text-block-right {
+.pd-text .pd-text-title {
+  margin: 0 0 var(--space-s);
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  font-family: var(--font-family-base);
+}
+.pd-text .pd-text-body {
   font-size: var(--fs-body);
   font-family: var(--font-family-base);
   line-height: var(--lh-body);
   max-width: var(--measure);
-  margin-bottom: 80px;
   white-space: pre-line; /* Respect breaks */
-  grid-column: 7/13;
-}
-@media (max-width: 768px) {
-  .pd-text-block-right {
-    grid-column: 1/-1;
-  }
-}
-.pd-text-block-right {
-  /* Right half */
 }
 
-/* 7. Accordions */
+/* 7. Accordions (right half); height animation: initAccordionAnimation() */
 .pd-accordions {
-  margin-bottom: 100px;
   border-top: 1px solid #fff; /* First line */
   grid-column: 7/13;
 }
@@ -940,7 +1035,7 @@ details.pd-accordion {
 }
 details.pd-accordion summary {
   list-style: none; /* Hide default triangle */
-  padding: 20px 0;
+  padding: var(--space-s) 0;
   font-size: var(--fs-ui);
   line-height: var(--lh-ui);
   font-family: var(--font-family-base);
@@ -964,76 +1059,26 @@ details.pd-accordion[open] summary::after {
   content: "-";
 }
 details.pd-accordion .accordion-content {
-  /* Set up for JS animation */
   font-size: var(--fs-body);
   font-family: var(--font-family-base);
   line-height: var(--lh-body);
   color: #fff;
+  padding-bottom: var(--space-s);
+  box-sizing: border-box; /* Animated height includes the padding */
+  overflow: hidden;
   /* 1fr 1fr inside the right half = 3 columns each of the 12-column grid */
   display: grid;
   grid-template-columns: 1fr 1fr;
   -moz-column-gap: var(--spacing-layout);
        column-gap: var(--spacing-layout);
-  /* Hide by default for JS to animate in */
-  overflow: hidden;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 8. Dynamic Gallery */
-.pd-gallery {
-  row-gap: var(--spacing-layout);
-  margin-bottom: 100px;
-  grid-column: 1/-1;
-}
-.pd-gallery > * {
-  grid-column: span 6;
-}
-@media (max-width: 768px) {
-  .pd-gallery > * {
-    grid-column: 1/-1;
-  }
-}
-.pd-gallery img, .pd-gallery video {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* 9. Second Text Block (Right) */
-.pd-text-block-2 {
-  margin-bottom: 120px;
-  grid-column: 7/13;
-}
-@media (max-width: 768px) {
-  .pd-text-block-2 {
-    grid-column: 1/-1;
-  }
-}
-.pd-text-block-2 {
-  /* Right half */
-}
-.pd-text-block-2 h3 {
-  margin-top: 0;
-  font-size: var(--fs-title);
-  line-height: var(--lh-title);
-  letter-spacing: var(--ls-title);
-  font-family: var(--font-family-base);
-  margin-bottom: 20px;
-}
-.pd-text-block-2 p {
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  max-width: var(--measure);
-  color: #fff;
-}
-
-/* 10. & 11. Next Projects */
+/* 8. More projects: previous / next */
 .pd-footer-nav-title {
   font-size: var(--fs-title);
   line-height: var(--lh-title);
   letter-spacing: var(--ls-title);
   font-family: var(--font-family-base);
-  margin-bottom: 40px;
   grid-column: 1/7;
 }
 @media (max-width: 768px) {
@@ -1046,6 +1091,7 @@ details.pd-accordion .accordion-content {
 }
 
 .pd-footer-nav {
+  row-gap: var(--space-m); /* Only when the cards stack (mobile) */
   grid-column: 1/-1;
 }
 .pd-footer-nav .nav-item {
@@ -1063,10 +1109,18 @@ details.pd-accordion .accordion-content {
   font-family: var(--font-family-lining);
 }
 .pd-footer-nav .nav-item .nav-media {
+  position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  background: #222;
-  margin-bottom: 15px;
+  overflow: hidden;
+  margin-bottom: var(--space-s);
+}
+.pd-footer-nav .nav-item .nav-media > .media-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .pd-footer-nav .nav-item .nav-media img, .pd-footer-nav .nav-item .nav-media video {
   width: 100%;
@@ -1091,9 +1145,8 @@ details.pd-accordion .accordion-content {
 /* Mobile: column placement is reset to full width by grid-cols() */
 @media (max-width: 768px) {
   .pd-meta {
-    margin-top: 10px;
+    margin-top: var(--space-s);
     width: 100%;
-    margin-bottom: 20px;
   }
 }
 /* --- Lab Page (Infinite Canvas) --- */

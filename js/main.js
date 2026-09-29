@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Asset Preloading (Splash Screen) ---
             const assetsToLoad = [];
             
-            // 1. Hero Images from Projects
-            projects.forEach(p => {
-                if(p.hero_image) assetsToLoad.push({ type: 'image', src: p.hero_image });
-            });
+            // Nur das erste Standbild der Startseite; alle anderen Medien laden über den Media-Reveal, wenn sie gebraucht werden
+            const firstFeatured = document.getElementById('project-list') && projects.find(p => p.featured);
+            const firstPoster = firstFeatured && firstFeatured.hero && firstFeatured.hero.image;
+            if (firstPoster) assetsToLoad.push({ type: 'image', src: firstPoster.src });
 
             // Helper to load image
             const preloadImage = (src) => {
@@ -186,82 +186,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // --- Accordion Logic ---
+    // Auf- und Zuklappen mit den Motion-Tokens; offen gilt height: auto, damit Sprachwechsel
+    // und Größenänderungen den Inhalt nie abschneiden. Bewegung reduzieren: ohne Animation.
     function initAccordionAnimation() {
-        // Run on all that haven't been initialized yet
-        document.querySelectorAll('details.pd-accordion').forEach((targetDetail) => {
-            if (targetDetail.hasAttribute('data-anim-init')) return;
-            targetDetail.setAttribute('data-anim-init', 'true');
+        const rootStyle = getComputedStyle(document.documentElement);
+        const duration = parseFloat(rootStyle.getPropertyValue('--duration-base')) || 300;
+        const easing = rootStyle.getPropertyValue('--ease-out').trim() || 'ease-out';
 
-            const summary = targetDetail.querySelector('summary');
-            const content = targetDetail.querySelector('.accordion-content');
-            
-            // Initial State: Closed
-            content.style.height = '0px';
-            content.style.opacity = '0';
-            content.style.paddingBottom = '0px';
-            content.style.overflow = 'hidden';
+        document.querySelectorAll('details.pd-accordion').forEach((detail) => {
+            if (detail.hasAttribute('data-anim-init')) return;
+            detail.setAttribute('data-anim-init', 'true');
+
+            const summary = detail.querySelector('summary');
+            const content = detail.querySelector('.accordion-content');
+            let animation = null;
+            let closing = false;
 
             summary.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                if (targetDetail.hasAttribute('open')) {
-                    // --- CLOSE ---
-                    // 1. Set explicit height from current scrollHeight
-                    content.style.height = `${content.scrollHeight}px`;
-                    content.style.paddingBottom = '20px'; // Match CSS
-                    
-                    // Force reflow
-                    void content.offsetHeight; 
+                const open = !detail.open || closing; // Klick während des Schließens öffnet wieder
 
-                    // 2. Animate to 0
-                    requestAnimationFrame(() => {
-                        content.style.height = '0px';
-                        content.style.opacity = '0';
-                        content.style.paddingBottom = '0px';
-                    });
-
-                    // 3. Remove open attribute after transition
-                    setTimeout(() => {
-                        targetDetail.removeAttribute('open');
-                    }, 250);
-
-                } else {
-                    // --- OPEN ---
-                    targetDetail.setAttribute('open', '');
-                    
-                    // 1. Measure target height
-                    content.style.height = 'auto'; // Temporarily auto to measure
-                    content.style.paddingBottom = '20px';
-                    const targetHeight = content.scrollHeight;
-                    
-                    // 2. Reset to 0 for start of animation
-                    content.style.height = '0px';
-                    content.style.opacity = '0';
-                    content.style.paddingBottom = '0px';
-                    
-                    // Force reflow
-                    void content.offsetHeight; 
-
-                    // 3. Animate to target
-                    requestAnimationFrame(() => {
-                        content.style.height = `${targetHeight}px`;
-                        content.style.opacity = '1';
-                        content.style.paddingBottom = '20px';
-                    });
-                    
-                    // 4. (Optional) Set to auto after animation if content is dynamic
-                    setTimeout(() => {
-                         // We keep it fixed or set to auto here.
-                         // content.style.height = 'auto';
-                    }, 250);
+                if (reduceMotion.matches || !content.animate) {
+                    detail.open = open;
+                    return;
                 }
+
+                // Von der aktuellen Höhe aus starten (auch mitten in einer laufenden Animation)
+                const from = detail.open ? content.getBoundingClientRect().height : 0;
+                if (animation) animation.cancel();
+                detail.open = true;
+                const full = content.scrollHeight;
+                const padding = getComputedStyle(content).paddingBottom;
+                const frames = [
+                    { height: `${from}px`, paddingBottom: from ? padding : '0px', opacity: from ? 1 : 0 },
+                    open ? { height: `${full}px`, paddingBottom: padding, opacity: 1 } : { height: '0px', paddingBottom: '0px', opacity: 0 },
+                ];
+
+                closing = !open;
+                animation = content.animate(frames, { duration, easing, fill: open ? 'none' : 'forwards' });
+                animation.onfinish = () => {
+                    if (!open) detail.open = false;
+                    animation.cancel(); // Inline-Werte weg: offen gilt wieder die natürliche Höhe
+                    animation = null;
+                    closing = false;
+                };
             });
         });
     }
 
-// --- Hero Player (Vimeo) ---
-    // Zustand der eigenen Steuerung; Start = pausiert, passend zur sichtbaren Play-Fläche
-    let heroState = { paused: true, muted: false };
+// --- Hero Player: Teaser-Loop läuft sofort, der Vimeo-Film lädt erst per Klick ---
+    // Vor dem Klick geht keine Anfrage an Vimeo (Datenschutz); der Klick erlaubt auch den Ton.
+    // Zustand der eigenen Steuerung; Start = pausiert, passend zur sichtbaren Play-Fläche. film = Vimeo geladen
+    let heroState = { paused: true, muted: false, film: false };
     let vimeoApiPromise = null;
 
     function loadVimeoApi() {
@@ -287,79 +263,111 @@ document.addEventListener('DOMContentLoaded', () => {
         const labels = siteContent.ui[currentLang].player;
         btnPlay.textContent = heroState.paused ? labels.play : labels.pause;
         btnSound.textContent = heroState.muted ? labels.sound_on : labels.sound_off;
+        btnSound.hidden = !heroState.film; // Der Teaser hat keinen Ton
+        const hint = document.getElementById('hero-hint');
+        if (hint) {
+            hint.textContent = labels.vimeo_hint;
+            hint.hidden = heroState.film;
+        }
         document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused);
     }
 
-    function initHeroPlayer() {
-        const iframe = document.getElementById('hero-player');
+    function initHeroPlayer(vimeoId, title) {
         const wrapper = document.getElementById('hero-wrapper');
-        if (!iframe || !wrapper) return;
+        if (!wrapper) return;
 
         const overlay = document.getElementById('hero-overlay');
         const controls = wrapper.querySelector('.hero-controls');
+        const teaser = wrapper.querySelector('video');
 
         const setState = (changes) => {
             Object.assign(heroState, changes);
             updateHeroControls();
         };
-        setState({ paused: true, muted: false });
+        setState({ paused: true, muted: false, film: false });
 
-        const playerReady = loadVimeoApi().then(() => {
-            const player = new Vimeo.Player(iframe);
-            return player.ready().then(() => player);
-        });
-
-        // Anzeige immer aus dem tatsächlichen Player-Zustand ableiten
-        // (Autoplay kann blockiert sein oder stumm starten)
-        const syncState = (player) => Promise.all([player.getPaused(), player.getMuted()])
-            .then(([paused, muted]) => setState({ paused, muted }));
-
-        // Klicks vor dem Ready werden nachgeholt, aber erst nach dem ersten Abgleich
-        const playerSynced = playerReady.then(player => syncState(player).then(() => player));
-        playerSynced.catch(() => {}); // Fehler behandelt der Fallback unten
-
+        let playerSynced = null; // entsteht erst mit dem ersten Klick
         let userMuted = null; // Explizite Ton-Wahl des Besuchers
 
-        playerReady.then(player => {
-            player.on('play', () => syncState(player));
-            player.on('pause', () => setState({ paused: true }));
-            player.on('volumechange', () => syncState(player));
+        function loadFilm() {
+            const iframe = document.createElement('iframe');
+            iframe.id = 'hero-player';
+            iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&muted=0&controls=0&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1`;
+            iframe.allow = 'autoplay; fullscreen';
+            iframe.title = title;
+            wrapper.insertBefore(iframe, overlay || controls);
+            setState({ film: true });
 
-            // Vimeo stellt kurz nach dem Autoplay-Start still (ohne Event) die Embed-Einstellung muted=0
-            // wieder her -> Ton-Zustand regelmäßig abgleichen und die Wahl des Besuchers wiederherstellen
-            setInterval(() => {
-                if (document.hidden) return;
-                player.getMuted().then(muted => {
-                    if (userMuted !== null && muted !== userMuted) return player.setMuted(userMuted);
-                    if (muted !== heroState.muted) setState({ muted });
+            // Film sichtbar, sobald er läuft; der Teaser hält so lange an
+            const showFilm = () => {
+                wrapper.classList.add('film-visible');
+                if (teaser) {
+                    teaser.setAttribute('data-hold', '');
+                    teaser.pause();
+                }
+            };
+
+            const playerReady = loadVimeoApi().then(() => {
+                const player = new Vimeo.Player(iframe);
+                return player.ready().then(() => player);
+            });
+
+            // Anzeige immer aus dem tatsächlichen Player-Zustand ableiten
+            // (der Ton kann blockiert sein, dann startet der Film stumm)
+            const syncState = (player) => Promise.all([player.getPaused(), player.getMuted()])
+                .then(([paused, muted]) => setState({ paused, muted }));
+
+            playerSynced = playerReady.then(player => syncState(player).then(() => player));
+            playerSynced.catch(() => {}); // Fehler behandelt der Fallback unten
+
+            playerReady.then(player => {
+                player.on('play', () => {
+                    showFilm();
+                    syncState(player);
                 });
-            }, 500);
-        }).catch(() => {
-            // Fallback ohne Player-API: eigene Steuerung weg, Vimeos Klick-zum-Abspielen erlauben
-            if (overlay) overlay.remove();
-            if (controls) controls.remove();
-            iframe.style.pointerEvents = 'auto';
-        });
+                player.on('pause', () => setState({ paused: true }));
+                player.on('volumechange', () => syncState(player));
 
-        if (overlay) {
-            overlay.addEventListener('click', () => {
-                playerSynced.then(player => player.play()).catch(() => {});
+                // Vimeo stellt kurz nach dem Autoplay-Start still (ohne Event) die Embed-Einstellung muted=0
+                // wieder her -> Ton-Zustand regelmäßig abgleichen und die Wahl des Besuchers wiederherstellen
+                setInterval(() => {
+                    if (document.hidden) return;
+                    player.getMuted().then(muted => {
+                        if (userMuted !== null && muted !== userMuted) return player.setMuted(userMuted);
+                        if (muted !== heroState.muted) setState({ muted });
+                    });
+                }, 500);
+            }).catch(() => {
+                // Fallback ohne Player-API: eigene Steuerung weg, Vimeos Klick-zum-Abspielen erlauben
+                if (overlay) overlay.remove();
+                if (controls) controls.remove();
+                showFilm();
+                iframe.style.pointerEvents = 'auto';
             });
         }
 
-        document.getElementById('btn-play').addEventListener('click', () => {
+        // Erster Klick lädt den Film (Autoplay mit Ton), danach abspielen / pausieren
+        const togglePlay = () => {
+            if (!playerSynced) {
+                loadFilm();
+                return;
+            }
             const wantPlay = heroState.paused; // Absicht zum Zeitpunkt des Klicks
             playerSynced.then(player => (wantPlay ? player.play() : player.pause())).catch(() => {});
-        });
+        };
+
+        if (overlay) overlay.addEventListener('click', togglePlay);
+        document.getElementById('btn-play').addEventListener('click', togglePlay);
 
         document.getElementById('btn-sound').addEventListener('click', () => {
+            if (!playerSynced) return;
             const mute = !heroState.muted;
             userMuted = mute;
             setState({ muted: mute });
             playerSynced
                 .then(player => player.setMuted(mute)
                     .then(() => (mute ? null : player.setVolume(1)))
-                    .then(() => syncState(player)))
+                    .then(() => player.getMuted().then(muted => setState({ muted }))))
                 .catch(() => {});
         });
     }
@@ -425,25 +433,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Media-Reveal: Bilder und Videos erscheinen unscharf und werden scharf, sobald sie geladen sind (site-weit) ---
-    // pictureHTML() baut das Markup, initMediaReveal() lädt; Stil in css/components/_media.scss.
-    // Bild-Datenmodell: { alt: { de, en }, color, eager, sources: [{ media, srcset, sizes, placeholder }], img: { srcset, sizes, width, height, placeholder } }
-    // Video: <div class="media-reveal"><video data-src="…" poster="[Vorschau]"></video></div>
+    // mediaHTML() baut das Markup, initMediaReveal() lädt; Stil in css/components/_media.scss.
+    // Einfachform (Projekte): { type: "image" | "video", src, width, height, placeholder, color, focus, alt: { de, en }, poster (Video-Standbild) }
+    // Art Direction (About): { alt, color, eager, sources: [{ media, srcset, sizes, placeholder }], img: { srcset, sizes, width, height, placeholder } }
+    // Video: stummer Loop, spielt nur im Sichtfeld; darf er nicht laufen, erscheint das Standbild
     const escapeAttr = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     const mediaAlt = (media, lang) => (media.alt && media.alt[lang]) || '';
     const revealInitialized = new WeakSet();
     let revealObserver = null;
 
+    // Breite eines Feldes über n Spalten (12er-Raster, 25px Rand, 20px Spaltenabstand); mobil immer volle Breite
+    const cellSizes = (span) => `(max-width: 768px) calc(100vw - 50px), calc((100vw - 270px) * ${span} / 12 + ${(span - 1) * 20}px)`;
+
+    const mediaStyle = (media) => {
+        const vars = [media.color && `--media-bg: ${media.color}`, media.focus && `--focus: ${media.focus}`].filter(Boolean);
+        return vars.length ? ` style="${vars.join('; ')}"` : '';
+    };
+
     function pictureHTML(media, lang) {
         const { img, sources = [] } = media;
         // Die winzige Vorschau steht im srcset, die echte Quelle wartet in data-srcset, bis initMediaReveal sie einsetzt
-        const srcAttrs = (s) => `${s.placeholder ? `srcset="${s.placeholder}" ` : ''}data-srcset="${s.srcset}" sizes="${s.sizes}"`;
+        const srcAttrs = (s) => `${s.placeholder ? `srcset="${s.placeholder}" ` : ''}data-srcset="${s.srcset}"${s.sizes ? ` sizes="${s.sizes}"` : ''}`;
         const sourceTags = sources.map(s => `<source media="${s.media}" ${srcAttrs(s)}>`).join('');
         const size = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : '';
-        const style = media.color ? ` style="--media-bg: ${media.color}"` : '';
 
-        return `<picture class="media-reveal"${style}${media.eager ? ' data-eager' : ''}>${sourceTags}`
+        return `<picture class="media-reveal"${mediaStyle(media)}${media.eager ? ' data-eager' : ''}>${sourceTags}`
             + `<img ${srcAttrs(img)} alt="${escapeAttr(mediaAlt(media, lang))}"${size} decoding="async"${media.eager ? ' fetchpriority="high"' : ''}>`
             + `</picture>`;
+    }
+
+    function videoHTML(media) {
+        // poster: 32px-Vorschau (sofort da); data-poster: Standbild, wird nur geladen, wenn der Loop nicht laufen darf
+        const poster = media.placeholder ? ` poster="${media.placeholder}"` : '';
+        const still = media.poster ? ` data-poster="${media.poster}"` : '';
+        return `<div class="media-reveal"${mediaStyle(media)}${media.eager ? ' data-eager' : ''}>`
+            + `<video data-src="${media.src}"${poster}${still} muted loop playsinline preload="none" aria-hidden="true"></video>`
+            + `</div>`;
+    }
+
+    // Einfachform -> Bild bzw. Video; opts.sizes = Anzeigebreite (cellSizes), opts.eager = wichtigstes Medium beim Seitenstart
+    function mediaHTML(media, lang, opts = {}) {
+        const eager = opts.eager || media.eager;
+        if (media.type === 'video') return videoHTML({ ...media, eager });
+        if (media.img) return pictureHTML({ ...media, eager }, lang);
+        return pictureHTML({
+            alt: media.alt, color: media.color, focus: media.focus, eager,
+            img: {
+                srcset: media.width ? `${media.src} ${media.width}w` : media.src,
+                sizes: media.width ? opts.sizes : null,
+                width: media.width, height: media.height, placeholder: media.placeholder,
+            },
+        }, lang);
     }
 
     function loadMedia(wrapper) {
@@ -456,8 +496,9 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.querySelectorAll('[data-srcset][srcset]').forEach(el => {
                 placeholders.add(new URL(el.getAttribute('srcset'), document.baseURI).href);
             });
-            const onSettle = () => {
+            const onSettle = (e) => {
                 if (placeholders.has(img.currentSrc)) return;
+                if (e.type === 'error') wrapper.classList.add('is-error'); // Datei fehlt: Farbfläche statt kaputtem Bild
                 img.decode().catch(() => {}).then(reveal); // erst entschärfen, wenn das Bild fertig dekodiert ist
             };
             img.addEventListener('load', onSettle);
@@ -478,17 +519,83 @@ document.addEventListener('DOMContentLoaded', () => {
             probe.decode().catch(() => {}).then(swap);
         }
 
-        wrapper.querySelectorAll('video').forEach(video => {
-            const targets = [video, ...video.querySelectorAll('source')].filter(el => el.dataset.src);
-            if (!targets.length) return;
-            video.addEventListener('loadeddata', reveal, { once: true });
-            video.addEventListener('error', reveal, { once: true });
-            targets.forEach(el => {
-                el.setAttribute('src', el.dataset.src);
-                el.removeAttribute('data-src');
-            });
-            video.load();
+        wrapper.querySelectorAll('video[data-src]').forEach(video => loadVideo(video, reveal));
+    }
+
+    // --- Video-Loops: laden mit dem Media-Reveal, spielen nur sichtbar, pausieren außerhalb und im versteckten Tab ---
+    const visibleLoops = new Set();
+    const loopFallbacks = new WeakMap();
+    let playbackObserver = null;
+
+    function loadVideo(video, reveal) {
+        const src = video.dataset.src;
+        video.removeAttribute('data-src');
+
+        // Standbild statt Loop (Bewegung reduzieren, Datensparen, Autoplay blockiert, Videofehler)
+        let stillShown = false;
+        const showStill = () => {
+            if (stillShown) return;
+            stillShown = true;
+            visibleLoops.delete(video);
+            if (playbackObserver) playbackObserver.unobserve(video);
+            video.pause();
+            if (video.getAttribute('src')) {
+                video.removeAttribute('src');
+                video.load(); // zurück auf das Poster
+            }
+            const still = video.dataset.poster;
+            if (!still) return; // kein Standbild: die unscharfe Vorschau bleibt stehen
+            const probe = new Image();
+            probe.onload = () => {
+                video.poster = still;
+                probe.decode().catch(() => {}).then(reveal);
+            };
+            probe.src = still;
+        };
+
+        if (!autoplayAllowed()) {
+            showStill();
+            return;
+        }
+        loopFallbacks.set(video, showStill);
+        video.muted = true;
+        video.preload = 'auto'; // lädt jetzt, 200px bevor das Video ins Bild kommt
+        video.addEventListener('loadeddata', reveal, { once: true });
+        video.addEventListener('error', showStill, { once: true });
+        video.src = src;
+        watchPlayback(video);
+    }
+
+    function playLoop(video) {
+        if (document.hidden || video.hasAttribute('data-hold') || !video.getAttribute('src')) return;
+        video.play().catch(err => {
+            // Stromsparmodus u. Ä. verbietet Autoplay -> Standbild; AbortError (pause() während play()) ignorieren
+            if (err && err.name === 'NotAllowedError') loopFallbacks.get(video)();
         });
+    }
+
+    function watchPlayback(video) {
+        if (!('IntersectionObserver' in window)) {
+            playLoop(video);
+            return;
+        }
+        if (!playbackObserver) {
+            playbackObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        visibleLoops.add(entry.target);
+                        playLoop(entry.target);
+                    } else {
+                        visibleLoops.delete(entry.target);
+                        entry.target.pause();
+                    }
+                });
+            });
+            document.addEventListener('visibilitychange', () => {
+                visibleLoops.forEach(v => (document.hidden ? v.pause() : playLoop(v)));
+            });
+        }
+        playbackObserver.observe(video);
     }
 
     // Nach jedem Rendern aufrufen; bereits gestartete Medien werden übersprungen.
@@ -533,13 +640,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPreviewIndex = () => (activePreview + 1) % featuredProjects.length;
 
     // Variante nach Seitenverhältnis des Vorschaufensters: höher als breit -> Hochformat (Handy, Tablets), sonst Querformat.
-    // Fehlt eine Variante, wird die andere genommen (object-fit: cover beschneidet sie)
+    // Querformat = der Hero-Teaser des Projekts. Fehlt eine Variante, wird die andere genommen (object-fit: cover beschneidet sie)
     function previewVideoSrc(p) {
-        if (!p || !p.preview || !autoplayAllowed()) return null;
+        if (!p || !autoplayAllowed()) return null;
+        const portraitSrc = p.preview && p.preview.portrait;
+        const landscapeSrc = p.hero && p.hero.teaser;
+        if (!portraitSrc && !landscapeSrc) return null;
         const visual = document.querySelector('.home-visual');
         const box = visual ? visual.getBoundingClientRect() : null;
         const portrait = box ? box.height > box.width : mobileQuery.matches;
-        const { portrait: portraitSrc, landscape: landscapeSrc } = p.preview;
         return portrait ? (portraitSrc || landscapeSrc) : (landscapeSrc || portraitSrc);
     }
 
@@ -563,8 +672,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(cycleTimer);
 
         // Standbild (Poster) sofort, mit Fade
-        const poster = (p.preview && p.preview.poster) || p.hero_image;
-        if (img.getAttribute('src') !== poster) {
+        const poster = (p.hero && p.hero.image && p.hero.image.src) || '';
+        if (poster && img.getAttribute('src') !== poster) {
             img.classList.remove('visible');
             img.onload = () => img.classList.add('visible');
             img.src = poster;
@@ -682,6 +791,138 @@ document.addEventListener('DOMContentLoaded', () => {
     // HTML aus JSON-Texten entfernen (für Attribute und document.title)
     const stripTags = (html) => html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
+    // --- Projektseite: Hero, Titelblock, Module aus dem Baukasten, Weitere Projekte ---
+    // Module (project.blocks): media (Medien-Zeile), text, accordions. Anleitung: docs/projekt-baukasten.md
+    const localized = (field, lang) => (field && typeof field === 'object' ? field[lang] : field) || '';
+    const cssRatio = (ratio) => {
+        const m = String(ratio || '').match(/^\s*(\d+(?:\.\d+)?)\s*[:/]\s*(\d+(?:\.\d+)?)\s*$/);
+        return m ? `${m[1]} / ${m[2]}` : null;
+    };
+    const warnBlock = (project, index, reason) => console.warn(`[Projekt ${project.id}] Block ${index + 1} übersprungen: ${reason}`);
+
+    // Der Teaser nutzt das Hero-Bild als Standbild und Vorschau
+    const teaserMedia = (hero) => ({
+        type: 'video',
+        src: hero.teaser,
+        poster: hero.image && hero.image.src,
+        placeholder: hero.image && hero.image.placeholder,
+        color: hero.image && hero.image.color,
+    });
+    const heroMedia = (hero) => (hero.teaser ? teaserMedia(hero) : hero.image && { type: 'image', ...hero.image });
+
+    function heroHTML(project, lang) {
+        const hero = project.hero || {};
+        const media = heroMedia(hero);
+        // Beschriftung von Buttons und Hinweis setzt updateHeroControls()
+        const filmControls = hero.vimeo ? `
+                <div class="hero-overlay" id="hero-overlay"><div class="big-play-btn"></div></div>
+                <div class="hero-controls">
+                    <span class="hero-hint" id="hero-hint"></span>
+                    <button id="btn-play" type="button"></button>
+                    <button id="btn-sound" type="button" hidden></button>
+                </div>` : '';
+        return `<div class="pd-hero" id="hero-wrapper">${media ? mediaHTML(media, lang, { eager: true, sizes: cellSizes(12) }) : ''}${filmControls}</div>`;
+    }
+
+    // Medien-Zeile: cols = Spalten je Feld (zusammen max. 12), start = Startspalte, null = leeres Feld.
+    // Das größte Feld bestimmt die Höhe (ratio oder sein natürliches Format), die anderen übernehmen sie (cover).
+    function mediaRowHTML(block, lang, index, project) {
+        const cols = Array.isArray(block.cols) ? block.cols : [];
+        const items = Array.isArray(block.items) ? block.items : [];
+        const start = block.start || 1;
+        const used = start - 1 + cols.reduce((sum, span) => sum + span, 0);
+
+        let problem = null;
+        if (!cols.length || cols.length !== items.length) problem = '"cols" und "items" brauchen gleich viele Einträge';
+        else if (used > 12) problem = `die Zeile belegt ${used} von 12 Spalten`;
+        else if (items.some(item => item && !(item.src && item.width && item.height))) problem = 'jedes Medium braucht "src", "width" und "height"';
+        else if (items.every(item => !item)) problem = 'die Zeile enthält kein Medium';
+        if (problem) {
+            warnBlock(project, index, problem);
+            return '';
+        }
+        if (block.ratio && !cssRatio(block.ratio)) console.warn(`[Projekt ${project.id}] Block ${index + 1}: "ratio" ${block.ratio} ungültig (z. B. "16:9"), natürliches Format genutzt`);
+
+        const lead = cols.reduce((best, span, i) => (items[i] && (best < 0 || span > cols[best]) ? i : best), -1);
+        const rowRatio = cssRatio(block.ratio) || `${items[lead].width} / ${items[lead].height}`;
+
+        const cells = cols.map((span, i) => {
+            const item = items[i];
+            const place = `${i === 0 && start > 1 ? `--col-start: ${start}; ` : ''}--col-span: ${span}`;
+            if (!item) return `<div class="pd-cell is-empty" style="${place}"></div>`;
+            return `<div class="pd-cell${i === lead ? ' is-lead' : ''}" data-item="${i}" style="${place}; --ratio: ${item.width} / ${item.height}">`
+                + `${mediaHTML(item, lang, { sizes: cellSizes(span) })}</div>`;
+        }).join('');
+        return `<div class="pd-block pd-media" data-block="${index}" style="--row-ratio: ${rowRatio}">${cells}</div>`;
+    }
+
+    function textBlockHTML(block, lang, index) {
+        const title = block.title ? `<h3 class="pd-text-title">${localized(block.title, lang)}</h3>` : '';
+        return `<div class="pd-block pd-text" data-block="${index}">${title}<div class="pd-text-body">${localized(block.text, lang)}</div></div>`;
+    }
+
+    function accordionsBlockHTML(block, lang, index, project) {
+        const items = Array.isArray(block.items) ? block.items : [];
+        if (!items.length) {
+            warnBlock(project, index, 'Akkordeons ohne "items"');
+            return '';
+        }
+        return `<div class="pd-block pd-accordions" data-block="${index}">${items.map(acc => `
+                <details class="pd-accordion">
+                    <summary>${localized(acc.title, lang)}</summary>
+                    <div class="accordion-content">${localized(acc.content, lang)}</div>
+                </details>`).join('')}
+            </div>`;
+    }
+
+    // Je Modul-Typ: Markup und Sprachwechsel (nur Texte, Medien bleiben stehen)
+    const BLOCKS = {
+        media: {
+            html: mediaRowHTML,
+            update: (el, block, lang) => el.querySelectorAll('[data-item]').forEach(cell => {
+                const img = cell.querySelector('img');
+                if (img) img.alt = mediaAlt(block.items[cell.dataset.item], lang);
+            }),
+        },
+        text: {
+            html: textBlockHTML,
+            update: (el, block, lang) => {
+                const title = el.querySelector('.pd-text-title');
+                if (title) title.innerHTML = localized(block.title, lang);
+                el.querySelector('.pd-text-body').innerHTML = localized(block.text, lang);
+            },
+        },
+        accordions: {
+            html: accordionsBlockHTML,
+            update: (el, block, lang) => el.querySelectorAll('.pd-accordion').forEach((detail, i) => {
+                detail.querySelector('summary').innerHTML = localized(block.items[i].title, lang);
+                detail.querySelector('.accordion-content').innerHTML = localized(block.items[i].content, lang);
+            }),
+        },
+    };
+
+    function blocksHTML(project, lang) {
+        return (project.blocks || []).map((block, index) => {
+            const type = BLOCKS[block && block.type];
+            if (!type) {
+                warnBlock(project, index, `unbekannter Typ "${block && block.type}"`);
+                return '';
+            }
+            return type.html(block, lang, index, project);
+        }).join('');
+    }
+
+    // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben)
+    function projectCardHTML(p, lang) {
+        const media = heroMedia(p.hero || {});
+        return `
+                <a href="project.html?id=${p.id}" class="nav-item">
+                    <div class="nav-media">${media ? mediaHTML({ ...media, alt: null }, lang, { sizes: cellSizes(6) }) : ''}</div>
+                    <span class="nav-title">${p[lang].title}</span>
+                    <span class="nav-desc">${p[lang].category || ''}</span>
+                </a>`;
+    }
+
     function renderProjectDetail(lang) {
         const container = document.getElementById('project-detail');
         if (!container) return;
@@ -701,231 +942,53 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamic Page Title
         document.title = `${stripTags(content.title)} | Tom Henkel`;
 
-        const ui = siteContent.ui[lang]; // For "More Projects" text if needed
+        // Weitere Projekte: vorheriges und nächstes (im Kreis)
+        const prevP = projectsData[(currentIndex - 1 + projectsData.length) % projectsData.length];
+        const nextP = projectsData[(currentIndex + 1) % projectsData.length];
+        const moreTitle = lang === 'de' ? 'Weitere Projekte' : 'More Work';
 
-        // --- UPDATE MODE: Only update text if structure exists for this project ---
+        // --- UPDATE MODE: Sprachwechsel tauscht nur Texte, Medien bleiben stehen (kein neuer Request) ---
         if (container.getAttribute('data-rendered-id') === pid) {
-            // Update Title & Meta
-            const titleEl = container.querySelector('.pd-title');
-            if (titleEl) titleEl.innerHTML = content.title;
-            
-            const catEl = container.querySelector('.pd-cat');
-            if (catEl) catEl.innerHTML = content.category || '';
-            
-            const yearEl = container.querySelector('.pd-year');
-            if (yearEl) yearEl.innerHTML = project.year || '';
-
-            // Subtitle
-            const subtitleEl = container.querySelector('.pd-subtitle');
-            if (subtitleEl) subtitleEl.innerHTML = content.subtitle || content.short_description || '';
-
-            // Text Block 1
-            const text1El = container.querySelector('.pd-text-block-right');
-            if (text1El) text1El.innerHTML = content.full_description;
-
-            // Accordions
-            const accordionDetails = container.querySelectorAll('.pd-accordion');
-            if (accordionDetails.length === content.accordions.length) {
-                accordionDetails.forEach((el, i) => {
-                    const acc = content.accordions[i];
-                    el.querySelector('summary').innerHTML = acc.title;
-                    el.querySelector('.accordion-content').innerHTML = acc.content;
-                });
-            } else {
-                // Formatting mismatch or count changed? Re-render container of accordions
-                const accContainer = container.querySelector('.pd-accordions');
-                if (accContainer) {
-                    accContainer.innerHTML = content.accordions.map(acc => `
-                        <details class="pd-accordion">
-                            <summary>${acc.title}</summary>
-                            <div class="accordion-content">${acc.content}</div>
-                        </details>
-                    `).join('');
-                    
-                    // Re-init animation listeners for new elements
-                    initAccordionAnimation();
-                }
-            }
-
-            // Text Block 2
-            const text2El = container.querySelector('.pd-text-block-2');
-            if (content.second_description && text2El) {
-                 text2El.querySelector('h3').innerHTML = content.second_description.title;
-                 text2El.querySelector('p').innerHTML = content.second_description.text;
-            }
-
-            // Footer Nav (Prev/Next)
-            const prevIndex = (currentIndex - 1 + projectsData.length) % projectsData.length;
-            const nextIndex = (currentIndex + 1) % projectsData.length;
-            const prevP = projectsData[prevIndex];
-            const nextP = projectsData[nextIndex];
-            
-            const footerTitle = container.querySelector('.pd-footer-nav-title');
-            if (footerTitle) footerTitle.innerHTML = lang === 'de' ? 'Weitere Projekte' : 'More Work';
-
-            const navItems = container.querySelectorAll('.pd-footer-nav .nav-item');
-            if (navItems.length >= 2) {
-                // Prev
-                navItems[0].querySelector('.nav-title').innerHTML = prevP[lang].title;
-                navItems[0].querySelector('.nav-desc').innerHTML = prevP[lang].category;
-                // Next
-                navItems[1].querySelector('.nav-title').innerHTML = nextP[lang].title;
-                navItems[1].querySelector('.nav-desc').innerHTML = nextP[lang].category;
-            }
-
-            // Hero Controls (Beschriftung in neuer Sprache)
+            container.querySelector('.pd-title').innerHTML = content.title;
+            container.querySelector('.pd-cat').innerHTML = content.category || '';
+            container.querySelector('.pd-subtitle').innerHTML = content.subtitle || '';
+            container.querySelectorAll('[data-block]').forEach(el => {
+                const block = project.blocks[el.dataset.block];
+                BLOCKS[block.type].update(el, block, lang);
+            });
+            container.querySelector('.pd-footer-nav-title').innerHTML = moreTitle;
+            container.querySelectorAll('.pd-footer-nav .nav-item').forEach((item, i) => {
+                const p = i === 0 ? prevP : nextP;
+                item.querySelector('.nav-title').innerHTML = p[lang].title;
+                item.querySelector('.nav-desc').innerHTML = p[lang].category || '';
+            });
             updateHeroControls();
-
-            return; // Stop here, no HTML destruction
+            return;
         }
 
         // --- INITIAL RENDER MODE ---
         container.setAttribute('data-rendered-id', pid);
-
-        // 1. Hero (Video or Image)
-        // Uses vimeo_id if present, else standard hero video, else image
-        let heroHTML = '';
-
-        if (project.vimeo_id) {
-           // controls=0 to hide native UI
-           // dnt=1 for privacy
-           // muted=0 (try to play with sound), autoplay=1
-           // Button labels are set by updateHeroControls()
-           heroHTML = `
-             <div class="pd-hero" id="hero-wrapper">
-                <iframe id="hero-player" src="https://player.vimeo.com/video/${project.vimeo_id}?autoplay=1&amp;muted=0&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;dnt=1" frameborder="0" allow="autoplay; fullscreen" title="${stripTags(content.title)}"></iframe>
-                <div class="hero-overlay" id="hero-overlay">
-                    <div class="big-play-btn"></div>
-                </div>
-                <div class="hero-controls">
-                    <button id="btn-play"></button>
-                    <button id="btn-sound"></button>
-                </div>
-             </div>`;
-        } else if (project.hero_video) {
-            heroHTML = `<div class="pd-hero"><video src="${project.hero_video}" autoplay muted loop playsinline></video></div>`;
-        } else {
-            heroHTML = `<div class="pd-hero"><img src="${project.hero_image}" alt=""></div>`;
-        }
-
-        // 2.–4. Title block: Title & Meta, Subtitle als zweite Zeile
-        // (volle Breite, damit die Beschreibung immer darunter beginnt)
-        const subtitleHTML = `<div class="pd-subtitle">${content.subtitle || content.short_description || ''}</div>`;
-        const metaHTML = `
+        container.innerHTML = `
+            ${heroHTML(project, lang)}
             <div class="pd-title-row">
                 <h1 class="pd-title">${content.title}</h1>
                 <div class="pd-meta">
                     <span class="pd-cat">${content.category || ''}</span>
                     <span class="pd-year">${project.year || ''}</span>
                 </div>
-                ${subtitleHTML}
+                <div class="pd-subtitle">${content.subtitle || ''}</div>
             </div>
-        `;
-
-        // 5. Media Pair (Hardcoded or first 2 gallery items)
-        let mediaPairHTML = '';
-        if (project.media_pair && project.media_pair.length >= 2) {
-             // Use explicit pair
-             mediaPairHTML = `
-                <div class="pd-media-pair">
-                    ${project.media_pair.map(src => `<img src="${src}">`).join('')}
-                </div>
-             `;
-        } else if (project.gallery && project.gallery.length >= 2) {
-             // Fallback to first 2 gallery items
-             mediaPairHTML = `
-                <div class="pd-media-pair">
-                    <img src="${project.gallery[0].src}">
-                    <img src="${project.gallery[1].src}">
-                </div>
-             `;
-        }
-
-        // 6. Text Block 1
-        const text1HTML = `<div class="pd-text-block-right">${content.full_description}</div>`;
-
-        // 7. Accordions
-        const accordionsHTML = `
-            <div class="pd-accordions">
-                ${content.accordions.map(acc => `
-                    <details class="pd-accordion">
-                        <summary>${acc.title}</summary>
-                        <div class="accordion-content">${acc.content}</div>
-                    </details>
-                `).join('')}
-            </div>
-        `;
-
-        // 8. Gallery (Remaining items or explicit list)
-        // Filter out items used in media pair if we auto-picked them? For simplicity, just render full gallery.
-        const galleryItems = project.gallery.slice(2).map(item => { // Skip first 2 if we used them above
-            if (item.type === 'video') return `<div class="gallery-item video"><video src="${item.src}" controls></video></div>`;
-            return `<img src="${item.src}" alt="">`; 
-        }).join('');
-        
-        const galleryHTML = `<div class="pd-gallery">${galleryItems}</div>`;
-
-        // 9. Text Block 2 (Headline + Text)
-        const text2HTML = content.second_description ? `
-            <div class="pd-text-block-2">
-                <h3>${content.second_description.title}</h3>
-                <p>${content.second_description.text}</p>
-            </div>
-        ` : '';
-
-        // 10 & 11. Footer Nav (Previous / Next)
-        // Logic: Circular nav
-        const prevIndex = (currentIndex - 1 + projectsData.length) % projectsData.length;
-        const nextIndex = (currentIndex + 1) % projectsData.length;
-        const prevP = projectsData[prevIndex];
-        const nextP = projectsData[nextIndex];
-
-        // Ensure we load the localized content for preview
-        const prevContent = prevP[lang];
-        const nextContent = nextP[lang];
-
-        // Card media: landscape preview video if available (and motion allowed), else the hero image
-        const cardMedia = (p) => (p.preview && p.preview.landscape && autoplayAllowed())
-            ? `<video src="${p.preview.landscape}" autoplay muted loop playsinline></video>`
-            : `<img src="${p.hero_image}">`;
-
-        const footerNavHTML = `
-            <div class="pd-footer-nav-title">${lang === 'de' ? 'Weitere Projekte' : 'More Work'}</div>
+            ${blocksHTML(project, lang)}
+            <div class="pd-footer-nav-title">${moreTitle}</div>
             <div class="pd-footer-nav">
-                <a href="project.html?id=${prevP.id}" class="nav-item">
-                    <div class="nav-media">
-                         ${cardMedia(prevP)}
-                    </div>
-                    <span class="nav-title">${prevContent.title}</span>
-                    <span class="nav-desc">${prevContent.category}</span>
-                </a>
-                <a href="project.html?id=${nextP.id}" class="nav-item">
-                    <div class="nav-media">
-                         ${cardMedia(nextP)}
-                    </div>
-                    <span class="nav-title">${nextContent.title}</span>
-                    <span class="nav-desc">${nextContent.category}</span>
-                </a>
+                ${projectCardHTML(prevP, lang)}
+                ${projectCardHTML(nextP, lang)}
             </div>
         `;
 
-        // Assembling
-        container.innerHTML = `
-            ${heroHTML}
-            ${metaHTML}
-            ${mediaPairHTML}
-            ${text1HTML}
-            ${accordionsHTML}
-            ${galleryHTML}
-            ${text2HTML}
-            ${footerNavHTML}
-        `;
-        
-        // --- Init Accordion Animations ---
         initAccordionAnimation();
-
-        // --- Hero Player (Vimeo) ---
-        if (project.vimeo_id) initHeroPlayer();
+        initMediaReveal(container);
+        if (project.hero && project.hero.vimeo) initHeroPlayer(project.hero.vimeo, stripTags(content.title));
     }
 
     function renderAbout(lang) {

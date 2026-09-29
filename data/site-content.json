@@ -27,7 +27,8 @@
         "play": "abspielen",
         "pause": "pause",
         "sound_on": "ton an",
-        "sound_off": "ton aus"
+        "sound_off": "ton aus",
+        "vimeo_hint": "Film wird von Vimeo geladen"
       },
       "menu": {
         "open": "menü",
@@ -55,7 +56,8 @@
         "play": "play",
         "pause": "pause",
         "sound_on": "sound on",
-        "sound_off": "sound off"
+        "sound_off": "sound off",
+        "vimeo_hint": "Film loads from Vimeo"
       },
       "menu": {
         "open": "menu",

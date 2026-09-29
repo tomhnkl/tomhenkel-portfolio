@@ -2,174 +2,226 @@
   {
     "id": "reality-by-algorithm",
     "featured": true,
-    "grid_layout": "large",
-    "hero_image": "images/projects/p1/hero.jpg",
-    "hero_video": null,
-    "vimeo_id": "76979871", 
     "year": "2026",
-    "media_pair": [
-      "images/projects/p1/img1.jpg",
-      "images/projects/p1/img2.jpg"
-    ],
-    "gallery": [
-       { "type": "image", "src": "images/projects/p1/img3.jpg", "caption": "Gallery Item 1" },
-       { "type": "image", "src": "images/projects/p1/img4.jpg", "caption": "Gallery Item 2" }
+    "hero": {
+      "image": { "src": "images/projects/reality-by-algorithm/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "videos/projects/reality-by-algorithm/teaser.mp4",
+      "vimeo": "76979871"
+    },
+    "preview": { "portrait": "videos/projects/reality-by-algorithm/preview-portrait.mp4" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/01.webp", "width": 2560, "height": 1440 }]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "ratio": "4:5",
+        "items": [
+          { "type": "image", "src": "images/projects/reality-by-algorithm/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/reality-by-algorithm/03.webp", "width": 1440, "height": 1800 }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Dieses Projekt untersucht die Grenzen zwischen digitaler Berechnung und physischer Wahrnehmung. Es stellt die Frage, wie viel unserer täglichen Realität durch Algorithmen gefiltert wird und ob wir überhaupt noch einen direkten Zugang zur physischen Welt haben.\n\nDer Besucher wird eingeladen, durch Interaktion mit den Sensoren die Projektion zu verändern und so Teil des algorithmischen Prozesses zu werden.",
+          "en": "This project investigates the boundaries between digital computation and physical perception. It questions how much of our daily reality is filtered through algorithms and whether we still have direct access to the physical world.\n\nVisitors are invited to interact with sensors to alter the projection, becoming part of the algorithmic process."
+        }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Konzept / Idee", "en": "Concept / Idea" },
+            "content": {
+              "de": "Basierend auf generativen Algorithmen, die Chaos und Ordnung simulieren.",
+              "en": "Based on generative algorithms differentiating chaos and order."
+            }
+          },
+          {
+            "title": { "de": "Technik / Setup", "en": "Technology / Setup" },
+            "content": {
+              "de": "Processing, Infrarot-Sensoren, 3x 4K Projektoren, MaxMSP für Sound.",
+              "en": "Processing, IR Sensors, 3x 4K Projectors, MaxMSP for Sound."
+            }
+          },
+          {
+            "title": { "de": "Credits", "en": "Credits" },
+            "content": { "de": "Code: Tom Henkel<br>Sound: Audio Copilot", "en": "Code: Tom Henkel<br>Sound: Audio Copilot" }
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "ratio": "16:9",
+        "items": [
+          { "type": "image", "src": "images/projects/reality-by-algorithm/04.webp", "width": 1080, "height": 1242 },
+          {
+            "type": "video",
+            "src": "videos/projects/reality-by-algorithm/05.mp4",
+            "poster": "images/projects/reality-by-algorithm/05.webp",
+            "width": 1920,
+            "height": 1080
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [6],
+        "start": 7,
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/06.webp", "width": 1440, "height": 960 }]
+      },
+      {
+        "type": "text",
+        "title": { "de": "Technische Umsetzung", "en": "Technical Realization" },
+        "text": {
+          "de": "Die Installation basiert auf einem Netzwerk von 12 Sensoren, die Bewegung und Lichtintensität im Raum messen. Ein zentraler Server verarbeitet diese Daten in Echtzeit und speist sie in eine generative Grafik-Engine ein.",
+          "en": "The installation relies on a network of 12 sensors measuring movement and light intensity. A central server processes this data in real-time, feeding a generative graphics engine."
+        }
+      }
     ],
     "de": {
       "title": "reality,<br>by algorithm.",
       "category": "Installation",
-      "subtitle": "Eine audiovisuelle Installation über die strukturellen Wirkungen algorithmischer Systeme.",
-      "short_description": "Eine algorithmische Erkundung der Realität.",
-      "full_description": "Dieses Projekt untersucht die Grenzen zwischen digitaler Berechnung und physischer Wahrnehmung. Es stellt die Frage, wie viel unserer täglichen Realität durch Algorithmen gefiltert wird und ob wir überhaupt noch einen direkten Zugang zur physischen Welt haben.\n\nDer Besucher wird eingeladen, durch Interaktion mit den Sensoren die Projektion zu verändern und so Teil des algorithmischen Prozesses zu werden.",
-      "second_description": {
-          "title": "Technische Umsetzung",
-          "text": "Die Installation basiert auf einem Netzwerk von 12 Sensoren, die Bewegung und Lichtintensität im Raum messen. Ein zentraler Server verarbeitet diese Daten in Echtzeit und speist sie in eine generative Grafik-Engine ein."
-      },
-      "accordions": [
-        { "title": "Konzept / Idee", "content": "Basierend auf generativen Algorithmen, die Chaos und Ordnung simulieren." },
-        { "title": "Technik / Setup", "content": "Processing, Infrarot-Sensoren, 3x 4K Projektoren, MaxMSP für Sound." },
-        { "title": "Credits", "content": "Code: Tom Henkel<br>Sound: Audio Copilot" }
-      ]
+      "subtitle": "Eine audiovisuelle Installation über die strukturellen Wirkungen algorithmischer Systeme."
     },
-    "en": {
-      "title": "reality,<br>by algorithm.",
-      "category": "installation",
-      "subtitle": "An algorithmic exploration of reality.",
-      "short_description": "An algorithmic exploration of reality.",
-      "full_description": "This project investigates the boundaries between digital computation and physical perception. It questions how much of our daily reality is filtered through algorithms and whether we still have direct access to the physical world.\n\nVisitors are invited to interact with sensors to alter the projection, becoming part of the algorithmic process.",
-      "second_description": {
-          "title": "Technical Realization",
-          "text": "The installation relies on a network of 12 sensors measuring movement and light intensity. A central server processes this data in real-time, feeding a generative graphics engine."
-      },
-      "accordions": [
-        { "title": "Concept / Idea", "content": "Based on generative algorithms differentiating chaos and order." },
-        { "title": "Technology / Setup", "content": "Processing, IR Sensors, 3x 4K Projectors, MaxMSP for Sound." },
-        { "title": "Credits", "content": "Code: Tom Henkel<br>Sound: Audio Copilot" }
-      ]
-    }
+    "en": { "title": "reality,<br>by algorithm.", "category": "installation", "subtitle": "An algorithmic exploration of reality." }
   },
   {
     "id": "sono-bricolage",
     "featured": true,
-    "grid_layout": "standard",
-    "hero_image": "images/projects/p2/hero.jpg",
-    "vimeo_id": "87543210", 
     "year": "2024",
-    "gallery": [
-        { "type": "image", "src": "images/projects/p2/img1.jpg", "caption": "Detail 1" },
-        { "type": "image", "src": "images/projects/p2/img2.jpg", "caption": "Detail 2" },
-        { "type": "image", "src": "images/projects/p2/img3.jpg", "caption": "Detail 3" }
+    "hero": { "image": { "src": "images/projects/sono-bricolage/hero.webp", "width": 2560, "height": 1440 }, "vimeo": "87543210" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/01.webp", "width": 1440, "height": 960 },
+          { "type": "image", "src": "images/projects/sono-bricolage/02.webp", "width": 1440, "height": 960 }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Eine auditive Reise durch gefundene Objekte und synthetische Klänge. Sono Bricolage verbindet analoge Geräuschquellen mit digitaler Granularsynthese zu einem neuartigen Klangteppich.",
+          "en": "An auditory journey through found objects and synthetic sounds. Sono Bricolage combines analog noise sources with digital granular synthesis to create a novel soundscape."
+        }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Setup", "en": "Setup" },
+            "content": { "de": "Analog Synthesizer, Field Recordings, MaxMSP.", "en": "Analog Synthesizer, Field Recordings, MaxMSP." }
+          },
+          {
+            "title": { "de": "Credits", "en": "Credits" },
+            "content": { "de": "Konzept & Sound: Tom Henkel", "en": "Concept & Sound: Tom Henkel" }
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [6],
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/03.webp", "width": 1440, "height": 960 }]
+      }
     ],
-    "de": {
-      "title": "sono bricolage",
-      "category": "Klangexperiment",
-      "subtitle": "Experimentelle Klangforschung.",
-      "short_description": "Experimentelle Klangforschung.",
-      "full_description": "Eine auditive Reise durch gefundene Objekte und synthetische Klänge. Sono Bricolage verbindet analoge Geräuschquellen mit digitaler Granularsynthese zu einem neuartigen Klangteppich.",
-      "accordions": [
-        { "title": "Setup", "content": "Analog Synthesizer, Field Recordings, MaxMSP." },
-        { "title": "Credits", "content": "Konzept & Sound: Tom Henkel" }
-      ]
-    },
-    "en": {
-      "title": "sono bricolage",
-      "category": "sound experiment",
-      "subtitle": "Experimental sound research.",
-      "short_description": "Experimental sound research.",
-      "full_description": "An auditory journey through found objects and synthetic sounds. Sono Bricolage combines analog noise sources with digital granular synthesis to create a novel soundscape.",
-      "accordions": [
-        { "title": "Setup", "content": "Analog Synthesizer, Field Recordings, MaxMSP." },
-        { "title": "Credits", "content": "Concept & Sound: Tom Henkel" }
-      ]
-    }
+    "de": { "title": "sono bricolage", "category": "Klangexperiment", "subtitle": "Experimentelle Klangforschung." },
+    "en": { "title": "sono bricolage", "category": "sound experiment", "subtitle": "Experimental sound research." }
   },
   {
     "id": "lonis-weltraumreise",
     "featured": true,
-    "grid_layout": "standard",
-    "hero_image": "images/projects/p3/hero.jpg",
     "year": "2023",
-    "gallery": [
-        { "type": "image", "src": "images/projects/p3/img1.jpg", "caption": "Screenshot 1" },
-        { "type": "image", "src": "images/projects/p3/img2.jpg", "caption": "Screenshot 2" }
+    "hero": { "image": { "src": "images/projects/lonis-weltraumreise/hero.webp", "width": 2560, "height": 1440 } },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/01.webp", "width": 1440, "height": 960 },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/02.webp", "width": 1440, "height": 960 }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Begleite Loni auf einer spannenden Reise durch das Universum. Eine interaktive Webanwendung, die Kindern spielerisch astronomische Konzepte vermittelt.",
+          "en": "Join Loni on an exciting journey through the universe. An interactive web application that teaches children astronomical concepts in a playful way."
+        }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Technologie", "en": "Technology" },
+            "content": { "de": "Three.js, React, WebGL.", "en": "Three.js, React, WebGL." }
+          },
+          {
+            "title": { "de": "Zielgruppe", "en": "Target Group" },
+            "content": { "de": "Kinder von 6-10 Jahren.", "en": "Children aged 6-10." }
+          }
+        ]
+      }
     ],
-    "de": {
-      "title": "lonis weltraumreise",
-      "category": "Webanwendung",
-      "subtitle": "Interaktive Geschichte für Kinder.",
-      "short_description": "Interaktive Geschichte für Kinder.",
-      "full_description": "Begleite Loni auf einer spannenden Reise durch das Universum. Eine interaktive Webanwendung, die Kindern spielerisch astronomische Konzepte vermittelt.",
-      "accordions": [
-          { "title": "Technologie", "content": "Three.js, React, WebGL." },
-          { "title": "Zielgruppe", "content": "Kinder von 6-10 Jahren." }
-      ]
-    },
-    "en": {
-      "title": "lonis weltraumreise",
-      "category": "web application",
-      "subtitle": "Interactive story for children.",
-      "short_description": "Interactive story for children.",
-      "full_description": "Join Loni on an exciting journey through the universe. An interactive web application that teaches children astronomical concepts in a playful way.",
-      "accordions": [
-          { "title": "Technology", "content": "Three.js, React, WebGL." },
-          { "title": "Target Group", "content": "Children aged 6-10." }
-      ]
-    }
+    "de": { "title": "lonis weltraumreise", "category": "Webanwendung", "subtitle": "Interaktive Geschichte für Kinder." },
+    "en": { "title": "lonis weltraumreise", "category": "web application", "subtitle": "Interactive story for children." }
   },
   {
     "id": "present",
     "featured": true,
-    "grid_layout": "large",
-    "hero_image": "images/projects/p4/hero.jpg",
     "year": "2023",
-    "gallery": [],
-    "de": {
-      "title": "present",
-      "category": "Interface",
-      "subtitle": "Design für die Gegenwart.",
-      "short_description": "Design für die Gegenwart.",
-      "full_description": "Erforschung moderner Interface-Paradigmen. Wie interagieren wir heute mit Daten, und wie könnte dies morgen aussehen?",
-      "accordions": [
-          { "title": "Kontext", "content": "Uniprozess 2023." }
-      ]
-    },
-    "en": {
-      "title": "present",
-      "category": "interface",
-      "subtitle": "Design for the present.",
-      "short_description": "Design for the present.",
-      "full_description": "Exploration of modern interface paradigms. How do we interact with data today, and what could this look like tomorrow?",
-      "accordions": [
-          { "title": "Context", "content": "University Project 2023." }
-      ]
-    }
+    "hero": { "image": { "src": "images/projects/present/hero.webp", "width": 2560, "height": 1440 } },
+    "blocks": [
+      {
+        "type": "text",
+        "text": {
+          "de": "Erforschung moderner Interface-Paradigmen. Wie interagieren wir heute mit Daten, und wie könnte dies morgen aussehen?",
+          "en": "Exploration of modern interface paradigms. How do we interact with data today, and what could this look like tomorrow?"
+        }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Kontext", "en": "Context" },
+            "content": { "de": "Uniprozess 2023.", "en": "University Project 2023." }
+          }
+        ]
+      }
+    ],
+    "de": { "title": "present", "category": "Interface", "subtitle": "Design für die Gegenwart." },
+    "en": { "title": "present", "category": "interface", "subtitle": "Design for the present." }
   },
   {
     "id": "boomtschakkaboom",
     "featured": true,
-    "grid_layout": "standard",
-    "hero_image": "images/projects/p5/hero.jpg",
     "year": "2022",
-    "gallery": [],
-    "de": {
-      "title": "boomtschakkaboom",
-      "category": "Installation",
-      "subtitle": "Rhythmische Lichtinstallation.",
-      "short_description": "Rhythmische Lichtinstallation.",
-      "full_description": "Wenn Sound auf Licht trifft. Eine Installation, die Trommelschläge in Lichtimpulse übersetzt und den Raum in eine visuelle Echokammer verwandelt.",
-      "accordions": [
-         { "title": "Technik", "content": "DMX Steuerung, Ableton Live." }
-      ]
-    },
-    "en": {
-      "title": "boomtschakkaboom",
-      "category": "installation",
-      "subtitle": "Rhythmic light installation.",
-      "short_description": "Rhythmic light installation.",
-      "full_description": "When sound meets light. An installation that translates drum beats into light impulses, transforming the space into a visual echo chamber.",
-      "accordions": [
-         { "title": "Tech", "content": "DMX Control, Ableton Live." }
-      ]
-    }
+    "hero": { "image": { "src": "images/projects/boomtschakkaboom/hero.webp", "width": 2560, "height": 1440 } },
+    "blocks": [
+      {
+        "type": "text",
+        "text": {
+          "de": "Wenn Sound auf Licht trifft. Eine Installation, die Trommelschläge in Lichtimpulse übersetzt und den Raum in eine visuelle Echokammer verwandelt.",
+          "en": "When sound meets light. An installation that translates drum beats into light impulses, transforming the space into a visual echo chamber."
+        }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Technik", "en": "Tech" },
+            "content": { "de": "DMX Steuerung, Ableton Live.", "en": "DMX Control, Ableton Live." }
+          }
+        ]
+      }
+    ],
+    "de": { "title": "boomtschakkaboom", "category": "Installation", "subtitle": "Rhythmische Lichtinstallation." },
+    "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmic light installation." }
   }
 ]

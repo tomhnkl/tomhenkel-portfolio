@@ -1,0 +1,183 @@
+# Projekt-Baukasten
+
+Eine Projektseite besteht immer aus demselben Rahmen:
+
+1. **Hero:** volle Breite, 16:9
+2. **Titelblock:** Titel, Kategorie, Jahr und Untertitel
+3. **Module** in beliebiger Reihenfolge: Medien-Zeilen, Text, Akkordeons
+4. **Weitere Projekte:** das vorherige und das nächste Projekt
+
+Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "…", "en": "…" }`.
+
+---
+
+## Ordner und Dateinamen
+
+| Was | Pfad |
+|---|---|
+| Bilder | `images/projects/<id>/` (z. B. `hero.webp`, `01.webp`, `02.webp`) |
+| Videos | `videos/projects/<id>/` (z. B. `teaser.mp4`, `05.mp4`) |
+| Standbild zu einem Video | gleicher Name als `.webp` im Bilder-Ordner (z. B. `images/projects/<id>/05.webp`) |
+
+`<id>` ist die `id` des Projekts, z. B. `reality-by-algorithm`.
+
+---
+
+## Grundgerüst eines Projekts
+
+```json
+{
+  "id": "mein-projekt",
+  "featured": true,
+  "year": "2026",
+  "hero": {
+    "image": { "src": "images/projects/mein-projekt/hero.webp", "width": 2560, "height": 1440 },
+    "teaser": "videos/projects/mein-projekt/teaser.mp4",
+    "vimeo": "123456789"
+  },
+  "preview": { "portrait": "videos/projects/mein-projekt/preview-portrait.mp4" },
+  "blocks": [ … ],
+  "de": { "title": "mein projekt", "category": "Installation", "subtitle": "Ein Satz zum Projekt." },
+  "en": { "title": "my project", "category": "installation", "subtitle": "One sentence about the project." }
+}
+```
+
+- **`featured`:** Das Projekt erscheint in der Liste auf der Startseite.
+- **`title`:** darf `<br>` enthalten, z. B. `"reality,<br>by algorithm."`.
+- **`preview.portrait`:** optional, die Hochformat-Vorschau für die Startseite auf dem Handy. Auf dem Desktop läuft dort der Teaser.
+
+---
+
+## Hero
+
+`hero.image` ist immer Pflicht. Es ist das Standbild und das Notfallbild, und Startseite und Karten verwenden es.
+
+| Variante | Felder | Verhalten |
+|---|---|---|
+| Teaser + Film | `image`, `teaser`, `vimeo` | Teaser läuft sofort stumm; „abspielen“ lädt den Vimeo-Film mit Ton |
+| Nur Teaser | `image`, `teaser` | Stummer Loop, keine Buttons |
+| Standbild + Film | `image`, `vimeo` | Bild; „abspielen“ lädt den Vimeo-Film |
+| Nur Bild | `image` | Bild |
+
+Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an Vimeo. Neben dem Button steht dazu der Hinweis „Film wird von Vimeo geladen“.
+
+---
+
+## Module (`blocks`)
+
+### Medien-Zeile
+
+```json
+{ "type": "media", "cols": [4, 8], "ratio": "16:9", "items": [ BILD_ODER_VIDEO, BILD_ODER_VIDEO ] }
+```
+
+- **`cols`:** Spalten pro Feld, zusammen höchstens 12.
+- **`items`:** genauso viele Einträge wie `cols`. `null` steht für ein leeres Feld.
+- **`start`** (optional): die Spalte, in der das erste Feld beginnt, für einen Versatz.
+- **`ratio`** (optional): das Format des **größten** Feldes, z. B. `"16:9"`, `"3:2"`, `"4:5"`, `"1:1"`.
+  - Die anderen Felder bekommen dieselbe Höhe, ein Bild mit anderem Format wird mittig beschnitten.
+  - Ohne `ratio` gilt das Format des Mediums im größten Feld.
+- **Folgezeilen:** Zwei Medien-Zeilen direkt hintereinander haben nur 20px Abstand, wie ein durchgehendes Raster.
+- **Handy:** Jedes Medium steht in voller Breite untereinander, in dem Format, in dem es exportiert ist. Leere Felder entfallen.
+
+**Bild:**
+```json
+{ "type": "image", "src": "images/projects/<id>/01.webp", "width": 2560, "height": 1440,
+  "alt": { "de": "Blick in die Ausstellung", "en": "View of the exhibition" }, "focus": "30% 50%" }
+```
+
+**Video** (stummer Loop, spielt nur, wenn es sichtbar ist):
+```json
+{ "type": "video", "src": "videos/projects/<id>/05.mp4", "poster": "images/projects/<id>/05.webp", "width": 1920, "height": 1080 }
+```
+
+- **`focus`** (optional): der Punkt, der beim Beschneiden sichtbar bleibt (x y). Standard ist die Mitte.
+- **`width` und `height`:** die Maße der exportierten Datei. Die trage ich ein.
+- **`placeholder` und `color`:** die unscharfe 32px-Vorschau und die Grundfarbe. Die trage ich auch ein.
+
+**Beispiele:**
+
+| Zeile | `cols` | `start` | Bild |
+|---|---|---|---|
+| Ein Medium über die volle Breite | `[12]` | | `████████████` |
+| Paar | `[6, 6]` | | `██████ ██████` |
+| Klein + groß | `[4, 8]` | | `████ ████████` |
+| Drei gleiche | `[4, 4, 4]` | | `████ ████ ████` |
+| Halb rechts | `[6]` | `7` | `       ██████` |
+| Mit Lücke | `[4, 2, 6]` + `items: [A, null, B]` | | `████    ██████` |
+
+### Text (rechte Hälfte)
+
+```json
+{ "type": "text", "text": { "de": "Absatz 1.\n\nAbsatz 2.", "en": "…" } }
+{ "type": "text", "title": { "de": "Technische Umsetzung", "en": "Technical realization" }, "text": { "de": "…", "en": "…" } }
+```
+
+Leerzeilen (`\n\n`) trennen Absätze, `<br>` erzwingt einen Zeilenumbruch.
+
+### Akkordeons (rechte Hälfte)
+
+```json
+{ "type": "accordions", "items": [
+  { "title": { "de": "Konzept", "en": "Concept" }, "content": { "de": "…", "en": "…" } },
+  { "title": { "de": "Credits", "en": "Credits" }, "content": { "de": "Code: Tom Henkel<br>Sound: …", "en": "…" } }
+] }
+```
+
+Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` statt `--space-l`).
+
+---
+
+## Abstände (automatisch)
+
+| Token | 320px | 1440px | 2560px | Wo |
+|---|---|---|---|---|
+| `--space-s` | 20 | 20 | 20 | Titel → Untertitel, Medien-Zeile → Medien-Zeile, Bild → Kartentitel |
+| `--space-m` | 40 | 60 | 80 | Hero → Titelblock, Text → Akkordeons, „Weitere Projekte“ → Karten |
+| `--space-l` | 80 | 120 | 160 | Titelblock → Modul, Modul → Modul, Seitenende |
+
+---
+
+## Export
+
+**Bilder:** WebP, sRGB, ohne Transparenz, Qualität ca. 75–80. Die Breite richtet sich nach der Feldgröße:
+
+| Spalten des Feldes | 12–10 | 9–7 | 6–5 | 4 | 3–2 |
+|---|---|---|---|---|---|
+| Breite (px) | 2560 | 1920 | 1440 | 1080 | 800 |
+
+- **Höhe:** Breite ÷ Format. Das größte Feld hat das Format der Zeile, die kleineren Felder werden gleich hoch und damit schmaler im Format.
+- **Beispiele** für kleinere Felder, bezogen auf 1440px:
+  - `[4, 8]` mit 16:9: das 4er-Feld etwa 1080×1242
+  - `[3, 9]` mit 16:9: das 3er-Feld etwa 800×1404
+  - Bei anderen Zeilen sag mir die Zeile, ich rechne die Maße aus.
+
+**Videos:**
+- **Codierung:** MP4, H.264 (High), 8 Bit yuv420p, **ohne Tonspur**, Fast Start / „für Web optimiert“, ca. 3 Mbit/s.
+- **Loop im Inhalt:** Breite wie bei Bildern, höchstens 1920. Dazu ein Standbild (das erste Bild) als WebP in denselben Maßen.
+- **Hero:**
+  - `teaser.mp4` 1920×1080, ca. 15 s
+  - `hero.webp` 2560×1440, das erste Bild des Teasers
+- **Startseite, Handy:** `preview-portrait.mp4` 1080×1920
+
+**Alt-Texte:** Jedes Bild bekommt einen deutschen und einen englischen Alt-Text. Videos sind dekorativ und brauchen keinen.
+
+---
+
+## Was passiert, wenn …
+
+| Fall | Verhalten |
+|---|---|
+| Datei fehlt | Farbfläche im richtigen Format, kein kaputtes Symbol |
+| Video darf nicht laufen (Bewegung reduzieren, Datensparen, Stromsparmodus) | Standbild statt Loop |
+| Langsames Netz | Unscharfe Vorschau, bis das Medium da ist |
+| Vimeo lädt nicht / Ton blockiert | Teaser bleibt stehen; Film läuft stumm mit „ton an“; zuletzt übernimmt Vimeos eigene Steuerung |
+| Zeile falsch befüllt (Spalten über 12, `items` passt nicht zu `cols`, Maße fehlen) | Block wird übersprungen, die Browser-Konsole sagt, welcher und warum |
+
+---
+
+## Checkliste neues Projekt
+
+1. Dateien exportieren und in die Ordner legen.
+2. Das Projekt in `projects.json` anlegen (oder mir die gewünschten Zeilen sagen).
+3. Ich trage Vorschauen, Farben und Maße ein und prüfe die Seite im Browser.

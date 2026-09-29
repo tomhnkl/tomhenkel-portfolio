@@ -48,8 +48,13 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
   --ls-display: -0.02em;
   --ls-title: -0.01em;
   
-  /* Spacing */
-  --spacing-layout: 20px; /* Grid gap */
+  /* --- Spacing System ---
+     s: within a group (= grid gap), m: between related elements, l: between sections (always 2 × m)
+     m grows 40px @320 → 60px @1440 → 80px @2560 */
+  --space-s: 20px;
+  --space-m: clamp(40px, 1.786vw + 34.29px, 80px);
+  --space-l: calc(var(--space-m) * 2);
+  --spacing-layout: var(--space-s); /* Grid gap */
 
   /* --- Grid System --- */
   --grid-columns: 12;

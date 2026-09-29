@@ -46,7 +46,7 @@
       font-size: var(--fs-body);
       line-height: var(--lh-body);
       max-width: var(--measure);
-      margin-bottom: 48px;
+      margin-bottom: var(--space-m);
     }
 
     .contact-info {
@@ -77,6 +77,6 @@
   }
 
   .about-section .about-text {
-    margin-top: var(--spacing-layout); /* Gap below the image (the -0.333em alignment is desktop only) */
+    margin-top: var(--space-s); /* Gap below the image (the -0.333em alignment is desktop only) */
   }
 }
