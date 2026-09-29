@@ -463,17 +463,19 @@ document.addEventListener('DOMContentLoaded', () => {
             img.addEventListener('load', onSettle);
             img.addEventListener('error', onSettle);
 
-            // Erst die Vorschau zeigen, dann die echte Quelle anfordern (sonst bricht der Browser die Vorschau ab)
+            // Die echte Quelle erst unsichtbar laden und danach einsetzen (kommt dann aus dem Cache):
+            // Chrome verwirft die Vorschau sonst schon beim Anfordern und zeigt bis zum Laden eine leere Fläche
             const swap = () => wrapper.querySelectorAll('[data-srcset]').forEach(el => {
                 el.setAttribute('srcset', el.dataset.srcset);
                 el.removeAttribute('data-srcset');
             });
-            if (placeholders.size && !img.complete) {
-                img.addEventListener('load', swap, { once: true });
-                img.addEventListener('error', swap, { once: true });
-            } else {
-                swap();
-            }
+            const active = [...wrapper.querySelectorAll('source[data-srcset]')]
+                .find(s => !s.media || window.matchMedia(s.media).matches) || img; // dieselbe Wahl wie der Browser
+            const probe = new Image();
+            probe.sizes = active.getAttribute('sizes') || '';
+            probe.srcset = active.dataset.srcset;
+            if (img.getAttribute('fetchpriority')) probe.fetchPriority = img.getAttribute('fetchpriority');
+            probe.decode().catch(() => {}).then(swap);
         }
 
         wrapper.querySelectorAll('video').forEach(video => {

@@ -66,20 +66,22 @@
   "about": {
     "portrait": {
       "alt": { "de": "Porträt von Tom Henkel", "en": "Portrait of Tom Henkel" },
-      "color": "#7f8584",
+      "color": "#9faba7",
       "eager": true,
       "sources": [
         {
           "media": "(max-width: 1220px)",
-          "srcset": "images/about/Tom-Henkel_Portrait_1500x1500px.png 1500w",
-          "sizes": "(max-width: 768px) calc(100vw - 50px), calc(90vh - 150px)"
+          "srcset": "images/about/Tom-Henkel_1500x1500px.webp 1500w",
+          "sizes": "(max-width: 768px) calc(100vw - 50px), calc(90vh - 150px)",
+          "placeholder": "data:image/webp;base64,UklGRiABAABXRUJQVlA4IBQBAADwBQCdASogACAAPrVQoUwnJKMiKAqo4BaJYwAD48Zl9PunVHv5W1jg+9PMpALkj/RcSowqWZVQAAD+8ANvdzpItse9iX/2fh2DVlJ8SpX2oWBgXkS7hRxeWNpWTCmz/SQ3PIHXehvE9Q53gF0IsQSNB2x8iTaH9wdwsBBJCPUTVoObokl2pCVgNgFcsu301VVuZWEP1JhsqqLz5F+p5f0HXJ92+YT9AR8xrlaOAn6Ki9ixHY6h3C0BVd2pVEPmKEAcCGIq+hQWaU+jQTeTMiKHfp/Dzjc9bClVzjuJqYpDmPwpwKGi20J29Uo2P5AxbFG9aDCttPY+qn6upRCxGqYwmucEqrqqZ6NmC8eeK0IVx7tgAAA="
         }
       ],
       "img": {
-        "srcset": "images/about/Tom-Henkel_Portrait_1500x1500px.png 1500w",
+        "srcset": "images/about/Tom-Henkel_1920x1415px.webp 1920w",
         "sizes": "calc((100vw - 270px) * 2 / 3 + 140px)",
-        "width": 1500,
-        "height": 1500
+        "width": 1920,
+        "height": 1415,
+        "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAACwBQCdASogABgAPrVIn0unI6KhsBgIAOAWiWUAA+Mrzn0AFr6km0vYP+iyv5Nq4cZRkbeLsAAA/vAFf1gUc9aM20gPbZFM3mtxx9sRL2u20DUFUmggdnWkbFEQE/More+99SgOsu39aXbMd4HGR5fvZBwNpMcTEP07VncGLn5Pqt50/Y32BubPZGajvergaFDPTJ/2evF6A+KG6pIu8F/bO4zT0B0XTqx1MQepX+enqpOKE67c+pVuB3MAHuF//EwUO0Jd69O6X661R7OZxN+4/Nv5vk8AhR7wuD2GfV46WNcXWZUdmcet/q7HFsmNAAA="
       }
     },
     "de": {
