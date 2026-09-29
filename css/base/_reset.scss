@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('../fonts/ABCFavorit-Regular-Trial.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Book';
+  src: url('../fonts/ABCFavorit-Book-Trial.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Bold';
+  src: url('../fonts/ABCFavorit-Bold-Trial.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Lining';
+  src: url('../fonts/ABCFavoritLining-Regular-Trial.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Mono';
+  src: url('../fonts/ABCFavoritMono-Bold-Trial.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
+}
+
+body {
+  font-family: var(--font-family-base);
+  background: #000;
+  color: #fff;
+  padding: var(--page-top) var(--page-margin) var(--page-bottom) var(--page-margin); /* Increased bottom padding for footer gap */
+  box-sizing: border-box;
+  position: relative;
+  
+  /* Typography improvements */
+  font-size: var(--fs-body); /* Default for text without its own size (instead of the browser's 16px) */
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}

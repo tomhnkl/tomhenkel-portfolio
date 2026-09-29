@@ -1,0 +1,30 @@
+/* --- Loader --- */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Large centered text */
+  .loader-text {
+    font-family: var(--font-family-lining);
+    font-size: var(--fs-poster);
+    font-weight: 400;
+    margin: 0;
+    color: #fff;
+    line-height: var(--lh-poster);
+  }
+}

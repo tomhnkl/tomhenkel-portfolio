@@ -1,0 +1,7 @@
+# macOS / exFAT metadata
+.DS_Store
+._*
+
+# Dinamo "Unlicensed Trial" fonts: the licence forbids storing them on public servers or
+# redistributing them. Replace with licensed WOFF2 files before go-live.
+fonts/*-Trial.otf

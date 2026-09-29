@@ -1,0 +1,1187 @@
+@charset "UTF-8";
+:root {
+  /* --- Typography System --- */
+  /* Font Families */
+  --font-family-base: 'ABC Favorit', Helvetica, Arial, sans-serif;
+  --font-family-book: 'ABC Favorit Book', Helvetica, Arial, sans-serif;
+  --font-family-bold: 'ABC Favorit Bold', Helvetica, Arial, sans-serif;
+  --font-family-lining: 'ABC Favorit Lining', Helvetica, Arial, sans-serif;
+  --font-family-mono: 'ABC Favorit Mono', monospace;
+  /* Font Sizes: fluid, derived from the grid columns (px + vw)
+     Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):
+       phone ramp:   the column is the full width (100vw - 50px)
+       plateau:      holds the size through 768/769, where the column halves
+       desktop ramp: grows with the grid column
+     Ratios are measured text width / font size with the real fonts (+2.5% safety margin). */
+  /* Project titles: 'boomtschakkaboom' (9.03em) fits the full width (mobile) or 6 columns */
+  --fs-display: min(10.8vw - 5.4px, clamp(37.7px, 5.4vw - 3.8px, 134px));
+  /* Nav, home list, meta, subtitle, accordion titles, hero buttons, card titles:
+     the widest home list row in bold (14.7em + 20px) fits its column; keeps $bp-tablet at 1220px */
+  --fs-ui: min(6.6vw - 4.5px, clamp(21.9px, 0.4vw + 18.8px, 29px));
+  /* Section headings: one perfect fourth above ui */
+  --fs-title: calc(var(--fs-ui) * 4 / 3);
+  /* Running text: 16px @320, 18px @1440, 20px @2560 */
+  --fs-body: clamp(16px, 0.18vw + 15.42px, 20px);
+  /* Footer, language switch, card category, lab captions: German footer row fits at 320px, never below 12px */
+  --fs-small: max(12px, min(5.1vw - 5.4px, clamp(13px, 0.18vw + 11.4px, 16px)));
+  /* Full-screen words (loader, lab overlay) */
+  --fs-poster: clamp(48px, 15vw, 384px);
+  /* Measure: 30em / 0.464em per character = ~65 characters per line */
+  --measure: 30em;
+  /* Line Heights */
+  --lh-display: 1.05;
+  --lh-title: 1.15;
+  --lh-ui: 1.25;
+  --lh-body: 1.5;
+  --lh-small: 1.3;
+  --lh-poster: 1;
+  /* Letter Spacing (display tracking is part of the measured 9.03em ratio) */
+  --ls-display: -0.02em;
+  --ls-title: -0.01em;
+  /* Spacing */
+  --spacing-layout: 20px; /* Grid gap */
+  /* --- Grid System --- */
+  --grid-columns: 12;
+  --page-margin: 25px; /* Left/right page margin (body, nav, footer) */
+  --page-top: 85px; /* Space for the fixed nav (body padding-top, mobile menu) */
+  --page-bottom: 65px; /* Space for the fixed footer (body padding-bottom) */
+  /* --- Motion (provisional base for the upcoming animation system) --- */
+  --duration-base: 300ms;
+  --duration-stagger: 60ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@font-face {
+  font-family: "ABC Favorit";
+  src: url("../fonts/ABCFavorit-Regular-Trial.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ABC Favorit Book";
+  src: url("../fonts/ABCFavorit-Book-Trial.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ABC Favorit Bold";
+  src: url("../fonts/ABCFavorit-Bold-Trial.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ABC Favorit Lining";
+  src: url("../fonts/ABCFavoritLining-Regular-Trial.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ABC Favorit Mono";
+  src: url("../fonts/ABCFavoritMono-Bold-Trial.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
+}
+
+body {
+  font-family: var(--font-family-base);
+  background: #000;
+  color: #fff;
+  padding: var(--page-top) var(--page-margin) var(--page-bottom) var(--page-margin); /* Increased bottom padding for footer gap */
+  box-sizing: border-box;
+  position: relative;
+  /* Typography improvements */
+  font-size: var(--fs-body); /* Default for text without its own size (instead of the browser's 16px) */
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  margin: 0;
+  font-size: var(--fs-ui); /* Match ui size for "hidden" h1 usage if visible somewhere else */
+  font-weight: 400;
+  display: none; /* Hide default H1 as requested layout changes */
+}
+
+/* --- 12-Column Grid --- */
+.pd-footer-nav, .pd-gallery, .pd-media-pair, .pd-title-row, #project-detail, .grid-overlay, .main-nav, .about-section, .home-container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  -moz-column-gap: var(--spacing-layout);
+       column-gap: var(--spacing-layout);
+}
+
+/* --- Layout Mixin --- */
+.about-section, .home-container {
+  grid-template-rows: 1fr; /* Fill available height */
+  /*
+     Height Calculation:
+     100vh
+     - --page-top (Body Padding Top, 85px)
+     - --page-bottom (Body Padding Bottom, 65px)
+  */
+  height: calc(100vh - var(--page-top) - var(--page-bottom));
+  /* Breathing Room: applied as padding so it pushes content down
+     without affecting the container's bottom edge */
+  padding-top: 10vh;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .about-section, .home-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto; /* Allow stacking */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    margin-top: 20px;
+  }
+}
+
+/* --- Navigation --- */
+.main-nav {
+  /* Logo: columns 1–8, links: columns 9–12 (tablet: 1–6 / 7–12) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--page-margin);
+  box-sizing: border-box;
+  align-items: start;
+  z-index: 1000;
+  background-color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  /* Enable pointer events on children */
+}
+.main-nav .nav-left, .main-nav .nav-right, .main-nav .nav-burger {
+  pointer-events: auto;
+}
+.main-nav .nav-left {
+  grid-column: 1/9;
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  color: #fff;
+  font-family: var(--font-family-base);
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .main-nav .nav-left {
+    grid-column: 1/7;
+  }
+}
+.main-nav .nav-right {
+  grid-column: 9/13;
+  display: flex;
+  justify-content: space-between;
+  gap: 0;
+  width: 100%;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .main-nav .nav-right {
+    grid-column: 7/13;
+  }
+}
+.main-nav .nav-right a {
+  color: #fff;
+  text-decoration: none;
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+}
+.main-nav .nav-right a:hover, .main-nav .nav-right a.active {
+  font-family: var(--font-family-lining);
+  text-decoration: none;
+}
+.main-nav {
+  /* Menu toggle ("menü" / "schließen"), mobile only */
+}
+.main-nav .nav-burger {
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  /* Only with a real pointer: on touch the hover state would stick after tapping */
+}
+@media (hover: hover) {
+  .main-nav .nav-burger:hover {
+    font-family: var(--font-family-lining);
+  }
+}
+.main-nav {
+  /* Mobile: logo + menu toggle; the links become a full-screen menu
+     (kept last so it overrides the column placement above) */
+}
+@media (max-width: 768px) {
+  .main-nav {
+    grid-template-columns: 2fr 1fr;
+  }
+  .main-nav .nav-left {
+    grid-column: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .main-nav .nav-burger {
+    display: block;
+    grid-column: 2;
+    justify-self: end;
+    position: relative;
+    z-index: 1; /* Above the open menu */
+    /* Bigger tap target (~44px+) without moving the text */
+    padding: 12px;
+    margin: -12px;
+  }
+  .main-nav .nav-right {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: auto;
+    padding: var(--page-top) var(--page-margin) var(--page-bottom);
+    box-sizing: border-box;
+    visibility: hidden;
+    pointer-events: none; /* Taps pass through immediately while the menu fades out */
+  }
+  .main-nav .nav-right a {
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    opacity: 0;
+  }
+}
+
+/* --- Mobile Menu: open state + black backdrop ---
+   The backdrop sits outside the nav (below it), so the nav keeps mix-blend-mode: difference
+   and renders white on black. Footer and language switch stay visible above it. */
+@media (max-width: 768px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 999; /* Below nav + footer (1000) */
+    background: #000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  body.menu-open {
+    overflow: hidden; /* No scrolling behind the menu */
+  }
+  body.menu-open::before {
+    opacity: 1;
+    visibility: visible;
+  }
+  body.menu-open .main-nav .nav-right {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  body.menu-open .main-nav .nav-right a {
+    opacity: 1;
+  }
+  /* Transitions (incl. delays) only after the visitor used the menu (body.menu-animate, set in main.js),
+     so rotating the phone, crossing the breakpoint or returning via bfcache switch instantly.
+     No transitions at all with reduced motion. */
+}
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  body.menu-animate::before {
+    transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+  }
+  body.menu-animate .main-nav .nav-right {
+    /* Stay visible until the last link has faded out */
+    transition: visibility 0s linear calc(var(--duration-base) + 2 * var(--duration-stagger));
+  }
+  body.menu-animate .main-nav .nav-right a {
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+  body.menu-animate {
+    /* Opening: show immediately, links one after another */
+  }
+  body.menu-animate.menu-open::before {
+    transition-delay: 0s;
+  }
+  body.menu-animate.menu-open .main-nav .nav-right {
+    transition-delay: 0s;
+  }
+  body.menu-animate.menu-open .main-nav .nav-right a:nth-child(2) {
+    transition-delay: var(--duration-stagger);
+  }
+  body.menu-animate.menu-open .main-nav .nav-right a:nth-child(3) {
+    transition-delay: calc(2 * var(--duration-stagger));
+  }
+}
+/* --- Universal Footer --- */
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--page-margin);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 1000;
+  background-color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.main-footer .footer-left {
+  pointer-events: auto;
+  display: flex;
+  gap: clamp(8px, 4.88vw - 7.5px, 30px); /* Space between items: 8px on small phones, 30px from 768px */
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-family: var(--font-family-base);
+  color: #fff;
+}
+.main-footer .footer-left a {
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.1s;
+  font-family: var(--font-family-base);
+}
+.main-footer .footer-left a::after {
+  content: attr(data-text);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
+  font-family: var(--font-family-lining);
+  font-weight: bold; /* Ensure it takes max width */
+}
+.main-footer .footer-left a:hover {
+  color: #fff;
+  font-family: var(--font-family-lining);
+  transform: translateY(1.5px);
+}
+.main-footer .footer-left span {
+  /* Text items like ©tomh */
+  color: #fff;
+}
+.main-footer .footer-right {
+  pointer-events: auto;
+  /* Reuse lang switch styles logic */
+  display: flex;
+  gap: 5px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+.main-footer .footer-right button {
+  background: none;
+  border: none;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  cursor: pointer;
+  padding: 0;
+  color: #fff;
+  text-transform: lowercase;
+  transform-origin: bottom center;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.1s;
+}
+.main-footer .footer-right button::after {
+  content: attr(data-text);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
+  font-family: var(--font-family-lining);
+  font-weight: bold;
+}
+.main-footer .footer-right button.active, .main-footer .footer-right button:hover {
+  color: #fff;
+  font-family: var(--font-family-lining);
+  transform: translateY(1.5px);
+}
+.main-footer .footer-right span.separator {
+  color: #fff;
+}
+
+/* Remove old footer styles */
+.lang-switch-footer {
+  /* Kept only if needed as selector for legacy, but style moved to .main-footer .footer-right */
+  display: contents; /* If used inside flex container */
+}
+
+/* --- Loader --- */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#loader {
+  /* Large centered text */
+}
+#loader .loader-text {
+  font-family: var(--font-family-lining);
+  font-size: var(--fs-poster);
+  font-weight: 400;
+  margin: 0;
+  color: #fff;
+  line-height: var(--lh-poster);
+}
+
+/* --- Dev: 12-column overlay (toggle with key G, see main.js) --- */
+.grid-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  z-index: 9998; /* Above nav/footer (1000), below loader (9999) */
+  pointer-events: none;
+  display: none;
+}
+.grid-overlay span {
+  background: rgba(255, 0, 90, 0.15);
+  box-shadow: inset 1px 0 rgba(255, 0, 90, 0.5), inset -1px 0 rgba(255, 0, 90, 0.5);
+}
+
+body.show-grid .grid-overlay {
+  display: grid;
+  /* No mobile layout uses the 12 columns */
+}
+@media (max-width: 768px) {
+  body.show-grid .grid-overlay {
+    display: none;
+  }
+}
+
+/* --- Homepage Split Layout --- */
+.home-visual {
+  grid-column: 1/9;
+  height: 100%; /* Fill the fixed vertical space */
+  position: relative; /* Fixed container for absolute children */
+  overflow: hidden;
+  background-color: #333;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .home-visual {
+    grid-column: 1/7;
+  }
+}
+.home-visual img, .home-visual video {
+  position: absolute; /* Prevent intrinsic size jumps on load/swap */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+  display: block;
+  opacity: 0;
+  transition: opacity var(--duration-base) ease;
+}
+.home-visual img.visible, .home-visual video.visible {
+  opacity: 1;
+}
+
+.home-list {
+  grid-column: 9/13;
+  display: flex;
+  flex-direction: column;
+  /* Align the list to the bottom of the grid row. 
+     Since the Visual defines the row height (assuming it's taller), 
+     the list bottom will sit flush with the visual bottom. */
+  align-self: end;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .home-list {
+    grid-column: 7/13;
+  }
+}
+
+.project-list-item {
+  display: flex;
+  flex-wrap: wrap; /* Safety net: category drops below only if the row can't fit at all */
+  justify-content: space-between;
+  align-items: baseline;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 0;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-family-book);
+}
+.project-list-item:first-child {
+  border-top: none;
+}
+.project-list-item:last-child {
+  padding-bottom: 0;
+  margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits 1/3 em above the image bottom */
+}
+.project-list-item {
+  /* Active / Hover State */
+}
+.project-list-item.active, .project-list-item:hover {
+  font-family: var(--font-family-bold);
+  color: #fff; /* Ensure it stays white */
+}
+.project-list-item .p-title {
+  flex: 1 1 0; /* Wrap check uses the title's min-content; the title then fills the row */
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  margin-right: 20px;
+  font-weight: inherit; /* inherit from parent */
+}
+.project-list-item .p-category {
+  margin-left: auto; /* Stay right-aligned when wrapped onto its own line */
+  font-family: inherit; /* Inherit matching font */
+  font-size: var(--fs-ui); /* Identical size to title */
+  line-height: var(--lh-ui);
+  color: #fff; /* Force white, was #888 */
+  white-space: nowrap;
+  text-align: right;
+  font-weight: inherit;
+}
+
+/* Mobile: the preview fills the whole screen (cropped like "clip content"),
+   the list sits at the bottom above the footer (kept last to override the rules above) */
+@media (max-width: 768px) {
+  .home-visual {
+    position: fixed;
+    inset: 0;
+    z-index: -1; /* Behind the content, above the black page background */
+    background-color: #000;
+  }
+  .home-container {
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+    min-height: calc(100svh - var(--page-top) - var(--page-bottom)); /* Visible height with browser bars */
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+  .home-list {
+    align-self: stretch;
+    mix-blend-mode: difference; /* Inverts over the video like nav and footer */
+  }
+}
+/* --- About Page --- */
+.about-section .about-image {
+  grid-column: 1/9;
+  align-self: end; /* Explicit bottom alignment */
+  height: 100%; /* Fill vertical space */
+  background-color: #111;
+  overflow: hidden;
+  position: relative;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .about-section .about-image {
+    grid-column: 1/7;
+  }
+}
+.about-section .about-image img, .about-section .about-image video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center; /* Align center */
+  display: block;
+  /* Blur Up Effect Defaults */
+  transition: filter 0.5s ease, opacity 0.5s ease;
+  opacity: 0;
+}
+.about-section .about-image img.loaded, .about-section .about-image video.loaded {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Blur placeholder image specific class */
+.blur-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  filter: blur(20px);
+  opacity: 1;
+  transform: scale(1.1);
+  width: 100%;
+  height: 100%;
+  -o-object-position: left center;
+     object-position: left center;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.about-section .about-text {
+  grid-column: 9/13;
+  align-self: start; /* Align to top of section */
+  margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size) */
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .about-section .about-text {
+    grid-column: 7/13;
+  }
+}
+.about-section .about-text h1 {
+  display: block;
+  margin-bottom: 24px;
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  font-family: var(--font-family-lining);
+}
+.about-section .about-text .role {
+  font-size: var(--fs-body);
+  margin-bottom: 32px;
+  color: #999;
+  font-family: var(--font-family-book);
+}
+.about-section .about-text .description {
+  font-family: var(--font-family-book); /* Explicitly set to Book */
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  margin-bottom: 48px;
+}
+.about-section .about-text .contact-info a {
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 8px;
+  font-family: var(--font-family-book);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.about-section .about-text .contact-info a:last-child {
+  margin-bottom: 0px;
+}
+.about-section .about-text .contact-info a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  /* Mobile adjustments for About specific elements */
+  .about-section .about-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
+}
+/* --- Project Detail --- */
+#project-detail {
+  /* Left half: columns 1–6, right half: columns 7–12 */
+  /* Use auto rows, specific spacing handled by margins or gap */
+  row-gap: 0;
+  padding-top: 5vh; /* Standard top offset */
+  padding-bottom: 15vh; /* Space for footer */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Default: unplaced children (e.g. "Project not found") span the full width.
+   :where() keeps specificity at 0, so the .pd-* placements below still win. */
+:where(#project-detail) > * {
+  grid-column: 1/-1;
+}
+
+/* 1. Hero Full Width */
+.pd-hero {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #111;
+  margin-bottom: 40px;
+  position: relative; /* Context for custom controls */
+  grid-column: 1/-1;
+}
+.pd-hero iframe, .pd-hero video, .pd-hero img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+  border: none;
+  pointer-events: none; /* Disable direct interaction with iframe to rely on custom controls */
+}
+.pd-hero {
+  /* Custom Controls overlay */
+}
+.pd-hero .hero-controls {
+  position: absolute;
+  bottom: var(--page-margin); /* Same inset as the page margin */
+  right: var(--page-margin);
+  display: flex;
+  gap: 20px; /* Space between buttons */
+  z-index: 10;
+  mix-blend-mode: difference;
+}
+.pd-hero .hero-controls button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: var(--font-family-base); /* Setup base font like Nav */
+  font-size: var(--fs-ui); /* Match Nav size */
+  line-height: var(--lh-ui);
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: font-family 0.2s ease; /* Optional smooth font switch */
+  /* Reset browser styles */
+  -moz-appearance: none;
+       appearance: none;
+  -webkit-appearance: none;
+}
+.pd-hero .hero-controls button:hover {
+  font-family: var(--font-family-lining); /* Match Nav hover style */
+  text-decoration: none;
+}
+.pd-hero {
+  /* Big Play Overlay (Initial & Pause State) */
+}
+.pd-hero .hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9; /* Below controls (10) */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: transparent;
+  transition: opacity 0.3s ease;
+}
+.pd-hero .hero-overlay .big-play-btn {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  /* Triangle */
+}
+.pd-hero .hero-overlay .big-play-btn::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid #000;
+  margin-left: 4px; /* Optical center */
+}
+.pd-hero {
+  /* Remove overlay when playing */
+}
+.pd-hero.is-playing .hero-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 2.–4. Title block: title + meta, subtitle as second row
+   (full-width block, so the description always starts below it) */
+.pd-title-row {
+  align-items: start;
+  margin-bottom: 60px;
+  grid-column: 1/-1;
+}
+.pd-title-row h1.pd-title {
+  display: block; /* Override global h1 none */
+  margin: 0;
+  font-size: var(--fs-display);
+  font-family: var(--font-family-base);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display); /* Tighten large text */
+  grid-column: 1/7;
+}
+@media (max-width: 768px) {
+  .pd-title-row h1.pd-title {
+    grid-column: 1/-1;
+  }
+}
+.pd-title-row .pd-meta {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  align-items: flex-end; /* Align to the right edge */
+  text-align: right; /* Text alignment */
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+  color: #fff;
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-title-row .pd-meta {
+    grid-column: 1/-1;
+  }
+}
+.pd-title-row .pd-meta .pd-year {
+  color: #fff;
+}
+
+/* 4. Subtitle (second row inside .pd-title-row) */
+.pd-subtitle {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-book);
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 0; /* Spacing below comes from .pd-title-row */
+  grid-column: 1/7;
+}
+@media (max-width: 768px) {
+  .pd-subtitle {
+    grid-column: 1/-1;
+  }
+}
+.pd-subtitle {
+  /* Left half */
+}
+
+/* 5. Media Pair */
+.pd-media-pair {
+  margin-bottom: 60px;
+  grid-column: 1/-1;
+}
+.pd-media-pair > * {
+  grid-column: span 6;
+}
+@media (max-width: 768px) {
+  .pd-media-pair > * {
+    grid-column: 1/-1;
+  }
+}
+.pd-media-pair img, .pd-media-pair video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 6. Text Block (Right) */
+.pd-text-block-right {
+  font-size: var(--fs-body);
+  font-family: var(--font-family-base);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  margin-bottom: 80px;
+  white-space: pre-line; /* Respect breaks */
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-text-block-right {
+    grid-column: 1/-1;
+  }
+}
+.pd-text-block-right {
+  /* Right half */
+}
+
+/* 7. Accordions */
+.pd-accordions {
+  margin-bottom: 100px;
+  border-top: 1px solid #fff; /* First line */
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-accordions {
+    grid-column: 1/-1;
+  }
+}
+.pd-accordions {
+  /* Right half */
+}
+
+details.pd-accordion {
+  border-bottom: 1px solid #fff;
+}
+details.pd-accordion summary {
+  list-style: none; /* Hide default triangle */
+  padding: 20px 0;
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Disable Text Selection and Hover Change */
+  -moz-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+}
+details.pd-accordion summary::-webkit-details-marker {
+  display: none;
+}
+details.pd-accordion summary::after {
+  content: "+";
+  font-size: var(--fs-ui);
+}
+details.pd-accordion[open] summary::after {
+  content: "-";
+}
+details.pd-accordion .accordion-content {
+  /* Set up for JS animation */
+  font-size: var(--fs-body);
+  font-family: var(--font-family-base);
+  line-height: var(--lh-body);
+  color: #fff;
+  /* 1fr 1fr inside the right half = 3 columns each of the 12-column grid */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  -moz-column-gap: var(--spacing-layout);
+       column-gap: var(--spacing-layout);
+  /* Hide by default for JS to animate in */
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 8. Dynamic Gallery */
+.pd-gallery {
+  row-gap: var(--spacing-layout);
+  margin-bottom: 100px;
+  grid-column: 1/-1;
+}
+.pd-gallery > * {
+  grid-column: span 6;
+}
+@media (max-width: 768px) {
+  .pd-gallery > * {
+    grid-column: 1/-1;
+  }
+}
+.pd-gallery img, .pd-gallery video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 9. Second Text Block (Right) */
+.pd-text-block-2 {
+  margin-bottom: 120px;
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-text-block-2 {
+    grid-column: 1/-1;
+  }
+}
+.pd-text-block-2 {
+  /* Right half */
+}
+.pd-text-block-2 h3 {
+  margin-top: 0;
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  font-family: var(--font-family-base);
+  margin-bottom: 20px;
+}
+.pd-text-block-2 p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  color: #fff;
+}
+
+/* 10. & 11. Next Projects */
+.pd-footer-nav-title {
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  font-family: var(--font-family-base);
+  margin-bottom: 40px;
+  grid-column: 1/7;
+}
+@media (max-width: 768px) {
+  .pd-footer-nav-title {
+    grid-column: 1/-1;
+  }
+}
+.pd-footer-nav-title {
+  /* Left half */
+}
+
+.pd-footer-nav {
+  grid-column: 1/-1;
+}
+.pd-footer-nav .nav-item {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  grid-column: span 6;
+}
+@media (max-width: 768px) {
+  .pd-footer-nav .nav-item {
+    grid-column: 1/-1;
+  }
+}
+.pd-footer-nav .nav-item:hover .nav-title {
+  font-family: var(--font-family-lining);
+}
+.pd-footer-nav .nav-item .nav-media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #222;
+  margin-bottom: 15px;
+}
+.pd-footer-nav .nav-item .nav-media img, .pd-footer-nav .nav-item .nav-media video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+.pd-footer-nav .nav-item .nav-title {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+  margin: 0 0 5px 0;
+  display: block;
+}
+.pd-footer-nav .nav-item .nav-desc {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: #fff;
+}
+
+/* Mobile: column placement is reset to full width by grid-cols() */
+@media (max-width: 768px) {
+  .pd-meta {
+    margin-top: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+/* --- Lab Page (Infinite Canvas) --- */
+body.lab-page {
+  overflow: hidden; /* Prevent native scroll */
+  padding: 0;
+}
+
+#lab-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #111; /* Slightly lighter bg specific for lab? or kept #000 */
+  background-color: #000;
+  cursor: grab;
+}
+#lab-canvas-container.grabbing {
+  cursor: grabbing;
+}
+
+#lab-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Size is effectively infinite, managed via transforms */
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.lab-title-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-family-mono);
+  font-size: var(--fs-poster); /* Sehr groß */
+  line-height: var(--lh-poster);
+  font-weight: 700;
+  color: #888; /* Grau statt Weiß */
+  mix-blend-mode: difference;
+  pointer-events: none; /* Klicks gehen durch */
+  z-index: 50;
+  white-space: nowrap;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.lab-item {
+  position: absolute;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none; /* Prevent text selection during drag */
+}
+.lab-item img, .lab-item video {
+  display: block;
+  max-width: 100%;
+  pointer-events: none; /* Let clicks pass through for dragging (unless we want interactions) */
+}
+.lab-item {
+  /* Text block style */
+}
+.lab-item.lab-item-text-block {
+  background: #000;
+  border: 1px solid #333;
+  padding: 20px;
+  width: 300px;
+}
+.lab-item.lab-item-text-block h3 {
+  margin-top: 0;
+  font-family: var(--font-family-lining);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+}
+.lab-item.lab-item-text-block p {
+  margin-bottom: 0;
+  color: #ccc;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.lab-item {
+  /* Caption Overlay on Hover */
+}
+.lab-item .lab-caption {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: #000;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+.lab-item:hover .lab-caption {
+  opacity: 1;
+}/*# sourceMappingURL=style.css.map */

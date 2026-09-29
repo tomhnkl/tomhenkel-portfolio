@@ -1,0 +1,58 @@
+/* --- 12-Column Grid --- */
+%grid-12 {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  column-gap: var(--spacing-layout);
+}
+
+// Places an element on the 12-column grid, e.g. grid-cols(7, 13) or grid-cols(span 6).
+// On mobile every element spans the full width.
+@mixin grid-cols($start, $end: null) {
+  @if $end {
+    grid-column: #{$start} / #{$end};
+  } @else {
+    grid-column: $start;
+  }
+
+  @if not ($start == 1 and $end == -1) {
+    @media (max-width: $bp-mobile) {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+// Tablet range only (between mobile and $bp-tablet); does not overlap the mobile queries
+@mixin tablet {
+  @media (min-width: $bp-mobile + 1) and (max-width: $bp-tablet) {
+    @content;
+  }
+}
+
+/* --- Layout Mixin --- */
+%fixed-frame-layout {
+  @extend %grid-12;
+  grid-template-rows: 1fr; /* Fill available height */
+
+  /*
+     Height Calculation:
+     100vh
+     - --page-top (Body Padding Top, 85px)
+     - --page-bottom (Body Padding Bottom, 65px)
+  */
+  height: calc(100vh - var(--page-top) - var(--page-bottom));
+
+  /* Breathing Room: applied as padding so it pushes content down
+     without affecting the container's bottom edge */
+  padding-top: 10vh;
+  box-sizing: border-box;
+
+  @media (max-width: $bp-mobile) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto; /* Allow stacking */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    margin-top: 20px;
+  }
+}

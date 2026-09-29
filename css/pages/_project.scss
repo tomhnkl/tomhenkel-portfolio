@@ -1,0 +1,350 @@
+/* --- Project Detail --- */
+#project-detail {
+  @extend %grid-12; /* Left half: columns 1–6, right half: columns 7–12 */
+  /* Use auto rows, specific spacing handled by margins or gap */
+  row-gap: 0;
+  padding-top: 5vh; /* Standard top offset */
+  padding-bottom: 15vh; /* Space for footer */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Default: unplaced children (e.g. "Project not found") span the full width.
+   :where() keeps specificity at 0, so the .pd-* placements below still win. */
+:where(#project-detail) > * {
+  grid-column: 1 / -1;
+}
+
+/* 1. Hero Full Width */
+.pd-hero {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #111;
+  margin-bottom: 40px;
+  position: relative; /* Context for custom controls */
+  @include grid-cols(1, -1);
+
+  iframe, video, img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border: none;
+    pointer-events: none; /* Disable direct interaction with iframe to rely on custom controls */
+  }
+
+  /* Custom Controls overlay */
+  .hero-controls {
+    position: absolute;
+    bottom: var(--page-margin); /* Same inset as the page margin */
+    right: var(--page-margin);
+    display: flex;
+    gap: 20px;    /* Space between buttons */
+    z-index: 10;
+    mix-blend-mode: difference; 
+
+    button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: var(--font-family-base); /* Setup base font like Nav */
+      font-size: var(--fs-ui); /* Match Nav size */
+      line-height: var(--lh-ui);
+      cursor: pointer;
+      padding: 0;
+      outline: none;
+      transition: font-family 0.2s ease; /* Optional smooth font switch */
+      
+      /* Reset browser styles */
+      appearance: none;
+      -webkit-appearance: none;
+
+      &:hover {
+        font-family: var(--font-family-lining); /* Match Nav hover style */
+        text-decoration: none; 
+      }
+    }
+  }
+
+  /* Big Play Overlay (Initial & Pause State) */
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9; /* Below controls (10) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: transparent;
+    transition: opacity 0.3s ease;
+    
+    .big-play-btn {
+      width: 80px;
+      height: 80px;
+      background: #fff; 
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      mix-blend-mode: difference;
+      pointer-events: none; 
+      
+      /* Triangle */
+      &::after {
+        content: '';
+        display: block;
+        width: 0; 
+        height: 0; 
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-left: 20px solid #000; 
+        margin-left: 4px; /* Optical center */
+      }
+    }
+  }
+
+  /* Remove overlay when playing */
+  &.is-playing .hero-overlay {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* 2.–4. Title block: title + meta, subtitle as second row
+   (full-width block, so the description always starts below it) */
+.pd-title-row {
+  @extend %grid-12;
+  align-items: start;
+  margin-bottom: 60px;
+  @include grid-cols(1, -1);
+
+  h1.pd-title {
+    display: block; /* Override global h1 none */
+    margin: 0;
+    font-size: var(--fs-display);
+    font-family: var(--font-family-base);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display); /* Tighten large text */
+    @include grid-cols(1, 7);
+  }
+
+  .pd-meta {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: flex-end;  /* Align to the right edge */
+    text-align: right;      /* Text alignment */
+
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-family: var(--font-family-base);
+    color: #fff;
+    @include grid-cols(7, 13);
+
+    .pd-year {
+        color: #fff;
+    }
+  }
+}
+
+/* 4. Subtitle (second row inside .pd-title-row) */
+.pd-subtitle {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-book);
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 0; /* Spacing below comes from .pd-title-row */
+  @include grid-cols(1, 7); /* Left half */
+}
+
+/* 5. Media Pair */
+.pd-media-pair {
+  @extend %grid-12;
+  margin-bottom: 60px;
+  @include grid-cols(1, -1);
+
+  > * {
+    @include grid-cols(span 6);
+  }
+
+  img, video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* 6. Text Block (Right) */
+.pd-text-block-right {
+  font-size: var(--fs-body);
+  font-family: var(--font-family-base);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  margin-bottom: 80px;
+  white-space: pre-line; /* Respect breaks */
+  @include grid-cols(7, 13); /* Right half */
+}
+
+/* 7. Accordions */
+.pd-accordions {
+  margin-bottom: 100px;
+  border-top: 1px solid #fff; /* First line */
+  @include grid-cols(7, 13); /* Right half */
+}
+
+details.pd-accordion {
+  border-bottom: 1px solid #fff;
+  
+  summary {
+    list-style: none; /* Hide default triangle */
+    padding: 20px 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-family: var(--font-family-base);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* Disable Text Selection and Hover Change */
+    user-select: none;
+    -webkit-user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '+';
+      font-size: var(--fs-ui);
+    }
+  }
+
+  &[open] summary::after {
+    content: '-';
+  }
+
+  .accordion-content {
+    /* Set up for JS animation */
+    font-size: var(--fs-body);
+    font-family: var(--font-family-base);
+    line-height: var(--lh-body);
+    color: #fff;
+    
+    /* 1fr 1fr inside the right half = 3 columns each of the 12-column grid */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--spacing-layout);
+
+    /* Hide by default for JS to animate in */
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* 8. Dynamic Gallery */
+.pd-gallery {
+  @extend %grid-12;
+  row-gap: var(--spacing-layout);
+  margin-bottom: 100px;
+  @include grid-cols(1, -1);
+
+  > * {
+    @include grid-cols(span 6);
+  }
+
+  img, video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+/* 9. Second Text Block (Right) */
+.pd-text-block-2 {
+  margin-bottom: 120px;
+  @include grid-cols(7, 13); /* Right half */
+
+  h3 {
+    margin-top: 0;
+    font-size: var(--fs-title);
+    line-height: var(--lh-title);
+    letter-spacing: var(--ls-title);
+    font-family: var(--font-family-base);
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    max-width: var(--measure);
+    color: #fff;
+  }
+}
+
+/* 10. & 11. Next Projects */
+.pd-footer-nav-title {
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  font-family: var(--font-family-base);
+  margin-bottom: 40px;
+  @include grid-cols(1, 7); /* Left half */
+}
+
+.pd-footer-nav {
+  @extend %grid-12;
+  @include grid-cols(1, -1);
+
+  .nav-item {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    @include grid-cols(span 6);
+
+    &:hover .nav-title {
+      font-family: var(--font-family-lining);
+    }
+
+    .nav-media {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #222;
+      margin-bottom: 15px;
+      
+      img, video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .nav-title {
+      font-size: var(--fs-ui);
+      line-height: var(--lh-ui);
+      font-family: var(--font-family-base);
+      margin: 0 0 5px 0;
+      display: block;
+    }
+
+    .nav-desc {
+      font-size: var(--fs-small);
+      line-height: var(--lh-small);
+      color: #fff;
+    }
+  }
+}
+
+
+/* Mobile: column placement is reset to full width by grid-cols() */
+@media (max-width: $bp-mobile) {
+  .pd-meta {
+    margin-top: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

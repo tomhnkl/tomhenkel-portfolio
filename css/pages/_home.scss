@@ -1,0 +1,111 @@
+/* --- Homepage Split Layout --- */
+.home-container {
+  @extend %fixed-frame-layout;
+}
+
+.home-visual {
+  grid-column: 1 / 9;
+  height: 100%; /* Fill the fixed vertical space */
+  position: relative; /* Fixed container for absolute children */
+  overflow: hidden;
+  background-color: #333;
+  @include tablet { grid-column: 1 / 7; }
+
+  img, video {
+    position: absolute; /* Prevent intrinsic size jumps on load/swap */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    object-fit: cover;
+    object-position: center center; 
+    display: block;
+    opacity: 0;
+    transition: opacity var(--duration-base) ease;
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+}
+
+.home-list {
+  grid-column: 9 / 13;
+  display: flex;
+  flex-direction: column;
+  /* Align the list to the bottom of the grid row. 
+     Since the Visual defines the row height (assuming it's taller), 
+     the list bottom will sit flush with the visual bottom. */
+  align-self: end;
+  @include tablet { grid-column: 7 / 13; }
+}
+
+.project-list-item {
+  display: flex;
+  flex-wrap: wrap; /* Safety net: category drops below only if the row can't fit at all */
+  justify-content: space-between;
+  align-items: baseline;
+  text-decoration: none; 
+  color: #fff; 
+  padding: 10px 0; 
+  cursor: pointer; 
+  border: none;
+  font-family: var(--font-family-book);
+  
+  &:first-child {
+    border-top: none;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+    margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits 1/3 em above the image bottom */
+  }
+  
+  /* Active / Hover State */
+  &.active, &:hover {
+     font-family: var(--font-family-bold);
+     color: #fff; /* Ensure it stays white */
+  }
+
+  .p-title {
+    flex: 1 1 0; /* Wrap check uses the title's min-content; the title then fills the row */
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    margin-right: 20px;
+    font-weight: inherit; /* inherit from parent */
+  }
+
+  .p-category {
+    margin-left: auto; /* Stay right-aligned when wrapped onto its own line */
+    font-family: inherit; /* Inherit matching font */
+    font-size: var(--fs-ui);      /* Identical size to title */
+    line-height: var(--lh-ui);
+    color: #fff; /* Force white, was #888 */
+    white-space: nowrap;
+    text-align: right;
+    font-weight: inherit;
+  }
+}
+
+/* Mobile: the preview fills the whole screen (cropped like "clip content"),
+   the list sits at the bottom above the footer (kept last to override the rules above) */
+@media (max-width: $bp-mobile) {
+  .home-visual {
+    position: fixed;
+    inset: 0;
+    z-index: -1; /* Behind the content, above the black page background */
+    background-color: #000;
+  }
+
+  .home-container {
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+    min-height: calc(100svh - var(--page-top) - var(--page-bottom)); /* Visible height with browser bars */
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+
+  .home-list {
+    align-self: stretch;
+    mix-blend-mode: difference; /* Inverts over the video like nav and footer */
+  }
+}

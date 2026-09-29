@@ -1,0 +1,26 @@
+/* --- Dev: 12-column overlay (toggle with key G, see main.js) --- */
+.grid-overlay {
+  @extend %grid-12;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  z-index: 9998; /* Above nav/footer (1000), below loader (9999) */
+  pointer-events: none;
+  display: none;
+
+  span {
+    background: rgba(255, 0, 90, 0.15);
+    box-shadow: inset 1px 0 rgba(255, 0, 90, 0.5), inset -1px 0 rgba(255, 0, 90, 0.5);
+  }
+}
+
+body.show-grid .grid-overlay {
+  display: grid;
+
+  /* No mobile layout uses the 12 columns */
+  @media (max-width: $bp-mobile) {
+    display: none;
+  }
+}

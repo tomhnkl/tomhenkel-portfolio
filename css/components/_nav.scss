@@ -1,0 +1,285 @@
+/* --- Navigation --- */
+.main-nav {
+  @extend %grid-12; /* Logo: columns 1–8, links: columns 9–12 (tablet: 1–6 / 7–12) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--page-margin);
+  box-sizing: border-box;
+  align-items: start;
+  z-index: 1000;
+  background-color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+
+  /* Enable pointer events on children */
+  .nav-left, .nav-right, .nav-burger {
+    pointer-events: auto;
+  }
+
+  .nav-left {
+    grid-column: 1 / 9;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    color: #fff;
+    font-family: var(--font-family-base);
+    @include tablet { grid-column: 1 / 7; }
+  }
+
+  .nav-right {
+    grid-column: 9 / 13;
+    display: flex;
+    justify-content: space-between;
+    gap: 0;
+    width: 100%;
+    @include tablet { grid-column: 7 / 13; }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-size: var(--fs-ui);
+      line-height: var(--lh-ui);
+      font-family: var(--font-family-base);
+
+      &:hover, &.active {
+        font-family: var(--font-family-lining);
+        text-decoration: none;
+      }
+    }
+  }
+
+  /* Menu toggle ("menü" / "schließen"), mobile only */
+  .nav-burger {
+    display: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    font-family: var(--font-family-base);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+
+    /* Only with a real pointer: on touch the hover state would stick after tapping */
+    @media (hover: hover) {
+      &:hover {
+        font-family: var(--font-family-lining);
+      }
+    }
+  }
+
+  /* Mobile: logo + menu toggle; the links become a full-screen menu
+     (kept last so it overrides the column placement above) */
+  @media (max-width: $bp-mobile) {
+    grid-template-columns: 2fr 1fr;
+
+    .nav-left { grid-column: 1; position: relative; z-index: 1; }
+
+    .nav-burger {
+      display: block;
+      grid-column: 2;
+      justify-self: end;
+      position: relative;
+      z-index: 1; /* Above the open menu */
+      /* Bigger tap target (~44px+) without moving the text */
+      padding: 12px;
+      margin: -12px;
+    }
+
+    .nav-right {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: auto;
+      padding: var(--page-top) var(--page-margin) var(--page-bottom);
+      box-sizing: border-box;
+      visibility: hidden;
+      pointer-events: none; /* Taps pass through immediately while the menu fades out */
+
+      a {
+        font-size: var(--fs-display);
+        line-height: var(--lh-display);
+        opacity: 0;
+      }
+    }
+  }
+}
+
+/* --- Mobile Menu: open state + black backdrop ---
+   The backdrop sits outside the nav (below it), so the nav keeps mix-blend-mode: difference
+   and renders white on black. Footer and language switch stay visible above it. */
+@media (max-width: $bp-mobile) {
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 999; /* Below nav + footer (1000) */
+    background: #000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  body.menu-open {
+    overflow: hidden; /* No scrolling behind the menu */
+
+    &::before {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .main-nav .nav-right {
+      visibility: visible;
+      pointer-events: auto;
+
+      a { opacity: 1; }
+    }
+  }
+
+  /* Transitions (incl. delays) only after the visitor used the menu (body.menu-animate, set in main.js),
+     so rotating the phone, crossing the breakpoint or returning via bfcache switch instantly.
+     No transitions at all with reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    body.menu-animate {
+      &::before {
+        transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+      }
+
+      .main-nav .nav-right {
+        /* Stay visible until the last link has faded out */
+        transition: visibility 0s linear calc(var(--duration-base) + 2 * var(--duration-stagger));
+
+        a { transition: opacity var(--duration-base) var(--ease-out); }
+      }
+
+      /* Opening: show immediately, links one after another */
+      &.menu-open {
+        &::before { transition-delay: 0s; }
+
+        .main-nav .nav-right {
+          transition-delay: 0s;
+
+          a:nth-child(2) { transition-delay: var(--duration-stagger); }
+          a:nth-child(3) { transition-delay: calc(2 * var(--duration-stagger)); }
+        }
+      }
+    }
+  }
+}
+
+/* --- Universal Footer --- */
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--page-margin);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; 
+  z-index: 1000;
+  background-color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+
+  .footer-left {
+    pointer-events: auto;
+    display: flex;
+    gap: clamp(8px, 4.88vw - 7.5px, 30px); /* Space between items: 8px on small phones, 30px from 768px */
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-family: var(--font-family-base);
+    color: #fff;
+    
+    a {
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex; 
+      flex-direction: column;
+      align-items: flex-start;
+      transition: transform 0.1s; 
+      font-family: var(--font-family-base);
+      
+      &::after {
+        content: attr(data-text);
+        height: 0;
+        visibility: hidden;
+        overflow: hidden;
+        user-select: none;
+        pointer-events: none;
+        font-family: var(--font-family-lining);
+        font-weight: bold; /* Ensure it takes max width */
+      }
+
+      &:hover {
+        color: #fff;
+        font-family: var(--font-family-lining);
+        transform: translateY(1.5px); 
+      }
+    }
+    
+    span {
+      /* Text items like ©tomh */
+      color: #fff;
+    }
+  }
+
+  .footer-right {
+    pointer-events: auto;
+    /* Reuse lang switch styles logic */
+    display: flex;
+    gap: 5px;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+
+    button {
+      background: none;
+      border: none;
+      font-family: var(--font-family-base);
+      font-size: var(--fs-small);
+      line-height: var(--lh-small);
+      cursor: pointer;
+      padding: 0;
+      color: #fff;
+      text-transform: lowercase;
+      transform-origin: bottom center; 
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.1s;
+
+      &::after {
+        content: attr(data-text);
+        height: 0;
+        visibility: hidden;
+        overflow: hidden;
+        user-select: none;
+        pointer-events: none;
+        font-family: var(--font-family-lining);
+        font-weight: bold;
+      }
+
+      &.active, &:hover {
+        color: #fff;
+        font-family: var(--font-family-lining);
+        transform: translateY(1.5px); 
+      }
+    }
+    
+    span.separator {
+      color: #fff;
+    }
+  }
+}
+
+/* Remove old footer styles */
+.lang-switch-footer {
+  /* Kept only if needed as selector for legacy, but style moved to .main-footer .footer-right */
+  display: contents; /* If used inside flex container */
+}

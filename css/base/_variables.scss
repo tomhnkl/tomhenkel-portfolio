@@ -1,0 +1,64 @@
+// Breakpoints (Sass variables, since CSS custom properties don't work in media queries)
+$bp-mobile: 768px;
+$bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold hover included) -> 6/6
+
+:root {
+  /* --- Typography System --- */
+  
+  /* Font Families */
+  --font-family-base: 'ABC Favorit', Helvetica, Arial, sans-serif;
+  --font-family-book: 'ABC Favorit Book', Helvetica, Arial, sans-serif;
+  --font-family-bold: 'ABC Favorit Bold', Helvetica, Arial, sans-serif;
+  --font-family-lining: 'ABC Favorit Lining', Helvetica, Arial, sans-serif;
+  --font-family-mono: 'ABC Favorit Mono', monospace;
+
+  /* Font Sizes: fluid, derived from the grid columns (px + vw)
+     Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):
+       phone ramp:   the column is the full width (100vw - 50px)
+       plateau:      holds the size through 768/769, where the column halves
+       desktop ramp: grows with the grid column
+     Ratios are measured text width / font size with the real fonts (+2.5% safety margin). */
+
+  /* Project titles: 'boomtschakkaboom' (9.03em) fits the full width (mobile) or 6 columns */
+  --fs-display: min(10.8vw - 5.4px, clamp(37.7px, 5.4vw - 3.8px, 134px));
+  /* Nav, home list, meta, subtitle, accordion titles, hero buttons, card titles:
+     the widest home list row in bold (14.7em + 20px) fits its column; keeps $bp-tablet at 1220px */
+  --fs-ui: min(6.6vw - 4.5px, clamp(21.9px, 0.4vw + 18.8px, 29px));
+  /* Section headings: one perfect fourth above ui */
+  --fs-title: calc(var(--fs-ui) * 4 / 3);
+  /* Running text: 16px @320, 18px @1440, 20px @2560 */
+  --fs-body: clamp(16px, 0.18vw + 15.42px, 20px);
+  /* Footer, language switch, card category, lab captions: German footer row fits at 320px, never below 12px */
+  --fs-small: max(12px, min(5.1vw - 5.4px, clamp(13px, 0.18vw + 11.4px, 16px)));
+  /* Full-screen words (loader, lab overlay) */
+  --fs-poster: clamp(48px, 15vw, 384px);
+
+  /* Measure: 30em / 0.464em per character = ~65 characters per line */
+  --measure: 30em;
+
+  /* Line Heights */
+  --lh-display: 1.05;
+  --lh-title: 1.15;
+  --lh-ui: 1.25;
+  --lh-body: 1.5;
+  --lh-small: 1.3;
+  --lh-poster: 1;
+
+  /* Letter Spacing (display tracking is part of the measured 9.03em ratio) */
+  --ls-display: -0.02em;
+  --ls-title: -0.01em;
+  
+  /* Spacing */
+  --spacing-layout: 20px; /* Grid gap */
+
+  /* --- Grid System --- */
+  --grid-columns: 12;
+  --page-margin: 25px; /* Left/right page margin (body, nav, footer) */
+  --page-top: 85px;    /* Space for the fixed nav (body padding-top, mobile menu) */
+  --page-bottom: 65px; /* Space for the fixed footer (body padding-bottom) */
+
+  /* --- Motion (provisional base for the upcoming animation system) --- */
+  --duration-base: 300ms;
+  --duration-stagger: 60ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
