@@ -1,48 +1,38 @@
 /* --- About Page --- */
 .about-section {
   @extend %fixed-frame-layout;
+
+  @media (min-width: $bp-mobile + 1) {
+    /* Grow with longer text instead of overflowing into the footer (e.g. 1280x720) */
+    height: auto;
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+  }
 }
 
 .about-section .about-image {
   grid-column: 1 / 9;
   align-self: end;  /* Explicit bottom alignment */
   height: 100%; /* Fill vertical space */
-  background-color: #111;
   overflow: hidden;
-  position: relative;
+  position: relative; /* Fixed container for the absolute portrait */
   @include tablet { grid-column: 1 / 7; }
 
-  img, video {
+  .media-reveal {
+    /* Portrait via media reveal (pictureHTML): desktop 1.357:1 source, tablet/mobile square.
+       Out of flow, so it fills the row instead of sizing it */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center center; /* Align center */
-    display: block;
-    
-    /* Blur Up Effect Defaults */
-    transition: filter 0.5s ease, opacity 0.5s ease;
-    opacity: 0;
-    
-    &.loaded {
-      opacity: 1;
-      filter: blur(0);
-    }
   }
-}
-
-/* Blur placeholder image specific class */
-.blur-placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  filter: blur(20px);
-  opacity: 1;
-  transform: scale(1.1); 
-  width: 100%;
-  height: 100%;
-  object-position: left center;
-  object-fit: cover;
 }
 
 .about-section .about-text {
@@ -50,21 +40,6 @@
   align-self: start; /* Align to top of section */
   margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size) */
   @include tablet { grid-column: 7 / 13; }
-
-    h1 {
-      display: block; 
-      margin-bottom: 24px;
-      font-size: var(--fs-title);
-      line-height: var(--lh-title);
-      font-family: var(--font-family-lining);
-    }
-
-    .role {
-      font-size: var(--fs-body);
-      margin-bottom: 32px;
-      color: #999;
-      font-family: var(--font-family-book);
-    }
 
     .description {
       font-family: var(--font-family-book); /* Explicitly set to Book */
@@ -85,7 +60,7 @@
         line-height: var(--lh-body);
 
         &:last-child {
-          margin-bottom: 0px; 
+          margin-bottom: 0px;
         }
 
         &:hover { text-decoration: underline; }
@@ -98,6 +73,10 @@
   .about-section .about-image {
     width: 100%;
     height: auto;
-    aspect-ratio: 16/9;
+    aspect-ratio: 1 / 1; /* Square portrait */
+  }
+
+  .about-section .about-text {
+    margin-top: var(--spacing-layout); /* Gap below the image (the -0.333em alignment is desktop only) */
   }
 }

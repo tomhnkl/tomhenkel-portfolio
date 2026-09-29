@@ -61,4 +61,9 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
   --duration-base: 300ms;
   --duration-stagger: 60ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Media reveal: tiny blurred placeholder sharpens once the real image/video has loaded */
+  --reveal-blur: 20px;
+  --duration-reveal: 200ms;
+  --ease-reveal: ease;
 }

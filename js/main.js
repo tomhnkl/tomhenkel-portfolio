@@ -424,6 +424,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // --- Media-Reveal: Bilder und Videos erscheinen unscharf und werden scharf, sobald sie geladen sind (site-weit) ---
+    // pictureHTML() baut das Markup, initMediaReveal() lädt; Stil in css/components/_media.scss.
+    // Bild-Datenmodell: { alt: { de, en }, color, eager, sources: [{ media, srcset, sizes, placeholder }], img: { srcset, sizes, width, height, placeholder } }
+    // Video: <div class="media-reveal"><video data-src="…" poster="[Vorschau]"></video></div>
+    const escapeAttr = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    const mediaAlt = (media, lang) => (media.alt && media.alt[lang]) || '';
+    const revealInitialized = new WeakSet();
+    let revealObserver = null;
+
+    function pictureHTML(media, lang) {
+        const { img, sources = [] } = media;
+        // Die winzige Vorschau steht im srcset, die echte Quelle wartet in data-srcset, bis initMediaReveal sie einsetzt
+        const srcAttrs = (s) => `${s.placeholder ? `srcset="${s.placeholder}" ` : ''}data-srcset="${s.srcset}" sizes="${s.sizes}"`;
+        const sourceTags = sources.map(s => `<source media="${s.media}" ${srcAttrs(s)}>`).join('');
+        const size = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : '';
+        const style = media.color ? ` style="--media-bg: ${media.color}"` : '';
+
+        return `<picture class="media-reveal"${style}${media.eager ? ' data-eager' : ''}>${sourceTags}`
+            + `<img ${srcAttrs(img)} alt="${escapeAttr(mediaAlt(media, lang))}"${size} decoding="async"${media.eager ? ' fetchpriority="high"' : ''}>`
+            + `</picture>`;
+    }
+
+    function loadMedia(wrapper) {
+        const reveal = () => wrapper.classList.add('is-loaded');
+
+        const img = wrapper.querySelector('img');
+        if (img) {
+            // Vorschau-URLs merken: das load der Vorschau darf das Bild nicht scharf schalten
+            const placeholders = new Set();
+            wrapper.querySelectorAll('[data-srcset][srcset]').forEach(el => {
+                placeholders.add(new URL(el.getAttribute('srcset'), document.baseURI).href);
+            });
+            const onSettle = () => {
+                if (placeholders.has(img.currentSrc)) return;
+                img.decode().catch(() => {}).then(reveal); // erst entschärfen, wenn das Bild fertig dekodiert ist
+            };
+            img.addEventListener('load', onSettle);
+            img.addEventListener('error', onSettle);
+
+            // Erst die Vorschau zeigen, dann die echte Quelle anfordern (sonst bricht der Browser die Vorschau ab)
+            const swap = () => wrapper.querySelectorAll('[data-srcset]').forEach(el => {
+                el.setAttribute('srcset', el.dataset.srcset);
+                el.removeAttribute('data-srcset');
+            });
+            if (placeholders.size && !img.complete) {
+                img.addEventListener('load', swap, { once: true });
+                img.addEventListener('error', swap, { once: true });
+            } else {
+                swap();
+            }
+        }
+
+        wrapper.querySelectorAll('video').forEach(video => {
+            const targets = [video, ...video.querySelectorAll('source')].filter(el => el.dataset.src);
+            if (!targets.length) return;
+            video.addEventListener('loadeddata', reveal, { once: true });
+            video.addEventListener('error', reveal, { once: true });
+            targets.forEach(el => {
+                el.setAttribute('src', el.dataset.src);
+                el.removeAttribute('data-src');
+            });
+            video.load();
+        });
+    }
+
+    // Nach jedem Rendern aufrufen; bereits gestartete Medien werden übersprungen.
+    // data-eager (wichtigstes Bild beim Seitenstart) lädt sofort, alles andere 200px bevor es in den Viewport kommt.
+    function initMediaReveal(root = document) {
+        root.querySelectorAll('.media-reveal').forEach(wrapper => {
+            if (revealInitialized.has(wrapper)) return;
+            revealInitialized.add(wrapper);
+
+            if (wrapper.hasAttribute('data-eager') || !('IntersectionObserver' in window)) {
+                loadMedia(wrapper);
+                return;
+            }
+            if (!revealObserver) {
+                revealObserver = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        revealObserver.unobserve(entry.target);
+                        loadMedia(entry.target);
+                    });
+                }, { rootMargin: '200px' });
+            }
+            revealObserver.observe(wrapper);
+        });
+    }
+
+
     // --- Home: Projektliste + Vorschau (Bild als Poster, darüber Preview-Video) ---
     // Mobil: Hochformat-Video vollflächig, die Previews wechseln automatisch.
     // Desktop: Querformat-Video des Eintrags beim Hover, in Schleife.
@@ -842,35 +932,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const aboutData = siteContent.about;
         const content = aboutData[lang];
+        const { contact_email: email, instagram_url: instagram } = siteContent.settings;
 
-        // "Blur-up" Logic:
-        // Ideally we would have a small thumb path in JSON like "portrait_small.jpg".
-        // Use existing image as placeholder with CSS filter for now.
-        
         // Dynamic Page Title
         document.title = lang === 'de' ? 'Tom Henkel - Über mich' : 'Tom Henkel - About';
 
+        // --- UPDATE MODE: Sprachwechsel tauscht nur die Texte, das Porträt bleibt stehen (kein Neuladen, kein erneutes Weichzeichnen) ---
+        const section = container.querySelector('.about-section');
+        if (section) {
+            section.querySelector('.description').innerHTML = content.description;
+            const img = section.querySelector('.about-image img');
+            if (img) img.alt = mediaAlt(aboutData.portrait, lang);
+            return;
+        }
+
+        // --- INITIAL RENDER MODE ---
         container.innerHTML = `
             <section class="about-section">
-                <div class="about-image">
-                    <!-- Placeholder (blurred copy or low-res) -->
-                    <img src="${aboutData.profile_image}" class="blur-placeholder" alt="">
-                    
-                    <!-- Main Image (hidden until loaded) -->
-                    <img src="${aboutData.profile_image}" alt="Portrait" 
-                         onload="this.classList.add('loaded')" 
-                         class="main-img">
-                </div>
+                <div class="about-image">${pictureHTML(aboutData.portrait, lang)}</div>
                 <div class="about-text">
                     <div class="description">${content.description}</div>
                     <div class="contact-info">
-                        <a href="mailto:${siteContent.settings.contact_email}">${siteContent.settings.contact_email}</a>
+                        <a href="mailto:${email}">${email}</a>
                         <br>
-                        <a href="${siteContent.settings.instagram_url}" target="_blank">Instagram</a>
+                        <a href="${instagram}" target="_blank" rel="noopener">Instagram</a>
                     </div>
                 </div>
             </section>
         `;
+        initMediaReveal(container);
     }
 
     function renderLab(lang) {

@@ -34,12 +34,16 @@
 }
 
 html, body {
-  height: 100%;
   margin: 0;
   overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%; /* Grows with scrolling pages, so padding-bottom keeps the last content clear of the fixed footer */
   font-family: var(--font-family-base);
   background: #000;
   color: #fff;

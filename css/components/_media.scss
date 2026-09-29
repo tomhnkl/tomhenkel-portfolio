@@ -1,0 +1,23 @@
+/* --- Media Reveal (images + videos, site-wide) ---
+   A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
+   Markup + loading: pictureHTML() / initMediaReveal() in main.js */
+.media-reveal {
+  display: block;
+  overflow: hidden;
+  background-color: var(--media-bg, #111); /* Photo's base colour hides the soft blur edge */
+
+  img, video {
+    display: block;
+    filter: blur(var(--reveal-blur));
+  }
+
+  &.is-loaded {
+    img, video { filter: blur(0); }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .media-reveal {
+    img, video { transition: filter var(--duration-reveal) var(--ease-reveal); }
+  }
+}

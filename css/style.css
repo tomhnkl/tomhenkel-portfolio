@@ -49,6 +49,10 @@
   --duration-base: 300ms;
   --duration-stagger: 60ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Media reveal: tiny blurred placeholder sharpens once the real image/video has loaded */
+  --reveal-blur: 20px;
+  --duration-reveal: 200ms;
+  --ease-reveal: ease;
 }
 
 @font-face {
@@ -82,12 +86,16 @@
   font-style: normal;
 }
 html, body {
-  height: 100%;
   margin: 0;
   overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%; /* Grows with scrolling pages, so padding-bottom keeps the last content clear of the fixed footer */
   font-family: var(--font-family-base);
   background: #000;
   color: #fff;
@@ -486,6 +494,27 @@ body.show-grid .grid-overlay {
   }
 }
 
+/* --- Media Reveal (images + videos, site-wide) ---
+   A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
+   Markup + loading: pictureHTML() / initMediaReveal() in main.js */
+.media-reveal {
+  display: block;
+  overflow: hidden;
+  background-color: var(--media-bg, #111); /* Photo's base colour hides the soft blur edge */
+}
+.media-reveal img, .media-reveal video {
+  display: block;
+  filter: blur(var(--reveal-blur));
+}
+.media-reveal.is-loaded img, .media-reveal.is-loaded video {
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .media-reveal img, .media-reveal video {
+    transition: filter var(--duration-reveal) var(--ease-reveal);
+  }
+}
 /* --- Homepage Split Layout --- */
 .home-visual {
   grid-column: 1/9;
@@ -597,51 +626,42 @@ body.show-grid .grid-overlay {
   }
 }
 /* --- About Page --- */
+@media (min-width: 769px) {
+  .about-section {
+    /* Grow with longer text instead of overflowing into the footer (e.g. 1280x720) */
+    height: auto;
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+  }
+}
+
 .about-section .about-image {
   grid-column: 1/9;
   align-self: end; /* Explicit bottom alignment */
   height: 100%; /* Fill vertical space */
-  background-color: #111;
   overflow: hidden;
-  position: relative;
+  position: relative; /* Fixed container for the absolute portrait */
 }
 @media (min-width: 769px) and (max-width: 1220px) {
   .about-section .about-image {
     grid-column: 1/7;
   }
 }
-.about-section .about-image img, .about-section .about-image video {
+.about-section .about-image .media-reveal {
+  /* Portrait via media reveal (pictureHTML): desktop 1.357:1 source, tablet/mobile square.
+     Out of flow, so it fills the row instead of sizing it */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.about-section .about-image img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center center;
      object-position: center center; /* Align center */
-  display: block;
-  /* Blur Up Effect Defaults */
-  transition: filter 0.5s ease, opacity 0.5s ease;
-  opacity: 0;
-}
-.about-section .about-image img.loaded, .about-section .about-image video.loaded {
-  opacity: 1;
-  filter: blur(0);
-}
-
-/* Blur placeholder image specific class */
-.blur-placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  filter: blur(20px);
-  opacity: 1;
-  transform: scale(1.1);
-  width: 100%;
-  height: 100%;
-  -o-object-position: left center;
-     object-position: left center;
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .about-section .about-text {
@@ -653,19 +673,6 @@ body.show-grid .grid-overlay {
   .about-section .about-text {
     grid-column: 7/13;
   }
-}
-.about-section .about-text h1 {
-  display: block;
-  margin-bottom: 24px;
-  font-size: var(--fs-title);
-  line-height: var(--lh-title);
-  font-family: var(--font-family-lining);
-}
-.about-section .about-text .role {
-  font-size: var(--fs-body);
-  margin-bottom: 32px;
-  color: #999;
-  font-family: var(--font-family-book);
 }
 .about-section .about-text .description {
   font-family: var(--font-family-book); /* Explicitly set to Book */
@@ -695,7 +702,10 @@ body.show-grid .grid-overlay {
   .about-section .about-image {
     width: 100%;
     height: auto;
-    aspect-ratio: 16/9;
+    aspect-ratio: 1/1; /* Square portrait */
+  }
+  .about-section .about-text {
+    margin-top: var(--spacing-layout); /* Gap below the image (the -0.333em alignment is desktop only) */
   }
 }
 /* --- Project Detail --- */
@@ -1184,4 +1194,5 @@ body.lab-page {
 }
 .lab-item:hover .lab-caption {
   opacity: 1;
-}/*# sourceMappingURL=style.css.map */
+}
+/*# sourceMappingURL=style.css.map */

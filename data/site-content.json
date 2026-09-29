@@ -64,7 +64,24 @@
     }
   },
   "about": {
-    "profile_image": "images/about/Tom-Henkel_Portrait_1500x1500px.png",
+    "portrait": {
+      "alt": { "de": "Porträt von Tom Henkel", "en": "Portrait of Tom Henkel" },
+      "color": "#7f8584",
+      "eager": true,
+      "sources": [
+        {
+          "media": "(max-width: 1220px)",
+          "srcset": "images/about/Tom-Henkel_Portrait_1500x1500px.png 1500w",
+          "sizes": "(max-width: 768px) calc(100vw - 50px), calc(90vh - 150px)"
+        }
+      ],
+      "img": {
+        "srcset": "images/about/Tom-Henkel_Portrait_1500x1500px.png 1500w",
+        "sizes": "calc((100vw - 270px) * 2 / 3 + 140px)",
+        "width": 1500,
+        "height": 1500
+      }
+    },
     "de": {
       "description": "Hey,<br>ich bin Tom :)<br><br>Mit einem laufenden Studium in Interactive Media an der Hochschule Augsburg und einer abgeschlossenen Ausbildung zum Mediengestalter habe ich das Rüstzeug, Projekte in allen Designbereichen umzusetzen.<br><br>Ich beherrsche eine Vielzahl von Tools und bin vor allem auf Interface Design und Motion spezialisiert. Aber auch Printprodukte oder projektspezifische Code-Lösungen gehören zu meinem Repertoire.<br><br>Für mich ist Design ein Werkzeug zur Problemlösung. Mein Ansatz ist es stets, das Problem und die Bedürfnisse genau zu verstehen, um die beste Lösung zu entwickeln."
     },
