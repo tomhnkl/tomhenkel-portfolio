@@ -1089,6 +1089,36 @@ document.addEventListener('DOMContentLoaded', () => {
         initMediaReveal(container);
     }
 
+    // --- Lab: freie Leinwand. Bilder und Videos laufen über den Media-Reveal und laden erst,
+    // wenn sie in die Nähe gezogen werden; die Box hat vorab ihre Größe (Breite size.w, Höhe fest oder aus dem Format) ---
+    function labItemHTML(item, lang, index) {
+        const content = item[lang] || {};
+        const size = item.size || {};
+        const isMedia = item.type === 'image' || item.type === 'video';
+        if (isMedia && !(item.src && item.width && item.height)) {
+            console.warn(`[Lab ${item.id}] übersprungen: ein Medium braucht "src", "width" und "height"`);
+            return '';
+        }
+        if (!isMedia && item.type !== 'text-block') {
+            console.warn(`[Lab ${item.id}] übersprungen: unbekannter Typ "${item.type}"`);
+            return '';
+        }
+
+        const px = (value) => (typeof value === 'number' ? `${value}px` : value);
+        const style = [
+            `left: ${item.position.x}px`,
+            `top: ${item.position.y}px`,
+            size.w && `width: ${px(size.w)}`,
+            typeof size.h === 'number' ? `height: ${size.h}px` : isMedia && `aspect-ratio: ${item.width} / ${item.height}`,
+        ].filter(Boolean).join('; ');
+
+        const inner = isMedia
+            ? mediaHTML({ ...item, alt: { de: item.de && item.de.title, en: item.en && item.en.title } }, lang, { sizes: px(size.w) || '100vw' })
+                + (content.title ? `<div class="lab-caption">${content.title}</div>` : '')
+            : `<h3>${content.title || ''}</h3><p>${content.content || ''}</p>`;
+        return `<div class="lab-item lab-item-${item.type}" data-lab-item="${index}" style="${style}">${inner}</div>`;
+    }
+
     function renderLab(lang) {
         const canvas = document.getElementById('lab-canvas');
         if (!canvas) return;
@@ -1096,41 +1126,26 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamic Page Title
         document.title = 'Tom Henkel - The Lab';
 
-        canvas.innerHTML = '';
+        // --- UPDATE MODE: Sprachwechsel tauscht nur Texte, Medien bleiben stehen (kein Neuladen) ---
+        if (canvas.childElementCount) {
+            canvas.querySelectorAll('[data-lab-item]').forEach(el => {
+                const content = labData[el.dataset.labItem][lang] || {};
+                const caption = el.querySelector('.lab-caption');
+                if (caption) caption.innerHTML = content.title || '';
+                const img = el.querySelector('img');
+                if (img) img.alt = content.title || '';
+                const title = el.querySelector('h3');
+                if (title) title.innerHTML = content.title || '';
+                const text = el.querySelector('p');
+                if (text) text.innerHTML = content.content || '';
+            });
+            return;
+        }
 
-        labData.forEach(item => {
-            const el = document.createElement('div');
-            el.className = `lab-item lab-item-${item.type}`;
-            el.style.left = `${item.position.x}px`;
-            el.style.top = `${item.position.y}px`;
-            
-            if (item.size) {
-                 if (item.size.w) el.style.width = typeof item.size.w === 'number' ? item.size.w+'px' : item.size.w;
-                 if (item.size.h) el.style.height = typeof item.size.h === 'number' ? item.size.h+'px' : item.size.h;
-            }
-
-            const content = item[lang];
-            
-            let innerHTML = '';
-            if (item.type === 'image') {
-                innerHTML = `<img src="${item.src}" alt="${content.title}" draggable="false">`;
-            } else if (item.type === 'video') {
-                // Autoplay, Loop, Muted für "Environment" Videos.
-                // Pointer-events: none standard, aber wir wollen controls? User sagte "videos abgespielt werden".
-                // Wir machen controls verfügbar und erlauben clicks.
-                innerHTML = `<video src="${item.src}" poster="${item.poster || ''}" loop muted autoplay playsinline></video>`;
-            } else if (item.type === 'text-block') {
-                innerHTML = `<h3>${content.title}</h3><p>${content.content}</p>`;
-            }
-
-            // Title Overlay
-            if (content.title && item.type !== 'text-block') {
-                innerHTML += `<div class="lab-caption">${content.title}</div>`;
-            }
-
-            el.innerHTML = innerHTML;
-            canvas.appendChild(el);
-        });
+        // --- INITIAL RENDER MODE ---
+        canvas.innerHTML = labData.map((item, index) => labItemHTML(item, lang, index)).join('');
+        // Vorlauf am Lab-Container messen: die Leinwand ist verschoben und nach außen abgeschnitten
+        initMediaReveal(canvas, document.getElementById('lab-canvas-container'));
     }
 
     function initLabInteraction() {

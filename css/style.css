@@ -1242,9 +1242,20 @@ body.lab-page {
      -moz-user-select: none;
           user-select: none; /* Prevent text selection during drag */
 }
+.lab-item > .media-reveal {
+  /* Media fill the reserved box: width from size.w, height fixed or from the file's format (renderLab) */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 .lab-item img, .lab-item video {
   display: block;
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
   pointer-events: none; /* Let clicks pass through for dragging (unless we want interactions) */
 }
 .lab-item {

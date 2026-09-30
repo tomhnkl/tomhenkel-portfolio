@@ -176,6 +176,32 @@ Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` sta
 
 ---
 
+## Lab (`data/lab.json`)
+
+Das Lab ist eine freie Leinwand. Jeder Eintrag hat eine Position und eine Breite. Bilder und Videos folgen denselben Regeln wie die Projektmedien: Lade-Effekt, Videos als stummer Loop nur im Sichtfeld, Standbild, wenn ein Video nicht laufen darf.
+
+```json
+{ "id": "exp-001", "type": "image", "src": "images/lab/exp-001.webp", "width": 800, "height": 600,
+  "position": { "x": 100, "y": 200 }, "size": { "w": 400 },
+  "de": { "title": "Fluid Simulation" }, "en": { "title": "Fluid Simulation" } }
+
+{ "id": "exp-002", "type": "video", "src": "videos/lab/exp-002.mp4", "poster": "images/lab/exp-002.webp",
+  "width": 1200, "height": 800, "position": { "x": 600, "y": -100 }, "size": { "w": 600, "h": 400 },
+  "de": { "title": "3D Scan Test" }, "en": { "title": "3D Scan Test" } }
+
+{ "id": "exp-003", "type": "text-block", "position": { "x": 400, "y": 600 }, "size": { "w": 300 },
+  "de": { "title": "Gedanken", "content": "…" }, "en": { "title": "Thoughts", "content": "…" } }
+```
+
+- **`position`:** Pixel auf der Leinwand. Beim Öffnen liegt (500, 300) ungefähr in der Bildschirmmitte.
+- **`size.w`:** Anzeigebreite in px.
+- **`size.h`** (optional): feste Höhe. Das Medium wird dann beschnitten, optional mit `focus`. Ohne `size.h` richtet sich die Höhe nach dem Format der Datei (`width`/`height`).
+- **`title`:** Er erscheint beim Hover als Bildunterschrift und ist zugleich der Alt-Text.
+- **Export:** Breite = 2 × `size.w`, z. B. 800 px bei `"w": 400`. Die Höhe folgt aus dem Format bzw. `size.h` × 2. Videos brauchen dazu ein Standbild (`images/lab/<id>.webp`) in denselben Maßen.
+- **Vorläufige Maße:** Die Werte in `lab.json` sind Platzhalter (4:3). Die echten Maße trage ich nach deinem Export ein.
+
+---
+
 ## Checkliste neues Projekt
 
 1. Dateien exportieren und in die Ordner legen.
