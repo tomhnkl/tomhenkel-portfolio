@@ -399,11 +399,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const syncState = (player) => Promise.all([player.isPaused(), player.isMuted()])
                 .then(([paused, muted]) => setState({ paused, muted }));
 
+            let connected = null; // der Player, sobald er bereit ist
             const playerReady = provider.connect(iframe);
             playerSynced = playerReady.then(player => syncState(player).then(() => player));
             playerSynced.catch(() => {}); // Fehler behandelt der Fallback unten
 
+            // Kommt der Film 4 s nach dem Klick nicht in Gang (Start blockiert, Player wird nicht bereit, Anbieter
+            // zeigt eine Meldung), übernimmt die Anzeige des Anbieters: seine Meldung bzw. ein Tipp startet ihn.
+            // Den tatsächlichen Zustand prüfen, das play-Ereignis kann schon vor dem Zuhören gekommen sein
+            setTimeout(() => {
+                if (started) return;
+                if (!connected) {
+                    handOver({ keepControls: false });
+                    return;
+                }
+                connected.isPaused().then(paused => {
+                    if (paused) handOver({ keepControls: true });
+                    else showFilm();
+                }).catch(() => {});
+            }, 4000);
+
             playerReady.then(player => {
+                connected = player;
                 player.on('play', () => {
                     started = true;
                     showFilm();
@@ -411,14 +428,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 player.on('pause', () => setState({ paused: true }));
                 player.on('error', () => handOver({ keepControls: false }));
-                // Nach 4 s den tatsächlichen Zustand prüfen (das play-Ereignis kann schon vor dem Zuhören gekommen sein)
-                setTimeout(() => {
-                    if (started) return;
-                    player.isPaused().then(paused => {
-                        if (paused) handOver({ keepControls: true });
-                        else showFilm();
-                    }).catch(() => {});
-                }, 4000);
 
                 // Ton-Zustand regelmäßig abgleichen und die Wahl des Besuchers wiederherstellen
                 // (Vimeo stellt kurz nach dem Start still die Embed-Einstellung wieder her; YouTube meldet Ton nicht per Event)

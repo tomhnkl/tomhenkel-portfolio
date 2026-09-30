@@ -6,7 +6,7 @@
     "hero": {
       "image": { "src": "images/projects/reality-by-algorithm/hero.webp", "width": 2560, "height": 1440 },
       "teaser": "videos/projects/reality-by-algorithm/teaser.mp4",
-      "film": { "vimeo": "76979871" }
+      "film": { "vimeo": "1224883384" }
     },
     "preview": { "portrait": "videos/projects/reality-by-algorithm/preview-portrait.mp4" },
     "blocks": [
