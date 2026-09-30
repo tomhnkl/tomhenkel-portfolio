@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const escapeAttr = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     const mediaAlt = (media, lang) => (media.alt && media.alt[lang]) || '';
     const revealInitialized = new WeakSet();
-    let revealObserver = null;
+    const revealObservers = new Map(); // ein Beobachter je Wurzel (null = Viewport)
 
     // Breite eines Feldes über n Spalten (12er-Raster, 25px Rand, 20px Spaltenabstand); mobil immer volle Breite
     const cellSizes = (span) => `(max-width: 768px) calc(100vw - 50px), calc((100vw - 270px) * ${span} / 12 + ${(span - 1) * 20}px)`;
@@ -598,28 +598,40 @@ document.addEventListener('DOMContentLoaded', () => {
         playbackObserver.observe(video);
     }
 
-    // Nach jedem Rendern aufrufen; bereits gestartete Medien werden übersprungen.
-    // data-eager (wichtigstes Bild beim Seitenstart) lädt sofort, alles andere 200px bevor es in den Viewport kommt.
-    function initMediaReveal(root = document) {
-        root.querySelectorAll('.media-reveal').forEach(wrapper => {
-            if (revealInitialized.has(wrapper)) return;
-            revealInitialized.add(wrapper);
+    // Sofort laden, höchstens einmal je Medium (z. B. das Standbild, das die Startseite gerade zeigt)
+    function revealNow(wrapper) {
+        if (revealInitialized.has(wrapper)) return;
+        revealInitialized.add(wrapper);
+        loadMedia(wrapper);
+    }
 
+    // Nach jedem Rendern aufrufen; bereits gestartete Medien werden übersprungen.
+    // data-eager (wichtigstes Bild beim Seitenstart) lädt sofort, alles andere 200px bevor es sichtbar wird.
+    // observerRoot: misst den Vorlauf an einem Element statt am Viewport, für Medien in einem abgeschnittenen,
+    // verschobenen Bereich (Lab-Leinwand); am Viewport würde der Rand des Bereichs den Vorlauf auf 0 kürzen.
+    function initMediaReveal(scope = document, observerRoot = null) {
+        scope.querySelectorAll('.media-reveal').forEach(wrapper => {
+            if (revealInitialized.has(wrapper)) return;
             if (wrapper.hasAttribute('data-eager') || !('IntersectionObserver' in window)) {
-                loadMedia(wrapper);
+                revealNow(wrapper);
                 return;
             }
-            if (!revealObserver) {
-                revealObserver = new IntersectionObserver(entries => {
-                    entries.forEach(entry => {
-                        if (!entry.isIntersecting) return;
-                        revealObserver.unobserve(entry.target);
-                        loadMedia(entry.target);
-                    });
-                }, { rootMargin: '200px' });
-            }
-            revealObserver.observe(wrapper);
+            revealObserverFor(observerRoot).observe(wrapper);
         });
+    }
+
+    function revealObserverFor(root) {
+        if (!revealObservers.has(root)) {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    observer.unobserve(entry.target);
+                    revealNow(entry.target);
+                });
+            }, { root, rootMargin: '200px' });
+            revealObservers.set(root, observer);
+        }
+        return revealObservers.get(root);
     }
 
 
@@ -661,37 +673,85 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.project-list-item').forEach((el, i) => el.classList.toggle('active', i === activePreview));
     }
 
+    // Autoplay verboten (z. B. Stromsparmodus): Standbild + Timer. Ein abgebrochenes play() (neue Quelle, pause()) zählt nicht
+    const playRejected = (err) => {
+        if (err && err.name === 'NotAllowedError') scheduleNextPreview();
+    };
+
+    // Standbilder: ein gestapelter Media-Reveal-Block pro Projekt. Er lädt beim ersten Zeigen und bleibt geladen,
+    // die unscharfe Vorschau erscheint also nur, solange ein Projekt noch lädt. Jeder Block lädt nur sich selbst,
+    // ein spät ankommendes Bild eines älteren Projekts kann sich daher nie vor das aktuelle schieben.
+    let previewSlides = [];
+    let slideLayer = 0;
+
+    function buildPreviewSlides(lang) {
+        const visual = document.querySelector('.home-visual');
+        if (!visual || previewSlides.length) return;
+        const slides = document.createElement('div');
+        slides.className = 'home-slides';
+        slides.innerHTML = featuredProjects.map(p => {
+            const image = p.hero && p.hero.image;
+            return `<div class="home-slide">${image ? mediaHTML({ type: 'image', ...image, alt: null }, lang, { sizes: cellSizes(8) }) : ''}</div>`;
+        }).join('');
+        visual.insertBefore(slides, visual.firstChild);
+        previewSlides = [...slides.children];
+    }
+
+    function showSlide(index) {
+        const slide = previewSlides[index];
+        if (!slide) return;
+        const media = slide.querySelector('.media-reveal');
+        if (media) revealNow(media);
+        if (slide.classList.contains('is-shown') && Number(slide.style.zIndex) === slideLayer) return; // liegt schon vorne
+
+        // Nach vorne holen und einblenden; sobald er deckt, die übrigen ausblenden
+        slide.classList.remove('is-shown');
+        slide.style.zIndex = ++slideLayer;
+        void slide.offsetWidth; // Überblendung startet bei 0
+        slide.classList.add('is-shown');
+
+        const settle = () => {
+            if (previewSlides[activePreview] !== slide) return; // inzwischen weitergewechselt
+            previewSlides.forEach(other => { if (other !== slide) other.classList.remove('is-shown'); });
+        };
+        if (reduceMotion.matches) {
+            settle();
+            return;
+        }
+        const onEnd = (e) => {
+            if (e.target !== slide || e.propertyName !== 'opacity') return; // nicht das Scharfstellen des Bildes darin
+            slide.removeEventListener('transitionend', onEnd);
+            settle();
+        };
+        slide.addEventListener('transitionend', onEnd);
+    }
+
     function showPreview(index) {
-        const img = document.getElementById('project-preview-image');
         const video = document.getElementById('project-preview-video');
         const p = featuredProjects[index];
-        if (!img || !p) return;
+        if (!p) return;
 
         activePreview = index;
         markActivePreview();
         clearTimeout(cycleTimer);
-
-        // Standbild (Poster) sofort, mit Fade
-        const poster = (p.hero && p.hero.image && p.hero.image.src) || '';
-        if (poster && img.getAttribute('src') !== poster) {
-            img.classList.remove('visible');
-            img.onload = () => img.classList.add('visible');
-            img.src = poster;
-        }
+        showSlide(index);
 
         if (!video) return;
         const src = previewVideoSrc(p);
         video.classList.remove('visible');
         if (!src) {
             video.pause();
-            video.removeAttribute('src');
+            if (video.getAttribute('src')) {
+                video.removeAttribute('src');
+                video.load(); // den Download des vorherigen Videos wirklich beenden
+            }
             scheduleNextPreview();
             return;
         }
         video.loop = !mobileQuery.matches; // Mobil: danach das nächste Projekt
         if (video.getAttribute('src') !== src) video.src = src;
         else video.currentTime = 0;
-        video.play().catch(() => scheduleNextPreview()); // z. B. Stromsparmodus: Standbild + Timer
+        video.play().catch(playRejected);
     }
 
     function initPreviewVideo() {
@@ -726,7 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 video.pause();
                 clearTimeout(cycleTimer);
             } else if (video.getAttribute('src')) {
-                video.play().catch(() => scheduleNextPreview());
+                video.play().catch(playRejected);
             } else {
                 scheduleNextPreview();
             }
@@ -782,7 +842,8 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.innerHTML = '';
         listContainer.appendChild(fragment);
 
-        // Erster Aufruf: erste Vorschau setzen. Sprachwechsel: nur die Markierung übernehmen, das Video läuft weiter
+        // Erster Aufruf: erste Vorschau setzen. Sprachwechsel: nur die Markierung übernehmen, Standbilder und Video bleiben
+        buildPreviewSlides(lang);
         initPreviewVideo();
         if (activePreview < 0) showPreview(0);
         else markActivePreview();

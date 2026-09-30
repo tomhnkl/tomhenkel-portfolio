@@ -541,10 +541,12 @@ body.show-grid .grid-overlay {
     grid-column: 1/7;
   }
 }
-.home-visual img, .home-visual video {
+.home-visual > video {
+  /* Preview video above the stills; fades in once it plays */
   position: absolute; /* Prevent intrinsic size jumps on load/swap */
   top: 0;
   left: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
@@ -555,10 +557,46 @@ body.show-grid .grid-overlay {
   opacity: 0;
   transition: opacity var(--duration-base) ease;
 }
-.home-visual img.visible, .home-visual video.visible {
+.home-visual > video.visible {
   opacity: 1;
 }
 
+/* Stills: one Media-Reveal block per project (buildPreviewSlides); the active one fades in on top */
+.home-slides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Own stacking context, so the slide order stays below the video */
+  width: 100%;
+  height: 100%;
+}
+
+.home-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.home-slide.is-shown {
+  opacity: 1;
+}
+.home-slide .media-reveal,
+.home-slide img {
+  width: 100%;
+  height: 100%;
+}
+.home-slide img {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-slide.is-shown {
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+}
 .home-list {
   grid-column: 9/13;
   display: flex;

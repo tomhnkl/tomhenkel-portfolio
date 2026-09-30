@@ -11,14 +11,16 @@
   background-color: #333;
   @include tablet { grid-column: 1 / 7; }
 
-  img, video {
+  > video {
+    /* Preview video above the stills; fades in once it plays */
     position: absolute; /* Prevent intrinsic size jumps on load/swap */
     top: 0;
     left: 0;
+    z-index: 1;
     width: 100%;
-    height: 100%; 
+    height: 100%;
     object-fit: cover;
-    object-position: center center; 
+    object-position: center center;
     display: block;
     opacity: 0;
     transition: opacity var(--duration-base) ease;
@@ -27,6 +29,39 @@
       opacity: 1;
     }
   }
+}
+
+/* Stills: one Media-Reveal block per project (buildPreviewSlides); the active one fades in on top */
+.home-slides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Own stacking context, so the slide order stays below the video */
+  width: 100%;
+  height: 100%;
+}
+
+.home-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+
+  &.is-shown { opacity: 1; }
+
+  .media-reveal,
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  img { object-fit: cover; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-slide.is-shown { transition: opacity var(--duration-base) var(--ease-out); }
 }
 
 .home-list {
