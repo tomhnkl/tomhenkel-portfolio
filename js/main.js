@@ -234,24 +234,99 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-// --- Hero Player: Teaser-Loop läuft sofort, der Vimeo-Film lädt erst per Klick ---
-    // Vor dem Klick geht keine Anfrage an Vimeo (Datenschutz); der Klick erlaubt auch den Ton.
-    // Zustand der eigenen Steuerung; Start = pausiert, passend zur sichtbaren Play-Fläche. film = Vimeo geladen
+// --- Hero Player: Teaser-Loop läuft sofort, der Film (Vimeo oder YouTube) lädt erst per Klick ---
+    // Vor dem Klick geht keine Anfrage an den Anbieter (Datenschutz); der Klick erlaubt auch den Ton.
+    // Zustand der eigenen Steuerung; Start = pausiert, passend zur sichtbaren Play-Fläche. film = Film geladen
     let heroState = { paused: true, muted: false, film: false };
-    let vimeoApiPromise = null;
+    let heroFilmName = ''; // Anbieter für den Hinweis ("Vimeo" / "YouTube")
 
-    function loadVimeoApi() {
-        if (window.Vimeo && window.Vimeo.Player) return Promise.resolve();
-        if (!vimeoApiPromise) {
-            vimeoApiPromise = new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = 'https://player.vimeo.com/api/player.js';
-                script.onload = resolve;
-                script.onerror = reject;
-                document.body.appendChild(script);
-            });
+    const loadScript = (src) => new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+
+    // Anbieter: Einbettungs-URL und connect(iframe) -> Player mit einheitlicher Schnittstelle
+    // { play, pause, isPaused, isMuted, setMuted, on('play' | 'pause' | 'error', fn) }; alle Methoden liefern Promises
+    const FILM_PROVIDERS = {
+        vimeo: {
+            name: 'Vimeo',
+            embedUrl: (id) => `https://player.vimeo.com/video/${id}?autoplay=1&muted=0&controls=0&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1`,
+            api: null,
+            connect(iframe) {
+                this.api = this.api || (window.Vimeo && window.Vimeo.Player ? Promise.resolve() : loadScript('https://player.vimeo.com/api/player.js'));
+                return this.api.then(() => {
+                    const player = new Vimeo.Player(iframe);
+                    return player.ready().then(() => ({
+                        play: () => player.play(),
+                        pause: () => player.pause(),
+                        isPaused: () => player.getPaused(),
+                        isMuted: () => player.getMuted(),
+                        setMuted: (mute) => player.setMuted(mute).then(() => (mute ? null : player.setVolume(1))),
+                        on: (event, fn) => player.on(event, fn),
+                    }));
+                });
+            },
+        },
+        youtube: {
+            name: 'YouTube',
+            // Datenschutzfreundlicher Modus; enablejsapi + origin, damit die eigene Steuerung den Player bedienen kann
+            embedUrl: (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`,
+            api: null,
+            connect(iframe) {
+                this.api = this.api || new Promise((resolve, reject) => {
+                    if (window.YT && window.YT.Player) return resolve();
+                    const previous = window.onYouTubeIframeAPIReady; // die API meldet sich über diesen globalen Callback
+                    window.onYouTubeIframeAPIReady = () => {
+                        if (typeof previous === 'function') previous();
+                        resolve();
+                    };
+                    loadScript('https://www.youtube.com/iframe_api').catch(reject);
+                });
+                return this.api.then(() => new Promise(resolve => {
+                    const handlers = { play: [], pause: [], error: [] };
+                    const early = new Set(); // Fehler/Start direkt nach onReady, bevor die Seite zuhört
+                    const emit = (event) => {
+                        if (!handlers[event].length) early.add(event);
+                        handlers[event].forEach(fn => fn());
+                    };
+                    const player = new YT.Player(iframe, {
+                        events: {
+                            onReady: () => resolve({
+                                play: () => Promise.resolve(player.playVideo()),
+                                pause: () => Promise.resolve(player.pauseVideo()),
+                                isPaused: () => Promise.resolve(![YT.PlayerState.PLAYING, YT.PlayerState.BUFFERING].includes(player.getPlayerState())),
+                                isMuted: () => Promise.resolve(player.isMuted()),
+                                setMuted: (mute) => Promise.resolve(mute ? player.mute() : (player.unMute(), player.setVolume(100))),
+                                on: (event, fn) => {
+                                    handlers[event].push(fn);
+                                    if (early.delete(event)) fn(); // verpasstes Ereignis nachholen
+                                },
+                            }),
+                            onStateChange: (e) => {
+                                if (e.data === YT.PlayerState.PLAYING) emit('play');
+                                else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) emit('pause');
+                            },
+                            onError: () => emit('error'), // z. B. Video nicht gefunden oder Einbetten verboten
+                        },
+                    });
+                }));
+            },
+        },
+    };
+
+    // hero.film: { "vimeo": "ID" } oder { "youtube": "ID" }
+    function filmOf(hero) {
+        const entry = hero && hero.film && Object.entries(hero.film)[0];
+        if (!entry) return null;
+        const [provider, id] = entry;
+        if (!FILM_PROVIDERS[provider] || !id) {
+            console.warn(`[Hero] Film übersprungen: Anbieter "${provider}" unbekannt oder ohne ID (möglich: vimeo, youtube)`);
+            return null;
         }
-        return vimeoApiPromise;
+        return { provider, id: String(id) };
     }
 
     // Beschriftung aus Zustand + aktueller Sprache (site-content.json ui.*.player)
@@ -266,16 +341,18 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSound.hidden = !heroState.film; // Der Teaser hat keinen Ton
         const hint = document.getElementById('hero-hint');
         if (hint) {
-            hint.textContent = labels.vimeo_hint;
+            hint.textContent = labels.film_hint.replace('{provider}', heroFilmName);
             hint.hidden = heroState.film;
         }
         document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused);
     }
 
-    function initHeroPlayer(vimeoId, title) {
+    function initHeroPlayer(film, title) {
         const wrapper = document.getElementById('hero-wrapper');
         if (!wrapper) return;
 
+        const provider = FILM_PROVIDERS[film.provider];
+        heroFilmName = provider.name;
         const overlay = document.getElementById('hero-overlay');
         const controls = wrapper.querySelector('.hero-controls');
         const teaser = wrapper.querySelector('video');
@@ -292,13 +369,14 @@ document.addEventListener('DOMContentLoaded', () => {
         function loadFilm() {
             const iframe = document.createElement('iframe');
             iframe.id = 'hero-player';
-            iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&muted=0&controls=0&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1`;
-            iframe.allow = 'autoplay; fullscreen';
+            iframe.src = provider.embedUrl(film.id);
+            iframe.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture';
             iframe.title = title;
             wrapper.insertBefore(iframe, overlay || controls);
             setState({ film: true });
 
             // Film sichtbar, sobald er läuft; der Teaser hält so lange an
+            let started = false;
             const showFilm = () => {
                 wrapper.classList.add('film-visible');
                 if (teaser) {
@@ -307,43 +385,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            const playerReady = loadVimeoApi().then(() => {
-                const player = new Vimeo.Player(iframe);
-                return player.ready().then(() => player);
-            });
+            // Fallback: Steuerung des Anbieters übernehmen, ein Tipp direkt auf das Video startet ihn
+            // (API lädt nicht, Anbieter meldet einen Fehler, oder der Start wird blockiert, z. B. Ton in Safari)
+            const handOver = ({ keepControls }) => {
+                if (overlay) overlay.remove();
+                if (controls && !keepControls) controls.remove();
+                showFilm();
+                iframe.style.pointerEvents = 'auto';
+            };
 
             // Anzeige immer aus dem tatsächlichen Player-Zustand ableiten
             // (der Ton kann blockiert sein, dann startet der Film stumm)
-            const syncState = (player) => Promise.all([player.getPaused(), player.getMuted()])
+            const syncState = (player) => Promise.all([player.isPaused(), player.isMuted()])
                 .then(([paused, muted]) => setState({ paused, muted }));
 
+            const playerReady = provider.connect(iframe);
             playerSynced = playerReady.then(player => syncState(player).then(() => player));
             playerSynced.catch(() => {}); // Fehler behandelt der Fallback unten
 
             playerReady.then(player => {
                 player.on('play', () => {
+                    started = true;
                     showFilm();
                     syncState(player);
                 });
                 player.on('pause', () => setState({ paused: true }));
-                player.on('volumechange', () => syncState(player));
+                player.on('error', () => handOver({ keepControls: false }));
+                // Nach 4 s den tatsächlichen Zustand prüfen (das play-Ereignis kann schon vor dem Zuhören gekommen sein)
+                setTimeout(() => {
+                    if (started) return;
+                    player.isPaused().then(paused => {
+                        if (paused) handOver({ keepControls: true });
+                        else showFilm();
+                    }).catch(() => {});
+                }, 4000);
 
-                // Vimeo stellt kurz nach dem Autoplay-Start still (ohne Event) die Embed-Einstellung muted=0
-                // wieder her -> Ton-Zustand regelmäßig abgleichen und die Wahl des Besuchers wiederherstellen
+                // Ton-Zustand regelmäßig abgleichen und die Wahl des Besuchers wiederherstellen
+                // (Vimeo stellt kurz nach dem Start still die Embed-Einstellung wieder her; YouTube meldet Ton nicht per Event)
                 setInterval(() => {
                     if (document.hidden) return;
-                    player.getMuted().then(muted => {
+                    player.isMuted().then(muted => {
                         if (userMuted !== null && muted !== userMuted) return player.setMuted(userMuted);
                         if (muted !== heroState.muted) setState({ muted });
                     });
                 }, 500);
-            }).catch(() => {
-                // Fallback ohne Player-API: eigene Steuerung weg, Vimeos Klick-zum-Abspielen erlauben
-                if (overlay) overlay.remove();
-                if (controls) controls.remove();
-                showFilm();
-                iframe.style.pointerEvents = 'auto';
-            });
+            }).catch(() => handOver({ keepControls: false }));
         }
 
         // Erster Klick lädt den Film (Autoplay mit Ton), danach abspielen / pausieren
@@ -365,9 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
             userMuted = mute;
             setState({ muted: mute });
             playerSynced
-                .then(player => player.setMuted(mute)
-                    .then(() => (mute ? null : player.setVolume(1)))
-                    .then(() => player.getMuted().then(muted => setState({ muted }))))
+                .then(player => player.setMuted(mute).then(() => player.isMuted().then(muted => setState({ muted }))))
                 .catch(() => {});
         });
     }
@@ -871,11 +955,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const heroMedia = (hero) => (hero.teaser ? teaserMedia(hero) : hero.image && { type: 'image', ...hero.image });
 
-    function heroHTML(project, lang) {
+    function heroHTML(project, lang, film) {
         const hero = project.hero || {};
         const media = heroMedia(hero);
         // Beschriftung von Buttons und Hinweis setzt updateHeroControls()
-        const filmControls = hero.vimeo ? `
+        const filmControls = film ? `
                 <div class="hero-overlay" id="hero-overlay"><div class="big-play-btn"></div></div>
                 <div class="hero-controls">
                     <span class="hero-hint" id="hero-hint"></span>
@@ -1029,8 +1113,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- INITIAL RENDER MODE ---
         container.setAttribute('data-rendered-id', pid);
+        const film = filmOf(project.hero);
         container.innerHTML = `
-            ${heroHTML(project, lang)}
+            ${heroHTML(project, lang, film)}
             <div class="pd-title-row">
                 <h1 class="pd-title">${content.title}</h1>
                 <div class="pd-meta">
@@ -1049,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         initAccordionAnimation();
         initMediaReveal(container);
-        if (project.hero && project.hero.vimeo) initHeroPlayer(project.hero.vimeo, stripTags(content.title));
+        if (film) initHeroPlayer(film, stripTags(content.title));
     }
 
     function renderAbout(lang) {

@@ -33,7 +33,7 @@ Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "�
   "hero": {
     "image": { "src": "images/projects/mein-projekt/hero.webp", "width": 2560, "height": 1440 },
     "teaser": "videos/projects/mein-projekt/teaser.mp4",
-    "vimeo": "123456789"
+    "film": { "youtube": "dQw4w9WgXcQ" }
   },
   "preview": { "portrait": "videos/projects/mein-projekt/preview-portrait.mp4" },
   "blocks": [ … ],
@@ -54,12 +54,14 @@ Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "�
 
 | Variante | Felder | Verhalten |
 |---|---|---|
-| Teaser + Film | `image`, `teaser`, `vimeo` | Teaser läuft sofort stumm; „abspielen“ lädt den Vimeo-Film mit Ton |
+| Teaser + Film | `image`, `teaser`, `film` | Teaser läuft sofort stumm; „abspielen“ lädt den Film (Vimeo oder YouTube) mit Ton |
 | Nur Teaser | `image`, `teaser` | Stummer Loop, keine Buttons |
-| Standbild + Film | `image`, `vimeo` | Bild; „abspielen“ lädt den Vimeo-Film |
+| Standbild + Film | `image`, `film` | Bild; „abspielen“ lädt den Film |
 | Nur Bild | `image` | Bild |
 
-Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an Vimeo. Neben dem Button steht dazu der Hinweis „Film wird von Vimeo geladen“.
+**Film:** `"film": { "vimeo": "76979871" }` oder `"film": { "youtube": "dQw4w9WgXcQ" }`. Eingetragen wird nur die ID (bei YouTube der Teil nach `v=` bzw. nach `youtu.be/`, bei Vimeo die Zahl aus der Adresse).
+
+Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an den Anbieter. Neben dem Button steht dazu der Hinweis „Film wird von Vimeo geladen“ bzw. „… von YouTube …“. YouTube wird über `youtube-nocookie.com` eingebunden.
 
 ---
 
@@ -171,7 +173,7 @@ Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` sta
 | Datei fehlt | Farbfläche im richtigen Format, kein kaputtes Symbol |
 | Video darf nicht laufen (Bewegung reduzieren, Datensparen, Stromsparmodus) | Standbild statt Loop |
 | Langsames Netz | Unscharfe Vorschau, bis das Medium da ist |
-| Vimeo lädt nicht / Ton blockiert | Teaser bleibt stehen; Film läuft stumm mit „ton an“; zuletzt übernimmt Vimeos eigene Steuerung |
+| Film lädt nicht, Anbieter meldet Fehler, Start blockiert (z. B. Ton in Safari) | Die Steuerung des Anbieters wird freigegeben: ein Tipp direkt auf das Video startet ihn |
 | Zeile falsch befüllt (Spalten über 12, `items` passt nicht zu `cols`, Maße fehlen) | Block wird übersprungen, die Browser-Konsole sagt, welcher und warum |
 
 ---
