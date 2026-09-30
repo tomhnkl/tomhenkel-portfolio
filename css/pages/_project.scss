@@ -307,11 +307,38 @@ details.pd-accordion {
     padding-bottom: var(--space-s);
     box-sizing: border-box; /* Animated height includes the padding */
     overflow: hidden;
+  }
 
-    /* 1fr 1fr inside the right half = 3 columns each of the 12-column grid */
+  /* Media on top at the full accordion width, each in its own format; the text below */
+  .accordion-media {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: var(--spacing-layout);
+    row-gap: var(--space-s);
+    margin-bottom: var(--space-s);
+  }
+
+  .accordion-media-item {
+    position: relative;
+    aspect-ratio: var(--ratio); /* Box is reserved before loading, so the open height is right */
+    overflow: hidden;
+
+    > .media-reveal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    img, video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .accordion-text {
+    max-width: var(--measure);
+    white-space: pre-line; /* Blank lines in the text become paragraphs */
   }
 }
 

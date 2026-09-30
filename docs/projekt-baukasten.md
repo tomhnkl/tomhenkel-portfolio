@@ -7,7 +7,7 @@ Eine Projektseite besteht immer aus demselben Rahmen:
 3. **Module** in beliebiger Reihenfolge: Medien-Zeilen, Text, Akkordeons
 4. **Weitere Projekte:** das vorherige und das nächste Projekt
 
-Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "…", "en": "…" }`.
+Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "…", "en": "…" }`. Fehlt eine Sprache, erscheint vorerst die andere. So sind Entwürfe schon sichtbar, bevor die Übersetzung da ist.
 
 ---
 
@@ -127,6 +127,24 @@ Leerzeilen (`\n\n`) trennen Absätze, `<br>` erzwingt einen Zeilenumbruch.
 ```
 
 Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` statt `--space-l`).
+
+**Mit Bild:** Jedes Akkordeon kann `media` enthalten, Bilder oder Videos wie in den Medien-Zeilen. Sie stehen oben in voller Akkordeon-Breite und im eigenen Format, der Text darunter. Die Bilder laden erst beim Aufklappen. Export: 1440 px breit (Akkordeon = 6 Spalten).
+
+```json
+{ "title": { "de": "Notation", "en": "Notation" },
+  "media": [{ "type": "image", "src": "images/projects/<id>/notation.webp", "width": 1440, "height": 960, "alt": { "de": "…", "en": "…" } }],
+  "content": { "de": "…", "en": "…" } }
+```
+
+### Persönlicher Text am Ende
+
+Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text bekommen. Er steht nicht in `blocks`, sondern als eigenes Feld, damit er immer am Schluss steht:
+
+```json
+"personal": { "text": { "de": "…", "en": "…" } }
+```
+
+`title` ist optional. Ohne Text erscheint nichts.
 
 ---
 

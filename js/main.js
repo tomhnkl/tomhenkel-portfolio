@@ -947,7 +947,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Projektseite: Hero, Titelblock, Module aus dem Baukasten, Weitere Projekte ---
     // Module (project.blocks): media (Medien-Zeile), text, accordions. Anleitung: docs/projekt-baukasten.md
-    const localized = (field, lang) => (field && typeof field === 'object' ? field[lang] : field) || '';
+    // Fehlt eine Übersetzung, erscheint vorerst die andere Sprache (Entwürfe bleiben sichtbar)
+    const localized = (field, lang) => {
+        if (!field || typeof field !== 'object') return field || '';
+        return field[lang] || field[lang === 'de' ? 'en' : 'de'] || '';
+    };
     const cssRatio = (ratio) => {
         const m = String(ratio || '').match(/^\s*(\d+(?:\.\d+)?)\s*[:/]\s*(\d+(?:\.\d+)?)\s*$/);
         return m ? `${m[1]} / ${m[2]}` : null;
@@ -1021,12 +1025,24 @@ document.addEventListener('DOMContentLoaded', () => {
             warnBlock(project, index, 'Akkordeons ohne "items"');
             return '';
         }
-        return `<div class="pd-block pd-accordions" data-block="${index}">${items.map(acc => `
+        return `<div class="pd-block pd-accordions" data-block="${index}">${items.map((acc, i) => `
                 <details class="pd-accordion">
                     <summary>${localized(acc.title, lang)}</summary>
-                    <div class="accordion-content">${localized(acc.content, lang)}</div>
+                    <div class="accordion-content">${accordionMediaHTML(acc, lang, project, index, i)}<div class="accordion-text">${localized(acc.content, lang)}</div></div>
                 </details>`).join('')}
             </div>`;
+    }
+
+    // Akkordeon-Medien (acc.media): oben, in voller Akkordeon-Breite und im eigenen Format, darunter der Text
+    function accordionMediaHTML(acc, lang, project, index, i) {
+        const cells = (Array.isArray(acc.media) ? acc.media : []).map((item, k) => {
+            if (!(item && item.src && item.width && item.height)) {
+                console.warn(`[Projekt ${project.id}] Block ${index + 1}, Akkordeon ${i + 1}: Medium übersprungen, es braucht "src", "width" und "height"`);
+                return '';
+            }
+            return `<div class="accordion-media-item" data-item="${k}" style="--ratio: ${item.width} / ${item.height}">${mediaHTML(item, lang, { sizes: cellSizes(6) })}</div>`;
+        }).join('');
+        return cells ? `<div class="accordion-media">${cells}</div>` : '';
     }
 
     // Je Modul-Typ: Markup und Sprachwechsel (nur Texte, Medien bleiben stehen)
@@ -1049,8 +1065,13 @@ document.addEventListener('DOMContentLoaded', () => {
         accordions: {
             html: accordionsBlockHTML,
             update: (el, block, lang) => el.querySelectorAll('.pd-accordion').forEach((detail, i) => {
-                detail.querySelector('summary').innerHTML = localized(block.items[i].title, lang);
-                detail.querySelector('.accordion-content').innerHTML = localized(block.items[i].content, lang);
+                const acc = block.items[i];
+                detail.querySelector('summary').innerHTML = localized(acc.title, lang);
+                detail.querySelector('.accordion-text').innerHTML = localized(acc.content, lang);
+                detail.querySelectorAll('.accordion-media-item').forEach(cell => {
+                    const img = cell.querySelector('img');
+                    if (img) img.alt = mediaAlt(acc.media[cell.dataset.item], lang);
+                });
             }),
         },
     };
@@ -1064,6 +1085,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return type.html(block, lang, index, project);
         }).join('');
+    }
+
+    // Persönlicher Text am Ende jedes Projekts (project.personal: { title?, text }); ohne Text erscheint nichts
+    function personalHTML(project, lang) {
+        const personal = project.personal;
+        if (!personal || !localized(personal.text, lang)) return '';
+        const title = personal.title ? `<h3 class="pd-text-title">${localized(personal.title, lang)}</h3>` : '';
+        return `<div class="pd-block pd-text pd-personal" data-personal>${title}<div class="pd-text-body">${localized(personal.text, lang)}</div></div>`;
     }
 
     // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben)
@@ -1110,6 +1139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const block = project.blocks[el.dataset.block];
                 BLOCKS[block.type].update(el, block, lang);
             });
+            const personal = container.querySelector('[data-personal]');
+            if (personal) BLOCKS.text.update(personal, project.personal, lang);
             container.querySelector('.pd-footer-nav-title').innerHTML = moreTitle;
             container.querySelectorAll('.pd-footer-nav .nav-item').forEach((item, i) => {
                 const p = i === 0 ? prevP : nextP;
@@ -1134,6 +1165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="pd-subtitle">${content.subtitle || ''}</div>
             </div>
             ${blocksHTML(project, lang)}
+            ${personalHTML(project, lang)}
             <div class="pd-footer-nav-title">${moreTitle}</div>
             <div class="pd-footer-nav">
                 ${projectCardHTML(prevP, lang)}

@@ -28,29 +28,21 @@
         "type": "text",
         "text": {
           "de": "Dieses Projekt untersucht die Grenzen zwischen digitaler Berechnung und physischer Wahrnehmung. Es stellt die Frage, wie viel unserer täglichen Realität durch Algorithmen gefiltert wird und ob wir überhaupt noch einen direkten Zugang zur physischen Welt haben.\n\nDer Besucher wird eingeladen, durch Interaktion mit den Sensoren die Projektion zu verändern und so Teil des algorithmischen Prozesses zu werden.",
-          "en": "This project investigates the boundaries between digital computation and physical perception. It questions how much of our daily reality is filtered through algorithms and whether we still have direct access to the physical world.\n\nVisitors are invited to interact with sensors to alter the projection, becoming part of the algorithmic process."
+          "en": "Algorithmic recommendation systems shape which content becomes visible in digital environments and how attention, discourses and cultural expressions are organized. Their workings often remain opaque to users, even though they noticeably structure perception and communicative practices.\n\nThe audiovisual installation examines these structural effects and translates them into a spatial experience. It deliberately avoids didacticism: algorithmic logics are not explained but staged as a sensory, spatially atmospheric and temporally sequenced experience.\n\nThe work unfolds across five dramaturgically coordinated acts, organizing perception as a temporally sequenced experience: from the mechanisms of algorithmic selection through the normalization of cultural patterns and algorithms as infrastructural power structures to digital language ecologies and the question of orientation and agency.\n\nText serves as the central design material of the work. Digital publics are organized to a large extent through text, and algorithmic systems operate primarily by processing, weighting and structuring textual content. Text thus becomes the interface between cultural expression and technical logic. As a carrier of meaning and at the same time a shapeable typographic material, it is condensed, shifted and fragmented. In this way, algorithmic dynamics are formally staged in their structural logic."
         }
       },
       {
         "type": "accordions",
         "items": [
           {
-            "title": { "de": "Konzept / Idee", "en": "Concept / Idea" },
-            "content": {
-              "de": "Basierend auf generativen Algorithmen, die Chaos und Ordnung simulieren.",
-              "en": "Based on generative algorithms differentiating chaos and order."
-            }
+            "title": { "de": "Notation", "en": "Notation" },
+            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/notation.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "Text folgt.", "en": "Text to follow." }
           },
           {
-            "title": { "de": "Technik / Setup", "en": "Technology / Setup" },
-            "content": {
-              "de": "Processing, Infrarot-Sensoren, 3x 4K Projektoren, MaxMSP für Sound.",
-              "en": "Processing, IR Sensors, 3x 4K Projectors, MaxMSP for Sound."
-            }
-          },
-          {
-            "title": { "de": "Credits", "en": "Credits" },
-            "content": { "de": "Code: Tom Henkel<br>Sound: Audio Copilot", "en": "Code: Tom Henkel<br>Sound: Audio Copilot" }
+            "title": { "de": "Dimensionen", "en": "Dimensions" },
+            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/dimensions.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "Text folgt.", "en": "Text to follow." }
           }
         ]
       },
@@ -77,10 +69,8 @@
       },
       {
         "type": "text",
-        "title": { "de": "Technische Umsetzung", "en": "Technical Realization" },
         "text": {
-          "de": "Die Installation basiert auf einem Netzwerk von 12 Sensoren, die Bewegung und Lichtintensität im Raum messen. Ein zentraler Server verarbeitet diese Daten in Echtzeit und speist sie in eine generative Grafik-Engine ein.",
-          "en": "The installation relies on a network of 12 sensors measuring movement and light intensity. A central server processes this data in real-time, feeding a generative graphics engine."
+          "en": "A multi-layered scaffold forms the spatial structure of the installation. Projections onto semi-transparent surfaces generate overlaps and displacements that translate algorithmic processes of filtering and transformation into a visual structure.\n\nAudio frames the visual states affectively and physically. The music, scored by Lorenz Schauler, intensifies the emotional qualities of the individual acts and makes their temporal development perceptible. Different sonic atmospheres evoke intuitive states of order, density, irritation or overwhelm and thus reinforce the dramaturgical structure of the installation.\n\nAs an artistic engagement with algorithmic systems, the work opens a space of experience in which structural effects become perceptible and meaning can unfold through individual experience.\n\nThe project was developed as a bachelor's thesis in the Interactive Media programme at the Technical University of Applied Sciences Augsburg and completed in 2026."
         }
       }
     ],
@@ -89,13 +79,20 @@
       "category": "Installation",
       "subtitle": "Eine audiovisuelle Installation über die strukturellen Wirkungen algorithmischer Systeme."
     },
-    "en": { "title": "reality,<br>by algorithm.", "category": "installation", "subtitle": "An algorithmic exploration of reality." }
+    "en": {
+      "title": "reality,<br>by algorithm.",
+      "category": "installation",
+      "subtitle": "An audiovisual installation on the structural effects of algorithmic systems."
+    }
   },
   {
     "id": "sono-bricolage",
     "featured": true,
     "year": "2024",
-    "hero": { "image": { "src": "images/projects/sono-bricolage/hero.webp", "width": 2560, "height": 1440 }, "film": { "vimeo": "87543210" } },
+    "hero": {
+      "image": { "src": "images/projects/sono-bricolage/hero.webp", "width": 2560, "height": 1440 },
+      "film": { "vimeo": "87543210" }
+    },
     "blocks": [
       {
         "type": "media",
