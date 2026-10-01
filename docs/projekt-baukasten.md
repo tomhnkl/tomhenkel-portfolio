@@ -137,6 +137,23 @@ Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` sta
   "content": { "de": "…", "en": "…" } }
 ```
 
+### Links (rechte Hälfte)
+
+```json
+{ "type": "links", "items": [
+  { "label": { "de": "Zur Web-App", "en": "Open the web app" }, "href": "https://app.lonis-weltraumreise.de/" },
+  { "label": { "de": "Zur Website", "en": "Visit the website" }, "href": "https://lonis-weltraumreise.de/story" }
+] }
+```
+
+Eine Zeile pro Link, in der Größe der Akkordeon-Titel. Direkt nach einem Text oder vor Akkordeons rückt das Modul näher heran (`--space-m`).
+
+**Link-Standard für die ganze Seite** (`.text-link`, `css/components/_links.scss`):
+- **In Ruhe:** wie der umgebende Text, ohne Unterstreichung.
+- **Andere Websites:** Links auf fremde Seiten öffnen in einem neuen Tab und tragen automatisch ↗. Mail-Links und interne Links bekommen keinen Pfeil.
+- **Hover:** Wechsel auf Favorit Lining, den Schnitt mit eingebauter Unterstreichung, wie in Nav und Footer. Lining läuft so breit wie Regular, nichts springt.
+- **Im Fließtext (Book):** Dort ist Lining knapp 1 % breiter. Bei Links mitten im Text kann beim Hover selten eine Zeile neu umbrechen.
+
 ### Persönlicher Text am Ende
 
 Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text bekommen. Er steht nicht in `blocks`, sondern als eigenes Feld, damit er immer am Schluss steht:

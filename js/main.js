@@ -1063,6 +1063,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return cells ? `<div class="accordion-media">${cells}</div>` : '';
     }
 
+    // Link-Modul: eine Zeile pro Link; Links zu anderen Websites öffnen im neuen Tab und tragen ↗ (Link-Standard .text-link)
+    const isExternal = (href) => /^https?:\/\//.test(href) && new URL(href).origin !== location.origin;
+
+    function linksBlockHTML(block, lang, index, project) {
+        const items = (Array.isArray(block.items) ? block.items : []).filter(item => item && item.href && item.label);
+        if (!items.length) {
+            warnBlock(project, index, 'Links brauchen "href" und "label"');
+            return '';
+        }
+        return `<ul class="pd-block pd-links" data-block="${index}">${items.map((item, i) => {
+            const target = isExternal(item.href) ? ' target="_blank" rel="noopener"' : '';
+            return `<li><a class="text-link" data-item="${i}" href="${escapeAttr(item.href)}"${target}>${localized(item.label, lang)}</a></li>`;
+        }).join('')}</ul>`;
+    }
+
     // Je Modul-Typ: Markup und Sprachwechsel (nur Texte, Medien bleiben stehen)
     const BLOCKS = {
         media: {
@@ -1079,6 +1094,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (title) title.innerHTML = localized(block.title, lang);
                 el.querySelector('.pd-text-body').innerHTML = localized(block.text, lang);
             },
+        },
+        links: {
+            html: linksBlockHTML,
+            update: (el, block, lang) => el.querySelectorAll('[data-item]').forEach(link => {
+                link.innerHTML = localized(block.items.filter(item => item && item.href && item.label)[link.dataset.item].label, lang);
+            }),
         },
         accordions: {
             html: accordionsBlockHTML,
@@ -1224,9 +1245,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="about-text">
                     <div class="description">${content.description}</div>
                     <div class="contact-info">
-                        <a href="mailto:${email}">${email}</a>
+                        <a class="text-link" href="mailto:${email}">${email}</a>
                         <br>
-                        <a href="${instagram}" target="_blank" rel="noopener">Instagram</a>
+                        <a class="text-link" href="${instagram}" target="_blank" rel="noopener">Instagram</a>
                     </div>
                 </div>
             </section>

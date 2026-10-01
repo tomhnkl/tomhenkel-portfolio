@@ -50,20 +50,19 @@
     }
 
     .contact-info {
+      /* Set on the container, so the link standard (.text-link) can switch the cut on hover */
+      font-family: var(--font-family-book);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+
       a {
         color: #fff;
-        text-decoration: none;
         display: inline-block;
         margin-bottom: 8px;
-        font-family: var(--font-family-book);
-        font-size: var(--fs-body);
-        line-height: var(--lh-body);
 
         &:last-child {
           margin-bottom: 0px;
         }
-
-        &:hover { text-decoration: underline; }
       }
     }
 }

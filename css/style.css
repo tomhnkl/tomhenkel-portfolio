@@ -573,6 +573,22 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* --- Links in content (standard, 2026-10-01) ---
+   At rest like the surrounding text; links to other websites (new tab) are marked with ↗.
+   Hover/focus: Favorit Lining, the cut with the built-in underline (same as nav and footer).
+   Lining runs as wide as Regular, so nothing shifts; next to Book it is ~1 % wider. */
+.text-link {
+  color: inherit;
+  text-decoration: none;
+}
+.text-link:hover, .text-link:focus-visible {
+  font-family: var(--font-family-lining);
+}
+.text-link[target=_blank]::after {
+  content: " ↗"; /* thin space + ↗ */
+  content: " ↗"/""; /* decorative: not read out by screen readers */
+}
+
 /* --- Homepage Split Layout --- */
 .home-visual {
   grid-column: 1/9;
@@ -777,20 +793,19 @@ html.lenis body {
   max-width: var(--measure);
   margin-bottom: var(--space-m);
 }
-.about-section .about-text .contact-info a {
-  color: #fff;
-  text-decoration: none;
-  display: inline-block;
-  margin-bottom: 8px;
+.about-section .about-text .contact-info {
+  /* Set on the container, so the link standard (.text-link) can switch the cut on hover */
   font-family: var(--font-family-book);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
 }
+.about-section .about-text .contact-info a {
+  color: #fff;
+  display: inline-block;
+  margin-bottom: 8px;
+}
 .about-section .about-text .contact-info a:last-child {
   margin-bottom: 0px;
-}
-.about-section .about-text .contact-info a:hover {
-  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
@@ -856,6 +871,10 @@ html.lenis body {
 .pd-text + .pd-accordions {
   margin-top: var(--space-m);
 } /* Text and its details belong together */
+.pd-text + .pd-links,
+.pd-links + .pd-accordions {
+  margin-top: var(--space-m);
+} /* Links belong to the text and its details */
 .pd-footer-nav-title {
   margin-top: var(--space-l);
 } /* Last module → more projects */
@@ -1109,6 +1128,25 @@ html.lenis body {
   line-height: var(--lh-body);
   max-width: var(--measure);
   white-space: pre-line; /* Respect breaks */
+}
+
+/* Links module (right half): one link per line at the size of the accordion titles */
+.pd-links {
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-links {
+    grid-column: 1/-1;
+  }
+}
+.pd-links {
+  /* Right half */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
 }
 
 /* 7. Accordions (right half); height animation: initAccordionAnimation() */

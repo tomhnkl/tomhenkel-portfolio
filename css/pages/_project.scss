@@ -42,6 +42,8 @@
 .pd-block { margin-top: var(--space-l); }                  /* Title block → module, module → module */
 .pd-media + .pd-media { margin-top: var(--space-s); }      /* Consecutive media rows form one grid */
 .pd-text + .pd-accordions { margin-top: var(--space-m); }  /* Text and its details belong together */
+.pd-text + .pd-links,
+.pd-links + .pd-accordions { margin-top: var(--space-m); }   /* Links belong to the text and its details */
 .pd-footer-nav-title { margin-top: var(--space-l); }       /* Last module → more projects */
 .pd-footer-nav { margin-top: var(--space-m); }             /* Heading → cards */
 
@@ -270,6 +272,17 @@
     max-width: var(--measure);
     white-space: pre-line; /* Respect breaks */
   }
+}
+
+/* Links module (right half): one link per line at the size of the accordion titles */
+.pd-links {
+  @include grid-cols(7, 13); /* Right half */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
 }
 
 /* 7. Accordions (right half); height animation: initAccordionAnimation() */

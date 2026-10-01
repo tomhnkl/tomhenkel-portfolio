@@ -1,0 +1,18 @@
+/* --- Links in content (standard, 2026-10-01) ---
+   At rest like the surrounding text; links to other websites (new tab) are marked with ↗.
+   Hover/focus: Favorit Lining, the cut with the built-in underline (same as nav and footer).
+   Lining runs as wide as Regular, so nothing shifts; next to Book it is ~1 % wider. */
+.text-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    font-family: var(--font-family-lining);
+  }
+
+  &[target="_blank"]::after {
+    content: "\2009\2197"; /* thin space + ↗ */
+    content: "\2009\2197" / ""; /* decorative: not read out by screen readers */
+  }
+}
