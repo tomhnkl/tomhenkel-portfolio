@@ -50,16 +50,37 @@
   --page-margin: 25px; /* Left/right page margin (body, nav, footer) */
   --page-top: 85px; /* Space for the fixed nav (body padding-top, mobile menu) */
   --page-bottom: 65px; /* Space for the fixed footer (body padding-bottom) */
-  /* --- Motion (provisional base for the upcoming animation system) --- */
-  --duration-base: 300ms;
-  --duration-stagger: 60ms;
+  /* --- Motion System: character B "soft-flowing" (chosen 2026-10-01, fine-tuning later) ---
+     Every animation uses only these tokens:
+       fast    small feedback (hover nudge, captions)
+       base    fades, crossfades, menu, accordion
+       slow    large surfaces (loader)
+       stagger offset between items in a sequence (menu links)
+     One curve for everything: a long, soft ease-out. */
+  --duration-fast: 200ms;
+  --duration-base: 500ms;
+  --duration-slow: 900ms;
+  --duration-stagger: 90ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   /* Media reveal: tiny blurred placeholder sharpens once the real image/video has loaded */
-  --reveal-blur: 20px;
-  --duration-reveal: 200ms;
-  --ease-reveal: ease;
+  --reveal-blur: 24px;
+  --duration-reveal: 600ms;
+  --ease-reveal: var(--ease-out);
+  /* Lab canvas glide: half-life of the remaining distance (time-based, same at 60 and 120 Hz) */
+  --glide-half-life: 140ms;
 }
 
+/* Reduced motion: all durations 0, so every animation becomes an instant change */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-stagger: 0ms;
+    --duration-reveal: 0ms;
+    --glide-half-life: 0ms;
+  }
+}
 @font-face {
   font-family: "ABC Favorit";
   src: url("../fonts/ABCFavorit-Regular-Trial.otf") format("opentype");
@@ -367,7 +388,7 @@ h1 {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: transform 0.1s;
+  transition: transform var(--duration-fast) var(--ease-out);
   font-family: var(--font-family-base);
 }
 .main-footer .footer-left a::after {
@@ -413,7 +434,7 @@ h1 {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.1s;
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 .main-footer .footer-right button::after {
   content: attr(data-text);
@@ -454,7 +475,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity var(--duration-slow) var(--ease-out), visibility var(--duration-slow) var(--ease-out);
 }
 #loader.hidden {
   opacity: 0;
@@ -555,7 +576,7 @@ body.show-grid .grid-overlay {
      object-position: center center;
   display: block;
   opacity: 0;
-  transition: opacity var(--duration-base) ease;
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 .home-visual > video.visible {
   opacity: 1;
@@ -828,7 +849,7 @@ body.show-grid .grid-overlay {
 }
 .pd-hero iframe {
   opacity: 0;
-  transition: opacity var(--duration-reveal) var(--ease-reveal);
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 .pd-hero.film-visible iframe {
   opacity: 1;
@@ -856,7 +877,6 @@ body.show-grid .grid-overlay {
   cursor: pointer;
   padding: 0;
   outline: none;
-  transition: font-family 0.2s ease; /* Optional smooth font switch */
   /* Reset browser styles */
   -moz-appearance: none;
        appearance: none;
@@ -896,7 +916,7 @@ body.show-grid .grid-overlay {
   align-items: center;
   cursor: pointer;
   background: transparent;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 .pd-hero .hero-overlay .big-play-btn {
   width: 80px;
@@ -1321,7 +1341,7 @@ body.lab-page {
   font-size: var(--fs-small);
   line-height: var(--lh-small);
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity var(--duration-fast) var(--ease-out);
   background: #000;
   padding: 4px 8px;
   white-space: nowrap;

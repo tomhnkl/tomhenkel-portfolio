@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let labData = [];
     let currentLang = null;
 
+    // Motion-Tokens aus css/base/_variables.scss in ms (bei "Bewegung reduzieren" 0)
+    const motionMs = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
+
     // --- Dev: 12-Spalten-Overlay (Taste G) ---
     const gridColumns = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-columns'), 10) || 12;
     const gridOverlay = document.createElement('div');
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (loader) {
                  // Fade out
                 loader.classList.add('hidden');
-                setTimeout(() => { loader.style.display = 'none'; }, 500);
+                setTimeout(() => { loader.style.display = 'none'; }, motionMs('--duration-slow'));
             }
         } 
 
@@ -189,9 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auf- und Zuklappen mit den Motion-Tokens; offen gilt height: auto, damit Sprachwechsel
     // und Größenänderungen den Inhalt nie abschneiden. Bewegung reduzieren: ohne Animation.
     function initAccordionAnimation() {
-        const rootStyle = getComputedStyle(document.documentElement);
-        const duration = parseFloat(rootStyle.getPropertyValue('--duration-base')) || 300;
-        const easing = rootStyle.getPropertyValue('--ease-out').trim() || 'ease-out';
+        const duration = motionMs('--duration-base');
+        const easing = getComputedStyle(document.documentElement).getPropertyValue('--ease-out').trim() || 'ease-out';
 
         document.querySelectorAll('details.pd-accordion').forEach((detail) => {
             if (detail.hasAttribute('data-anim-init')) return;
@@ -206,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const open = !detail.open || closing; // Klick während des Schließens öffnet wieder
 
-                if (reduceMotion.matches || !content.animate) {
+                if (reduceMotion.matches || !duration || !content.animate) {
                     detail.open = open;
                     return;
                 }
@@ -731,7 +733,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Home: Projektliste + Vorschau (Bild als Poster, darüber Preview-Video) ---
     // Mobil: Hochformat-Video vollflächig, die Previews wechseln automatisch.
     // Desktop: Querformat-Video des Eintrags beim Hover, in Schleife.
-    const STILL_DURATION = 6000; // Standbild ohne Video (später Teil des Animationssystems)
+    const STILL_DURATION = 6000; // Standbild ohne Video (Timing der Startseite, keine Bewegung -> kein Motion-Token)
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const saveData = !!(navigator.connection && navigator.connection.saveData);
     let featuredProjects = [];
@@ -1284,9 +1286,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let isDragging = false;
         let dragStart = { x: 0, y: 0 };
         
-        // Physics for smoothness (Linear Interpolation)
-        const ease = 0.1; // 0.1 = smooth/slow, 1 = instant
-        
+        // Nachgleiten über die Zeit gerechnet: pro Halbwertszeit (--glide-half-life) halbiert sich der Restweg,
+        // gleich schnell bei 60 und 120 Hz; bei "Bewegung reduzieren" (0) folgt die Leinwand sofort
+        const halfLife = motionMs('--glide-half-life');
+
         // Initial center
         position.x = (window.innerWidth / 2) - 500; // Ungefähr mittig starten (angenommen Canvas Inhalt ist um 0,0 - 1000,1000)
         position.y = (window.innerHeight / 2) - 300;
@@ -1294,17 +1297,20 @@ document.addEventListener('DOMContentLoaded', () => {
         targetPosition.y = position.y;
 
         // Animation Loop
-        function animate() {
-            // Lerp (Linear Interpolation) für Smoothness
-            position.x += (targetPosition.x - position.x) * ease;
-            position.y += (targetPosition.y - position.y) * ease;
-            
+        let lastFrame = performance.now();
+        function animate(now) {
+            const dt = Math.min(64, now - lastFrame); // nach einem Hänger nicht springen
+            lastFrame = now;
+            const k = halfLife > 0 ? 1 - Math.pow(2, -dt / halfLife) : 1;
+            position.x += (targetPosition.x - position.x) * k;
+            position.y += (targetPosition.y - position.y) * k;
+
             // Apply transform sub-pixel perfect
             canvas.style.transform = `translate3d(${position.x.toFixed(2)}px, ${position.y.toFixed(2)}px, 0)`;
-            
+
             requestAnimationFrame(animate);
         }
-        animate(); // Start loop
+        animate(lastFrame); // Start loop
 
         // Event Listeners
         container.addEventListener('mousedown', (e) => {

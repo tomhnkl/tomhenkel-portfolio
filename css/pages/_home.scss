@@ -23,7 +23,7 @@
     object-position: center center;
     display: block;
     opacity: 0;
-    transition: opacity var(--duration-base) ease;
+    transition: opacity var(--duration-base) var(--ease-out);
 
     &.visible {
       opacity: 1;

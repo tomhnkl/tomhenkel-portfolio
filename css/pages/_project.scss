@@ -55,7 +55,7 @@
   /* Film fades in over the teaser once it plays */
   iframe {
     opacity: 0;
-    transition: opacity var(--duration-reveal) var(--ease-reveal);
+    transition: opacity var(--duration-base) var(--ease-out);
   }
 
   &.film-visible iframe { opacity: 1; }
@@ -81,7 +81,6 @@
       cursor: pointer;
       padding: 0;
       outline: none;
-      transition: font-family 0.2s ease; /* Optional smooth font switch */
 
       /* Reset browser styles */
       appearance: none;
@@ -119,7 +118,7 @@
     align-items: center;
     cursor: pointer;
     background: transparent;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--duration-base) var(--ease-out);
 
     .big-play-btn {
       width: 80px;

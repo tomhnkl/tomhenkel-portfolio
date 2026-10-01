@@ -203,7 +203,7 @@
       display: inline-flex; 
       flex-direction: column;
       align-items: flex-start;
-      transition: transform 0.1s; 
+      transition: transform var(--duration-fast) var(--ease-out);
       font-family: var(--font-family-base);
       
       &::after {
@@ -252,7 +252,7 @@
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.1s;
+      transition: transform var(--duration-fast) var(--ease-out);
 
       &::after {
         content: attr(data-text);
