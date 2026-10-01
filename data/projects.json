@@ -99,43 +99,82 @@
     "year": "2024",
     "hero": {
       "image": { "src": "images/projects/sono-bricolage/hero.webp", "width": 2560, "height": 1440 },
-      "film": { "vimeo": "87543210" }
+      "teaser": "videos/projects/sono-bricolage/teaser.mp4"
     },
+    "preview": { "portrait": "videos/projects/sono-bricolage/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/01.webp", "width": 2560, "height": 1440 }]
+      },
+      {
+        "type": "media",
         "cols": [6, 6],
+        "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/01.webp", "width": 1440, "height": 960 },
-          { "type": "image", "src": "images/projects/sono-bricolage/02.webp", "width": 1440, "height": 960 }
+          { "type": "image", "src": "images/projects/sono-bricolage/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/sono-bricolage/03.webp", "width": 1440, "height": 1800 }
         ]
       },
       {
         "type": "text",
         "text": {
-          "de": "Eine auditive Reise durch gefundene Objekte und synthetische Klänge. Sono Bricolage verbindet analoge Geräuschquellen mit digitaler Granularsynthese zu einem neuartigen Klangteppich.",
-          "en": "An auditory journey through found objects and synthetic sounds. Sono Bricolage combines analog noise sources with digital granular synthesis to create a novel soundscape."
+          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
+          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
         }
       },
       {
         "type": "accordions",
         "items": [
           {
-            "title": { "de": "Setup", "en": "Setup" },
-            "content": { "de": "Analog Synthesizer, Field Recordings, MaxMSP.", "en": "Analog Synthesizer, Field Recordings, MaxMSP." }
+            "title": { "de": "Konzept", "en": "Concept" },
+            "media": [{ "type": "image", "src": "images/projects/sono-bricolage/accordion-1.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           },
           {
-            "title": { "de": "Credits", "en": "Credits" },
-            "content": { "de": "Konzept & Sound: Tom Henkel", "en": "Concept & Sound: Tom Henkel" }
+            "title": { "de": "Umsetzung", "en": "Realisation" },
+            "media": [{ "type": "image", "src": "images/projects/sono-bricolage/accordion-2.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "ratio": "16:9",
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/04.webp", "width": 1080, "height": 1242 },
+          {
+            "type": "video",
+            "src": "videos/projects/sono-bricolage/05.mp4",
+            "poster": "images/projects/sono-bricolage/05.webp",
+            "width": 1920,
+            "height": 1080
           }
         ]
       },
       {
         "type": "media",
         "cols": [6],
-        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/03.webp", "width": 1440, "height": 960 }]
+        "start": 7,
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/06.webp", "width": 1440, "height": 960 }]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
+          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
+        }
       }
     ],
+    "personal": {
+      "title": { "de": "Persönlich", "en": "Personal" },
+      "text": {
+        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
+        "en": "Placeholder: a personal note on the project will go here."
+      }
+    },
     "de": { "title": "sono bricolage", "category": "Klangexperiment", "subtitle": "Experimentelle Klangforschung." },
     "en": { "title": "sono bricolage", "category": "sound experiment", "subtitle": "Experimental sound research." }
   },
@@ -143,37 +182,84 @@
     "id": "lonis-weltraumreise",
     "featured": true,
     "year": "2023",
-    "hero": { "image": { "src": "images/projects/lonis-weltraumreise/hero.webp", "width": 2560, "height": 1440 } },
+    "hero": {
+      "image": { "src": "images/projects/lonis-weltraumreise/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "videos/projects/lonis-weltraumreise/teaser.mp4"
+    },
+    "preview": { "portrait": "videos/projects/lonis-weltraumreise/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/01.webp", "width": 2560, "height": 1440 }]
+      },
+      {
+        "type": "media",
         "cols": [6, 6],
+        "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/01.webp", "width": 1440, "height": 960 },
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/02.webp", "width": 1440, "height": 960 }
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/03.webp", "width": 1440, "height": 1800 }
         ]
       },
       {
         "type": "text",
         "text": {
-          "de": "Begleite Loni auf einer spannenden Reise durch das Universum. Eine interaktive Webanwendung, die Kindern spielerisch astronomische Konzepte vermittelt.",
-          "en": "Join Loni on an exciting journey through the universe. An interactive web application that teaches children astronomical concepts in a playful way."
+          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
+          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
         }
       },
       {
         "type": "accordions",
         "items": [
           {
-            "title": { "de": "Technologie", "en": "Technology" },
-            "content": { "de": "Three.js, React, WebGL.", "en": "Three.js, React, WebGL." }
+            "title": { "de": "Konzept", "en": "Concept" },
+            "media": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/accordion-1.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           },
           {
-            "title": { "de": "Zielgruppe", "en": "Target Group" },
-            "content": { "de": "Kinder von 6-10 Jahren.", "en": "Children aged 6-10." }
+            "title": { "de": "Umsetzung", "en": "Realisation" },
+            "media": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/accordion-2.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           }
         ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "ratio": "16:9",
+        "items": [
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/04.webp", "width": 1080, "height": 1242 },
+          {
+            "type": "video",
+            "src": "videos/projects/lonis-weltraumreise/05.mp4",
+            "poster": "images/projects/lonis-weltraumreise/05.webp",
+            "width": 1920,
+            "height": 1080
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [6],
+        "start": 7,
+        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/06.webp", "width": 1440, "height": 960 }]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
+          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
+        }
       }
     ],
+    "personal": {
+      "title": { "de": "Persönlich", "en": "Personal" },
+      "text": {
+        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
+        "en": "Placeholder: a personal note on the project will go here."
+      }
+    },
     "de": { "title": "lonis weltraumreise", "category": "Webanwendung", "subtitle": "Interaktive Geschichte für Kinder." },
     "en": { "title": "lonis weltraumreise", "category": "web application", "subtitle": "Interactive story for children." }
   },
@@ -181,25 +267,84 @@
     "id": "present",
     "featured": true,
     "year": "2023",
-    "hero": { "image": { "src": "images/projects/present/hero.webp", "width": 2560, "height": 1440 } },
+    "hero": {
+      "image": { "src": "images/projects/present/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "videos/projects/present/teaser.mp4"
+    },
+    "preview": { "portrait": "videos/projects/present/preview-portrait.mp4" },
     "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/present/01.webp", "width": 2560, "height": 1440 }]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "ratio": "4:5",
+        "items": [
+          { "type": "image", "src": "images/projects/present/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/present/03.webp", "width": 1440, "height": 1800 }
+        ]
+      },
       {
         "type": "text",
         "text": {
-          "de": "Erforschung moderner Interface-Paradigmen. Wie interagieren wir heute mit Daten, und wie könnte dies morgen aussehen?",
-          "en": "Exploration of modern interface paradigms. How do we interact with data today, and what could this look like tomorrow?"
+          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
+          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
         }
       },
       {
         "type": "accordions",
         "items": [
           {
-            "title": { "de": "Kontext", "en": "Context" },
-            "content": { "de": "Uniprozess 2023.", "en": "University Project 2023." }
+            "title": { "de": "Konzept", "en": "Concept" },
+            "media": [{ "type": "image", "src": "images/projects/present/accordion-1.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
+          },
+          {
+            "title": { "de": "Umsetzung", "en": "Realisation" },
+            "media": [{ "type": "image", "src": "images/projects/present/accordion-2.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           }
         ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "ratio": "16:9",
+        "items": [
+          { "type": "image", "src": "images/projects/present/04.webp", "width": 1080, "height": 1242 },
+          {
+            "type": "video",
+            "src": "videos/projects/present/05.mp4",
+            "poster": "images/projects/present/05.webp",
+            "width": 1920,
+            "height": 1080
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [6],
+        "start": 7,
+        "items": [{ "type": "image", "src": "images/projects/present/06.webp", "width": 1440, "height": 960 }]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
+          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
+        }
       }
     ],
+    "personal": {
+      "title": { "de": "Persönlich", "en": "Personal" },
+      "text": {
+        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
+        "en": "Placeholder: a personal note on the project will go here."
+      }
+    },
     "de": { "title": "present", "category": "Interface", "subtitle": "Design für die Gegenwart." },
     "en": { "title": "present", "category": "interface", "subtitle": "Design for the present." }
   },
@@ -207,25 +352,84 @@
     "id": "boomtschakkaboom",
     "featured": true,
     "year": "2022",
-    "hero": { "image": { "src": "images/projects/boomtschakkaboom/hero.webp", "width": 2560, "height": 1440 } },
+    "hero": {
+      "image": { "src": "images/projects/boomtschakkaboom/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "videos/projects/boomtschakkaboom/teaser.mp4"
+    },
+    "preview": { "portrait": "videos/projects/boomtschakkaboom/preview-portrait.mp4" },
     "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/01.webp", "width": 2560, "height": 1440 }]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "ratio": "4:5",
+        "items": [
+          { "type": "image", "src": "images/projects/boomtschakkaboom/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/boomtschakkaboom/03.webp", "width": 1440, "height": 1800 }
+        ]
+      },
       {
         "type": "text",
         "text": {
-          "de": "Wenn Sound auf Licht trifft. Eine Installation, die Trommelschläge in Lichtimpulse übersetzt und den Raum in eine visuelle Echokammer verwandelt.",
-          "en": "When sound meets light. An installation that translates drum beats into light impulses, transforming the space into a visual echo chamber."
+          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
+          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
         }
       },
       {
         "type": "accordions",
         "items": [
           {
-            "title": { "de": "Technik", "en": "Tech" },
-            "content": { "de": "DMX Steuerung, Ableton Live.", "en": "DMX Control, Ableton Live." }
+            "title": { "de": "Konzept", "en": "Concept" },
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/accordion-1.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
+          },
+          {
+            "title": { "de": "Umsetzung", "en": "Realisation" },
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/accordion-2.webp", "width": 1440, "height": 960 }],
+            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           }
         ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "ratio": "16:9",
+        "items": [
+          { "type": "image", "src": "images/projects/boomtschakkaboom/04.webp", "width": 1080, "height": 1242 },
+          {
+            "type": "video",
+            "src": "videos/projects/boomtschakkaboom/05.mp4",
+            "poster": "images/projects/boomtschakkaboom/05.webp",
+            "width": 1920,
+            "height": 1080
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [6],
+        "start": 7,
+        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/06.webp", "width": 1440, "height": 960 }]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
+          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
+        }
       }
     ],
+    "personal": {
+      "title": { "de": "Persönlich", "en": "Personal" },
+      "text": {
+        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
+        "en": "Placeholder: a personal note on the project will go here."
+      }
+    },
     "de": { "title": "boomtschakkaboom", "category": "Installation", "subtitle": "Rhythmische Lichtinstallation." },
     "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmic light installation." }
   }
