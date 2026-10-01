@@ -125,21 +125,6 @@
         }
       },
       {
-        "type": "accordions",
-        "items": [
-          {
-            "title": { "de": "Konzept", "en": "Concept" },
-            "media": [{ "type": "image", "src": "images/projects/sono-bricolage/accordion-1.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
-          },
-          {
-            "title": { "de": "Umsetzung", "en": "Realisation" },
-            "media": [{ "type": "image", "src": "images/projects/sono-bricolage/accordion-2.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
-          }
-        ]
-      },
-      {
         "type": "media",
         "cols": [4, 8],
         "ratio": "16:9",
