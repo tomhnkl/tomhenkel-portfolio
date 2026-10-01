@@ -523,27 +523,6 @@ body.show-grid .grid-overlay {
   }
 }
 
-/* --- Dev: short status note (e.g. smooth scroll mode, key S, see main.js) --- */
-.dev-toast {
-  position: fixed;
-  left: 50%;
-  bottom: calc(var(--page-bottom) + var(--space-s));
-  transform: translateX(-50%);
-  z-index: 9998;
-  padding: 6px 12px;
-  background: #fff;
-  color: #000;
-  font-family: var(--font-family-base);
-  font-size: var(--fs-small);
-  line-height: var(--lh-small);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--duration-base) var(--ease-out);
-}
-.dev-toast.is-visible {
-  opacity: 1;
-}
-
 /* --- Media Reveal (images + videos, site-wide) ---
    A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
    Markup + loading: mediaHTML() / initMediaReveal() in main.js */

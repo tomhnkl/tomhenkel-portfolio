@@ -947,53 +947,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Smooth Scroll (Lenis, selbst gehostet in js/vendor): nur Mausrad/Trackpad, Touch bleibt nativ ---
     // Die Scroll-Position bleibt nativ (Lazy-Loading, fixierte Nav/Footer, Akkordeons laufen unverändert).
     // Stärke: --scroll-settle = Zeit, bis ein Rad-Schritt zu ~95 % angekommen ist; aus bei "Bewegung reduzieren" und im Lab.
-    // TEST: Taste S schaltet an / aus zum Vergleich mit nativem Scrollen.
-    let lenis = null;
-
-    function setSmoothScroll(on) {
-        if (lenis) {
-            lenis.destroy();
-            lenis = null;
-        }
+    function initSmoothScroll() {
         const settle = motionMs('--scroll-settle') / 1000;
-        if (!on || !settle || !window.Lenis || reduceMotion.matches || document.body.classList.contains('lab-page')) return;
+        if (!settle || !window.Lenis || reduceMotion.matches || document.body.classList.contains('lab-page')) return;
         // Lenis dämpft pro 1/60 s um den Anteil lerp (über die Zeit gerechnet): Restweg 5 % nach settle Sekunden
-        const lerp = Math.min(1, Math.log(20) / (settle * 60));
-        const instance = new Lenis({ lerp, smoothWheel: true, syncTouch: false });
-        lenis = instance;
+        const lenis = new Lenis({ lerp: Math.min(1, Math.log(20) / (settle * 60)), smoothWheel: true, syncTouch: false });
         const raf = (time) => {
-            if (lenis !== instance) return; // nach dem Umschalten endet die alte Schleife
-            instance.raf(time);
+            lenis.raf(time);
             requestAnimationFrame(raf);
         };
         requestAnimationFrame(raf);
     }
-
-    let devToastTimer;
-    function showDevToast(text) {
-        let toast = document.querySelector('.dev-toast');
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.className = 'dev-toast';
-            document.body.appendChild(toast);
-        }
-        toast.textContent = text;
-        toast.classList.add('is-visible');
-        clearTimeout(devToastTimer);
-        devToastTimer = setTimeout(() => toast.classList.remove('is-visible'), 1600);
-    }
-
-    let smoothOn = localStorage.getItem('smoothScroll') !== 'aus';
-    setSmoothScroll(smoothOn);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.repeat || (e.key || '').toLowerCase() !== 's' || e.metaKey || e.ctrlKey || e.altKey) return;
-        if (e.target.closest('input, textarea, [contenteditable]')) return;
-        smoothOn = !smoothOn;
-        localStorage.setItem('smoothScroll', smoothOn ? 'an' : 'aus');
-        setSmoothScroll(smoothOn);
-        showDevToast(smoothOn ? `Scrollen: an (${motionMs('--scroll-settle')} ms)` : 'Scrollen: aus');
-    });
+    initSmoothScroll();
 
     // HTML aus JSON-Texten entfernen (für Attribute und document.title)
     const stripTags = (html) => html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
