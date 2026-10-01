@@ -10,14 +10,24 @@
   box-sizing: border-box;
 }
 
-/* Headings carry the structure (h1 title; h2 subtitle and more projects; h3 meta, text and accordion titles).
-   Their look comes from the type tokens, so the browser defaults are reset;
-   :where() keeps specificity at 0, so the class rules below still decide size and spacing. */
+/* Headings: one size per level, set on the tag (h1 display via .pd-title, h2 title, h3 ui).
+   h1 project title; h2 subtitle and more projects; h3 category/year, text, personal and accordion titles.
+   Browser defaults are reset; :where() keeps specificity at 0, so classes only add layout and cut. */
 :where(#project-detail) :where(h2, h3) {
   margin: 0;
-  font-size: inherit;
   font-weight: inherit;
-  line-height: inherit;
+}
+
+:where(#project-detail) :where(h2) {
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+}
+
+:where(#project-detail) :where(h3) {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  letter-spacing: normal;
 }
 
 /* Default: unplaced children (e.g. "Project not found") span the full width.
@@ -184,9 +194,6 @@
     flex-direction: column; /* Stack vertically */
     align-items: flex-end;  /* Align to the right edge */
     text-align: right;      /* Text alignment */
-
-    font-size: var(--fs-ui);
-    line-height: var(--lh-ui);
     font-family: var(--font-family-base);
     color: #fff;
     @include grid-cols(7, 13);
@@ -199,9 +206,7 @@
 
 /* 4. Subtitle (second row inside .pd-title-row) */
 .pd-subtitle {
-  font-size: var(--fs-ui);
-  line-height: var(--lh-ui);
-  font-family: var(--font-family-book);
+  font-family: var(--font-family-book); /* h2 size (title) */
   color: #fff;
   margin-top: var(--space-s);
   @include grid-cols(1, 7); /* Left half */
@@ -254,10 +259,7 @@
   @include grid-cols(7, 13); /* Right half */
 
   .pd-text-title {
-    margin: 0 0 var(--space-s);
-    font-size: var(--fs-title);
-    line-height: var(--lh-title);
-    letter-spacing: var(--ls-title);
+    margin: 0 0 var(--space-s); /* h3 size (ui) */
     font-family: var(--font-family-base);
   }
 
@@ -268,13 +270,6 @@
     max-width: var(--measure);
     white-space: pre-line; /* Respect breaks */
   }
-}
-
-/* Personal closing text (project.personal): heading at the size of the accordion titles */
-.pd-personal .pd-text-title {
-  font-size: var(--fs-ui);
-  line-height: var(--lh-ui);
-  letter-spacing: normal;
 }
 
 /* 7. Accordions (right half); height animation: initAccordionAnimation() */
@@ -360,10 +355,7 @@ details.pd-accordion {
 
 /* 8. More projects: previous / next */
 .pd-footer-nav-title {
-  font-size: var(--fs-title);
-  line-height: var(--lh-title);
-  letter-spacing: var(--ls-title);
-  font-family: var(--font-family-base);
+  font-family: var(--font-family-base); /* h2 size (title) */
   @include grid-cols(1, 7); /* Left half */
 }
 
