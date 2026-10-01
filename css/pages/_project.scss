@@ -10,6 +10,16 @@
   box-sizing: border-box;
 }
 
+/* Headings carry the structure (h1 title; h2 subtitle and more projects; h3 meta, text and accordion titles).
+   Their look comes from the type tokens, so the browser defaults are reset;
+   :where() keeps specificity at 0, so the class rules below still decide size and spacing. */
+:where(#project-detail) :where(h2, h3) {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
 /* Default: unplaced children (e.g. "Project not found") span the full width.
    :where() keeps specificity at 0, so the .pd-* placements below still win. */
 :where(#project-detail) > * {
@@ -253,7 +263,7 @@
 
   .pd-text-body {
     font-size: var(--fs-body);
-    font-family: var(--font-family-base);
+    font-family: var(--font-family-book); /* Running text in Book, titles and UI in Regular */
     line-height: var(--lh-body);
     max-width: var(--measure);
     white-space: pre-line; /* Respect breaks */
@@ -307,7 +317,7 @@ details.pd-accordion {
 
   .accordion-content {
     font-size: var(--fs-body);
-    font-family: var(--font-family-base);
+    font-family: var(--font-family-book); /* Running text */
     line-height: var(--lh-body);
     color: #fff;
     padding-bottom: var(--space-s);

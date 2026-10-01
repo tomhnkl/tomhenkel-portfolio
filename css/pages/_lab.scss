@@ -75,7 +75,7 @@ body.lab-page {
     width: 300px;
     
     h3 { margin-top: 0; font-family: var(--font-family-lining); font-size: var(--fs-ui); line-height: var(--lh-ui); }
-    p { margin-bottom: 0; color: #ccc; font-size: var(--fs-body); line-height: var(--lh-body); }
+    p { margin-bottom: 0; color: #ccc; font-family: var(--font-family-book); font-size: var(--fs-body); line-height: var(--lh-body); }
   }
 
   /* Caption Overlay on Hover */

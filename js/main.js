@@ -1029,7 +1029,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return `<div class="pd-block pd-accordions" data-block="${index}">${items.map((acc, i) => `
                 <details class="pd-accordion">
-                    <summary>${localized(acc.title, lang)}</summary>
+                    <summary><h3 class="pd-accordion-title">${localized(acc.title, lang)}</h3></summary>
                     <div class="accordion-content">${accordionMediaHTML(acc, lang, project, index, i)}<div class="accordion-text">${localized(acc.content, lang)}</div></div>
                 </details>`).join('')}
             </div>`;
@@ -1068,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
             html: accordionsBlockHTML,
             update: (el, block, lang) => el.querySelectorAll('.pd-accordion').forEach((detail, i) => {
                 const acc = block.items[i];
-                detail.querySelector('summary').innerHTML = localized(acc.title, lang);
+                detail.querySelector('.pd-accordion-title').innerHTML = localized(acc.title, lang);
                 detail.querySelector('.accordion-text').innerHTML = localized(acc.content, lang);
                 detail.querySelectorAll('.accordion-media-item').forEach(cell => {
                     const img = cell.querySelector('img');
@@ -1160,15 +1160,15 @@ document.addEventListener('DOMContentLoaded', () => {
             ${heroHTML(project, lang, film)}
             <div class="pd-title-row">
                 <h1 class="pd-title">${content.title}</h1>
-                <div class="pd-meta">
+                <h3 class="pd-meta">
                     <span class="pd-cat">${content.category || ''}</span>
                     <span class="pd-year">${project.year || ''}</span>
-                </div>
-                <div class="pd-subtitle">${content.subtitle || ''}</div>
+                </h3>
+                <h2 class="pd-subtitle">${content.subtitle || ''}</h2>
             </div>
             ${blocksHTML(project, lang)}
             ${personalHTML(project, lang)}
-            <div class="pd-footer-nav-title">${moreTitle}</div>
+            <h2 class="pd-footer-nav-title">${moreTitle}</h2>
             <div class="pd-footer-nav">
                 ${projectCardHTML(prevP, lang)}
                 ${projectCardHTML(nextP, lang)}
