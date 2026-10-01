@@ -946,18 +946,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Smooth Scroll (Lenis, selbst gehostet in js/vendor): nur Mausrad/Trackpad, Touch bleibt nativ ---
     // Die Scroll-Position bleibt nativ (Lazy-Loading, fixierte Nav/Footer, Akkordeons laufen unverändert).
-    // Aus bei "Bewegung reduzieren" und im Lab (eigenes Ziehen).
-    // TEST: Taste S wechselt aus / subtil / weich, bis die Stärke als Motion-Token feststeht.
-    const SCROLL_MODES = { aus: null, subtil: 0.1, weich: 0.05 }; // lerp: pro 1/60 s geht dieser Anteil des Restwegs (über die Zeit gerechnet)
+    // Stärke: --scroll-settle = Zeit, bis ein Rad-Schritt zu ~95 % angekommen ist; aus bei "Bewegung reduzieren" und im Lab.
+    // TEST: Taste S schaltet an / aus zum Vergleich mit nativem Scrollen.
     let lenis = null;
 
-    function setSmoothScroll(mode) {
+    function setSmoothScroll(on) {
         if (lenis) {
             lenis.destroy();
             lenis = null;
         }
-        const lerp = SCROLL_MODES[mode];
-        if (!lerp || !window.Lenis || reduceMotion.matches || document.body.classList.contains('lab-page')) return;
+        const settle = motionMs('--scroll-settle') / 1000;
+        if (!on || !settle || !window.Lenis || reduceMotion.matches || document.body.classList.contains('lab-page')) return;
+        // Lenis dämpft pro 1/60 s um den Anteil lerp (über die Zeit gerechnet): Restweg 5 % nach settle Sekunden
+        const lerp = Math.min(1, Math.log(20) / (settle * 60));
         const instance = new Lenis({ lerp, smoothWheel: true, syncTouch: false });
         lenis = instance;
         const raf = (time) => {
@@ -982,18 +983,16 @@ document.addEventListener('DOMContentLoaded', () => {
         devToastTimer = setTimeout(() => toast.classList.remove('is-visible'), 1600);
     }
 
-    const scrollModeNames = Object.keys(SCROLL_MODES);
-    let scrollMode = localStorage.getItem('smoothScroll');
-    if (!scrollModeNames.includes(scrollMode)) scrollMode = 'weich';
-    setSmoothScroll(scrollMode);
+    let smoothOn = localStorage.getItem('smoothScroll') !== 'aus';
+    setSmoothScroll(smoothOn);
 
     document.addEventListener('keydown', (e) => {
         if (e.repeat || (e.key || '').toLowerCase() !== 's' || e.metaKey || e.ctrlKey || e.altKey) return;
         if (e.target.closest('input, textarea, [contenteditable]')) return;
-        scrollMode = scrollModeNames[(scrollModeNames.indexOf(scrollMode) + 1) % scrollModeNames.length];
-        localStorage.setItem('smoothScroll', scrollMode);
-        setSmoothScroll(scrollMode);
-        showDevToast(`Scrollen: ${scrollMode}`);
+        smoothOn = !smoothOn;
+        localStorage.setItem('smoothScroll', smoothOn ? 'an' : 'aus');
+        setSmoothScroll(smoothOn);
+        showDevToast(smoothOn ? `Scrollen: an (${motionMs('--scroll-settle')} ms)` : 'Scrollen: aus');
     });
 
     // HTML aus JSON-Texten entfernen (für Attribute und document.title)

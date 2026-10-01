@@ -68,6 +68,8 @@
   --ease-reveal: var(--ease-out);
   /* Lab canvas glide: half-life of the remaining distance (time-based, same at 60 and 120 Hz) */
   --glide-half-life: 140ms;
+  /* Smooth scroll (wheel/trackpad): time until a wheel step has arrived (~95 %) */
+  --scroll-settle: 300ms;
 }
 
 /* Reduced motion: all durations 0, so every animation becomes an instant change */
@@ -79,6 +81,7 @@
     --duration-stagger: 0ms;
     --duration-reveal: 0ms;
     --glide-half-life: 0ms;
+    --scroll-settle: 0ms;
   }
 }
 @font-face {
