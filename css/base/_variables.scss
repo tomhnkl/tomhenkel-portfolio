@@ -84,7 +84,7 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
   --glide-half-life: 140ms;
 
   /* Smooth scroll (wheel/trackpad): time until a wheel step has arrived (~95 %) */
-  --scroll-settle: 300ms;
+  --scroll-settle: 150ms;
 }
 
 /* Reduced motion: all durations 0, so every animation becomes an instant change */
