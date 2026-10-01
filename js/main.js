@@ -1152,6 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (container.getAttribute('data-rendered-id') === pid) {
             container.querySelector('.pd-title').innerHTML = content.title;
             container.querySelector('.pd-cat').innerHTML = content.category || '';
+            container.querySelector('.pd-year').innerHTML = localized(project.year, lang); // z. B. { de: "seit 2023", en: "since 2023" }
             container.querySelector('.pd-subtitle').innerHTML = content.subtitle || '';
             container.querySelectorAll('[data-block]').forEach(el => {
                 const block = project.blocks[el.dataset.block];
@@ -1178,7 +1179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h1 class="pd-title">${content.title}</h1>
                 <h3 class="pd-meta">
                     <span class="pd-cat">${content.category || ''}</span>
-                    <span class="pd-year">${project.year || ''}</span>
+                    <span class="pd-year">${localized(project.year, lang)}</span>
                 </h3>
                 <h2 class="pd-subtitle">${content.subtitle || ''}</h2>
             </div>

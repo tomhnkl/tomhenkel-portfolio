@@ -166,7 +166,7 @@
   {
     "id": "lonis-weltraumreise",
     "featured": true,
-    "year": "2023",
+    "year": { "de": "seit 2023", "en": "since 2023" },
     "hero": {
       "image": { "src": "images/projects/lonis-weltraumreise/hero.webp", "width": 2560, "height": 1440 },
       "teaser": "videos/projects/lonis-weltraumreise/teaser.mp4",
@@ -191,24 +191,9 @@
       {
         "type": "text",
         "text": {
-          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
-          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
+          "de": "Die Diagnose Krebs ist nicht nur für Betroffene selbst eine große Herausforderung – auch Kinder spüren schnell, dass sich etwas verändert. Viele Eltern stehen vor der schwierigen Frage: Wie erkläre ich meinem Kind meine Krankheit, ohne es zu überfordern oder zu ängstigen?\n\nLonis Weltraumreise setzt genau hier an: Die interaktive Geschichte schafft einen geschützten Rahmen, in dem Kinder auf spielerische Weise verstehen lernen, was Krebs ist, wie er behandelt wird und wie sich der Alltag dadurch verändern kann. Eltern wählen aus, welcher Elternteil erkrankt ist und welche Therapieformen anstehen; die Geschichte passt sich daraufhin an die Situation der Familie an.\n\nIn vier Kapiteln lernen die Kinder Loni und das Leben im Raumschiff kennen, erfahren von Dr. Medika, wie Krebs entsteht, besuchen die Therapie-Planeten und blicken mit Loni auf ihre Reise zurück. Interaktive Elemente am Ende jedes Abschnitts festigen das Erlernte spielerisch.",
+          "en": "A cancer diagnosis is a major challenge not only for those affected – children, too, quickly sense that something is changing. Many parents face the difficult question: how do I explain my illness to my child without overwhelming or frightening them?\n\nLonis Weltraumreise (Loni's Space Journey) starts right here: the interactive story creates a safe space in which children playfully learn what cancer is, how it is treated and how everyday life may change. Parents choose which parent is ill and which treatments lie ahead; the story then adapts to the family's situation.\n\nIn four chapters, children get to know Loni and life on the spaceship, learn from Dr. Medika how cancer develops, visit the therapy planets and look back on the journey with Loni. Interactive elements at the end of each section playfully consolidate what they have learned."
         }
-      },
-      {
-        "type": "accordions",
-        "items": [
-          {
-            "title": { "de": "Konzept", "en": "Concept" },
-            "media": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/accordion-1.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
-          },
-          {
-            "title": { "de": "Umsetzung", "en": "Realisation" },
-            "media": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/accordion-2.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
-          }
-        ]
       },
       {
         "type": "media",
@@ -234,9 +219,35 @@
       {
         "type": "text",
         "text": {
-          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
-          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
+          "de": "Das transdisziplinäre Projekt entstand im Innovationslabor der Technischen Hochschule Augsburg gemeinsam mit dem Tumorzentrum Freiburg – CCCF und „Tigerherz … wenn Eltern Krebs haben“. Zehn Studierende der Interaktiven Medien entwickelten ab Oktober 2023 die Idee, die Geschichte, einen eigenen Grafikstil und einen ersten Prototyp als React-Web-App.\n\nVon März 2024 bis März 2025 wurde die Web-App von Philipp Hettenkofer, Elias Ginter und Tom Henkel im Innolab weiterentwickelt, optimiert und um ein Glossar sowie weitere interaktive Elemente ergänzt. Die Geschichte wurde mit medizinischem Fachpersonal geprüft und mit einer Drehbuchautorin sprachlich an die Zielgruppe angepasst.\n\nNach Usability-Tests wurde die Web-App 2025 in einer Pilotstudie wissenschaftlich überprüft und auf der Jahrestagung der Arbeitsgemeinschaft Psychoonkologie in Würzburg vorgestellt. Seit Januar 2026 steht sie Familien und Fachpersonal als digitales Unterstützungsangebot zur Verfügung; 2026 wurde das Projekt mit dem ADC Talent Award ausgezeichnet.",
+          "en": "The transdisciplinary project was created at the innovation lab of the Technical University of Applied Sciences Augsburg together with the Freiburg Comprehensive Cancer Center (CCCF) and „Tigerherz … wenn Eltern Krebs haben“, a counselling service for families in which a parent has cancer. From October 2023, ten Interactive Media students developed the idea, the story, a distinct illustration style and a first prototype as a React web app.\n\nFrom March 2024 to March 2025, Philipp Hettenkofer, Elias Ginter and Tom Henkel developed the web app further at the Innolab, optimized it and added a glossary and further interactive elements. The story was fact-checked with medical professionals and adapted linguistically to the target group together with a screenwriter.\n\nAfter usability tests, the web app was scientifically evaluated in a pilot study in 2025 and presented at the annual conference of the Psycho-Oncology Working Group in Würzburg. Since January 2026 it has been available to families and professionals as a digital support service; in 2026 the project received an ADC Talent Award."
         }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Team & Partner", "en": "Team & partners" },
+            "content": {
+              "de": "Studierende: Lisa Kerridge, Florentine Schwab, Elisabeth Breitenhuber, Lena Vogentanz, Tom Henkel, Elias Ginter, Alexandra Zerbe, Philipp Hettenkofer, Leonie Bulling, Johannes Dejori\nProfessor*innen: Prof. Dr. Alexandra Teynor, Prof. Daniel Rothaug\nWissenschaftliche Mitarbeit: Fabian Kopf\nDrehbuch: Alexandra Heneka\nMit Psychoonkolog*innen, Sozialwissenschaftler*innen und medizinischem Fachpersonal des Universitätsklinikums Freiburg sowie Familien mit Krebserkrankungen.\n\nPartner: Innovationslabor der Technischen Hochschule Augsburg (THA_innolab), Tumorzentrum Freiburg – CCCF, „Tigerherz … wenn Eltern Krebs haben“ (Ansprechpartnerin: Dr.in Stefanie Pietsch)\nGefördert durch: Wilhelm Giesin Stiftung, Hans-Benedikt Stiftung\nSchrift: Rumiko von TypeMates",
+              "en": "Students: Lisa Kerridge, Florentine Schwab, Elisabeth Breitenhuber, Lena Vogentanz, Tom Henkel, Elias Ginter, Alexandra Zerbe, Philipp Hettenkofer, Leonie Bulling, Johannes Dejori\nProfessors: Prof. Dr. Alexandra Teynor, Prof. Daniel Rothaug\nResearch associate: Fabian Kopf\nScreenplay: Alexandra Heneka\nWith psycho-oncologists, social scientists and medical staff of the University Medical Center Freiburg as well as families affected by cancer.\n\nPartners: innovation lab of the Technical University of Applied Sciences Augsburg (THA_innolab), Freiburg Comprehensive Cancer Center (CCCF), „Tigerherz … wenn Eltern Krebs haben“ (contact: Dr. Stefanie Pietsch)\nFunded by: Wilhelm Giesin Stiftung, Hans-Benedikt Stiftung\nTypeface: Rumiko by TypeMates"
+            }
+          },
+          {
+            "title": { "de": "Zeitlicher Verlauf", "en": "Timeline" },
+            "content": {
+              "de": "Oktober 2023: Idee und Konzeption, Design-Thinking-Workshop in Freiburg\nOktober 2023 – März 2024: Geschichte, Grafikstil und erster Prototyp, ausgestellt beim Sichtraum der THA\nMärz 2024 – März 2025: Weiterentwicklung im Innolab\nNovember 2024 – März 2025: Usability-Tests und Ethikantrag\nFebruar – April 2025: Pilotstudie\nSeptember 2025: Vorstellung auf der 23. Jahrestagung der Arbeitsgemeinschaft Psychoonkologie (PSO) der Deutschen Krebsgesellschaft in Würzburg\nJanuar 2026: Dauerbetrieb\nJuni 2026: ADC Talent Award",
+              "en": "October 2023: idea and concept, design thinking workshop in Freiburg\nOctober 2023 – March 2024: story, illustration style and first prototype, exhibited at the THA Sichtraum\nMarch 2024 – March 2025: further development at the Innolab\nNovember 2024 – March 2025: usability tests and ethics application\nFebruary – April 2025: pilot study\nSeptember 2025: presentation at the 23rd annual conference of the Psycho-Oncology Working Group (PSO) of the German Cancer Society in Würzburg\nJanuary 2026: permanent operation\nJune 2026: ADC Talent Award"
+            }
+          },
+          {
+            "title": { "de": "Studie", "en": "Study" },
+            "content": {
+              "de": "Von Februar bis April 2025 wurde die Web-App in einer Pilotstudie im Mixed-Methods-Design wissenschaftlich überprüft. Die Studie wurde von der Ethikkommission der Albert-Ludwigs-Universität Freiburg bewilligt (Antragsnummer 25-1091-S1) und ist im Deutschen Register Klinischer Studien registriert (DRKS00036255).\n\nGetestet haben erwachsene Patient*innen und Angehörige, die Kinder sowie psychoonkologisches und medizinisches Fachpersonal, auf einem Tablet mit der vorinstallierten App.\n\nErhoben wurden das Nutzungsverhalten (Verweildauer, Nutzung der interaktiven Elemente), ein Fragebogen zu Verständlichkeit, Benutzerfreundlichkeit, Akzeptanz, Informationsgehalt, Zielerreichung und Wirkungen sowie Interviews zu den subjektiven Erfahrungen.",
+              "en": "From February to April 2025, the web app was scientifically evaluated in a mixed-methods pilot study. The study was approved by the ethics committee of the University of Freiburg (application no. 25-1091-S1) and is registered in the German Clinical Trials Register (DRKS00036255).\n\nIt was tested by adult patients and relatives, the children, and psycho-oncological and medical professionals, on a tablet with the app pre-installed.\n\nThe study recorded usage behaviour (time spent per page, use of the interactive elements), a questionnaire on comprehensibility, usability, acceptance, information content, goal attainment and effects, and interviews about the subjective experience."
+            }
+          }
+        ]
       }
     ],
     "personal": {
@@ -246,8 +257,16 @@
         "en": "Placeholder: a personal note on the project will go here."
       }
     },
-    "de": { "title": "lonis weltraumreise", "category": "Webanwendung", "subtitle": "Interaktive Geschichte für Kinder." },
-    "en": { "title": "lonis weltraumreise", "category": "web application", "subtitle": "Interactive story for children." }
+    "de": {
+      "title": "lonis weltraumreise",
+      "category": "Webanwendung",
+      "subtitle": "Eine interaktive Geschichte, die Kindern das Thema Krebs erklärt."
+    },
+    "en": {
+      "title": "lonis weltraumreise",
+      "category": "web application",
+      "subtitle": "An interactive story that explains cancer to children."
+    }
   },
   {
     "id": "present",

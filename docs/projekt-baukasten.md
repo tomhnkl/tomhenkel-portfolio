@@ -44,6 +44,7 @@ Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "�
 
 - **`featured`:** Das Projekt erscheint in der Liste auf der Startseite.
 - **`title`:** darf `<br>` enthalten, z. B. `"reality,<br>by algorithm."`.
+- **`year`:** das exakte Jahr, z. B. `"2025"`. Für laufende Projekte auch pro Sprache, z. B. `{ "de": "seit 2023", "en": "since 2023" }`.
 - **`preview.portrait`:** optional, die Hochformat-Vorschau für die Startseite auf dem Handy. Auf dem Desktop läuft dort der Teaser.
 
 ---
