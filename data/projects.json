@@ -226,7 +226,6 @@
       {
         "type": "links",
         "items": [
-          { "label": { "de": "Zur Web-App", "en": "Open the web app" }, "href": "https://app.lonis-weltraumreise.de/" },
           { "label": { "de": "Zur Website", "en": "Visit the website" }, "href": "https://lonis-weltraumreise.de/story" }
         ]
       },

@@ -141,12 +141,11 @@ Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` sta
 
 ```json
 { "type": "links", "items": [
-  { "label": { "de": "Zur Web-App", "en": "Open the web app" }, "href": "https://app.lonis-weltraumreise.de/" },
   { "label": { "de": "Zur Website", "en": "Visit the website" }, "href": "https://lonis-weltraumreise.de/story" }
 ] }
 ```
 
-Eine Zeile pro Link, in der Größe der Akkordeon-Titel. Direkt nach einem Text oder vor Akkordeons rückt das Modul näher heran (`--space-m`).
+Eine Zeile pro Link, in Book und Fließtextgröße wie die Kontakt-Links auf About. Weitere Links kommen als zusätzliche Einträge in `items`. Direkt nach einem Text oder vor Akkordeons rückt das Modul näher heran (`--space-m`).
 
 **Link-Standard für die ganze Seite** (`.text-link`, `css/components/_links.scss`):
 - **In Ruhe:** wie der umgebende Text, ohne Unterstreichung.

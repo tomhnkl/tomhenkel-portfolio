@@ -1144,9 +1144,9 @@ html.lenis body {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: var(--font-family-base);
-  font-size: var(--fs-ui);
-  line-height: var(--lh-ui);
+  font-family: var(--font-family-book); /* Same as running text and the About contact links */
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 /* 7. Accordions (right half); height animation: initAccordionAnimation() */
