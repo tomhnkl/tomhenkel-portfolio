@@ -520,6 +520,27 @@ body.show-grid .grid-overlay {
   }
 }
 
+/* --- Dev: short status note (e.g. smooth scroll mode, key S, see main.js) --- */
+.dev-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--page-bottom) + var(--space-s));
+  transform: translateX(-50%);
+  z-index: 9998;
+  padding: 6px 12px;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.dev-toast.is-visible {
+  opacity: 1;
+}
+
 /* --- Media Reveal (images + videos, site-wide) ---
    A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
    Markup + loading: mediaHTML() / initMediaReveal() in main.js */
@@ -549,6 +570,27 @@ body.show-grid .grid-overlay {
     transition: filter var(--duration-reveal) var(--ease-reveal);
   }
 }
+/* --- Smooth scroll (Lenis, js/vendor/lenis.min.js; set up in main.js) ---
+   Only wheel/trackpad is smoothed, touch stays native; off with reduced motion and in the lab.
+   Rules from Lenis' own lenis.css */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Iframes would swallow the wheel while the page glides past them */
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 /* --- Homepage Split Layout --- */
 .home-visual {
   grid-column: 1/9;

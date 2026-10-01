@@ -944,6 +944,58 @@ document.addEventListener('DOMContentLoaded', () => {
         else markActivePreview();
     }
 
+    // --- Smooth Scroll (Lenis, selbst gehostet in js/vendor): nur Mausrad/Trackpad, Touch bleibt nativ ---
+    // Die Scroll-Position bleibt nativ (Lazy-Loading, fixierte Nav/Footer, Akkordeons laufen unverändert).
+    // Aus bei "Bewegung reduzieren" und im Lab (eigenes Ziehen).
+    // TEST: Taste S wechselt aus / subtil / weich, bis die Stärke als Motion-Token feststeht.
+    const SCROLL_MODES = { aus: null, subtil: 0.1, weich: 0.05 }; // lerp: pro 1/60 s geht dieser Anteil des Restwegs (über die Zeit gerechnet)
+    let lenis = null;
+
+    function setSmoothScroll(mode) {
+        if (lenis) {
+            lenis.destroy();
+            lenis = null;
+        }
+        const lerp = SCROLL_MODES[mode];
+        if (!lerp || !window.Lenis || reduceMotion.matches || document.body.classList.contains('lab-page')) return;
+        const instance = new Lenis({ lerp, smoothWheel: true, syncTouch: false });
+        lenis = instance;
+        const raf = (time) => {
+            if (lenis !== instance) return; // nach dem Umschalten endet die alte Schleife
+            instance.raf(time);
+            requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+    }
+
+    let devToastTimer;
+    function showDevToast(text) {
+        let toast = document.querySelector('.dev-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'dev-toast';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = text;
+        toast.classList.add('is-visible');
+        clearTimeout(devToastTimer);
+        devToastTimer = setTimeout(() => toast.classList.remove('is-visible'), 1600);
+    }
+
+    const scrollModeNames = Object.keys(SCROLL_MODES);
+    let scrollMode = localStorage.getItem('smoothScroll');
+    if (!scrollModeNames.includes(scrollMode)) scrollMode = 'weich';
+    setSmoothScroll(scrollMode);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.repeat || (e.key || '').toLowerCase() !== 's' || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.target.closest('input, textarea, [contenteditable]')) return;
+        scrollMode = scrollModeNames[(scrollModeNames.indexOf(scrollMode) + 1) % scrollModeNames.length];
+        localStorage.setItem('smoothScroll', scrollMode);
+        setSmoothScroll(scrollMode);
+        showDevToast(`Scrollen: ${scrollMode}`);
+    });
+
     // HTML aus JSON-Texten entfernen (für Attribute und document.title)
     const stripTags = (html) => html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
