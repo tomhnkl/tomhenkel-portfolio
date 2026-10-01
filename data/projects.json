@@ -169,7 +169,8 @@
     "year": "2023",
     "hero": {
       "image": { "src": "images/projects/lonis-weltraumreise/hero.webp", "width": 2560, "height": 1440 },
-      "teaser": "videos/projects/lonis-weltraumreise/teaser.mp4"
+      "teaser": "videos/projects/lonis-weltraumreise/teaser.mp4",
+      "film": { "vimeo": "1092231191" }
     },
     "preview": { "portrait": "videos/projects/lonis-weltraumreise/preview-portrait.mp4" },
     "blocks": [
