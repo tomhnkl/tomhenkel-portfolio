@@ -48,10 +48,8 @@
     }
 
     .corner h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 1.2;
+      margin: 0;
+      font: inherit; /* Same size and weight as the links */
     }
 
     .corner a {
@@ -95,7 +93,7 @@
       const RING = {
         size: 12,       // character size in px
         rows: 17,       // outer diameter in text rows
-        thickness: 2,   // 1 = single line, each step adds one character width inwards
+        thickness: 3,   // 1 = single line, each step adds one character width inwards
         turn: 4.8,      // seconds per revolution
         fps: 12,        // drawing is stepped, like a terminal
         tail: 0.65,     // tail length as a share of the circle
