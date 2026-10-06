@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Tom Henkel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000">
 
   <style>
     html, body {
@@ -13,20 +14,31 @@
 
     body {
       font-family: Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #fff;
-      color: #000;
-      padding: 64px;
-      box-sizing: border-box;
+      background: #000;
+      color: #fff;
       position: relative;
+      -webkit-font-smoothing: antialiased; /* Like the portfolio: white on black stays light */
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    h1 {
+    .wip {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .wip p {
       margin: 0;
-      font-size: 24px;
-      font-weight: 400;
     }
 
-    .footer {
+    /* Name above the two links, bottom right */
+    .corner {
       position: absolute;
       right: 64px;
       bottom: 64px;
@@ -35,21 +47,39 @@
       line-height: 1.4;
     }
 
-    .footer a {
+    .corner h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .corner a {
       color: inherit;
       text-decoration: none;
     }
 
-    .footer a:hover {
+    .corner a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .corner {
+        right: 24px;
+        bottom: 24px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <h1>Tom Henkel</h1>
+  <main class="wip">
+    <canvas id="ring" aria-hidden="true"></canvas>
+    <p lang="en">work in progress</p>
+  </main>
 
-  <div class="footer">
+  <div class="corner">
+    <h1>Tom Henkel</h1>
     <a href="https://www.instagram.com/tomhnkl/" target="_blank" rel="noopener">
       instagram.com/tomhnkl
     </a><br>
@@ -57,5 +87,83 @@
       tom-henkel@gmx.de
     </a>
   </div>
+
+  <script>
+    // ASCII ring: a line of dots with a tail that thins out behind the head.
+    // Helvetica, centred in a fixed character grid so the circle stays round.
+    (() => {
+      const RING = {
+        size: 12,       // character size in px
+        rows: 17,       // outer diameter in text rows
+        thickness: 2,   // 1 = single line, each step adds one character width inwards
+        turn: 4.8,      // seconds per revolution
+        fps: 12,        // drawing is stepped, like a terminal
+        tail: 0.65,     // tail length as a share of the circle
+      };
+      // Grey values from light to dark, measured in Helvetica; no round glyphs
+      const RAMP = ' .-:*+=#', TAU = Math.PI * 2;
+
+      const canvas = document.getElementById('ring'), ctx = canvas.getContext('2d');
+      const still = matchMedia('(prefers-reduced-motion: reduce)');
+      let cells = [], raf = 0, frame = -1;
+
+      function layout() {
+        const W = RING.size * 0.6, H = RING.size * 1.15;
+        // Shrinks on narrow screens so the ring always fits next to the side margins
+        const R = Math.min((RING.rows - 1) / 2 * H, (innerWidth - 48) / 2 - W);
+        const band = Math.min((RING.thickness - 1) * W, R * 0.8);
+        const cols = 2 * Math.round(R / W) + 1, rows = 2 * Math.round(R / H) + 1;
+        const cc = (cols - 1) / 2, rc = (rows - 1) / 2, seen = new Map();
+        // Thickness: concentric lines half a character apart, so the band has no gaps
+        for (let s = 0; s <= Math.round(band / (W / 2)); s++) {
+          const r0 = R - s * W / 2;
+          for (let i = 0; i < 2880; i++) {
+            const a = i / 2880 * TAU;
+            const c = Math.round(cc + r0 * Math.cos(a) / W), r = Math.round(rc + r0 * Math.sin(a) / H);
+            if (!seen.has(r * cols + c)) seen.set(r * cols + c, { x: (c + 0.5) * W, y: (r + 0.5) * H, a: Math.atan2((r - rc) * H, (c - cc) * W) });
+          }
+        }
+        cells = [...seen.values()];
+
+        const dpr = window.devicePixelRatio || 1;
+        canvas.style.width = cols * W + 'px';
+        canvas.style.height = rows * H + 'px';
+        canvas.width = Math.round(cols * W * dpr);
+        canvas.height = Math.round(rows * H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.font = `${RING.size}px Helvetica, Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#fff';
+      }
+
+      function draw(t) {
+        const head = t / RING.turn * TAU, tail = RING.tail * TAU;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const p of cells) {
+          const d = ((head - p.a) % TAU + TAU) % TAU, i = d < tail ? 1 - d / tail : 0;
+          ctx.fillText(i > 0 ? RAMP[Math.max(1, Math.round(i * (RAMP.length - 1)))] : '.', p.x, p.y);
+        }
+      }
+
+      function loop(now) {
+        const f = Math.floor(now / 1000 * RING.fps);
+        if (f !== frame) { frame = f; draw(now / 1000); }
+        raf = requestAnimationFrame(loop);
+      }
+
+      function start() {
+        cancelAnimationFrame(raf);
+        layout();
+        frame = -1;
+        if (still.matches) draw(0); // Reduced motion: the ring stands still
+        else raf = requestAnimationFrame(loop);
+      }
+
+      start();
+      addEventListener('resize', start);
+      still.addEventListener('change', start);
+    })();
+  </script>
 </body>
 </html>
