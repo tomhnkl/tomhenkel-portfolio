@@ -1,16 +1,35 @@
 // Hover/focus/active underline (replaces the Favorit Lining cut).
 // Line position and thickness come from tokens in base/_variables.scss and scale with the font size (em);
-// skip-ink leaves gaps at descenders like Lining did. Unlike Lining, the line also runs under word spaces.
-@mixin underline {
+// skip-ink leaves gaps at descenders like Lining did.
+// Gaps at word spaces (D24, like Lining): text-decoration-skip-spaces only works in Chrome, not in WebKit (tested 2026-10-10),
+// so main.js wraps each word of the affected labels in .ul-w (underlineWords). With word spans the line sits on the words only,
+// the element itself draws none (a line on the element would also run under the spaces).
+@mixin underline-line {
   text-decoration-line: underline;
   text-decoration-thickness: var(--underline-thickness);
   text-underline-offset: var(--underline-offset);
   text-decoration-skip-ink: auto;
 }
 
+@mixin underline {
+  @include underline-line;
+
+  &:has(.ul-w) { text-decoration-line: none; }
+  .ul-w { @include underline-line; }
+}
+
 h1 {
   margin: 0;
-  font-size: var(--fs-ui); /* Match ui size for "hidden" h1 usage if visible somewhere else */
+  font-size: var(--fs-ui);
   font-weight: 400;
-  display: none; /* Hide default H1 as requested layout changes */
+}
+
+/* Hidden for the eye, read by screen readers (e.g. the home page h1) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

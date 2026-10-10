@@ -4,9 +4,54 @@ document.addEventListener('DOMContentLoaded', () => {
     let projectsData = [];
     let labData = [];
     let currentLang = null;
+    // Texte für Navigation, Footer und Tab-Titel ({ ui, email, languages, defaultLang }); pro Sitzung zwischengespeichert,
+    // damit Folgeseiten ohne Loader sofort in der richtigen Sprache erscheinen
+    let uiText = null;
+    const LANG_CHOICE_KEY = 'languageChoice';
 
     // Motion-Tokens aus css/base/_variables.scss in ms (bei "Bewegung reduzieren" 0)
     const motionMs = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
+
+    // --- Unterstreichung mit Lücken an Wortabständen (D24, wie der frühere Lining-Schnitt) ---
+    // Jedes Wort kommt in ein .ul-w, die Linie liegt dann nur auf den Wörtern (Mixin underline in css/base/_typography.scss).
+    // CSS allein (text-decoration-skip-spaces) kann nur Chrome, WebKit nicht. Nach jedem Setzen des Textes erneut aufrufen.
+    function underlineWords(el) {
+        if (!el || el.querySelector('.ul-w')) return el; // schon aufgeteilt
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        const texts = [];
+        while (walker.nextNode()) texts.push(walker.currentNode);
+        texts.forEach(node => {
+            if (!node.textContent.trim()) return;
+            const words = document.createDocumentFragment();
+            node.textContent.split(/(\s+)/).forEach(part => {
+                if (!part) return;
+                if (!part.trim()) {
+                    words.appendChild(document.createTextNode(part)); // Abstand bleibt Text, ohne Linie
+                    return;
+                }
+                const word = document.createElement('span');
+                word.className = 'ul-w';
+                word.textContent = part;
+                words.appendChild(word);
+            });
+            node.replaceWith(words);
+        });
+        // Ein Kind statt vieler: in Flex-Containern (Footer-Links) bleiben die Wörter in einer Zeile
+        const group = document.createElement('span');
+        group.className = 'ul-words';
+        group.append(...el.childNodes);
+        el.appendChild(group);
+        return el;
+    }
+    const setWords = (el, text) => {
+        if (!el || (el.textContent === text && el.querySelector('.ul-w'))) return; // unverändert: DOM stehen lassen
+        el.textContent = text;
+        underlineWords(el);
+    };
+    // Alles mit Unterstreichung im Inhalt (Links, Kartentitel); nach dem Rendern und nach dem Sprachwechsel
+    const underlineAll = (scope) => scope.querySelectorAll('.text-link, .nav-title').forEach(underlineWords);
+    // Statische Labels aus dem HTML (Navigation, Footer) sofort aufteilen
+    document.querySelectorAll('.nav-right a, .footer-left a, .nav-burger').forEach(underlineWords);
 
     // --- Dev: 12-Spalten-Overlay (Taste G) ---
     const gridColumns = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-columns'), 10) || 12;
@@ -45,11 +90,26 @@ document.addEventListener('DOMContentLoaded', () => {
     Promise.all([
         fetch('data/site-content.json').then(r => r.json()),
         fetch('data/projects.json').then(r => r.json()),
-        fetch('data/lab.json').then(r => r.json())
+        // lab.json lädt nur die Lab-Seite; fehlt sie oder ist sie kaputt, bleibt die Leinwand leer
+        document.getElementById('lab-canvas')
+            ? fetch('data/lab.json').then(r => r.json()).catch(error => { console.warn('lab.json nicht geladen:', error); return []; })
+            : []
     ]).then(async ([content, projects, lab]) => {
         siteContent = content;
         projectsData = projects;
-        labData = lab;
+        labData = Array.isArray(lab) ? lab : [];
+
+        // Sprache und Navigation/Footer umstellen, solange der Loader noch deckt
+        uiText = {
+            ui: content.ui,
+            email: content.settings.contact_email,
+            languages: content.settings.available_languages,
+            defaultLang: content.settings.default_language
+        };
+        try { sessionStorage.setItem('uiText', JSON.stringify(uiText)); } catch (e) { /* ohne Speicher: nur kein Vorab-Umschalten */ }
+        const langToUse = resolveLanguage();
+        currentLang = langToUse;
+        updateUI(langToUse);
 
         // If it's the very first visit, run the preloader logic
         if (!isSessionActive) {
@@ -97,15 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-        // Initiale Sprache setzen (URL Parameter > LocalStorage > Default)
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlLang = urlParams.get('lang');
-        const savedLang = localStorage.getItem('language');
-        const defaultLang = content.settings.default_language;
-
-        const langToUse = (urlLang && content.settings.available_languages.includes(urlLang)) ? urlLang 
-                        : (savedLang ? savedLang : defaultLang);
-
         setLanguage(langToUse);
 
         // Lab Initialisierung (nur einmalig)
@@ -114,13 +165,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     }).catch(error => {
+        // Ladefehler als Poster im Loader (D14): Wort, eine Zeile, "Neu laden"; deckt Nav und Footer
         console.error('Fehler beim Laden der Daten:', error);
-        if (loader) {
-            loader.innerHTML = '<p style="color:white; text-align:center; position:absolute; top:50%; width:100%;">Inhalte konnten nicht geladen werden.</p>';
-            loader.classList.remove('hidden');
-            loader.style.display = 'block';
-        }
+        if (!loader) return;
+        const lang = currentLang || fallbackLanguage();
+        const texts = stateTexts(lang).error;
+        document.documentElement.lang = lang;
+        loader.innerHTML = posterHTML({ word: texts.word, text: texts.text, link: texts.reload, href: location.href, role: 'alert' });
+        loader.querySelectorAll('.state-poster-word, .state-link').forEach(underlineWords);
+        loader.classList.remove('hidden');
+        loader.style.display = '';
     });
+
+    // --- Systemzustände als Poster (D14): Ladefehler, Projekt nicht gefunden; ohne JS und 404 stehen im HTML ---
+    // Texte aus site-content.json ui.*.states; der Ladefehler braucht eine Kopie hier, falls site-content.json selbst fehlt
+    const STATE_FALLBACK = {
+        de: { error: { word: 'hm.', text: 'Die Inhalte sind nicht angekommen.', reload: 'Neu laden' } },
+        en: { error: { word: 'hm.', text: 'The content didn’t arrive.', reload: 'Reload' } },
+    };
+
+    function stateTexts(lang) {
+        const ui = uiText && uiText.ui[lang];
+        return (ui && ui.states) || STATE_FALLBACK[lang] || STATE_FALLBACK.de;
+    }
+
+    // Browsersprache: die erste unterstützte in navigator.languages entscheidet (en-GB vor de → en), sonst null
+    function browserLanguage(available) {
+        return (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''])
+            .map(l => String(l).toLowerCase().split('-')[0])
+            .find(l => available.includes(l)) || null;
+    }
+
+    // Sprache ohne site-content.json: gespeicherte Wahl, sonst Browsersprache (de oder en)
+    function fallbackLanguage() {
+        const choice = storedLanguage();
+        if (STATE_FALLBACK[choice]) return choice;
+        return browserLanguage(Object.keys(STATE_FALLBACK)) || 'de';
+    }
+
+    // Großes unterstrichenes Wort, unten eine Zeile mit Link. framed: Nav und Footer bleiben darüber bedienbar
+    function posterHTML({ word, text, link, href, tag = 'p', framed = false, role = '' }) {
+        return `<div class="state-poster${framed ? ' is-framed' : ''}"${role ? ` role="${role}"` : ''}>`
+            + `<${tag} class="state-poster-word">${word}</${tag}>`
+            + `<p class="state-poster-line">${text} <a class="text-link state-link" href="${escapeAttr(href)}">${link}</a></p>`
+            + `</div>`;
+    }
 
 
 
@@ -128,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
     langButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const lang = btn.getAttribute('data-lang');
+            // Ausdrückliche Wahl merken: gilt ab jetzt vor der Browsersprache
+            try { localStorage.setItem(LANG_CHOICE_KEY, lang); } catch (e) { /* nur für diese Seite */ }
             setLanguage(lang);
         });
     });
@@ -141,12 +232,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateMenuLabel() {
         if (!navBurger) return;
-        const ui = siteContent.ui && siteContent.ui[currentLang];
+        const ui = uiText && uiText.ui[currentLang];
         // Vor dem Laden der Daten: Fallback in der Sprache des Besuchers
-        const lang = currentLang || localStorage.getItem('language');
+        const lang = currentLang || storedLanguage();
         const fallback = lang === 'en' ? { open: 'menu', close: 'close' } : { open: 'menü', close: 'schließen' };
         const labels = (ui && ui.menu) || fallback;
-        navBurger.textContent = isMenuOpen() ? labels.close : labels.open;
+        setWords(navBurger, isMenuOpen() ? labels.close : labels.open);
     }
 
     function setMenu(open) {
@@ -184,6 +275,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Beim Wechsel des Breakpoints und beim Zurück-Navigieren (bfcache) sofort geschlossen
         mobileQuery.addEventListener('change', closeMenuInstantly);
         window.addEventListener('pageshow', (e) => { if (e.persisted) closeMenuInstantly(); });
+    }
+
+    // --- Sprache wählen: ?lang= (Link) > ausdrückliche Wahl (de / en) > Browsersprache > Standard (de) ---
+    function storedLanguage() {
+        try { return localStorage.getItem(LANG_CHOICE_KEY); } catch (e) { return null; }
+    }
+
+    function resolveLanguage() {
+        const available = uiText.languages;
+        const urlLang = new URLSearchParams(window.location.search).get('lang');
+        if (available.includes(urlLang)) return urlLang;
+        const choice = storedLanguage();
+        if (available.includes(choice)) return choice;
+        return browserLanguage(available) || uiText.defaultLang;
+    }
+
+    // Folgeseiten (Loader schon aus): Navigation und Footer sofort aus dem Sitzungsspeicher umstellen, kein Aufblitzen der deutschen Texte
+    try { uiText = JSON.parse(sessionStorage.getItem('uiText')); } catch (e) { uiText = null; }
+    if (uiText && uiText.ui && Array.isArray(uiText.languages)) {
+        currentLang = resolveLanguage();
+        updateUI(currentLang);
+    } else {
+        uiText = null;
     }
 
 
@@ -338,8 +452,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btnPlay || !btnSound) return;
 
         const labels = siteContent.ui[currentLang].player;
-        btnPlay.textContent = heroState.paused ? labels.play : labels.pause;
-        btnSound.textContent = heroState.muted ? labels.sound_on : labels.sound_off;
+        setWords(btnPlay, heroState.paused ? labels.play : labels.pause);
+        setWords(btnSound, heroState.muted ? labels.sound_on : labels.sound_off);
         btnSound.hidden = !heroState.film; // Der Teaser hat keinen Ton
         const hint = document.getElementById('hero-hint');
         if (hint) {
@@ -472,8 +586,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!siteContent.settings || !siteContent.settings.available_languages.includes(lang)) return;
 
         currentLang = lang;
-        localStorage.setItem('language', lang);
-        document.documentElement.lang = lang;
 
         // Update URL without reload
         const url = new URL(window.location);
@@ -488,25 +600,34 @@ document.addEventListener('DOMContentLoaded', () => {
         renderLab(lang);
     }
 
+    // Tab-Titel: "<Seite> — Tom Henkel", ohne Seite nur "Tom Henkel"
+    function pageTitle(lang, name) {
+        const ui = uiText && uiText.ui[lang];
+        const site = (ui && ui.page_title) || 'Tom Henkel';
+        return name ? `${name} — ${site}` : site;
+    }
+
+    // Navigation, Footer, Sprachknöpfe, <html lang> und Tab-Titel (ohne Seiteninhalt); läuft auch vor dem Laden der Daten
     function updateUI(lang) {
-        // Buttons active state
+        document.documentElement.lang = lang;
+
+        // Sprachknöpfe: aktiver Zustand sichtbar und für Screenreader (aria-pressed)
         langButtons.forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            const active = btn.getAttribute('data-lang') === lang;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-pressed', String(active));
         });
 
         // Allgemeine UI Texte
-        const ui = siteContent.ui[lang];
+        const ui = uiText && uiText.ui[lang];
         if (!ui) return;
 
-        // Nav Link Texte aktualisieren
-        const navProjects = document.querySelector('nav a[href="index.html"]');
-        const navLab = document.querySelector('nav a[href="lab.html"]');
-        const navAbout = document.querySelector('nav a[href="about.html"]');
+        // Navigation (das Lab bleibt durchgestrichen und ohne Link, bis es fertig ist)
+        document.querySelectorAll('[data-i18n-nav]').forEach(link => {
+            const text = ui.nav[link.getAttribute('data-i18n-nav')];
+            if (text) setWords(link, text);
+        });
         const labTitleOverlay = document.querySelector('.lab-title-overlay');
-
-        if (navProjects) navProjects.textContent = ui.nav.projects;
-        if (navLab) navLab.textContent = ui.nav.lab;
-        if (navAbout) navAbout.textContent = ui.nav.about;
         if (labTitleOverlay) labTitleOverlay.textContent = ui.nav.lab;
         updateMenuLabel();
 
@@ -515,15 +636,26 @@ document.addEventListener('DOMContentLoaded', () => {
         footerLinks.forEach(link => {
             const key = link.getAttribute('data-i18n-footer');
             if (ui.footer && ui.footer[key]) {
-                link.textContent = ui.footer[key];
+                setWords(link, ui.footer[key]);
                 link.setAttribute('data-text', ui.footer[key]); // Reserve space for bold hover
             }
         });
+        // Kontakt: Adresse nur aus settings.contact_email (nie fest im HTML)
+        const contact = document.querySelector('[data-i18n-footer="contact"]');
+        if (contact && uiText.email) contact.href = `mailto:${uiText.email}`;
 
-        // Set Default Page Title for Home
-        if (window.location.pathname.endsWith('/') || window.location.pathname.includes('index.html')) {
-             document.title = lang === 'de' ? 'Tom Henkel - Projekte' : 'Tom Henkel - Work';
-        }
+        // Skip-Link (erster Tab-Stopp) und unsichtbare Seitenüberschriften (About: "Über mich")
+        const titles = ui.titles || {};
+        document.querySelectorAll('[data-i18n-skip]').forEach(el => { if (ui.skip) el.textContent = ui.skip; });
+        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+            const text = titles[el.getAttribute('data-i18n-title')];
+            if (text) el.textContent = text;
+        });
+
+        // Tab-Titel (Projektseite: renderProjectDetail, braucht die Projektdaten)
+        if (document.getElementById('project-list')) document.title = pageTitle(lang);
+        else if (document.getElementById('about-content')) document.title = pageTitle(lang, titles.about);
+        else if (document.getElementById('lab-canvas')) document.title = pageTitle(lang, titles.lab);
     }
 
 
@@ -770,6 +902,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function markActivePreview() {
         document.querySelectorAll('.project-list-item').forEach((el, i) => el.classList.toggle('active', i === activePreview));
+        updateStepButton();
+    }
+
+    // --- Telefon ohne automatischen Wechsel (Bewegung reduzieren, Datensparen; D13, Option C) ---
+    // Kein Timer: der Besucher wechselt per Knopf "01 / 05 weiter", Tippen auf die freie Bildfläche
+    // (linkes Drittel zurück, sonst weiter) oder Wischen. Listeneinträge bleiben Links.
+    const stepMode = () => mobileQuery.matches && !autoplayAllowed() && featuredProjects.length > 1;
+    const stepBy = (dir) => {
+        if (stepMode()) showPreview((activePreview + dir + featuredProjects.length) % featuredProjects.length);
+    };
+
+    function updateStepButton() {
+        const button = document.getElementById('home-step');
+        if (!button) return;
+        const on = stepMode() && activePreview >= 0;
+        button.hidden = !on;
+        document.body.classList.toggle('home-stepping', on);
+        if (!on) return;
+        const ui = uiText && uiText.ui[currentLang];
+        const label = (ui && ui.preview && ui.preview.next) || 'weiter';
+        const pad = (n) => String(n).padStart(2, '0');
+        setWords(button, `${pad(activePreview + 1)} / ${pad(featuredProjects.length)} ${label}`);
+    }
+
+    function initStepControls() {
+        const button = document.getElementById('home-step');
+        const main = document.querySelector('.home-container');
+        if (!button || !main) return;
+        button.addEventListener('click', () => stepBy(1));
+
+        // Tippen: auf main statt document, sonst meldet iOS Safari Klicks auf leere Flächen nicht
+        // composedPath statt target.closest: der Knopf tauscht beim Klick seine Wort-Spans aus, das Ziel hängt dann nicht mehr im DOM
+        main.addEventListener('click', (e) => {
+            if (!stepMode() || e.composedPath().some(el => el.matches && el.matches('a, button, .home-list'))) return;
+            stepBy(e.clientX < window.innerWidth / 3 ? -1 : 1);
+        });
+
+        // Wischen (waagerecht, mind. 40px), auch über der Liste; nicht in Navigation und Footer
+        let start = null;
+        document.addEventListener('touchstart', (e) => {
+            const free = e.touches.length === 1 && !isMenuOpen() && !e.target.closest('.main-nav, .main-footer');
+            start = stepMode() && free ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            if (!start) return;
+            const dx = e.changedTouches[0].clientX - start.x;
+            const dy = e.changedTouches[0].clientY - start.y;
+            start = null;
+            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) stepBy(dx < 0 ? 1 : -1);
+        });
+
+        // Einstellung "Bewegung reduzieren" ändert sich: Knopf ein- oder ausblenden
+        reduceMotion.addEventListener('change', updateStepButton);
     }
 
     // Autoplay verboten (z. B. Stromsparmodus): Standbild + Timer. Ein abgebrochenes play() (neue Quelle, pause()) zählt nicht
@@ -928,6 +1113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!video || video.dataset.init) return;
         video.dataset.init = 'true';
         video.muted = true;
+        initStepControls();
 
         // Sobald das aktuelle Video läuft, das nächste vorladen (konkurriert nicht mit dessen Start)
         video.addEventListener('playing', () => {
@@ -995,12 +1181,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="p-category">${data.category || ''}</span>
             `;
 
-            // Desktop: Vorschau beim Hover (kurz entprellt); mobil wechselt sie automatisch
-            item.addEventListener('mouseenter', () => {
+            // Desktop: Vorschau beim Hover und beim Tastaturfokus (kurz entprellt); mobil wechselt sie automatisch
+            const previewOnPointer = () => {
                 if (mobileQuery.matches) return;
                 clearTimeout(hoverTimeout);
                 hoverTimeout = setTimeout(() => { if (index !== activePreview) showPreview(index); }, 100);
-            });
+            };
+            item.addEventListener('mouseenter', previewOnPointer);
+            item.addEventListener('focus', previewOnPointer);
 
             fragment.appendChild(item);
         });
@@ -1117,9 +1305,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<div class="pd-block pd-accordions" data-block="${index}">${items.map((acc, i) => `
                 <details class="pd-accordion">
                     <summary><h3 class="pd-accordion-title">${localized(acc.title, lang)}</h3></summary>
-                    <div class="accordion-content">${accordionMediaHTML(acc, lang, project, index, i)}<div class="accordion-text">${localized(acc.content, lang)}</div></div>
+                    <div class="accordion-content">${accordionMediaHTML(acc, lang, project, index, i)}<div class="accordion-text">${accordionTextHTML(acc.content, lang)}</div></div>
                 </details>`).join('')}
             </div>`;
+    }
+
+    // Akkordeon-Text: { de, en } als Fließtext, oder ein Zeitverlauf als Liste [{ date: { de, en }, text: { de, en } }]
+    // (D12, Option C): je Eintrag Datum über Ereignis, space-s dazwischen
+    function accordionTextHTML(content, lang) {
+        if (!Array.isArray(content)) return localized(content, lang);
+        const entries = content.filter(entry => entry && entry.text).map(entry => `<div class="pd-timeline-entry">`
+            + `<dt>${localized(entry.date, lang)}</dt><dd>${localized(entry.text, lang)}</dd></div>`).join('');
+        return `<dl class="pd-timeline">${entries}</dl>`;
     }
 
     // Akkordeon-Medien (acc.media): oben, in voller Akkordeon-Breite und im eigenen Format, darunter der Text
@@ -1177,7 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
             update: (el, block, lang) => el.querySelectorAll('.pd-accordion').forEach((detail, i) => {
                 const acc = block.items[i];
                 detail.querySelector('.pd-accordion-title').innerHTML = localized(acc.title, lang);
-                detail.querySelector('.accordion-text').innerHTML = localized(acc.content, lang);
+                detail.querySelector('.accordion-text').innerHTML = accordionTextHTML(acc.content, lang);
                 detail.querySelectorAll('.accordion-media-item').forEach(cell => {
                     const img = cell.querySelector('img');
                     if (img) img.alt = mediaAlt(acc.media[cell.dataset.item], lang);
@@ -1205,15 +1402,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<div class="pd-block pd-text pd-personal" data-personal>${title}<div class="pd-text-body">${localized(personal.text, lang)}</div></div>`;
     }
 
-    // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben)
-    function projectCardHTML(p, lang) {
+    // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben);
+    // darüber klein "Vorheriges" / "Nächstes Projekt" (D14, label = Schlüssel in ui.*.more)
+    function projectCardHTML(p, lang, label) {
         const media = heroMedia(p.hero || {});
         return `
                 <a href="project.html?id=${p.id}" class="nav-item">
+                    <span class="nav-label" data-more="${label}">${moreTexts(lang)[label]}</span>
                     <div class="nav-media">${media ? mediaHTML({ ...media, alt: null }, lang, { sizes: cellSizes(6) }) : ''}</div>
                     <span class="nav-title">${p[lang].title}</span>
                     <span class="nav-desc">${p[lang].category || ''}</span>
                 </a>`;
+    }
+
+    // Texte "Weitere Projekte" (ui.*.more): Überschrift nur für Screenreader, Labels über den Karten
+    const moreTexts = (lang) => (uiText.ui[lang] && uiText.ui[lang].more) || {};
+
+    // Projekt nicht gefunden (?id fehlt oder falsch): Poster, nach NOT_FOUND_REDIRECT zur Work-Seite (D14)
+    const NOT_FOUND_REDIRECT = 3000; // Lesezeit, keine Bewegung -> kein Motion-Token
+    let notFoundTimer = null;
+
+    function renderNotFound(container, lang) {
+        const notFound = (uiText.ui[lang].titles || {}).not_found || 'Project not found';
+        const texts = stateTexts(lang).not_found;
+        document.title = pageTitle(lang, notFound);
+        container.removeAttribute('data-rendered-id');
+        container.innerHTML = posterHTML({ word: texts.word, text: texts.text, link: texts.link, href: 'index.html', tag: 'h1', framed: true, role: 'status' });
+        container.querySelectorAll('.state-poster-word, .state-link').forEach(underlineWords);
+        if (!notFoundTimer) notFoundTimer = setTimeout(() => location.replace('index.html'), NOT_FOUND_REDIRECT);
     }
 
     function renderProjectDetail(lang) {
@@ -1226,19 +1442,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const project = projectsData[currentIndex];
 
         if (!project) {
-            document.title = 'Project not found | Tom Henkel';
-            container.innerHTML = '<p>Project not found.</p>';
+            renderNotFound(container, lang);
             return;
         }
 
         const content = project[lang];
-        // Dynamic Page Title
-        document.title = `${stripTags(content.title)} | Tom Henkel`;
+        document.title = pageTitle(lang, stripTags(content.title));
 
         // Weitere Projekte: vorheriges und nächstes (im Kreis)
         const prevP = projectsData[(currentIndex - 1 + projectsData.length) % projectsData.length];
         const nextP = projectsData[(currentIndex + 1) % projectsData.length];
-        const moreTitle = lang === 'de' ? 'Weitere Projekte' : 'More Work';
+        const moreTitle = moreTexts(lang).title || '';
 
         // --- UPDATE MODE: Sprachwechsel tauscht nur Texte, Medien bleiben stehen (kein neuer Request) ---
         if (container.getAttribute('data-rendered-id') === pid) {
@@ -1255,9 +1469,12 @@ document.addEventListener('DOMContentLoaded', () => {
             container.querySelector('.pd-footer-nav-title').innerHTML = moreTitle;
             container.querySelectorAll('.pd-footer-nav .nav-item').forEach((item, i) => {
                 const p = i === 0 ? prevP : nextP;
+                const label = item.querySelector('.nav-label');
+                label.innerHTML = moreTexts(lang)[label.dataset.more] || '';
                 item.querySelector('.nav-title').innerHTML = p[lang].title;
                 item.querySelector('.nav-desc').innerHTML = p[lang].category || '';
             });
+            underlineAll(container);
             updateHeroControls();
             return;
         }
@@ -1277,12 +1494,13 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             ${blocksHTML(project, lang)}
             ${personalHTML(project, lang)}
-            <h2 class="pd-footer-nav-title">${moreTitle}</h2>
+            <h2 class="pd-footer-nav-title visually-hidden">${moreTitle}</h2>
             <div class="pd-footer-nav">
-                ${projectCardHTML(prevP, lang)}
-                ${projectCardHTML(nextP, lang)}
+                ${projectCardHTML(prevP, lang, 'previous')}
+                ${projectCardHTML(nextP, lang, 'next')}
             </div>
         `;
+        underlineAll(container);
 
         initAccordionAnimation();
         initMediaReveal(container);
@@ -1297,9 +1515,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const content = aboutData[lang];
         const { contact_email: email, instagram_url: instagram } = siteContent.settings;
 
-        // Dynamic Page Title
-        document.title = lang === 'de' ? 'Tom Henkel - Über mich' : 'Tom Henkel - About';
-
         // --- UPDATE MODE: Sprachwechsel tauscht nur die Texte, das Porträt bleibt stehen (kein Neuladen, kein erneutes Weichzeichnen) ---
         const section = container.querySelector('.about-section');
         if (section) {
@@ -1309,8 +1524,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- INITIAL RENDER MODE ---
-        container.innerHTML = `
+        // --- INITIAL RENDER MODE (hinter die unsichtbare h1) ---
+        container.insertAdjacentHTML('beforeend', `
             <section class="about-section">
                 <div class="about-image">${pictureHTML(aboutData.portrait, lang)}</div>
                 <div class="about-text">
@@ -1322,7 +1537,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </section>
-        `;
+        `);
+        underlineAll(container);
         initMediaReveal(container);
     }
 
@@ -1359,9 +1575,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderLab(lang) {
         const canvas = document.getElementById('lab-canvas');
         if (!canvas) return;
-
-        // Dynamic Page Title
-        document.title = 'Tom Henkel - The Lab';
 
         // --- UPDATE MODE: Sprachwechsel tauscht nur Texte, Medien bleiben stehen (kein Neuladen) ---
         if (canvas.childElementCount) {

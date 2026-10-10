@@ -2,43 +2,54 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Tom Henkel - About</title>
+  <title>Über mich — Tom Henkel</title>
   <meta name="description" content="About Tom Henkel - Creative Developer & Interaction Designer based in Germany.">
   <meta name="author" content="Tom Henkel">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/vendor/lenis.min.js" defer></script>
   <script src="js/main.js" defer></script>
+  <noscript><style>#loader { display: none; }</style></noscript>
 </head>
 <body>
+  <a class="skip-link" href="#about-content" data-i18n-skip>Zum Inhalt</a>
   <div id="loader">
-    <h1 class="loader-text">tomh.</h1>
+    <p class="loader-text" aria-hidden="true"><span class="ul-w">tom</span> <span class="ul-w">henkel</span></p>
   </div>
+  <!-- Ohne JavaScript: Loader aus (noscript im head), stattdessen dieses Poster; Nav und Footer bleiben bedienbar.
+       Einzige Stelle mit fester Mailadresse, ohne JavaScript ist site-content.json nicht lesbar. Texte: Entwurf -->
+  <noscript>
+    <div class="state-poster is-framed">
+      <p class="state-poster-word"><span class="ul-w">tom</span> <span class="ul-w">henkel</span></p>
+      <p class="state-poster-line">Bitte JavaScript aktivieren. / <span lang="en">Please enable JavaScript.</span> <a class="text-link state-link" href="mailto:tom-henkel@gmx.de">tom-henkel@gmx.de</a></p>
+    </div>
+  </noscript>
   <nav class="main-nav">
-    <div class="nav-left">tomh.</div>
+    <div class="nav-left"><a href="index.html">tomh.</a></div>
     <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-menu">menü</button>
     <div class="nav-right" id="nav-menu">
-      <a href="index.html">work</a>
-      <a href="lab.html">the lab</a>
-      <a href="about.html" class="active">about me</a>
+      <a href="index.html" data-i18n-nav="projects">projekte</a>
+      <a role="link" aria-disabled="true" data-i18n-nav="lab">das lab</a>
+      <a href="about.html" class="active" data-i18n-nav="about">über mich</a>
     </div>
   </nav>
 
-  <main id="about-content">
+  <main id="about-content" tabindex="-1">
+    <h1 class="visually-hidden" data-i18n-title="about">Über mich</h1>
     <!-- About content will be loaded here -->
   </main>
 
   <footer class="main-footer">
     <div class="footer-left">
       <span>©tomh</span>
-      <a href="#" data-i18n-footer="copyright">copyright</a>
-      <a href="mailto:tom-henkel@gmx.de" data-i18n-footer="contact">contact</a>
-      <a href="impressum.html" data-i18n-footer="impressum">impressum</a>
+      <a data-i18n-footer="contact" data-text="kontakt">kontakt</a>
+      <a href="impressum.html" data-i18n-footer="impressum" data-text="impressum">impressum</a>
+      <a href="datenschutz.html" data-i18n-footer="privacy" data-text="datenschutz">datenschutz</a>
     </div>
     <div class="footer-right lang-switch-footer">
-      <button data-lang="de" data-text="de">de</button>
+      <button type="button" data-lang="de" data-text="de" aria-pressed="true">de</button>
       <span class="separator">/</span>
-      <button data-lang="en" data-text="en">en</button>
+      <button type="button" data-lang="en" data-text="en" aria-pressed="false">en</button>
     </div>
   </footer>
 </body>

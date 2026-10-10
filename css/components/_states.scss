@@ -1,0 +1,49 @@
+/* --- System states as posters (D14, option C 2026-10-10) ---
+   One large underlined word fills the state, like the loader; one small line at the bottom.
+   Used for: load error (in the loader), page without JavaScript (noscript), project not found, 404.html.
+   Texts: site-content.json ui.*.states (noscript and 404.html carry their own copy, see there). */
+.state-poster {
+  position: fixed;
+  inset: 0;
+  z-index: 9999; /* Covers nav and footer (load error, 404) */
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Nav and footer stay usable above it (no JavaScript, project not found) */
+  &.is-framed {
+    z-index: 999; /* Below nav + footer (1000) */
+  }
+}
+
+.state-poster-word {
+  font-family: var(--font-family-base);
+  font-size: var(--fs-poster);
+  line-height: var(--lh-poster);
+  font-weight: 400;
+  margin: 0;
+  @include underline; /* Was the Lining cut */
+}
+
+.state-poster-line {
+  position: absolute;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  bottom: var(--page-margin);
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+
+  /* With nav and footer visible: above the footer row */
+  .is-framed & { bottom: var(--page-bottom); }
+}
+
+/* Links in a state line: tap area at least 44px high without moving the text (padding out, margin back in) */
+.state-link {
+  display: inline-block;
+  padding-block: 14px;
+  margin-block: -14px;
+}

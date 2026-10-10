@@ -122,6 +122,12 @@
   }
 }
 
+/* Step button "01 / 05 weiter" (D13): only on phones when the previews may not change by themselves
+   (reduced motion, Save-Data); main.js shows it. Tapping the free image area and swiping also change the project. */
+.home-step {
+  display: none;
+}
+
 /* Mobile: the preview fills the whole screen (cropped like "clip content"),
    the list sits at the bottom above the footer (kept last to override the rules above) */
 @media (max-width: $bp-mobile) {
@@ -142,5 +148,31 @@
   .home-list {
     align-self: stretch;
     mix-blend-mode: difference; /* Inverts over the video like nav and footer */
+  }
+
+  /* Tapping the free area changes the project (main.js initStepControls); cursor: pointer lets iOS report the tap */
+  .home-stepping .home-container {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .home-step:not([hidden]) {
+    display: block;
+    align-self: flex-start;
+    margin: 0 0 calc(var(--fs-ui) * 0.6);
+    padding: 10px 0; /* Tap area ~47px */
+    min-height: 44px;
+    border: none;
+    background: none;
+    color: #fff;
+    font-family: var(--font-family-base);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    mix-blend-mode: difference;
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover { @include underline; }
+    }
   }
 }

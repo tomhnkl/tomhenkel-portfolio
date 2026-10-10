@@ -18,7 +18,7 @@
     pointer-events: none;
   }
 
-  /* Large centered text */
+  /* Large centered word (a p, so the page keeps exactly one h1) */
   .loader-text {
     font-family: var(--font-family-base);
     @include underline; /* Was the Lining cut */

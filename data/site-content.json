@@ -14,9 +14,14 @@
         "about": "über mich"
       },
       "footer": {
-        "copyright": "copyright",
-        "contact": "contact",
-        "impressum": "impressum"
+        "contact": "kontakt",
+        "impressum": "impressum",
+        "privacy": "datenschutz"
+      },
+      "titles": {
+        "about": "Über mich",
+        "lab": "Das Lab",
+        "not_found": "Projekt nicht gefunden"
       },
       "buttons": {
         "read_more": "Mehr lesen",
@@ -33,6 +38,20 @@
       "menu": {
         "open": "menü",
         "close": "schließen"
+      },
+      "skip": "Zum Inhalt",
+      "preview": {
+        "next": "weiter"
+      },
+      "more": {
+        "title": "Mehr Projekte",
+        "previous": "Vorheriges Projekt",
+        "next": "Nächstes Projekt"
+      },
+      "states": {
+        "error": { "word": "hm.", "text": "Die Inhalte sind nicht angekommen.", "reload": "Neu laden" },
+        "not_found": { "word": "404", "text": "Projekt nicht gefunden. Weiter zur Übersicht …", "link": "Sofort weiter" },
+        "page_404": { "text": "Diese Seite gibt es nicht.", "link": "Zur Übersicht" }
       }
     },
     "en": {
@@ -43,9 +62,14 @@
         "about": "about me"
       },
       "footer": {
-        "copyright": "copyright",
         "contact": "contact",
-        "impressum": "imprint"
+        "impressum": "imprint",
+        "privacy": "privacy"
+      },
+      "titles": {
+        "about": "About me",
+        "lab": "The Lab",
+        "not_found": "Project not found"
       },
       "buttons": {
         "read_more": "Read more",
@@ -62,6 +86,20 @@
       "menu": {
         "open": "menu",
         "close": "close"
+      },
+      "skip": "Skip to content",
+      "preview": {
+        "next": "next"
+      },
+      "more": {
+        "title": "More Work",
+        "previous": "Previous project",
+        "next": "Next project"
+      },
+      "states": {
+        "error": { "word": "hm.", "text": "The content didn’t arrive.", "reload": "Reload" },
+        "not_found": { "word": "404", "text": "Project not found. Taking you to all work …", "link": "Go now" },
+        "page_404": { "text": "This page doesn’t exist.", "link": "See all work" }
       }
     }
   },

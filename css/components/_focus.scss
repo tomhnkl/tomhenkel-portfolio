@@ -1,0 +1,39 @@
+/* --- Keyboard focus (D10, option B 2026-10-10) ---
+   Every focusable element: white 2px outline, 4px away from the element. Outline instead of border,
+   so nothing shifts. Only for keyboard focus (:focus-visible), never after a mouse click or tap. */
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+/* Jump targets of the skip link (tabindex="-1") get focus without a frame around the whole page */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Skip link: first tab stop, hidden until it has focus; then black box top left above everything */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10001; /* Above loader (9999) and nav (1000) */
+  padding: var(--page-margin);
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  color: #fff;
+  background: #000;
+  text-decoration: none;
+
+  &:not(:focus) {
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0;
+  }
+
+  /* The box fills the corner: the outline sits on the text like everywhere else */
+  &:focus-visible { outline-offset: calc(4px - var(--page-margin)); }
+}

@@ -122,9 +122,18 @@ body {
 
 h1 {
   margin: 0;
-  font-size: var(--fs-ui); /* Match ui size for "hidden" h1 usage if visible somewhere else */
+  font-size: var(--fs-ui);
   font-weight: 400;
-  display: none; /* Hide default H1 as requested layout changes */
+}
+
+/* Hidden for the eye, read by screen readers (e.g. the home page h1) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* --- 12-Column Grid --- */
@@ -193,6 +202,20 @@ h1 {
     grid-column: 1/7;
   }
 }
+.main-nav .nav-left {
+  /* Logo = link to the work page, looks like plain text (D10) */
+}
+.main-nav .nav-left a {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  /* Tap area ~44px+ without changing the layout */
+}
+.main-nav .nav-left a::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
 .main-nav .nav-right {
   grid-column: 9/13;
   display: flex;
@@ -212,12 +235,30 @@ h1 {
   line-height: var(--lh-ui);
   font-family: var(--font-family-base);
 }
-.main-nav .nav-right a:hover, .main-nav .nav-right a.active {
+.main-nav .nav-right a[href]:hover, .main-nav .nav-right a.active {
   text-decoration-line: underline;
   text-decoration-thickness: var(--underline-thickness);
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
+}
+.main-nav .nav-right a[href]:hover:has(.ul-w), .main-nav .nav-right a.active:has(.ul-w) {
+  text-decoration-line: none;
+}
+.main-nav .nav-right a[href]:hover .ul-w, .main-nav .nav-right a.active .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-nav .nav-right a {
+  /* Not finished yet (the lab, D1): struck through in the same colour, no link, no hover */
+}
+.main-nav .nav-right a[aria-disabled=true] {
+  text-decoration-line: line-through;
+  text-decoration-thickness: var(--underline-thickness);
+  cursor: default;
 }
 .main-nav {
   /* Menu toggle ("menü" / "schließen"), mobile only */
@@ -237,6 +278,16 @@ h1 {
 }
 @media (hover: hover) {
   .main-nav .nav-burger:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+  .main-nav .nav-burger:hover:has(.ul-w) {
+    text-decoration-line: none;
+  }
+  .main-nav .nav-burger:hover .ul-w {
     text-decoration-line: underline;
     text-decoration-thickness: var(--underline-thickness);
     text-underline-offset: var(--underline-offset);
@@ -398,6 +449,18 @@ h1 {
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
+}
+.main-footer .footer-left a:hover:has(.ul-w) {
+  text-decoration-line: none;
+}
+.main-footer .footer-left a:hover .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-footer .footer-left a:hover {
   transform: translateY(1.5px);
 }
 .main-footer .footer-left span {
@@ -408,7 +471,7 @@ h1 {
   pointer-events: auto;
   /* Reuse lang switch styles logic */
   display: flex;
-  gap: 5px;
+  gap: 7px; /* 2px more than before, so the focus outline (6px) doesn't touch the "/" */
   font-size: var(--fs-small);
   line-height: var(--lh-small);
 }
@@ -445,6 +508,18 @@ h1 {
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
+}
+.main-footer .footer-right button.active:has(.ul-w), .main-footer .footer-right button:hover:has(.ul-w) {
+  text-decoration-line: none;
+}
+.main-footer .footer-right button.active .ul-w, .main-footer .footer-right button:hover .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-footer .footer-right button.active, .main-footer .footer-right button:hover {
   transform: translateY(1.5px);
 }
 .main-footer .footer-right span.separator {
@@ -477,7 +552,7 @@ h1 {
   pointer-events: none;
 }
 #loader {
-  /* Large centered text */
+  /* Large centered word (a p, so the page keeps exactly one h1) */
 }
 #loader .loader-text {
   font-family: var(--font-family-base);
@@ -486,6 +561,18 @@ h1 {
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
+}
+#loader .loader-text:has(.ul-w) {
+  text-decoration-line: none;
+}
+#loader .loader-text .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+#loader .loader-text {
   /* Was the Lining cut */
   font-size: var(--fs-poster);
   font-weight: 400;
@@ -585,9 +672,128 @@ html.lenis body {
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
 }
+.text-link:hover:has(.ul-w), .text-link:focus-visible:has(.ul-w) {
+  text-decoration-line: none;
+}
+.text-link:hover .ul-w, .text-link:focus-visible .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
 .text-link[target=_blank]::after {
   content: " ↗"; /* thin space + ↗ */
   content: " ↗"/""; /* decorative: not read out by screen readers */
+}
+
+/* --- Keyboard focus (D10, option B 2026-10-10) ---
+   Every focusable element: white 2px outline, 4px away from the element. Outline instead of border,
+   so nothing shifts. Only for keyboard focus (:focus-visible), never after a mouse click or tap. */
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+/* Jump targets of the skip link (tabindex="-1") get focus without a frame around the whole page */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Skip link: first tab stop, hidden until it has focus; then black box top left above everything */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10001; /* Above loader (9999) and nav (1000) */
+  padding: var(--page-margin);
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  color: #fff;
+  background: #000;
+  text-decoration: none;
+}
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0;
+}
+.skip-link {
+  /* The box fills the corner: the outline sits on the text like everywhere else */
+}
+.skip-link:focus-visible {
+  outline-offset: calc(4px - var(--page-margin));
+}
+
+/* --- System states as posters (D14, option C 2026-10-10) ---
+   One large underlined word fills the state, like the loader; one small line at the bottom.
+   Used for: load error (in the loader), page without JavaScript (noscript), project not found, 404.html.
+   Texts: site-content.json ui.*.states (noscript and 404.html carry their own copy, see there). */
+.state-poster {
+  position: fixed;
+  inset: 0;
+  z-index: 9999; /* Covers nav and footer (load error, 404) */
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Nav and footer stay usable above it (no JavaScript, project not found) */
+}
+.state-poster.is-framed {
+  z-index: 999; /* Below nav + footer (1000) */
+}
+
+.state-poster-word {
+  font-family: var(--font-family-base);
+  font-size: var(--fs-poster);
+  line-height: var(--lh-poster);
+  font-weight: 400;
+  margin: 0;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.state-poster-word:has(.ul-w) {
+  text-decoration-line: none;
+}
+.state-poster-word .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.state-poster-word {
+  /* Was the Lining cut */
+}
+
+.state-poster-line {
+  position: absolute;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  bottom: var(--page-margin);
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  /* With nav and footer visible: above the footer row */
+}
+.is-framed .state-poster-line {
+  bottom: var(--page-bottom);
+}
+
+/* Links in a state line: tap area at least 44px high without moving the text (padding out, margin back in) */
+.state-link {
+  display: inline-block;
+  padding-block: 14px;
+  margin-block: -14px;
 }
 
 /* --- Homepage Split Layout --- */
@@ -718,6 +924,12 @@ html.lenis body {
   font-weight: inherit;
 }
 
+/* Step button "01 / 05 weiter" (D13): only on phones when the previews may not change by themselves
+   (reduced motion, Save-Data); main.js shows it. Tapping the free image area and swiping also change the project. */
+.home-step {
+  display: none;
+}
+
 /* Mobile: the preview fills the whole screen (cropped like "clip content"),
    the list sits at the bottom above the footer (kept last to override the rules above) */
 @media (max-width: 768px) {
@@ -736,6 +948,45 @@ html.lenis body {
   .home-list {
     align-self: stretch;
     mix-blend-mode: difference; /* Inverts over the video like nav and footer */
+  }
+  /* Tapping the free area changes the project (main.js initStepControls); cursor: pointer lets iOS report the tap */
+  .home-stepping .home-container {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .home-step:not([hidden]) {
+    display: block;
+    align-self: flex-start;
+    margin: 0 0 calc(var(--fs-ui) * 0.6);
+    padding: 10px 0; /* Tap area ~47px */
+    min-height: 44px;
+    border: none;
+    background: none;
+    color: #fff;
+    font-family: var(--font-family-base);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    mix-blend-mode: difference;
+    cursor: pointer;
+  }
+}
+@media (max-width: 768px) and (hover: hover) {
+  .home-step:not([hidden]):hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+  .home-step:not([hidden]):hover:has(.ul-w) {
+    text-decoration-line: none;
+  }
+  .home-step:not([hidden]):hover .ul-w {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
   }
 }
 /* --- About Page --- */
@@ -876,12 +1127,9 @@ html.lenis body {
 .pd-links + .pd-accordions {
   margin-top: var(--space-m);
 } /* Links belong to the text and its details */
-.pd-footer-nav-title {
-  margin-top: var(--space-l);
-} /* Last module → more projects */
 .pd-footer-nav {
-  margin-top: var(--space-m);
-} /* Heading → cards */
+  margin-top: var(--space-l);
+} /* Last module → more projects (its h2 is only for screen readers) */
 /* 1. Hero: teaser loop or image; the Vimeo film is loaded on click (initHeroPlayer) */
 .pd-hero {
   width: 100%;
@@ -940,7 +1188,6 @@ html.lenis body {
   line-height: var(--lh-ui);
   cursor: pointer;
   padding: 0;
-  outline: none;
   /* Reset browser styles */
   -moz-appearance: none;
        appearance: none;
@@ -952,6 +1199,18 @@ html.lenis body {
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
+}
+.pd-hero .hero-controls button:hover:has(.ul-w) {
+  text-decoration-line: none;
+}
+.pd-hero .hero-controls button:hover .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.pd-hero .hero-controls button:hover {
   /* Match Nav hover style */
 }
 .pd-hero .hero-controls button[hidden] {
@@ -1235,6 +1494,21 @@ details.pd-accordion .accordion-text {
   max-width: var(--measure);
   white-space: pre-line; /* Blank lines in the text become paragraphs */
 }
+details.pd-accordion {
+  /* Timeline (D12, option C): content as a list of { date, text }, each entry date above event */
+}
+details.pd-accordion .pd-timeline {
+  display: grid;
+  row-gap: var(--space-s);
+  margin: 0;
+  white-space: normal;
+}
+details.pd-accordion .pd-timeline dt {
+  font-family: var(--font-family-base);
+}
+details.pd-accordion .pd-timeline dd {
+  margin: 0;
+}
 
 /* 8. More projects: previous / next */
 .pd-footer-nav-title {
@@ -1271,6 +1545,25 @@ details.pd-accordion .accordion-text {
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
+}
+.pd-footer-nav .nav-item:hover .nav-title:has(.ul-w) {
+  text-decoration-line: none;
+}
+.pd-footer-nav .nav-item:hover .nav-title .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.pd-footer-nav .nav-item {
+  /* "Vorheriges / Nächstes Projekt" above each card (D14); the section heading is only for screen readers */
+}
+.pd-footer-nav .nav-item .nav-label {
+  display: block;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  margin: 0 0 5px;
 }
 .pd-footer-nav .nav-item .nav-media {
   position: relative;
