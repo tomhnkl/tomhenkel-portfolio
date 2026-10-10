@@ -13,16 +13,12 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/07.webp", "width": 2560, "height": 1920, "placeholder": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADQBACdASogABgAPr1On0unJKKht/qoAOAXiWkAAFu0cHG5x1BsvIAGgoi9RCQogAD++FB803PoywJFyinno2rH/e5aaRYpSDSuN67MQB7oHOgvEkaM3WB+OMMTGPwh3bkAWcMmeOUT6rTfCoAAAA==", "color": "#161616", "alt": { "de": "Bild 7", "en": "Image 7" } }]
       },
       {
         "type": "media",
-        "cols": [6, 6],
-        "ratio": "4:5",
-        "items": [
-          { "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/03.webp", "width": 1440, "height": 1800 }
-        ]
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/02.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAACQBQCdASogABIAPtFWo0uoJKMhsAgBABoJaQALAEcAJ4qiM24T6ujGagtxz85polJaGm+ngAD+3fOzvRkLQTktx5bRv79+8j5nA/wI0YfNPQ3x7By8MN0djVw8N1tbkwfxDZoZnZA3Z1tKYnPQJu0HqGMfyXPh9pOyBl1dgZoxnxiZiAlriP9XF0cWmgcEPyzHQx2wZWwr9I7xlDESsw//kh++nn35zGDOFPXTvGC/i6PzzrEUmNsbXQLo80mwjWAAAA==", "color": "#4a4a4a", "alt": { "de": "Bild 2", "en": "Image 2" } }]
       },
       {
         "type": "text",
@@ -48,24 +44,19 @@
       },
       {
         "type": "media",
-        "cols": [4, 8],
-        "ratio": "16:9",
-        "items": [
-          { "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/04.webp", "width": 1080, "height": 1242 },
-          {
-            "type": "video",
-            "src": "images/projects/reality-by-algorithm/_ABB/05.mp4",
-            "poster": "images/projects/reality-by-algorithm/_ABB/05.webp",
-            "width": 1920,
-            "height": 1080
-          }
-        ]
+        "cols": [12],
+        "ratio": "3:2",
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/05.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADQBACdASogABIAPtFgqE+oJSOiKAgBABoJaQAA7OV0fy7x70Rtq0P92UvCMA/xYAD+/VGcVEqhn9Z2rA/hnh+QpbT8oO8TGB/NGrZSYFXdcgvxI9hlxGHZkC/9zXaGkHSIQznQTAcNUSsI0tdyhaj7IuBRd6kpipOgAAAA", "color": "#282828", "alt": { "de": "Bild 5", "en": "Image 5" } }]
       },
       {
         "type": "media",
-        "cols": [6],
-        "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/06.webp", "width": 1440, "height": 960 }]
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/06.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwBACdASogABIAPtFWokuoJKMqMAgBQBoJaQAAW+vpfRd9whME/Amx1AAA/vQsBzEEbNFsHRqyphKn6NSEWjnEabDubXmKgZBP/727KtVyNdy6GL2opmrThRHQPvcgiiWN0pqMAAAAAA==", "color": "#252525", "alt": { "de": "Bild 6", "en": "Image 6" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBgCdASogABYAPtFcpEyoJSOiMBgIAQAaCWkACwA3ANJe0UGCndUNizAe0OhcE8PDY1GHgH4b095q8wAA/umyS2FID0Q6yDHa8MZcRqqce6AOs10+nZ9x09R1LL8a+BXxy6IQ5KNpjFPU7VMNjckkeMo4UT6wdBmd3kousSxQONLjYDdBW7gVqaRxOpsiQIvcFQ9ARLda9qqyG6NbcYdwWbvhOmjKB3WUobHF5kMeXru3+lrrDo9P5z0X1dQyhlcwPyysPnLr6Sk3F403XSQcAgyyheSsb98z9kRCguY3+s0ISAAAAA==", "color": "#3e3e3e", "alt": { "de": "Bild 1", "en": "Image 1" } }]
       },
       {
         "type": "text",
@@ -73,6 +64,21 @@
           "de": "Ein mehrschichtiges Gestell bildet die räumliche Struktur der Installation. Projektionen auf semitransparente Flächen erzeugen Überlagerungen und Verschiebungen, die algorithmische Prozesse des Filterns und der Transformation in eine visuelle Struktur übersetzen.\n\nAudio rahmt die visuellen Zustände affektiv und körperlich. Die Musik, komponiert von Lorenz Schauler, intensiviert die emotionalen Qualitäten der einzelnen Akte und macht ihre zeitliche Entwicklung wahrnehmbar. Unterschiedliche Klangatmosphären rufen intuitive Zustände von Ordnung, Dichte, Irritation oder Überforderung hervor und verstärken so die dramaturgische Struktur der Installation.\n\nAls künstlerische Auseinandersetzung mit algorithmischen Systemen eröffnet die Arbeit einen Erfahrungsraum, in dem strukturelle Effekte wahrnehmbar werden und Bedeutung sich durch individuelle Erfahrung entfalten kann.\n\nDas Projekt entstand im Rahmen einer Bachelorarbeit im Studiengang Interaktive Medien an der Technischen Hochschule Augsburg und wurde 2026 abgeschlossen.",
           "en": "A multi-layered scaffold forms the spatial structure of the installation. Projections onto semi-transparent surfaces generate overlaps and displacements that translate algorithmic processes of filtering and transformation into a visual structure.\n\nAudio frames the visual states affectively and physically. The music, scored by Lorenz Schauler, intensifies the emotional qualities of the individual acts and makes their temporal development perceptible. Different sonic atmospheres evoke intuitive states of order, density, irritation or overwhelm and thus reinforce the dramaturgical structure of the installation.\n\nAs an artistic engagement with algorithmic systems, the work opens a space of experience in which structural effects become perceptible and meaning can unfold through individual experience.\n\nThe project was developed as a bachelor's thesis in the Interactive Media programme at the Technical University of Applied Sciences Augsburg and completed in 2026."
         }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/12.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAOfBcAHof+z0MCCd8dbneAAP70K7GmRZ4fByln2KSLA6QKc8u4j8nTKszNbwGHxAukV3gbVD3KtWLztV2jVMLWQklRXDrQYvDKqcSFRP0zvZHkv/08j04CsGvKeB5WUA3E3dXxdpboz5XmKgnUM3PEUgAA", "color": "#303030", "alt": { "de": "Bild 12", "en": "Image 12" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/04.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASogABIAPtFUoUuoJKMhsAgBABoJaQAAQQKujfhBQ5LTLw9SAAD+8wjKQfOM6Wjajdav58dz4FFcQ2fEd1cXt/clfH1xKIBK+EiWbRlj6VcCy6w0olpvWz3SqlxhZDIBbzXB0LNmLKJlVAq6rUAAAA==", "color": "#181818", "alt": { "de": "Bild 4", "en": "Image 4" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/03.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADQBACdASogABIAPtFapE0oJSMiMBgIAQAaCWkAACF5Vuo3n/SGEcanXW2/Z8XOQAD+9DGZaGMa023xWWifcOd7ZoCYOP/+cUa/0jums++3P5HY42qGv1SP+mG8Hn+zxWi+8917e8HPqYdk8WuNAnhNgOtjlb+ug8R1HXvSXW3qi1f4YX3h2jQAAAA=", "color": "#2a2a2a", "alt": { "de": "Bild 3", "en": "Image 3" } }]
       }
     ],
     "personal": {

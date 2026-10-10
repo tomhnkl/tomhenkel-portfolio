@@ -287,4 +287,5 @@ Das Lab ist eine freie Leinwand. Jeder Eintrag hat eine Position und eine Breite
 2. Ich scanne den Ordner (`npm run scan -- <id>`) und frage nach, wo etwas unklar ist.
 3. Gemeinsam legen wir Raster und Texte fest. Ich schicke die Exportliste mit Namen, Maßen und Format.
 4. Exportieren und in `images/projects/<id>/_ABB` legen.
-5. Ich prüfe die Exporte (`npm run check:abb -- <id>`), trage Vorschauen, Farben und Maße ein und prüfe die Seite im Browser.
+5. Ich prüfe die Exporte (`npm run check:abb -- <id>`), trage Maße ein, erzeuge Unschärfe-Vorschau und Grundfarbe (`npm run placeholders -- <id> --write`, nach jedem Neu-Export wieder) und prüfe die Seite im Browser.
+6. Neues Projekt oder geänderte `id`, `de.title`, `de.subtitle`: `npm run pages` (Projektseite, Sitemap). Dazu gehört `_ABB/og.jpg` als Link-Vorschau.
