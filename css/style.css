@@ -1127,9 +1127,12 @@ html.lenis body {
 .pd-links + .pd-accordions {
   margin-top: var(--space-m);
 } /* Links belong to the text and its details */
-.pd-footer-nav {
+.pd-footer-nav-title {
   margin-top: var(--space-l);
-} /* Last module → more projects (its h2 is only for screen readers) */
+} /* Last module → more projects */
+.pd-footer-nav {
+  margin-top: var(--space-m);
+} /* Heading → cards */
 /* 1. Hero: teaser loop or image; the film (Bunny HLS video, or for now a Vimeo/YouTube iframe) loads on click (initHeroPlayer) */
 .pd-hero {
   --hero-tap: 44px; /* Minimum tap target of the film buttons */
@@ -1562,15 +1565,6 @@ details.pd-accordion .pd-timeline dd {
   text-underline-offset: var(--underline-offset);
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
-}
-.pd-footer-nav .nav-item {
-  /* "Vorheriges / Nächstes Projekt" above each card (D14); the section heading is only for screen readers */
-}
-.pd-footer-nav .nav-item .nav-label {
-  display: block;
-  font-size: var(--fs-small);
-  line-height: var(--lh-small);
-  margin: 0 0 5px;
 }
 .pd-footer-nav .nav-item .nav-media {
   position: relative;

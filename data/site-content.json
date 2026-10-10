@@ -44,9 +44,7 @@
         "next": "weiter"
       },
       "more": {
-        "title": "Mehr Projekte",
-        "previous": "Vorheriges Projekt",
-        "next": "Nächstes Projekt"
+        "title": "Weitere Projekte"
       },
       "states": {
         "error": { "word": "hm.", "text": "Die Inhalte sind nicht angekommen.", "reload": "Neu laden" },
@@ -91,9 +89,7 @@
         "next": "next"
       },
       "more": {
-        "title": "More Work",
-        "previous": "Previous project",
-        "next": "Next project"
+        "title": "More Work"
       },
       "states": {
         "error": { "word": "hm.", "text": "The content didn’t arrive.", "reload": "Reload" },

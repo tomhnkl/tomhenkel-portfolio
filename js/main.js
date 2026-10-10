@@ -1640,20 +1640,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<div class="pd-block pd-text pd-personal" data-personal>${title}<div class="pd-text-body">${localized(personal.text, lang)}</div></div>`;
     }
 
-    // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben);
-    // darüber klein "Vorheriges" / "Nächstes Projekt" (D14, label = Schlüssel in ui.*.more)
-    function projectCardHTML(p, lang, label) {
+    // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben)
+    function projectCardHTML(p, lang) {
         const media = heroMedia(p.hero || {});
         return `
                 <a href="/work/${p.id}" class="nav-item">
-                    <span class="nav-label" data-more="${label}">${moreTexts(lang)[label]}</span>
                     <div class="nav-media">${media ? mediaHTML({ ...media, alt: null }, lang, { sizes: cellSizes(6) }) : ''}</div>
                     <span class="nav-title">${p[lang].title}</span>
                     <span class="nav-desc">${p[lang].category || ''}</span>
                 </a>`;
     }
 
-    // Texte "Weitere Projekte" (ui.*.more): Überschrift nur für Screenreader, Labels über den Karten
+    // Überschrift "Weitere Projekte" / "More Work" (ui.*.more.title)
     const moreTexts = (lang) => (uiText.ui[lang] && uiText.ui[lang].more) || {};
 
     // Projekt nicht gefunden (Seite ohne Projekt-id oder id fehlt in projects.json, z. B. veraltet generiert):
@@ -1708,8 +1706,6 @@ document.addEventListener('DOMContentLoaded', () => {
             container.querySelector('.pd-footer-nav-title').innerHTML = moreTitle;
             container.querySelectorAll('.pd-footer-nav .nav-item').forEach((item, i) => {
                 const p = i === 0 ? prevP : nextP;
-                const label = item.querySelector('.nav-label');
-                label.innerHTML = moreTexts(lang)[label.dataset.more] || '';
                 item.querySelector('.nav-title').innerHTML = p[lang].title;
                 item.querySelector('.nav-desc').innerHTML = p[lang].category || '';
             });
@@ -1733,10 +1729,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             ${blocksHTML(project, lang)}
             ${personalHTML(project, lang)}
-            <h2 class="pd-footer-nav-title visually-hidden">${moreTitle}</h2>
+            <h2 class="pd-footer-nav-title">${moreTitle}</h2>
             <div class="pd-footer-nav">
-                ${projectCardHTML(prevP, lang, 'previous')}
-                ${projectCardHTML(nextP, lang, 'next')}
+                ${projectCardHTML(prevP, lang)}
+                ${projectCardHTML(nextP, lang)}
             </div>
         `;
         underlineAll(container);
