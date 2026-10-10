@@ -4,24 +4,24 @@
     "featured": true,
     "year": "2026",
     "hero": {
-      "image": { "src": "images/projects/reality-by-algorithm/hero.webp", "width": 2560, "height": 1440 },
-      "teaser": "videos/projects/reality-by-algorithm/teaser.mp4",
+      "image": { "src": "images/projects/reality-by-algorithm/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "images/projects/reality-by-algorithm/_ABB/teaser.mp4",
       "film": { "vimeo": "1224883384" }
     },
-    "preview": { "portrait": "videos/projects/reality-by-algorithm/preview-portrait.mp4" },
+    "preview": { "portrait": "images/projects/reality-by-algorithm/_ABB/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/01.webp", "width": 2560, "height": 1440 }]
       },
       {
         "type": "media",
         "cols": [6, 6],
         "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/reality-by-algorithm/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/reality-by-algorithm/03.webp", "width": 1440, "height": 1800 }
+          { "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/03.webp", "width": 1440, "height": 1800 }
         ]
       },
       {
@@ -36,12 +36,12 @@
         "items": [
           {
             "title": { "de": "Notation", "en": "Notation" },
-            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/notation.webp", "width": 1440, "height": 960 }],
+            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/notation.webp", "width": 1440, "height": 960 }],
             "content": { "de": "Text folgt.", "en": "Text to follow." }
           },
           {
             "title": { "de": "Dimensionen", "en": "Dimensions" },
-            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/dimensions.webp", "width": 1440, "height": 960 }],
+            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/dimensions.webp", "width": 1440, "height": 960 }],
             "content": { "de": "Text folgt.", "en": "Text to follow." }
           }
         ]
@@ -51,11 +51,11 @@
         "cols": [4, 8],
         "ratio": "16:9",
         "items": [
-          { "type": "image", "src": "images/projects/reality-by-algorithm/04.webp", "width": 1080, "height": 1242 },
+          { "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/04.webp", "width": 1080, "height": 1242 },
           {
             "type": "video",
-            "src": "videos/projects/reality-by-algorithm/05.mp4",
-            "poster": "images/projects/reality-by-algorithm/05.webp",
+            "src": "images/projects/reality-by-algorithm/_ABB/05.mp4",
+            "poster": "images/projects/reality-by-algorithm/_ABB/05.webp",
             "width": 1920,
             "height": 1080
           }
@@ -65,7 +65,7 @@
         "type": "media",
         "cols": [6],
         "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/06.webp", "width": 1440, "height": 960 }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/06.webp", "width": 1440, "height": 960 }]
       },
       {
         "type": "text",
@@ -98,23 +98,30 @@
     "featured": true,
     "year": "2025",
     "hero": {
-      "image": { "src": "images/projects/sono-bricolage/hero.webp", "width": 2560, "height": 1440 },
-      "teaser": "videos/projects/sono-bricolage/teaser.mp4"
+      "image": { "src": "images/projects/sono-bricolage/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "images/projects/sono-bricolage/_ABB/teaser.mp4"
     },
-    "preview": { "portrait": "videos/projects/sono-bricolage/preview-portrait.mp4" },
+    "preview": { "portrait": "images/projects/sono-bricolage/_ABB/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/14.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwBACdASogABYAPslQn0unpKKhsAwA8BkJaQAAW+xDCQxeTZ9epBpAMqAA/vd8gP5qjkSrQh/xN4O+ySQJO6oXt898x7rvgrOdBSu1C3TtGq2oYhAvqv7e8uZ8Q4Rnsvsr0BzAAAA=", "color": "#1b1b1b", "alt": { "de": "Bild 14", "en": "Image 14" } }]
       },
       {
         "type": "media",
-        "cols": [6, 6],
-        "ratio": "4:5",
+        "cols": [3, 9],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/sono-bricolage/03.webp", "width": 1440, "height": 1800 }
+          {
+            "type": "video",
+            "src": "images/projects/sono-bricolage/_ABB/09.mp4",
+            "poster": "images/projects/sono-bricolage/_ABB/09.webp",
+            "width": 800,
+            "height": 1660,
+            "placeholder": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAADwCACdASogAEIAPsFOokunpCOhuZQMAPAYCWkAALwAjBrWLj6eWLvlkD5LL3SlSgavf7EaVI1ij8YpKyQ8DgPw5kheW7vS8wPDPFmJZr/6AAD+78kPu2P/TVGl5kAUQpCYg9JrT0Hn323KEhnVhg0qZSQj9L0iLEeg6EtWuj9EpVd881Bl4ImI7CsA6gSw4mxUVUqyI27ZMCnYsmws6xhihCoO7awud2CA17N6vrftz6GIHwzkynwWh+ErUXT/C0eqGLRIyYMmcNJ1wfv3zWq4Q0p2uFLU+BDMwA/2QRyYLO9MrLKIp54c8iqK3qKv95lqhMLnC4Z+QP/kLcciXw8ZAXslx8uLP/JmZYML0NKIs9I2/SkYAAAA",
+            "color": "#515151"
+          },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/02.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAACwBQCdASogABYAPtFaqU2oJSQiKAqpABoJaQAOfA0ga1l0zKbTMo+QIBzdbS5QsYG06Ku9uNYA/vBIe6c1uP3rUxcRE7JAPHW+4ly2+5E79fIA/DRhbaS6MCnELzOmc+BU0XrRQTOwdsPWA+8mT9WNC/9uiy7gX7HPv5RbclzA35D9tem66bpAay8p/S8KtbwfeTAViVXXl0u+b/rgv1x9W6kGUtDp90P5K9/mVsXLXPxpMFfbrttnOXU+Bvtabscl0HpXyObiFj7O3oUrAaZPj/yQ38tvNjsNwQq4hyCznlD5q0QEDnpW6A0bg0YTXqnV2q+2TFF8QAAA", "color": "#696969", "alt": { "de": "Bild 2", "en": "Image 2" } }
         ]
       },
       {
@@ -126,24 +133,35 @@
       },
       {
         "type": "media",
-        "cols": [4, 8],
-        "ratio": "16:9",
+        "cols": [9, 3],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/04.webp", "width": 1080, "height": 1242 },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/07.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRu4AAABXRUJQVlA4IOIAAACwBQCdASogABYAPtFYo0uoJSMhsAgBABoJaQAIEC6VGr9PsITcGPmLRHflY+4Zs1G4JenoS8gA/mo/vbWXP4g7gUthCPL7jcjd79QknHidEj3QHLAcMaUzGtpHJDkYLLOGUMMBsWf30LcxAdqSTdrxHKvU1YhxHrmpHGUrbINrEr95qfQrnS8+OENji90TWqgEoyNVU8qZP4qxzK8klQYgNojKRwNszQcGw5e7lq4l5eOwjFMIjyAD3PJDVBE/zNW8z3VL0gusDiWp2K6rZX+ppqAWTqG3GlDXpxXbfQfQoAAA", "color": "#525252", "alt": { "de": "Bild 7", "en": "Image 7" } },
           {
             "type": "video",
-            "src": "videos/projects/sono-bricolage/05.mp4",
-            "poster": "images/projects/sono-bricolage/05.webp",
-            "width": 1920,
-            "height": 1080
+            "src": "images/projects/sono-bricolage/_ABB/11.mp4",
+            "poster": "images/projects/sono-bricolage/_ABB/11.webp",
+            "width": 800,
+            "height": 1660,
+            "placeholder": "data:image/webp;base64,UklGRvoBAABXRUJQVlA4IO4BAABQCwCdASogAEIAPtFSpEuoJKOhsBmbMQAaCWkAEgTd7mVtvYaB7me/mUGETZJZ5uJB61Sp4e+PhPA70YgDN7jIy0dl7CGpS5McdrDR7r630/h5+qED99MnIURnfeAPB4+jBDAA/uU2Bb6ZVofkRAF/3jexgfjA6UBaWjuxaGHvk6qEZ4dzOrAW8FY+96vA33aLCVMxGD38I7yeCtVvvm3mLrNr3TFM7vl+jCJvfvT005zisRwqTUP7e91aJ7JGRG7DP7E65oFJ2W6ZQ87nPma7QQe1JLhLhYi934Yl/30jkiFrOKCl9TeI0L4XYO+0cpE4X2RZDr+QeGvQnXIFjJvN38+xiIiE7BwZyjdXz+UMZCWsa04RD9YGMNPnCFUHKcaUAht2VHezWECfYoXq/6p886okwToE5zRqNcnXyA2GC9b9Vy4QbSogwpefex9LY4q6OOWhEYrs19/9OOaJdipaJBb2Mp9QtWuqHLvr/ZE/42pZbuJ9ZAFA5NaSA6fAxWWo55Su7EscVE1SEa8nslcvtUuwkIpChKwpnEfu27Rk14zFtJwCcIe0jlNO1bqiRxPZ4lJR4/HT5hu+cuju3yFhWg8ESUwQpdxHWv+J0qDLN/ZI4F6HxBr4PnGks4JM9gXKHzGWowpNOf76YAAAAA==",
+            "color": "#353535"
           }
         ]
       },
       {
         "type": "media",
-        "cols": [6],
-        "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/06.webp", "width": 1440, "height": 960 }]
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/03.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAABwBQCdASogABYAPtFcpUyoJSOiMBgIAQAaCWkAAI92Y21JUM8t/uUfe1fehbUgSd2gQmgAAP7Y8xaWKNMBtxzhadPM4IrR51hjURXRzX59MPougBIL4ZmOt6fKPB55gcuWMZY7ytkh13KuLfjAbOnBvH435WbzyiykI2vO0M1cCzqUSTU2OaRyJgAAAA==", "color": "#515151", "alt": { "de": "Bild 3", "en": "Image 3" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/06.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBQCdASogABYAPtFcqE4oJSQiKAqpABoJaQAGaBVNFOuI+WCITPA+f244jvQ0g/mTjHR0AP7zEIsX862GTBNYoQfqAmgfuiOeoa7P8J0gR9C/5yxTKEveaUzibJqP0+1UTcx/8PfhGThNRnAYd4QOt3Ua/4QV7lmDEIAuhBl7ZM3+a2ckPvW3q+XcK/B64nWwCYEMySPpL5mzD9JJrtpN0+ehP+fOPevJTfw7h5lJot8Jau/oqq9Baxd3H3T3nvSKDzmlPKeR9Pies45OxsPJF+OcJ8OkgYzvlz6ZP+yexKj00S4AAA==", "color": "#545454", "alt": { "de": "Bild 6", "en": "Image 6" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/10.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRm4BAABXRUJQVlA4IGIBAADwBwCdASogACwAPsFMnUunpCKhtUgA8BgJaQAOkFYnLrCSMh1WK3sFL2Wu8aoVyXjkYdxo2NaPh8WRL5RBxLMxa0xWYScvuwAA/rxqruePDuv/FAWXu/YSvogSpJr0ZeZzcAz9s/Rnaq61osHlcJcTxRC1qyBqmHBNO7yN7XB2+M3MRm+otmxTTDMmVmcoPIby26+nxqeo2EFBzzrcQ2Wbx3bI+YgJVmltFpRM4Nx6mPtsIlrEFjRioV1kHqfxyAWAhHervYmeBafCXZoZ0n9eTtAA0r6tlBYtuVyJAksrS0wTIud8x2r6KIpiZ8wxwNNVpeDNIqCyqxLNQDlOTPaYKqYtblZ1OOo9S0qApkD4TpiV5UVER6DtE4BP6Z/cS+8/UMzmd+lxCqxDZiGN962pidtqgqRdg9a3e5OaJ/ht+M8M9EhF7cK3yY4bExt5ADUDtJi/61Omn9IS/55f+YiAAAA=", "color": "#8f8f8f", "alt": { "de": "Bild 10", "en": "Image 10" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/12.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAADQBACdASogABYAPtFWpUwoJKOiKA1RABoJaQAALbudrNJ751NXxlAkX+kXzxh78AD+9CnI5pQbxcM/Zugp18ZA/Mrlls1zcZZh3VwtD/rTSJdY4/GE4FXwqrADVhx/GbFISrX8zFs38mY5dzgC7AQXd4/o+lWFrnfY05L2pRqX79aiL7W3oscD4gZ8f13ptiCBXHG7QIjRE2ugAAA=", "color": "#404040", "alt": { "de": "Bild 12", "en": "Image 12" } }
+        ]
       },
       {
         "type": "text",
@@ -151,6 +169,19 @@
           "de": "In der Experimentierphase entwarfen wir ein Gestell, in dem sich Metallplatten verschiedener Dicke schallentkoppelt aufhängen lassen. Entgegen den historischen Vorbildern sind die Platten nicht in einem Kasten verbaut, sondern offen zugänglich. Über Körperschallwandler schickten wir die Signale analoger Synthesizer und Effektgeräte in die Platten und nahmen sie wieder ab: Durch ihre Schwingung wurden die Platten selbst zum analogen Halleffekt.\n\nZusätzlich versahen wir weitere Blechobjekte mit Körperschallwandlern und setzten sie teils als Lautsprecher ein, die nicht neutral klingen, sondern wie ein Instrument einen spezifischen Klang erzeugen. Schritt für Schritt steigerten wir uns bis zu dichten Geräuschkulissen und Rückkopplungsschleifen und loteten aus, wo die Grenzen liegen.\n\nAls Ergebnis inszenierten wir im Rahmen der Werkschau 2025 der Technischen Hochschule Augsburg eine Aufführung vor Publikum, in der wir die Experimente gebündelt zeigten. Gestell und Platten sind danach in den Fundus des Klanglabors übergegangen und stehen dort für weitere Experimente zur Verfügung.",
           "en": "During the experimental phase, we designed a frame in which metal plates of different thicknesses can be suspended, acoustically decoupled. Unlike their historical models, the plates are not enclosed in a box but openly accessible. Using exciters, we fed the signals of analogue synthesizers and effects units into the plates and picked them up again: through their vibration, the plates themselves became an analogue reverb effect.\n\nIn addition, we fitted further sheet-metal objects with exciters and partly used them as loudspeakers that do not sound neutral but, like an instrument, produce a specific sound. Step by step, we pushed towards dense soundscapes and feedback loops, exploring where the limits lie.\n\nAs the result, we staged a performance in front of an audience at the 2025 Werkschau, the annual exhibition of the Technical University of Applied Sciences Augsburg, bringing our experiments together. Afterwards, the frame and plates went into the Klanglabor's collection, where they remain available for further experiments."
         }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/15.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBQCdASogABYAPtFWo0uoJKMhsBgMAQAaCWkAAI90k+ms2JVNd49C+UeSTVu/KIAAAP74X2rFetav5Yzsb/TOZUixP0C5zMeCZS+61v44T8bNHnmgHWWSmBTluridkshNW2mfpf3jSZuxRIq3XF6r4iAAAA==", "color": "#1f1f1f", "alt": { "de": "Bild 15", "en": "Image 15" } }]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/01.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwBQCdASogABYAPtFcp04oJSOiKAqpABoJaQAGaBVKlQKeQKwhIXn2K6YU+5128UG9QGIwqcUGAAD9RrqZUfo8TumrXIR/2A3W3+eUzzRzrAz667tUFyRWg36Wv1JoMsN/1c+odLS0TQMI3nJCYkczxEffT5OhdFL3ce1vAKwrSfY+8x8YyDP24bAMlRDJzMRhX/TYlvce5dkCTy9A51HCeqQ4JAj7ceOFgDn0xVshJ09LjGDMtiBFQU/rYf2ynrUtZRhV+yfvnyiYRGSgAAAA", "color": "#696969", "alt": { "de": "Bild 1", "en": "Image 1" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/04.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAADQBACdASogABYAPtFcpU6oJSMiKAqpABoJaQAD5Ss1ziF/wLispbG96xM0bug/AAD+6fwRASncN7wwTmAZu5MWmV1nL/yzWCQOlyUpoc1xpYqFCKjtXZNoZqUqb+EEYd+qlO+oax6V6jWprSu7lwpugn5IhJR0UiM8iZx5aun9qIaCqeMHlrnka1WZE7Xv5pvwizyIjwL991uhz3WQqucAHCXi26k/7EdA2dcnYoV8/QZqpkLa8tkR0Ywf88v61BgiSRhXZKmqP0AAAAA=", "color": "#454545", "alt": { "de": "Bild 4", "en": "Image 4" } }
+        ]
       }
     ],
     "personal": {
@@ -168,24 +199,24 @@
     "featured": true,
     "year": { "de": "seit 2023", "en": "since 2023" },
     "hero": {
-      "image": { "src": "images/projects/lonis-weltraumreise/hero.webp", "width": 2560, "height": 1440 },
-      "teaser": "videos/projects/lonis-weltraumreise/teaser.mp4",
+      "image": { "src": "images/projects/lonis-weltraumreise/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "images/projects/lonis-weltraumreise/_ABB/teaser.mp4",
       "film": { "vimeo": "1092231191" }
     },
-    "preview": { "portrait": "videos/projects/lonis-weltraumreise/preview-portrait.mp4" },
+    "preview": { "portrait": "images/projects/lonis-weltraumreise/_ABB/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/01.webp", "width": 2560, "height": 1440 }]
       },
       {
         "type": "media",
         "cols": [6, 6],
         "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/03.webp", "width": 1440, "height": 1800 }
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/03.webp", "width": 1440, "height": 1800 }
         ]
       },
       {
@@ -200,11 +231,11 @@
         "cols": [4, 8],
         "ratio": "16:9",
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/04.webp", "width": 1080, "height": 1242 },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/04.webp", "width": 1080, "height": 1242 },
           {
             "type": "video",
-            "src": "videos/projects/lonis-weltraumreise/05.mp4",
-            "poster": "images/projects/lonis-weltraumreise/05.webp",
+            "src": "images/projects/lonis-weltraumreise/_ABB/05.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/05.webp",
             "width": 1920,
             "height": 1080
           }
@@ -214,7 +245,7 @@
         "type": "media",
         "cols": [6],
         "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/06.webp", "width": 1440, "height": 960 }]
+        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/06.webp", "width": 1440, "height": 960 }]
       },
       {
         "type": "text",
@@ -279,23 +310,23 @@
     "featured": true,
     "year": "2023",
     "hero": {
-      "image": { "src": "images/projects/present/hero.webp", "width": 2560, "height": 1440 },
-      "teaser": "videos/projects/present/teaser.mp4"
+      "image": { "src": "images/projects/present/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "images/projects/present/_ABB/teaser.mp4"
     },
-    "preview": { "portrait": "videos/projects/present/preview-portrait.mp4" },
+    "preview": { "portrait": "images/projects/present/_ABB/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/present/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/01.webp", "width": 2560, "height": 1440 }]
       },
       {
         "type": "media",
         "cols": [6, 6],
         "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/present/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/present/03.webp", "width": 1440, "height": 1800 }
+          { "type": "image", "src": "images/projects/present/_ABB/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/present/_ABB/03.webp", "width": 1440, "height": 1800 }
         ]
       },
       {
@@ -310,12 +341,12 @@
         "items": [
           {
             "title": { "de": "Konzept", "en": "Concept" },
-            "media": [{ "type": "image", "src": "images/projects/present/accordion-1.webp", "width": 1440, "height": 960 }],
+            "media": [{ "type": "image", "src": "images/projects/present/_ABB/accordion-1.webp", "width": 1440, "height": 960 }],
             "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           },
           {
             "title": { "de": "Umsetzung", "en": "Realisation" },
-            "media": [{ "type": "image", "src": "images/projects/present/accordion-2.webp", "width": 1440, "height": 960 }],
+            "media": [{ "type": "image", "src": "images/projects/present/_ABB/accordion-2.webp", "width": 1440, "height": 960 }],
             "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           }
         ]
@@ -325,11 +356,11 @@
         "cols": [4, 8],
         "ratio": "16:9",
         "items": [
-          { "type": "image", "src": "images/projects/present/04.webp", "width": 1080, "height": 1242 },
+          { "type": "image", "src": "images/projects/present/_ABB/04.webp", "width": 1080, "height": 1242 },
           {
             "type": "video",
-            "src": "videos/projects/present/05.mp4",
-            "poster": "images/projects/present/05.webp",
+            "src": "images/projects/present/_ABB/05.mp4",
+            "poster": "images/projects/present/_ABB/05.webp",
             "width": 1920,
             "height": 1080
           }
@@ -339,7 +370,7 @@
         "type": "media",
         "cols": [6],
         "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/present/06.webp", "width": 1440, "height": 960 }]
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/06.webp", "width": 1440, "height": 960 }]
       },
       {
         "type": "text",
@@ -364,23 +395,23 @@
     "featured": true,
     "year": "2022",
     "hero": {
-      "image": { "src": "images/projects/boomtschakkaboom/hero.webp", "width": 2560, "height": 1440 },
-      "teaser": "videos/projects/boomtschakkaboom/teaser.mp4"
+      "image": { "src": "images/projects/boomtschakkaboom/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "teaser": "images/projects/boomtschakkaboom/_ABB/teaser.mp4"
     },
-    "preview": { "portrait": "videos/projects/boomtschakkaboom/preview-portrait.mp4" },
+    "preview": { "portrait": "images/projects/boomtschakkaboom/_ABB/preview-portrait.mp4" },
     "blocks": [
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/01.webp", "width": 2560, "height": 1440 }]
       },
       {
         "type": "media",
         "cols": [6, 6],
         "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/boomtschakkaboom/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/boomtschakkaboom/03.webp", "width": 1440, "height": 1800 }
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/02.webp", "width": 1440, "height": 1800 },
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/03.webp", "width": 1440, "height": 1800 }
         ]
       },
       {
@@ -395,12 +426,12 @@
         "items": [
           {
             "title": { "de": "Konzept", "en": "Concept" },
-            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/accordion-1.webp", "width": 1440, "height": 960 }],
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/accordion-1.webp", "width": 1440, "height": 960 }],
             "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           },
           {
             "title": { "de": "Umsetzung", "en": "Realisation" },
-            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/accordion-2.webp", "width": 1440, "height": 960 }],
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/accordion-2.webp", "width": 1440, "height": 960 }],
             "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
           }
         ]
@@ -410,11 +441,11 @@
         "cols": [4, 8],
         "ratio": "16:9",
         "items": [
-          { "type": "image", "src": "images/projects/boomtschakkaboom/04.webp", "width": 1080, "height": 1242 },
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/04.webp", "width": 1080, "height": 1242 },
           {
             "type": "video",
-            "src": "videos/projects/boomtschakkaboom/05.mp4",
-            "poster": "images/projects/boomtschakkaboom/05.webp",
+            "src": "images/projects/boomtschakkaboom/_ABB/05.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/05.webp",
             "width": 1920,
             "height": 1080
           }
@@ -424,7 +455,7 @@
         "type": "media",
         "cols": [6],
         "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/06.webp", "width": 1440, "height": 960 }]
+        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/06.webp", "width": 1440, "height": 960 }]
       },
       {
         "type": "text",

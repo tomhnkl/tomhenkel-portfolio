@@ -13,11 +13,14 @@ Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "�
 
 ## Ordner und Dateinamen
 
-| Was | Pfad |
-|---|---|
-| Bilder | `images/projects/<id>/` (z. B. `hero.webp`, `01.webp`, `02.webp`) |
-| Videos | `videos/projects/<id>/` (z. B. `teaser.mp4`, `05.mp4`) |
-| Standbild zu einem Video | gleicher Name als `.webp` im Bilder-Ordner (z. B. `images/projects/<id>/05.webp`) |
+Jedes Projekt hat einen Ordner `images/projects/<id>/` mit zwei Unterordnern:
+
+| Ordner | Inhalt | Online |
+|---|---|---|
+| `_ROH` | alles, was ins Projekt soll, in beliebigen Formaten und gern mit Unterordnern. Wird nur gelesen, nie verändert. | nein (`.gitignore`, `.vercelignore`) |
+| `_ABB` | die fertigen Exporte mit den Namen aus der Exportliste, Bilder **und** Videos, ohne Unterordner. Die Website lädt sie direkt von hier. | ja |
+
+Ein Standbild zu einem Video hat denselben Namen als `.webp`, z. B. `05.mp4` und `05.webp`.
 
 `<id>` ist die `id` des Projekts, z. B. `reality-by-algorithm`.
 
@@ -31,11 +34,11 @@ Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "�
   "featured": true,
   "year": "2026",
   "hero": {
-    "image": { "src": "images/projects/mein-projekt/hero.webp", "width": 2560, "height": 1440 },
-    "teaser": "videos/projects/mein-projekt/teaser.mp4",
-    "film": { "youtube": "dQw4w9WgXcQ" }
+    "image": { "src": "images/projects/mein-projekt/_ABB/hero.webp", "width": 2560, "height": 1440 },
+    "teaser": "images/projects/mein-projekt/_ABB/teaser.mp4",
+    "film": { "bunny": "VIDEO-ID" }
   },
-  "preview": { "portrait": "videos/projects/mein-projekt/preview-portrait.mp4" },
+  "preview": { "portrait": "images/projects/mein-projekt/_ABB/preview-portrait.mp4" },
   "blocks": [ … ],
   "de": { "title": "mein projekt", "category": "Installation", "subtitle": "Ein Satz zum Projekt." },
   "en": { "title": "my project", "category": "installation", "subtitle": "One sentence about the project." }
@@ -55,14 +58,18 @@ Alles steht in `data/projects.json`. Übersetzbare Felder sind immer `{ "de": "�
 
 | Variante | Felder | Verhalten |
 |---|---|---|
-| Teaser + Film | `image`, `teaser`, `film` | Teaser läuft sofort stumm; „abspielen“ lädt den Film (Vimeo oder YouTube) mit Ton |
+| Teaser + Film | `image`, `teaser`, `film` | Teaser läuft sofort stumm; „abspielen“ lädt den Film mit Ton |
 | Nur Teaser | `image`, `teaser` | Stummer Loop, keine Buttons |
 | Standbild + Film | `image`, `film` | Bild; „abspielen“ lädt den Film |
 | Nur Bild | `image` | Bild |
 
-**Film:** `"film": { "vimeo": "76979871" }` oder `"film": { "youtube": "dQw4w9WgXcQ" }`. Eingetragen wird nur die ID (bei YouTube der Teil nach `v=` bzw. nach `youtu.be/`, bei Vimeo die Zahl aus der Adresse).
+**Film (Bunny Stream, D4):** `"film": { "bunny": "VIDEO-ID" }`, die Video-ID aus der Bunny-Bibliothek. Der CDN-Host steht einmal für alle Filme in `data/site-content.json` unter `settings.bunny_cdn` (z. B. `"vz-xxxx.b-cdn.net"`); ist er leer, wird der Film übersprungen (Hinweis in der Konsole). Abgespielt wird `https://<bunny_cdn>/<VIDEO-ID>/playlist.m3u8` im eigenen Video-Element: Safari/iOS und Browser mit eigenem HLS nativ, sonst über hls.js (`js/vendor/hls.light.min.js`, 1.7.3, Apache-2.0), das erst der Klick lädt; die Qualität ist auf die Playergröße begrenzt.
 
-Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an den Anbieter. Neben dem Button steht dazu der Hinweis „Film wird von Vimeo geladen“ bzw. „… von YouTube …“. YouTube wird über `youtube-nocookie.com` eingebunden.
+Übergangsweise funktionieren noch `"film": { "vimeo": "76979871" }` und `"film": { "youtube": "dQw4w9WgXcQ" }` (nur die ID; YouTube über `youtube-nocookie.com`).
+
+Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an den Anbieter (auch hls.js lädt erst dann); ein Hinweis am Button entfällt, das deckt die Datenschutzerklärung ab.
+
+**Steuerung (D11):** „abspielen“ mittig über dem Hero (Differenz-Mischung wie Nav und Footer), der ganze Hero ist Klickfläche. Läuft der Film: „pause“ in der Mitte, darunter „ton aus“ / „ton an“. Nach 2,5 s ohne Maus, Tipp oder Tastaturfokus blendet die Steuerung aus (`HERO_IDLE_MS` in `js/main.js`); Mausbewegung, Tipp oder Tab holt sie zurück, ein Tipp auf den ruhenden Film zeigt nur die Steuerung. Pausiert bleibt sie stehen.
 
 ---
 
@@ -85,13 +92,13 @@ Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an den Anbieter. Ne
 
 **Bild:**
 ```json
-{ "type": "image", "src": "images/projects/<id>/01.webp", "width": 2560, "height": 1440,
+{ "type": "image", "src": "images/projects/<id>/_ABB/01.webp", "width": 2560, "height": 1440,
   "alt": { "de": "Blick in die Ausstellung", "en": "View of the exhibition" }, "focus": "30% 50%" }
 ```
 
 **Video** (stummer Loop, spielt nur, wenn es sichtbar ist):
 ```json
-{ "type": "video", "src": "videos/projects/<id>/05.mp4", "poster": "images/projects/<id>/05.webp", "width": 1920, "height": 1080 }
+{ "type": "video", "src": "images/projects/<id>/_ABB/05.mp4", "poster": "images/projects/<id>/_ABB/05.webp", "width": 1920, "height": 1080 }
 ```
 
 - **`focus`** (optional): der Punkt, der beim Beschneiden sichtbar bleibt (x y). Standard ist die Mitte.
@@ -129,11 +136,21 @@ Leerzeilen (`\n\n`) trennen Absätze, `<br>` erzwingt einen Zeilenumbruch.
 
 Ein Akkordeon direkt nach einem Text rückt näher an ihn heran (`--space-m` statt `--space-l`).
 
+**Zeitverlauf:** Statt Text kann `content` eine Liste von Einträgen sein. Jeder Eintrag erscheint als kleiner Block, Datum über Ereignis, `--space-s` dazwischen.
+
+```json
+{ "title": { "de": "Zeitlicher Verlauf", "en": "Timeline" },
+  "content": [
+    { "date": { "de": "Oktober 2023", "en": "October 2023" }, "text": { "de": "Idee und Konzeption", "en": "idea and concept" } },
+    { "date": { "de": "Juni 2026", "en": "June 2026" }, "text": { "de": "ADC Talent Award", "en": "ADC Talent Award" } }
+  ] }
+```
+
 **Mit Bild:** Jedes Akkordeon kann `media` enthalten, Bilder oder Videos wie in den Medien-Zeilen. Sie stehen oben in voller Akkordeon-Breite und im eigenen Format, der Text darunter. Die Bilder laden erst beim Aufklappen. Export: 1440 px breit (Akkordeon = 6 Spalten).
 
 ```json
 { "title": { "de": "Notation", "en": "Notation" },
-  "media": [{ "type": "image", "src": "images/projects/<id>/notation.webp", "width": 1440, "height": 960, "alt": { "de": "…", "en": "…" } }],
+  "media": [{ "type": "image", "src": "images/projects/<id>/_ABB/notation.webp", "width": 1440, "height": 960, "alt": { "de": "…", "en": "…" } }],
   "content": { "de": "…", "en": "…" } }
 ```
 
@@ -150,8 +167,8 @@ Eine Zeile pro Link, in Book und Fließtextgröße wie die Kontakt-Links auf Abo
 **Link-Standard für die ganze Seite** (`.text-link`, `css/components/_links.scss`):
 - **In Ruhe:** wie der umgebende Text, ohne Unterstreichung.
 - **Andere Websites:** Links auf fremde Seiten öffnen in einem neuen Tab und tragen automatisch ↗. Mail-Links und interne Links bekommen keinen Pfeil.
-- **Hover:** Wechsel auf Favorit Lining, den Schnitt mit eingebauter Unterstreichung, wie in Nav und Footer. Lining läuft so breit wie Regular, nichts springt.
-- **Im Fließtext (Book):** Dort ist Lining knapp 1 % breiter. Bei Links mitten im Text kann beim Hover selten eine Zeile neu umbrechen.
+- **Hover:** Unterstreichung, wie in Nav und Footer (Mixin `underline` in `css/base/_typography.scss`, Lage und Stärke aus den Tokens `--underline-offset` und `--underline-thickness`). Wie beim früheren Lining-Schnitt hat die Linie Lücken an Wortabständen. Die Schrift wechselt nicht, also springt nichts und keine Zeile bricht neu um.
+- **Tastaturfokus:** weiße 2px-Kontur mit 4px Abstand auf allem, was fokussierbar ist (`css/components/_focus.scss`). Sie erscheint nur bei Bedienung mit der Tastatur.
 
 ### Persönlicher Text am Ende
 
@@ -177,7 +194,7 @@ Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text
 
 ## Export
 
-**Bilder:** WebP, sRGB, ohne Transparenz, Qualität ca. 75–80. Die Breite richtet sich nach der Feldgröße:
+**Bilder:** WebP, sRGB, ohne Transparenz, ohne Metadaten, Qualität ca. 75–80. Die Breite richtet sich nach der Feldgröße:
 
 | Spalten des Feldes | 12–10 | 9–7 | 6–5 | 4 | 3–2 |
 |---|---|---|---|---|---|
@@ -188,14 +205,31 @@ Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text
   - `[4, 8]` mit 16:9: das 4er-Feld etwa 1080×1242
   - `[3, 9]` mit 16:9: das 3er-Feld etwa 800×1404
   - Bei anderen Zeilen sag mir die Zeile, ich rechne die Maße aus.
+- **Handygröße:** Bilder ab 1920 px Breite gibt es zusätzlich in 1280 px Breite. Das Format bleibt gleich, an den Dateinamen kommt `-1280`, z. B. `01-1280.webp`. Schmalere Bilder brauchen keine zweite Fassung.
 
 **Videos:**
-- **Codierung:** MP4, H.264 (High), 8 Bit yuv420p, **ohne Tonspur**, Fast Start / „für Web optimiert“, ca. 3 Mbit/s.
-- **Loop im Inhalt:** Breite wie bei Bildern, höchstens 1920. Dazu ein Standbild (das erste Bild) als WebP in denselben Maßen.
-- **Hero:**
-  - `teaser.mp4` 1920×1080, ca. 15 s
-  - `hero.webp` 2560×1440, das erste Bild des Teasers
-- **Startseite, Handy:** `preview-portrait.mp4` 1080×1920
+- **Codierung:** MP4, H.264 (High), 8 Bit yuv420p, **ohne Tonspur**, Fast Start / „für Web optimiert“, ca. 3 Mbit/s bei 1080p.
+- **Handygröße:** Videos über 1280 px Breite gibt es zusätzlich in 1280 px Breite, z. B. 1280×720. An den Dateinamen kommt `-720`, z. B. `05-720.mp4`, ca. 1,5 Mbit/s.
+- **Loop im Inhalt:** Breite wie bei Bildern, höchstens 1920. Dazu kommt ein Standbild als WebP in denselben Maßen, nämlich das erste Bild. Ab 1920 px Breite gibt es das Standbild auch als `-1280`.
+
+**Pro Projekt immer**, unabhängig vom Raster:
+
+| Datei | Maß | Wofür |
+|---|---|---|
+| `images/projects/<id>/_ABB/hero.webp` + `hero-1280.webp` | 2560×1440 / 1280×720 | Standbild für Hero und Startseite; das erste Bild des Teasers |
+| `images/projects/<id>/_ABB/teaser.mp4` + `teaser-720.mp4` | 1920×1080 / 1280×720, ca. 15 s | Loop im Hero und auf der Startseite |
+| `images/projects/<id>/_ABB/preview-portrait.mp4` | 720×1280, ca. 1,5 Mbit/s | Startseite auf dem Handy |
+| `images/projects/<id>/_ABB/preview-portrait.webp` | 720×1280 | Standbild dazu (erstes Bild), wenn Videos nicht laufen dürfen |
+| `images/projects/<id>/_ABB/og.jpg` | 1200×630, JPG, möglichst unter 300 KB | Vorschau, wenn jemand den Projektlink teilt |
+
+**Für die ganze Seite:**
+
+| Datei | Maß | Wofür |
+|---|---|---|
+| `images/og.jpg` | 1200×630, JPG, möglichst unter 300 KB | Link-Vorschau für Startseite und About |
+| `favicon.svg` | Vektor | Symbol im Browser-Tab |
+| `favicon.ico` | 32×32 | ältere Browser |
+| `apple-touch-icon.png` | 180×180, ohne Transparenz | Symbol auf dem iPhone-Homescreen |
 
 **Alt-Texte:** Jedes Bild bekommt einen deutschen und einen englischen Alt-Text. Videos sind dekorativ und brauchen keinen.
 
@@ -208,7 +242,10 @@ Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text
 | Datei fehlt | Farbfläche im richtigen Format, kein kaputtes Symbol |
 | Video darf nicht laufen (Bewegung reduzieren, Datensparen, Stromsparmodus) | Standbild statt Loop |
 | Langsames Netz | Unscharfe Vorschau, bis das Medium da ist |
-| Film lädt nicht, Anbieter meldet Fehler, Start blockiert (z. B. Ton in Safari) | Die Steuerung des Anbieters wird freigegeben: ein Tipp direkt auf das Video startet ihn |
+| Browser verbietet den Ton beim Start | Film startet stumm, „ton an“ schaltet den Ton ein |
+| Bunny-Film startet gar nicht (auch stumm blockiert) | Die Bedienelemente des Browsers erscheinen: ein Tipp auf das Video startet ihn |
+| Bunny-Film lädt nicht (Netz, falsche ID) | Zurück zum Teaser, „abspielen“ versucht es erneut |
+| Vimeo/YouTube lädt nicht, meldet Fehler oder startet nicht | Die Steuerung des Anbieters wird freigegeben: ein Tipp direkt auf das Video startet ihn |
 | Zeile falsch befüllt (Spalten über 12, `items` passt nicht zu `cols`, Maße fehlen) | Block wird übersprungen, die Browser-Konsole sagt, welcher und warum |
 
 ---
@@ -241,6 +278,8 @@ Das Lab ist eine freie Leinwand. Jeder Eintrag hat eine Position und eine Breite
 
 ## Checkliste neues Projekt
 
-1. Dateien exportieren und in die Ordner legen.
-2. Das Projekt in `projects.json` anlegen (oder mir die gewünschten Zeilen sagen).
-3. Ich trage Vorschauen, Farben und Maße ein und prüfe die Seite im Browser.
+1. Alles, was ins Projekt soll, in `images/projects/<id>/_ROH` legen.
+2. Ich scanne den Ordner (`npm run scan -- <id>`) und frage nach, wo etwas unklar ist.
+3. Gemeinsam legen wir Raster und Texte fest. Ich schicke die Exportliste mit Namen, Maßen und Format.
+4. Exportieren und in `images/projects/<id>/_ABB` legen.
+5. Ich prüfe die Exporte (`npm run check:abb -- <id>`), trage Vorschauen, Farben und Maße ein und prüfe die Seite im Browser.

@@ -1,2 +1,13 @@
 # Not part of the live site
 docs/
+# Rohmaterial je Projekt
+images/projects/*/_ROH/
+# Quellen und Build-Reste (live wird nur css/style.css gebraucht)
+css/**/*.scss
+css/style.css.map
+# Schriften: seit der Umstellung auf Helvetica (D5) nicht mehr eingebunden
+fonts/
+# Lab bleibt bis zur Fertigstellung offline (D1, T19)
+lab.html
+data/lab.json
+images/lab/
