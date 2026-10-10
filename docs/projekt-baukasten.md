@@ -49,7 +49,8 @@ Ein Standbild zu einem Video hat denselben Namen als `.webp`, z. B. `05.mp4` und
 - **`title`:** darf `<br>` enthalten, z. B. `"reality,<br>by algorithm."`.
 - **`year`:** das exakte Jahr, z. B. `"2025"`. Für laufende Projekte auch pro Sprache, z. B. `{ "de": "seit 2023", "en": "since 2023" }`.
 - **`preview.portrait`:** optional, die Hochformat-Vorschau für die Startseite auf dem Handy. Auf dem Desktop läuft dort der Teaser.
-- **Adresse und Link-Vorschau:** Jedes Projekt hat eine eigene Seite unter `/work/<id>`, z. B. `tomhenkel.xyz/work/reality-by-algorithm`. Die Datei `work/<id>.html` entsteht aus `project.html`: `npm run pages` (oder `npm run build`) in `_tooling`. Danach stehen der Titel, der deutsche Untertitel als Beschreibung und `_ABB/og.jpg` als Vorschaubild im HTML. Dasselbe gilt für `sitemap.xml`. Nach jeder Änderung an `id`, `de.title` oder `de.subtitle` und für jedes neue Projekt neu erzeugen. Ist eine Seite veraltet, schlägt `npm test` fehl.
+- **Adresse und Link-Vorschau:** Jedes Projekt hat eine eigene Seite unter `/work/<id>`, z. B. `tomhenkel.xyz/work/reality-by-algorithm`. Die Datei `work/<id>/index.html` entsteht aus `project.html`: `npm run pages` (oder `npm run build`) in `_tooling`. Danach stehen der Titel, der deutsche Untertitel als Beschreibung und `_ABB/og.jpg` als Vorschaubild im HTML. Dasselbe gilt für `sitemap.xml`. Nach jeder Änderung an `id`, `de.title` oder `de.subtitle` und für jedes neue Projekt neu erzeugen. Ist eine Seite veraltet, schlägt `npm test` fehl.
+- **Lokal ansehen:** Die Seiten liegen als Ordner mit `index.html` (`work/<id>/`, `about/`), deshalb laufen `/work/<id>` und `/about` in VS Code Live Server und im Server aus `_tooling` (`npm run dev`). Nur `npm run dev` zeigt die Weiterleitungen und die 404-Seite wie bei Vercel.
 
 ---
 
@@ -250,7 +251,7 @@ Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text
 | Zeile falsch befüllt (Spalten über 12, `items` passt nicht zu `cols`, Maße fehlen) | Block wird übersprungen, die Browser-Konsole sagt, welcher und warum |
 | Alte Adresse `project.html?id=<id>` | Leitet dauerhaft auf `/work/<id>` um, ohne `id` auf die Startseite |
 | Adresse `/work/<id>` gibt es nicht | Die 404-Seite |
-| `work/<id>.html` ist da, das Projekt fehlt aber in `projects.json` | Poster „Projekt nicht gefunden“, nach 3 s zur Startseite. `npm run pages` räumt die alte Seite weg |
+| `work/<id>/index.html` ist da, das Projekt fehlt aber in `projects.json` | Poster „Projekt nicht gefunden“, nach 3 s zur Startseite. `npm run pages` räumt die alte Seite weg |
 
 ---
 
