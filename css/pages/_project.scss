@@ -109,8 +109,7 @@
       -webkit-appearance: none;
 
       &:hover {
-        font-family: var(--font-family-lining); /* Match Nav hover style */
-        text-decoration: none;
+        @include underline; /* Match Nav hover style */
       }
 
       &[hidden] { display: none; }
@@ -384,7 +383,7 @@ details.pd-accordion {
     @include grid-cols(span 6);
 
     &:hover .nav-title {
-      font-family: var(--font-family-lining);
+      @include underline;
     }
 
     .nav-media {

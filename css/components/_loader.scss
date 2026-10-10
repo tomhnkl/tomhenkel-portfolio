@@ -20,7 +20,8 @@
 
   /* Large centered text */
   .loader-text {
-    font-family: var(--font-family-lining);
+    font-family: var(--font-family-base);
+    @include underline; /* Was the Lining cut */
     font-size: var(--fs-poster);
     font-weight: 400;
     margin: 0;

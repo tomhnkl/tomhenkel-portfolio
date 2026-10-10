@@ -1,37 +1,5 @@
-@font-face {
-  font-family: 'ABC Favorit';
-  src: url('../fonts/ABCFavorit-Regular-Trial.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'ABC Favorit Book';
-  src: url('../fonts/ABCFavorit-Book-Trial.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'ABC Favorit Bold';
-  src: url('../fonts/ABCFavorit-Bold-Trial.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'ABC Favorit Lining';
-  src: url('../fonts/ABCFavoritLining-Regular-Trial.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'ABC Favorit Mono';
-  src: url('../fonts/ABCFavoritMono-Bold-Trial.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-}
+/* No webfonts for now: the system Helvetica stack from base/_variables.scss.
+   The ABC Favorit @font-face rules (trial OTFs in fonts/) are in git history before 2026-10-10. */
 
 html, body {
   margin: 0;

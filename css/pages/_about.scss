@@ -38,7 +38,7 @@
 .about-section .about-text {
   grid-column: 9 / 13;
   align-self: start; /* Align to top of section */
-  margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size) */
+  margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size; re-measured for Helvetica 2026-10-10: still holds) */
   @include tablet { grid-column: 7 / 13; }
 
     .description {

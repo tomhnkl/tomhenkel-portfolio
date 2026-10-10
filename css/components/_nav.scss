@@ -43,8 +43,7 @@
       font-family: var(--font-family-base);
 
       &:hover, &.active {
-        font-family: var(--font-family-lining);
-        text-decoration: none;
+        @include underline;
       }
     }
   }
@@ -65,7 +64,7 @@
     /* Only with a real pointer: on touch the hover state would stick after tapping */
     @media (hover: hover) {
       &:hover {
-        font-family: var(--font-family-lining);
+        @include underline;
       }
     }
   }
@@ -213,13 +212,12 @@
         overflow: hidden;
         user-select: none;
         pointer-events: none;
-        font-family: var(--font-family-lining);
-        font-weight: bold; /* Ensure it takes max width */
+        /* Was set in the Lining cut to reserve its hover width; the underline does not change the width */
       }
 
       &:hover {
         color: #fff;
-        font-family: var(--font-family-lining);
+        @include underline;
         transform: translateY(1.5px); 
       }
     }
@@ -261,13 +259,11 @@
         overflow: hidden;
         user-select: none;
         pointer-events: none;
-        font-family: var(--font-family-lining);
-        font-weight: bold;
       }
 
       &.active, &:hover {
         color: #fff;
-        font-family: var(--font-family-lining);
+        @include underline;
         transform: translateY(1.5px); 
       }
     }

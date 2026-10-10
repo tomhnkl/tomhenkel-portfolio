@@ -1,12 +1,19 @@
 @charset "UTF-8";
 :root {
   /* --- Typography System --- */
-  /* Font Families */
-  --font-family-base: 'ABC Favorit', Helvetica, Arial, sans-serif;
-  --font-family-book: 'ABC Favorit Book', Helvetica, Arial, sans-serif;
-  --font-family-bold: 'ABC Favorit Bold', Helvetica, Arial, sans-serif;
-  --font-family-lining: 'ABC Favorit Lining', Helvetica, Arial, sans-serif;
-  --font-family-mono: 'ABC Favorit Mono', monospace;
+  /* Font Families (2026-10-10: Helvetica as system font instead of ABC Favorit, decision on Favorit later)
+     Roles stay separate, so a webfont can come back by changing only these tokens:
+       base  UI, nav, titles (was Favorit Regular)
+       book  running text (was Favorit Book; Helvetica has no Book, so Regular)
+       bold  home list hover/active (was Favorit Bold, its own family; now a weight) */
+  --font-family-base: Helvetica, Arial, sans-serif;
+  --font-family-book: Helvetica, Arial, sans-serif;
+  --font-weight-bold: 700;
+  /* Underline for hover/focus/active (replaces the Favorit Lining cut with its built-in line).
+     Position and thickness measured from Lining: line top 0.165em below the baseline, 0.08em thick.
+     Applied via the underline mixin (base/_typography.scss). */
+  --underline-offset: 0.165em;
+  --underline-thickness: 0.08em;
   /* Font Sizes: fluid, derived from the grid columns (px + vw)
      Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):
        phone ramp:   the column is the full width (100vw - 50px)
@@ -84,36 +91,8 @@
     --scroll-settle: 0ms;
   }
 }
-@font-face {
-  font-family: "ABC Favorit";
-  src: url("../fonts/ABCFavorit-Regular-Trial.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: "ABC Favorit Book";
-  src: url("../fonts/ABCFavorit-Book-Trial.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: "ABC Favorit Bold";
-  src: url("../fonts/ABCFavorit-Bold-Trial.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: "ABC Favorit Lining";
-  src: url("../fonts/ABCFavoritLining-Regular-Trial.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: "ABC Favorit Mono";
-  src: url("../fonts/ABCFavoritMono-Bold-Trial.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-}
+/* No webfonts for now: the system Helvetica stack from base/_variables.scss.
+   The ABC Favorit @font-face rules (trial OTFs in fonts/) are in git history before 2026-10-10. */
 html, body {
   margin: 0;
   overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
@@ -234,8 +213,11 @@ h1 {
   font-family: var(--font-family-base);
 }
 .main-nav .nav-right a:hover, .main-nav .nav-right a.active {
-  font-family: var(--font-family-lining);
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
 }
 .main-nav {
   /* Menu toggle ("menü" / "schließen"), mobile only */
@@ -255,7 +237,11 @@ h1 {
 }
 @media (hover: hover) {
   .main-nav .nav-burger:hover {
-    font-family: var(--font-family-lining);
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
   }
 }
 .main-nav {
@@ -403,12 +389,15 @@ h1 {
      -moz-user-select: none;
           user-select: none;
   pointer-events: none;
-  font-family: var(--font-family-lining);
-  font-weight: bold; /* Ensure it takes max width */
+  /* Was set in the Lining cut to reserve its hover width; the underline does not change the width */
 }
 .main-footer .footer-left a:hover {
   color: #fff;
-  font-family: var(--font-family-lining);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
   transform: translateY(1.5px);
 }
 .main-footer .footer-left span {
@@ -448,12 +437,14 @@ h1 {
      -moz-user-select: none;
           user-select: none;
   pointer-events: none;
-  font-family: var(--font-family-lining);
-  font-weight: bold;
 }
 .main-footer .footer-right button.active, .main-footer .footer-right button:hover {
   color: #fff;
-  font-family: var(--font-family-lining);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
   transform: translateY(1.5px);
 }
 .main-footer .footer-right span.separator {
@@ -489,7 +480,13 @@ h1 {
   /* Large centered text */
 }
 #loader .loader-text {
-  font-family: var(--font-family-lining);
+  font-family: var(--font-family-base);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+  /* Was the Lining cut */
   font-size: var(--fs-poster);
   font-weight: 400;
   margin: 0;
@@ -575,14 +572,18 @@ html.lenis body {
 
 /* --- Links in content (standard, 2026-10-01) ---
    At rest like the surrounding text; links to other websites (new tab) are marked with ↗.
-   Hover/focus: Favorit Lining, the cut with the built-in underline (same as nav and footer).
-   Lining runs as wide as Regular, so nothing shifts; next to Book it is ~1 % wider. */
+   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss).
+   Same font, so the width never changes and nothing shifts. */
 .text-link {
   color: inherit;
   text-decoration: none;
 }
 .text-link:hover, .text-link:focus-visible {
-  font-family: var(--font-family-lining);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
 }
 .text-link[target=_blank]::after {
   content: " ↗"; /* thin space + ↗ */
@@ -690,13 +691,13 @@ html.lenis body {
 }
 .project-list-item:last-child {
   padding-bottom: 0;
-  margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits 1/3 em above the image bottom */
+  margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits ~0.3 em above the image bottom (re-measured for Helvetica 2026-10-10: same as Favorit) */
 }
 .project-list-item {
   /* Active / Hover State */
 }
 .project-list-item.active, .project-list-item:hover {
-  font-family: var(--font-family-bold);
+  font-weight: var(--font-weight-bold);
   color: #fff; /* Ensure it stays white */
 }
 .project-list-item .p-title {
@@ -779,7 +780,7 @@ html.lenis body {
 .about-section .about-text {
   grid-column: 9/13;
   align-self: start; /* Align to top of section */
-  margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size) */
+  margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size; re-measured for Helvetica 2026-10-10: still holds) */
 }
 @media (min-width: 769px) and (max-width: 1220px) {
   .about-section .about-text {
@@ -946,8 +947,12 @@ html.lenis body {
   -webkit-appearance: none;
 }
 .pd-hero .hero-controls button:hover {
-  font-family: var(--font-family-lining); /* Match Nav hover style */
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+  /* Match Nav hover style */
 }
 .pd-hero .hero-controls button[hidden] {
   display: none;
@@ -1261,7 +1266,11 @@ details.pd-accordion .accordion-text {
   }
 }
 .pd-footer-nav .nav-item:hover .nav-title {
-  font-family: var(--font-family-lining);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
 }
 .pd-footer-nav .nav-item .nav-media {
   position: relative;

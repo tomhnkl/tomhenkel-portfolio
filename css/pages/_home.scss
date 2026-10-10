@@ -93,12 +93,12 @@
 
   &:last-child {
     padding-bottom: 0;
-    margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits 1/3 em above the image bottom */
+    margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits ~0.3 em above the image bottom (re-measured for Helvetica 2026-10-10: same as Favorit) */
   }
   
   /* Active / Hover State */
   &.active, &:hover {
-     font-family: var(--font-family-bold);
+     font-weight: var(--font-weight-bold);
      color: #fff; /* Ensure it stays white */
   }
 

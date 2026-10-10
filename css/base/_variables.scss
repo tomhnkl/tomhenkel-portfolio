@@ -5,12 +5,20 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
 :root {
   /* --- Typography System --- */
   
-  /* Font Families */
-  --font-family-base: 'ABC Favorit', Helvetica, Arial, sans-serif;
-  --font-family-book: 'ABC Favorit Book', Helvetica, Arial, sans-serif;
-  --font-family-bold: 'ABC Favorit Bold', Helvetica, Arial, sans-serif;
-  --font-family-lining: 'ABC Favorit Lining', Helvetica, Arial, sans-serif;
-  --font-family-mono: 'ABC Favorit Mono', monospace;
+  /* Font Families (2026-10-10: Helvetica as system font instead of ABC Favorit, decision on Favorit later)
+     Roles stay separate, so a webfont can come back by changing only these tokens:
+       base  UI, nav, titles (was Favorit Regular)
+       book  running text (was Favorit Book; Helvetica has no Book, so Regular)
+       bold  home list hover/active (was Favorit Bold, its own family; now a weight) */
+  --font-family-base: Helvetica, Arial, sans-serif;
+  --font-family-book: Helvetica, Arial, sans-serif;
+  --font-weight-bold: 700;
+
+  /* Underline for hover/focus/active (replaces the Favorit Lining cut with its built-in line).
+     Position and thickness measured from Lining: line top 0.165em below the baseline, 0.08em thick.
+     Applied via the underline mixin (base/_typography.scss). */
+  --underline-offset: 0.165em;
+  --underline-thickness: 0.08em;
 
   /* Font Sizes: fluid, derived from the grid columns (px + vw)
      Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):

@@ -1,3 +1,13 @@
+// Hover/focus/active underline (replaces the Favorit Lining cut).
+// Line position and thickness come from tokens in base/_variables.scss and scale with the font size (em);
+// skip-ink leaves gaps at descenders like Lining did. Unlike Lining, the line also runs under word spaces.
+@mixin underline {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  text-decoration-skip-ink: auto;
+}
+
 h1 {
   margin: 0;
   font-size: var(--fs-ui); /* Match ui size for "hidden" h1 usage if visible somewhere else */
