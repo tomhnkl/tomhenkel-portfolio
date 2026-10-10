@@ -84,7 +84,7 @@
     },
     "de": {
       "title": "reality,<br>by algorithm.",
-      "category": "Installation",
+      "category": "installation",
       "subtitle": "Eine audiovisuelle Installation über die strukturellen Wirkungen algorithmischer Systeme."
     },
     "en": {
@@ -191,7 +191,7 @@
         "en": "Placeholder: a personal note on the project will go here."
       }
     },
-    "de": { "title": "sono bricolage", "category": "Klangexperiment", "subtitle": "Experimentelle Klangforschung." },
+    "de": { "title": "sono bricolage", "category": "klangexperiment", "subtitle": "Experimentelle Klangforschung." },
     "en": { "title": "sono bricolage", "category": "sound experiment", "subtitle": "Experimental sound research." }
   },
   {
@@ -272,10 +272,16 @@
           },
           {
             "title": { "de": "Zeitlicher Verlauf", "en": "Timeline" },
-            "content": {
-              "de": "Oktober 2023: Idee und Konzeption, Design-Thinking-Workshop in Freiburg\nOktober 2023 – März 2024: Geschichte, Grafikstil und erster Prototyp, ausgestellt beim Sichtraum der THA\nMärz 2024 – März 2025: Weiterentwicklung im Innolab\nNovember 2024 – März 2025: Usability-Tests und Ethikantrag\nFebruar – April 2025: Pilotstudie\nSeptember 2025: Vorstellung auf der 23. Jahrestagung der Arbeitsgemeinschaft Psychoonkologie (PSO) der Deutschen Krebsgesellschaft in Würzburg\nJanuar 2026: Dauerbetrieb\nJuni 2026: ADC Talent Award",
-              "en": "October 2023: idea and concept, design thinking workshop in Freiburg\nOctober 2023 – March 2024: story, illustration style and first prototype, exhibited at the THA Sichtraum\nMarch 2024 – March 2025: further development at the Innolab\nNovember 2024 – March 2025: usability tests and ethics application\nFebruary – April 2025: pilot study\nSeptember 2025: presentation at the 23rd annual conference of the Psycho-Oncology Working Group (PSO) of the German Cancer Society in Würzburg\nJanuary 2026: permanent operation\nJune 2026: ADC Talent Award"
-            }
+            "content": [
+              { "date": { "de": "Oktober 2023", "en": "October 2023" }, "text": { "de": "Idee und Konzeption, Design-Thinking-Workshop in Freiburg", "en": "idea and concept, design thinking workshop in Freiburg" } },
+              { "date": { "de": "Oktober 2023 – März 2024", "en": "October 2023 – March 2024" }, "text": { "de": "Geschichte, Grafikstil und erster Prototyp, ausgestellt beim Sichtraum der THA", "en": "story, illustration style and first prototype, exhibited at the THA Sichtraum" } },
+              { "date": { "de": "März 2024 – März 2025", "en": "March 2024 – March 2025" }, "text": { "de": "Weiterentwicklung im Innolab", "en": "further development at the Innolab" } },
+              { "date": { "de": "November 2024 – März 2025", "en": "November 2024 – March 2025" }, "text": { "de": "Usability-Tests und Ethikantrag", "en": "usability tests and ethics application" } },
+              { "date": { "de": "Februar – April 2025", "en": "February – April 2025" }, "text": { "de": "Pilotstudie", "en": "pilot study" } },
+              { "date": { "de": "September 2025", "en": "September 2025" }, "text": { "de": "Vorstellung auf der 23. Jahrestagung der Arbeitsgemeinschaft Psychoonkologie (PSO) der Deutschen Krebsgesellschaft in Würzburg", "en": "presentation at the 23rd annual conference of the Psycho-Oncology Working Group (PSO) of the German Cancer Society in Würzburg" } },
+              { "date": { "de": "Januar 2026", "en": "January 2026" }, "text": { "de": "Dauerbetrieb", "en": "permanent operation" } },
+              { "date": { "de": "Juni 2026", "en": "June 2026" }, "text": { "de": "ADC Talent Award", "en": "ADC Talent Award" } }
+            ]
           },
           {
             "title": { "de": "Studie", "en": "Study" },
@@ -296,7 +302,7 @@
     },
     "de": {
       "title": "lonis weltraumreise",
-      "category": "Webanwendung",
+      "category": "webanwendung",
       "subtitle": "Eine interaktive Geschichte, die Kindern das Thema Krebs erklärt."
     },
     "en": {
@@ -387,7 +393,7 @@
         "en": "Placeholder: a personal note on the project will go here."
       }
     },
-    "de": { "title": "present", "category": "Interface", "subtitle": "Design für die Gegenwart." },
+    "de": { "title": "present", "category": "interface", "subtitle": "Design für die Gegenwart." },
     "en": { "title": "present", "category": "interface", "subtitle": "Design for the present." }
   },
   {
@@ -472,7 +478,7 @@
         "en": "Placeholder: a personal note on the project will go here."
       }
     },
-    "de": { "title": "boomtschakkaboom", "category": "Installation", "subtitle": "Rhythmische Lichtinstallation." },
+    "de": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmische Lichtinstallation." },
     "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmic light installation." }
   }
 ]
