@@ -87,17 +87,28 @@ document.addEventListener('DOMContentLoaded', () => {
        // First visit: Keep loader visible until assets are ready
     }
     
+    // Alle Pfade ab der Wurzel: Projektseiten liegen unter /work/<id> (D6), relative Pfade zeigten dort ins Leere.
+    // Die JSON-Dateien schreiben Medien relativ ("images/…", "videos/…"); rootPaths setzt beim Laden ein "/" davor,
+    // auch vor jeden Eintrag eines srcset. data:-Vorschauen, http(s) und schon absolute Pfade bleiben, wie sie sind
+    const MEDIA_PATH = /^(?:images|videos)\//;
+    function rootPaths(value) {
+        if (typeof value === 'string') return MEDIA_PATH.test(value) ? value.replace(/(^|,\s*)((?:images|videos)\/)/g, '$1/$2') : value;
+        if (Array.isArray(value)) return value.map(rootPaths);
+        if (value && typeof value === 'object') Object.keys(value).forEach(key => { value[key] = rootPaths(value[key]); });
+        return value;
+    }
+
     Promise.all([
-        fetch('data/site-content.json').then(r => r.json()),
-        fetch('data/projects.json').then(r => r.json()),
+        fetch('/data/site-content.json').then(r => r.json()),
+        fetch('/data/projects.json').then(r => r.json()),
         // lab.json lädt nur die Lab-Seite; fehlt sie oder ist sie kaputt, bleibt die Leinwand leer
         document.getElementById('lab-canvas')
-            ? fetch('data/lab.json').then(r => r.json()).catch(error => { console.warn('lab.json nicht geladen:', error); return []; })
+            ? fetch('/data/lab.json').then(r => r.json()).catch(error => { console.warn('lab.json nicht geladen:', error); return []; })
             : []
     ]).then(async ([content, projects, lab]) => {
-        siteContent = content;
-        projectsData = projects;
-        labData = Array.isArray(lab) ? lab : [];
+        siteContent = rootPaths(content);
+        projectsData = rootPaths(projects);
+        labData = Array.isArray(lab) ? rootPaths(lab) : [];
 
         // Sprache und Navigation/Footer umstellen, solange der Loader noch deckt
         uiText = {
@@ -350,11 +361,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-// --- Hero Player: Teaser-Loop läuft sofort, der Film (Vimeo oder YouTube) lädt erst per Klick ---
+// --- Hero Player: Teaser-Loop läuft sofort, der Film lädt erst per Klick ---
+    // Film von Bunny Stream als HLS im eigenen <video> (D4), übergangsweise auch Vimeo/YouTube im iframe.
     // Vor dem Klick geht keine Anfrage an den Anbieter (Datenschutz); der Klick erlaubt auch den Ton.
-    // Zustand der eigenen Steuerung; Start = pausiert, passend zur sichtbaren Play-Fläche. film = Film geladen
+    // Steuerung (D11): ein Wort mittig über dem Film; läuft er, "pause" und darunter der Ton, nach einer Ruhezeit ausgeblendet.
+    // Zustand der eigenen Steuerung; Start = pausiert. film = Film geladen
     let heroState = { paused: true, muted: false, film: false };
-    let heroFilmName = ''; // Anbieter für den Hinweis ("Vimeo" / "YouTube")
+    const HERO_IDLE_MS = 2500; // so lange ohne Maus, Tipp oder Fokus, bis die Steuerung über dem laufenden Film ausblendet
+    const IFRAME_START_MS = 4000; // Vimeo/YouTube: läuft der Film bis dahin nicht, übernimmt die Anzeige des Anbieters
+    const MUTE_SYNC_MS = 500; // Abgleich des Ton-Zustands mit dem Player
+    const HLS_SCRIPT = '/js/vendor/hls.light.min.js'; // hls.js 1.7.3 (light), selbst gehostet, lädt erst beim ersten Klick
 
     const loadScript = (src) => new Promise((resolve, reject) => {
         const script = document.createElement('script');
@@ -364,12 +380,115 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(script);
     });
 
-    // Anbieter: Einbettungs-URL und connect(iframe) -> Player mit einheitlicher Schnittstelle
-    // { play, pause, isPaused, isMuted, setMuted, on('play' | 'pause' | 'error', fn) }; alle Methoden liefern Promises
+    // Ereignisse eines Players; was vor dem ersten Zuhören kam (z. B. Start direkt im Klick), wird nachgeholt
+    function filmEvents() {
+        const handlers = { play: [], pause: [], error: [], blocked: [] };
+        const early = new Set();
+        return {
+            emit(event) {
+                if (!handlers[event].length) early.add(event);
+                handlers[event].forEach(fn => fn());
+            },
+            on(event, fn) {
+                handlers[event].push(fn);
+                if (early.delete(event)) fn();
+            },
+        };
+    }
+
+    // Bunny-Host aus site-content.json (settings.bunny_cdn, z. B. "vz-xxxx.b-cdn.net"); leer = noch nicht eingerichtet
+    const bunnyHost = () => String((siteContent.settings && siteContent.settings.bunny_cdn) || '').trim()
+        .replace(/^https?:\/\//, '').replace(/\/+$/, '');
+
+    const filmIframe = (src, title) => {
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture';
+        iframe.title = title;
+        return iframe;
+    };
+
+    // Anbieter: create(id, title) -> Element im Hero, connect(element) -> Player mit einheitlicher Schnittstelle
+    // { play, pause, isPaused, isMuted, setMuted, on('play' | 'pause' | 'error' | 'blocked', fn) }; alle Methoden liefern Promises.
+    // iframe: true = Player des Anbieters (startet über die Einbettungs-URL); sonst eigenes <video>
     const FILM_PROVIDERS = {
+        bunny: {
+            name: 'Bunny Stream',
+            hlsLib: null,
+            create(id, title) {
+                const video = document.createElement('video');
+                video.playsInline = true; // iOS: im Hero abspielen, nicht im Vollbild
+                video.preload = 'auto';
+                video.setAttribute('aria-label', title);
+                video.dataset.src = `https://${bunnyHost()}/${encodeURIComponent(id)}/playlist.m3u8`;
+                return video;
+            },
+            connect(video) {
+                const events = filmEvents();
+                let hls = null;
+                // Start mit Ton; verbietet der Browser den Ton, stumm starten ("ton an" bleibt bedienbar).
+                // Scheitert auch das: blocked (Bedienelemente des Browsers). AbortError = pause() während play(), Quellfehler meldet 'error'
+                const start = () => video.play().catch(err => {
+                    if (!err || err.name !== 'NotAllowedError') return;
+                    if (video.muted) return events.emit('blocked');
+                    video.muted = true;
+                    return start();
+                });
+                video.addEventListener('playing', () => events.emit('play')); // erst mit dem ersten Bild, vorher bleibt der Teaser
+                video.addEventListener('pause', () => events.emit('pause'));
+                video.addEventListener('error', () => events.emit('error'));
+                const player = {
+                    play: start,
+                    pause: () => Promise.resolve(video.pause()),
+                    isPaused: () => Promise.resolve(video.paused),
+                    isMuted: () => Promise.resolve(video.muted),
+                    setMuted: (mute) => {
+                        video.muted = mute; // synchron, damit der Ton auf iOS noch in der Klick-Geste angeht
+                        if (!mute) video.volume = 1;
+                        return Promise.resolve();
+                    },
+                    on: events.on,
+                    destroy: () => {
+                        if (hls) hls.destroy();
+                        hls = null;
+                        video.removeAttribute('src');
+                        video.load(); // laufende Downloads abbrechen
+                    },
+                };
+
+                // Safari/iOS: HLS nativ, Start noch im Klick (iOS erlaubt Ton nur direkt aus der Geste)
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = video.dataset.src;
+                    start();
+                    return Promise.resolve(player);
+                }
+                // Sonst hls.js; Qualitätsstufe höchstens so groß wie der Player (capLevelToPlayerSize)
+                this.hlsLib = this.hlsLib || (window.Hls ? Promise.resolve() : loadScript(HLS_SCRIPT));
+                return this.hlsLib.catch(err => {
+                    this.hlsLib = null; // nächster Klick lädt neu
+                    throw err;
+                }).then(() => new Promise((resolve, reject) => {
+                    if (!Hls.isSupported()) throw new Error('HLS wird in diesem Browser nicht unterstützt');
+                    hls = new Hls({ capLevelToPlayerSize: true });
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        start();
+                        resolve(player);
+                    });
+                    hls.on(Hls.Events.ERROR, (event, data) => {
+                        if (!data.fatal) return; // kleine Fehler behebt hls.js selbst
+                        player.destroy();
+                        reject(new Error(`hls.js: ${data.details}`));
+                        events.emit('error');
+                    });
+                    hls.loadSource(video.dataset.src);
+                    hls.attachMedia(video);
+                }));
+            },
+        },
         vimeo: {
             name: 'Vimeo',
-            embedUrl: (id) => `https://player.vimeo.com/video/${id}?autoplay=1&muted=0&controls=0&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1`,
+            iframe: true,
+            create: (id, title) => filmIframe(`https://player.vimeo.com/video/${id}?autoplay=1&muted=0&controls=0&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1`, title),
             api: null,
             connect(iframe) {
                 this.api = this.api || (window.Vimeo && window.Vimeo.Player ? Promise.resolve() : loadScript('https://player.vimeo.com/api/player.js'));
@@ -388,8 +507,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         youtube: {
             name: 'YouTube',
+            iframe: true,
             // Datenschutzfreundlicher Modus; enablejsapi + origin, damit die eigene Steuerung den Player bedienen kann
-            embedUrl: (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`,
+            create: (id, title) => filmIframe(`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`, title),
             api: null,
             connect(iframe) {
                 this.api = this.api || new Promise((resolve, reject) => {
@@ -402,12 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadScript('https://www.youtube.com/iframe_api').catch(reject);
                 });
                 return this.api.then(() => new Promise(resolve => {
-                    const handlers = { play: [], pause: [], error: [] };
-                    const early = new Set(); // Fehler/Start direkt nach onReady, bevor die Seite zuhört
-                    const emit = (event) => {
-                        if (!handlers[event].length) early.add(event);
-                        handlers[event].forEach(fn => fn());
-                    };
+                    const events = filmEvents(); // Fehler/Start direkt nach onReady, bevor die Seite zuhört
                     const player = new YT.Player(iframe, {
                         events: {
                             onReady: () => resolve({
@@ -416,16 +531,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 isPaused: () => Promise.resolve(![YT.PlayerState.PLAYING, YT.PlayerState.BUFFERING].includes(player.getPlayerState())),
                                 isMuted: () => Promise.resolve(player.isMuted()),
                                 setMuted: (mute) => Promise.resolve(mute ? player.mute() : (player.unMute(), player.setVolume(100))),
-                                on: (event, fn) => {
-                                    handlers[event].push(fn);
-                                    if (early.delete(event)) fn(); // verpasstes Ereignis nachholen
-                                },
+                                on: events.on,
                             }),
                             onStateChange: (e) => {
-                                if (e.data === YT.PlayerState.PLAYING) emit('play');
-                                else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) emit('pause');
+                                if (e.data === YT.PlayerState.PLAYING) events.emit('play');
+                                else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) events.emit('pause');
                             },
-                            onError: () => emit('error'), // z. B. Video nicht gefunden oder Einbetten verboten
+                            onError: () => events.emit('error'), // z. B. Video nicht gefunden oder Einbetten verboten
                         },
                     });
                 }));
@@ -433,13 +545,17 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     };
 
-    // hero.film: { "vimeo": "ID" } oder { "youtube": "ID" }
+    // hero.film: { "bunny": "VIDEO-ID" } (Host in site-content.json settings.bunny_cdn), übergangsweise { "vimeo": "ID" } oder { "youtube": "ID" }
     function filmOf(hero) {
         const entry = hero && hero.film && Object.entries(hero.film)[0];
         if (!entry) return null;
         const [provider, id] = entry;
         if (!FILM_PROVIDERS[provider] || !id) {
-            console.warn(`[Hero] Film übersprungen: Anbieter "${provider}" unbekannt oder ohne ID (möglich: vimeo, youtube)`);
+            console.warn(`[Hero] Film übersprungen: Anbieter "${provider}" unbekannt oder ohne ID (möglich: ${Object.keys(FILM_PROVIDERS).join(', ')})`);
+            return null;
+        }
+        if (provider === 'bunny' && !bunnyHost()) {
+            console.warn('[Hero] Film übersprungen: settings.bunny_cdn in site-content.json ist leer');
             return null;
         }
         return { provider, id: String(id) };
@@ -455,11 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setWords(btnPlay, heroState.paused ? labels.play : labels.pause);
         setWords(btnSound, heroState.muted ? labels.sound_on : labels.sound_off);
         btnSound.hidden = !heroState.film; // Der Teaser hat keinen Ton
-        const hint = document.getElementById('hero-hint');
-        if (hint) {
-            hint.textContent = labels.film_hint.replace('{provider}', heroFilmName);
-            hint.hidden = heroState.film;
-        }
         document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused);
     }
 
@@ -468,28 +579,64 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!wrapper) return;
 
         const provider = FILM_PROVIDERS[film.provider];
-        heroFilmName = provider.name;
         const overlay = document.getElementById('hero-overlay');
         const controls = wrapper.querySelector('.hero-controls');
         const teaser = wrapper.querySelector('video');
 
+        // Ruhezeit: läuft der Film, blendet die Steuerung nach HERO_IDLE_MS aus (.controls-idle, Dauer über Motion-Token).
+        // Maus bewegen, Tippen und Tastaturfokus holen sie zurück; pausiert bleibt sie stehen.
+        let idleTimer = null;
+        let pointerOnControls = false; // Maus ruht auf einem Button
+        let tapWoke = false; // der Tipp auf den ruhenden Film zeigt nur die Steuerung, pausiert nicht
+        const keyboardOnControls = () => {
+            try { return !!controls.querySelector(':focus-visible'); } catch (e) { return controls.contains(document.activeElement); }
+        };
+        const wake = () => {
+            clearTimeout(idleTimer);
+            wrapper.classList.remove('controls-idle');
+            if (heroState.paused || !controls) return;
+            idleTimer = setTimeout(function rest() {
+                if (pointerOnControls || keyboardOnControls()) {
+                    idleTimer = setTimeout(rest, HERO_IDLE_MS); // Maus oder Fokus auf der Steuerung: sichtbar lassen
+                    return;
+                }
+                if (!heroState.paused) wrapper.classList.add('controls-idle');
+            }, HERO_IDLE_MS);
+        };
+
         const setState = (changes) => {
+            const wasPaused = heroState.paused;
             Object.assign(heroState, changes);
             updateHeroControls();
+            if (heroState.paused !== wasPaused) wake(); // läuft: Ruhezeit beginnt, pausiert: Steuerung bleibt
         };
         setState({ paused: true, muted: false, film: false });
 
+        wrapper.addEventListener('pointermove', wake);
+        wrapper.addEventListener('pointerdown', (e) => {
+            tapWoke = e.pointerType !== 'mouse' && wrapper.classList.contains('controls-idle');
+            wake();
+        });
+        if (controls) controls.addEventListener('focusin', wake);
+        // Maus über einem Button: bei jeder Bewegung neu bestimmt (WebKit meldet kein pointerleave,
+        // wenn das Wort unter der Maus gerade getauscht wurde, z. B. "ton aus" -> "ton an")
+        document.addEventListener('pointermove', (e) => {
+            pointerOnControls = e.pointerType === 'mouse' && !!(e.target.closest && e.target.closest('.hero-controls button'));
+        });
+
         let playerSynced = null; // entsteht erst mit dem ersten Klick
+        let connected = null; // der Player, sobald er bereit ist (Klicks rufen ihn dann direkt auf, noch in der Geste)
         let userMuted = null; // Explizite Ton-Wahl des Besuchers
+        let current = null; // das Film-Element im Hero
+        let muteSync = null;
 
         function loadFilm() {
-            const iframe = document.createElement('iframe');
-            iframe.id = 'hero-player';
-            iframe.src = provider.embedUrl(film.id);
-            iframe.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture';
-            iframe.title = title;
-            wrapper.insertBefore(iframe, overlay || controls);
-            setState({ film: true });
+            const el = provider.create(film.id, title);
+            el.id = 'hero-player';
+            el.classList.add('hero-film');
+            wrapper.insertBefore(el, overlay || controls);
+            current = el;
+            setState({ film: true, paused: false }); // Absicht des Klicks; der tatsächliche Zustand kommt vom Player
 
             // Film sichtbar, sobald er läuft; der Teaser hält so lange an
             let started = false;
@@ -501,13 +648,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            // Fallback: Steuerung des Anbieters übernehmen, ein Tipp direkt auf das Video startet ihn
+            // Fallback: Steuerung des Anbieters bzw. des Browsers übernehmen, ein Tipp direkt auf das Video startet ihn
             // (API lädt nicht, Anbieter meldet einen Fehler, oder der Start wird blockiert, z. B. Ton in Safari)
             const handOver = ({ keepControls }) => {
+                clearTimeout(idleTimer);
+                wrapper.classList.remove('controls-idle');
                 if (overlay) overlay.remove();
                 if (controls && !keepControls) controls.remove();
                 showFilm();
-                iframe.style.pointerEvents = 'auto';
+                if (!provider.iframe) el.controls = true;
+                el.style.pointerEvents = 'auto';
+            };
+
+            // Eigenes Video: der Stream lädt nicht (Netz, falsche ID, hls.js fehlt) -> zurück zum Teaser, der nächste Klick versucht es neu
+            const reset = () => {
+                if (current !== el) return; // schon zurückgesetzt
+                console.warn(`[Hero] Film nicht geladen (${provider.name}, ${film.id}), zurück zum Teaser`);
+                if (connected && connected.destroy) connected.destroy();
+                clearInterval(muteSync);
+                el.remove();
+                current = connected = playerSynced = userMuted = null;
+                wrapper.classList.remove('film-visible');
+                if (teaser) {
+                    teaser.removeAttribute('data-hold');
+                    playLoop(teaser);
+                }
+                setState({ paused: true, muted: false, film: false });
             };
 
             // Anzeige immer aus dem tatsächlichen Player-Zustand ableiten
@@ -515,15 +681,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const syncState = (player) => Promise.all([player.isPaused(), player.isMuted()])
                 .then(([paused, muted]) => setState({ paused, muted }));
 
-            let connected = null; // der Player, sobald er bereit ist
-            const playerReady = provider.connect(iframe);
+            const playerReady = provider.connect(el);
             playerSynced = playerReady.then(player => syncState(player).then(() => player));
             playerSynced.catch(() => {}); // Fehler behandelt der Fallback unten
 
-            // Kommt der Film 4 s nach dem Klick nicht in Gang (Start blockiert, Player wird nicht bereit, Anbieter
+            // Vimeo/YouTube: kommt der Film nach dem Klick nicht in Gang (Start blockiert, Player wird nicht bereit, Anbieter
             // zeigt eine Meldung), übernimmt die Anzeige des Anbieters: seine Meldung bzw. ein Tipp startet ihn.
             // Den tatsächlichen Zustand prüfen, das play-Ereignis kann schon vor dem Zuhören gekommen sein
-            setTimeout(() => {
+            if (provider.iframe) setTimeout(() => {
                 if (started) return;
                 if (!connected) {
                     handOver({ keepControls: false });
@@ -533,9 +698,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (paused) handOver({ keepControls: true });
                     else showFilm();
                 }).catch(() => {});
-            }, 4000);
+            }, IFRAME_START_MS);
 
             playerReady.then(player => {
+                if (current !== el) return;
                 connected = player;
                 player.on('play', () => {
                     started = true;
@@ -543,31 +709,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     syncState(player);
                 });
                 player.on('pause', () => setState({ paused: true }));
-                player.on('error', () => handOver({ keepControls: false }));
+                if (provider.iframe) {
+                    player.on('error', () => handOver({ keepControls: false }));
+                } else {
+                    player.on('error', reset);
+                    player.on('blocked', () => handOver({ keepControls: false }));
+                }
 
                 // Ton-Zustand regelmäßig abgleichen und die Wahl des Besuchers wiederherstellen
                 // (Vimeo stellt kurz nach dem Start still die Embed-Einstellung wieder her; YouTube meldet Ton nicht per Event)
-                setInterval(() => {
+                muteSync = setInterval(() => {
                     if (document.hidden) return;
                     player.isMuted().then(muted => {
                         if (userMuted !== null && muted !== userMuted) return player.setMuted(userMuted);
                         if (muted !== heroState.muted) setState({ muted });
                     });
-                }, 500);
-            }).catch(() => handOver({ keepControls: false }));
+                }, MUTE_SYNC_MS);
+            }).catch(() => (provider.iframe ? handOver({ keepControls: false }) : reset()));
         }
 
-        // Erster Klick lädt den Film (Autoplay mit Ton), danach abspielen / pausieren
+        // Erster Klick lädt den Film (Start mit Ton), danach abspielen / pausieren
         const togglePlay = () => {
             if (!playerSynced) {
                 loadFilm();
                 return;
             }
             const wantPlay = heroState.paused; // Absicht zum Zeitpunkt des Klicks
-            playerSynced.then(player => (wantPlay ? player.play() : player.pause())).catch(() => {});
+            const toggle = (player) => (wantPlay ? player.play() : player.pause());
+            (connected ? toggle(connected) : playerSynced.then(toggle)).catch(() => {});
         };
 
-        if (overlay) overlay.addEventListener('click', togglePlay);
+        // Der ganze Hero ist Klickfläche; der Button ist das Ziel für Tastatur und Screenreader
+        if (overlay) overlay.addEventListener('click', () => {
+            if (tapWoke) {
+                tapWoke = false;
+                return;
+            }
+            togglePlay();
+        });
         document.getElementById('btn-play').addEventListener('click', togglePlay);
 
         document.getElementById('btn-sound').addEventListener('click', () => {
@@ -575,9 +754,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const mute = !heroState.muted;
             userMuted = mute;
             setState({ muted: mute });
-            playerSynced
-                .then(player => player.setMuted(mute).then(() => player.isMuted().then(muted => setState({ muted }))))
-                .catch(() => {});
+            const apply = (player) => player.setMuted(mute).then(() => player.isMuted().then(muted => setState({ muted })));
+            (connected ? apply(connected) : playerSynced.then(apply)).catch(() => {});
         });
     }
 
@@ -662,6 +840,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Media-Reveal: Bilder und Videos erscheinen unscharf und werden scharf, sobald sie geladen sind (site-weit) ---
     // mediaHTML() baut das Markup, initMediaReveal() lädt; Stil in css/components/_media.scss.
     // Einfachform (Projekte): { type: "image" | "video", src, width, height, placeholder, color, focus, alt: { de, en }, poster (Video-Standbild) }
+    // Handygrößen nach Dateinamen (D3, docs/projekt-baukasten.md, Export): Bild ab 1920 px -> "<name>-1280.<ext>",
+    // Video über 1280 px -> "<name>-720.mp4". check:abb verlangt diese Begleitdateien, ein fehlender Kandidat bräche das Medium
     // Art Direction (About): { alt, color, eager, sources: [{ media, srcset, sizes, placeholder }], img: { srcset, sizes, width, height, placeholder } }
     // Video: stummer Loop, spielt nur im Sichtfeld; darf er nicht laufen, erscheint das Standbild
     const escapeAttr = (value) => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
@@ -672,6 +852,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Breite eines Feldes über n Spalten (12er-Raster, 25px Rand, 20px Spaltenabstand); mobil immer volle Breite
     const cellSizes = (span) => `(max-width: 768px) calc(100vw - 50px), calc((100vw - 270px) * ${span} / 12 + ${(span - 1) * 20}px)`;
 
+    // Kleine Viewports bekommen Video und Standbild in 1280 px Breite: Handys und Tablets hochkant (iPad bis 834 px).
+    // Dort ist ein Medium höchstens ~900 CSS-px breit, 1280 px reichen auch bei 2x für Video (bewegt wirkt es nicht weich)
+    const SMALL_MEDIA = '(max-width: 900px)';
+    const smallQuery = window.matchMedia(SMALL_MEDIA);
+    const VARIANT_IMAGE_MIN = 1920; // ab dieser Breite gibt es "-1280"
+    const VARIANT_VIDEO_MIN = 1281; // ab dieser Breite gibt es "-720"
+    const TEASER_WIDTH = 1920; // Hero-Teaser hat laut Export immer 1920×1080 (Breite steht nicht im JSON)
+    const withSuffix = (src, suffix, ext) => src.replace(/(\.[a-z0-9]+)$/i, (m) => `${suffix}${ext || m}`);
+    const imageVariant = (src, width) => (src && width >= VARIANT_IMAGE_MIN ? withSuffix(src, '-1280') : null);
+    const videoVariant = (src, width) => (src && width >= VARIANT_VIDEO_MIN ? withSuffix(src, '-720', '.mp4') : null);
+    const PORTRAIT_STILL_MEDIA = '(max-width: 768px)'; // = mobileQuery: dort füllt die Vorschau der Startseite den Bildschirm hochkant
+    const stillOf = (videoSrc) => videoSrc && withSuffix(videoSrc, '', '.webp'); // Standbild = gleicher Name als .webp
+    const imageSrcset = (src, width) => {
+        if (!width) return src;
+        const small = imageVariant(src, width);
+        return `${small ? `${small} 1280w, ` : ''}${src} ${width}w`;
+    };
+
     const mediaStyle = (media) => {
         const vars = [media.color && `--media-bg: ${media.color}`, media.focus && `--focus: ${media.focus}`].filter(Boolean);
         return vars.length ? ` style="${vars.join('; ')}"` : '';
@@ -681,7 +879,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const { img, sources = [] } = media;
         // Die winzige Vorschau steht im srcset, die echte Quelle wartet in data-srcset, bis initMediaReveal sie einsetzt
         const srcAttrs = (s) => `${s.placeholder ? `srcset="${s.placeholder}" ` : ''}data-srcset="${s.srcset}"${s.sizes ? ` sizes="${s.sizes}"` : ''}`;
-        const sourceTags = sources.map(s => `<source media="${s.media}" ${srcAttrs(s)}>`).join('');
+        // data-optional: fehlt die Datei, fällt das Bild auf die nächste Quelle zurück (loadMedia)
+        const sourceTags = sources.map(s => `<source media="${s.media}" ${srcAttrs(s)}${s.optional ? ' data-optional' : ''}>`).join('');
         const size = img.width && img.height ? ` width="${img.width}" height="${img.height}"` : '';
 
         return `<picture class="media-reveal"${mediaStyle(media)}${media.eager ? ' data-eager' : ''}>${sourceTags}`
@@ -691,22 +890,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function videoHTML(media) {
         // poster: 32px-Vorschau (sofort da); data-poster: Standbild, wird nur geladen, wenn der Loop nicht laufen darf
+        // (data-poster-small auf kleinen Viewports). Quellen: erst die -720-Fassung für SMALL_MEDIA, dann das Original;
+        // die Pfade warten in data-src, bis loadVideo sie einsetzt. Fehlt die -720-Datei, nimmt der Browser die nächste Quelle
         const poster = media.placeholder ? ` poster="${media.placeholder}"` : '';
         const still = media.poster ? ` data-poster="${media.poster}"` : '';
+        const smallStill = imageVariant(media.poster, media.posterWidth || media.width);
+        const small = videoVariant(media.src, media.width);
+        const sources = (small ? `<source data-src="${small}" media="${SMALL_MEDIA}">` : '') + `<source data-src="${media.src}">`;
         return `<div class="media-reveal"${mediaStyle(media)}${media.eager ? ' data-eager' : ''}>`
-            + `<video data-src="${media.src}"${poster}${still} muted loop playsinline preload="none" aria-hidden="true"></video>`
+            + `<video data-load${poster}${still}${smallStill ? ` data-poster-small="${smallStill}"` : ''} muted loop playsinline preload="none" aria-hidden="true">${sources}</video>`
             + `</div>`;
     }
 
-    // Einfachform -> Bild bzw. Video; opts.sizes = Anzeigebreite (cellSizes), opts.eager = wichtigstes Medium beim Seitenstart
+    // Einfachform -> Bild bzw. Video; opts.sizes = Anzeigebreite (cellSizes), opts.eager = wichtigstes Medium beim Seitenstart,
+    // opts.portrait = Hochformat-Standbild für Handys (Startseite), sonst das Bild selbst
     function mediaHTML(media, lang, opts = {}) {
         const eager = opts.eager || media.eager;
         if (media.type === 'video') return videoHTML({ ...media, eager });
         if (media.img) return pictureHTML({ ...media, eager }, lang);
         return pictureHTML({
             alt: media.alt, color: media.color, focus: media.focus, eager,
+            sources: opts.portrait ? [{ media: PORTRAIT_STILL_MEDIA, srcset: opts.portrait, optional: true }] : [],
             img: {
-                srcset: media.width ? `${media.src} ${media.width}w` : media.src,
+                srcset: imageSrcset(media.src, media.width),
                 sizes: media.width ? opts.sizes : null,
                 width: media.width, height: media.height, placeholder: media.placeholder,
             },
@@ -743,10 +949,11 @@ document.addEventListener('DOMContentLoaded', () => {
             probe.sizes = active.getAttribute('sizes') || '';
             probe.srcset = active.dataset.srcset;
             if (img.getAttribute('fetchpriority')) probe.fetchPriority = img.getAttribute('fetchpriority');
-            probe.decode().catch(() => {}).then(swap);
+            // Optionale Quelle lädt nicht (Hochformat-Standbild fehlt): weg damit, das Bild nimmt seine eigene Quelle
+            probe.decode().catch(() => { if (active.hasAttribute('data-optional')) active.remove(); }).then(swap);
         }
 
-        wrapper.querySelectorAll('video[data-src]').forEach(video => loadVideo(video, reveal));
+        wrapper.querySelectorAll('video[data-load]').forEach(video => loadVideo(video, reveal));
     }
 
     // --- Video-Loops: laden mit dem Media-Reveal, spielen nur sichtbar, pausieren außerhalb und im versteckten Tab ---
@@ -754,9 +961,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const loopFallbacks = new WeakMap();
     let playbackObserver = null;
 
+    // Hat das Video eine Quelle gesetzt (src am Video oder an einem <source>)?
+    const hasVideoSource = (video) => !!(video.getAttribute('src') || video.querySelector('source[src]'));
+
     function loadVideo(video, reveal) {
-        const src = video.dataset.src;
-        video.removeAttribute('data-src');
+        video.removeAttribute('data-load');
+        const sources = [...video.querySelectorAll('source[data-src]')];
 
         // Standbild statt Loop (Bewegung reduzieren, Datensparen, Autoplay blockiert, Videofehler)
         let stillShown = false;
@@ -766,18 +976,23 @@ document.addEventListener('DOMContentLoaded', () => {
             visibleLoops.delete(video);
             if (playbackObserver) playbackObserver.unobserve(video);
             video.pause();
-            if (video.getAttribute('src')) {
-                video.removeAttribute('src');
+            if (hasVideoSource(video)) {
+                sources.forEach(s => s.removeAttribute('src'));
                 video.load(); // zurück auf das Poster
             }
-            const still = video.dataset.poster;
-            if (!still) return; // kein Standbild: die unscharfe Vorschau bleibt stehen
-            const probe = new Image();
-            probe.onload = () => {
-                video.poster = still;
-                probe.decode().catch(() => {}).then(reveal);
+            // Kleiner Viewport: das -1280-Standbild; fehlt es, das Original
+            const stills = [smallQuery.matches && video.dataset.posterSmall, video.dataset.poster].filter(Boolean);
+            const tryStill = (still) => {
+                if (!still) return; // kein Standbild: die unscharfe Vorschau bleibt stehen
+                const probe = new Image();
+                probe.onload = () => {
+                    video.poster = still;
+                    probe.decode().catch(() => {}).then(reveal);
+                };
+                probe.onerror = () => tryStill(stills[stills.indexOf(still) + 1]);
+                probe.src = still;
             };
-            probe.src = still;
+            tryStill(stills[0]);
         };
 
         if (!autoplayAllowed()) {
@@ -788,13 +1003,19 @@ document.addEventListener('DOMContentLoaded', () => {
         video.muted = true;
         video.preload = 'auto'; // lädt jetzt, 200px bevor das Video ins Bild kommt
         video.addEventListener('loadeddata', reveal, { once: true });
-        video.addEventListener('error', showStill, { once: true });
-        video.src = src;
+        video.addEventListener('error', showStill, { once: true }); // Datei kaputt
+        // Keine Quelle lädt: das melden die <source>-Elemente, die letzte erst, wenn alle davor schon gescheitert sind
+        if (sources.length) sources[sources.length - 1].addEventListener('error', showStill, { once: true });
+        sources.forEach(s => {
+            s.src = s.dataset.src;
+            s.removeAttribute('data-src');
+        });
+        video.load(); // Quellen neu wählen (sie standen beim Einfügen noch ohne src da)
         watchPlayback(video);
     }
 
     function playLoop(video) {
-        if (document.hidden || video.hasAttribute('data-hold') || !video.getAttribute('src')) return;
+        if (document.hidden || video.hasAttribute('data-hold') || !hasVideoSource(video)) return;
         video.play().catch(err => {
             // Stromsparmodus u. Ä. verbietet Autoplay -> Standbild; AbortError (pause() während play()) ignorieren
             if (err && err.name === 'NotAllowedError') loopFallbacks.get(video)();
@@ -884,6 +1105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Variante nach Seitenverhältnis des Vorschaufensters: höher als breit -> Hochformat (Handy, Tablets), sonst Querformat.
     // Querformat = der Hero-Teaser des Projekts. Fehlt eine Variante, wird die andere genommen (object-fit: cover beschneidet sie)
+    // Der Teaser kommt auf kleinen Viewports als -720-Fassung (SMALL_MEDIA); lädt sie nicht, gilt ab dann das Original
+    const failedVariants = new Set();
     function previewVideoSrc(p) {
         if (!p || !autoplayAllowed()) return null;
         const portraitSrc = p.preview && p.preview.portrait;
@@ -892,8 +1115,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const visual = document.querySelector('.home-visual');
         const box = visual ? visual.getBoundingClientRect() : null;
         const portrait = box ? box.height > box.width : mobileQuery.matches;
-        return portrait ? (portraitSrc || landscapeSrc) : (landscapeSrc || portraitSrc);
+        const src = portrait ? (portraitSrc || landscapeSrc) : (landscapeSrc || portraitSrc);
+        const small = src === landscapeSrc && smallQuery.matches ? videoVariant(src, TEASER_WIDTH) : null;
+        return small && !failedVariants.has(small) ? small : src;
     }
+
+    // Hochformat-Standbild der Startseite (preview-portrait.mp4 -> preview-portrait.webp), Standbild und Poster des Loops auf dem Handy
+    const portraitStill = (p) => stillOf(p.preview && p.preview.portrait);
 
     function scheduleNextPreview() {
         clearTimeout(cycleTimer);
@@ -1045,7 +1273,8 @@ document.addEventListener('DOMContentLoaded', () => {
         slides.className = 'home-slides';
         slides.innerHTML = featuredProjects.map(p => {
             const image = p.hero && p.hero.image;
-            return `<div class="home-slide">${image ? mediaHTML({ type: 'image', ...image, alt: null }, lang, { sizes: cellSizes(8) }) : ''}</div>`;
+            const media = image && mediaHTML({ type: 'image', ...image, alt: null }, lang, { sizes: cellSizes(8), portrait: portraitStill(p) });
+            return `<div class="home-slide">${media || ''}</div>`;
         }).join('');
         visual.insertBefore(slides, visual.firstChild);
         previewSlides = [...slides.children];
@@ -1121,7 +1350,15 @@ document.addEventListener('DOMContentLoaded', () => {
             preloadNextVideo(video);
         });
         video.addEventListener('error', () => {
-            if (video.getAttribute('src')) skipPreviewVideo(video);
+            if (!video.getAttribute('src')) return;
+            // -720-Fassung fehlt: einmal mit dem Original versuchen
+            const failed = video.dataset.src;
+            if (failed && /-720\.mp4$/.test(failed) && !failedVariants.has(failed)) {
+                failedVariants.add(failed);
+                showPreview(activePreview);
+                return;
+            }
+            skipPreviewVideo(video);
         });
         video.addEventListener('ended', () => { if (cycleEnabled()) showPreview(nextPreviewIndex()); });
         // Fortschritt setzt den Wächter zurück
@@ -1174,7 +1411,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = p[lang];
 
             const item = document.createElement('a');
-            item.href = `project.html?id=${p.id}`;
+            item.href = `/work/${p.id}`;
             item.className = 'project-list-item';
             item.innerHTML = `
                 <span class="p-title">${data.title}</span>
@@ -1239,7 +1476,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const teaserMedia = (hero) => ({
         type: 'video',
         src: hero.teaser,
+        width: TEASER_WIDTH,
         poster: hero.image && hero.image.src,
+        posterWidth: hero.image && hero.image.width,
         placeholder: hero.image && hero.image.placeholder,
         color: hero.image && hero.image.color,
     });
@@ -1248,11 +1487,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function heroHTML(project, lang, film) {
         const hero = project.hero || {};
         const media = heroMedia(hero);
-        // Beschriftung von Buttons und Hinweis setzt updateHeroControls()
+        // Beschriftung der Buttons setzt updateHeroControls(); das Overlay macht den ganzen Hero klickbar
         const filmControls = film ? `
-                <div class="hero-overlay" id="hero-overlay"><div class="big-play-btn"></div></div>
+                <div class="hero-overlay" id="hero-overlay" aria-hidden="true"></div>
                 <div class="hero-controls">
-                    <span class="hero-hint" id="hero-hint"></span>
                     <button id="btn-play" type="button"></button>
                     <button id="btn-sound" type="button" hidden></button>
                 </div>` : '';
@@ -1407,7 +1645,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function projectCardHTML(p, lang, label) {
         const media = heroMedia(p.hero || {});
         return `
-                <a href="project.html?id=${p.id}" class="nav-item">
+                <a href="/work/${p.id}" class="nav-item">
                     <span class="nav-label" data-more="${label}">${moreTexts(lang)[label]}</span>
                     <div class="nav-media">${media ? mediaHTML({ ...media, alt: null }, lang, { sizes: cellSizes(6) }) : ''}</div>
                     <span class="nav-title">${p[lang].title}</span>
@@ -1418,7 +1656,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Texte "Weitere Projekte" (ui.*.more): Überschrift nur für Screenreader, Labels über den Karten
     const moreTexts = (lang) => (uiText.ui[lang] && uiText.ui[lang].more) || {};
 
-    // Projekt nicht gefunden (?id fehlt oder falsch): Poster, nach NOT_FOUND_REDIRECT zur Work-Seite (D14)
+    // Projekt nicht gefunden (Seite ohne Projekt-id oder id fehlt in projects.json, z. B. veraltet generiert):
+    // Poster, nach NOT_FOUND_REDIRECT zur Work-Seite (D14). Unbekannte Adressen unter /work/ bekommen online die 404.html
     const NOT_FOUND_REDIRECT = 3000; // Lesezeit, keine Bewegung -> kein Motion-Token
     let notFoundTimer = null;
 
@@ -1427,17 +1666,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const texts = stateTexts(lang).not_found;
         document.title = pageTitle(lang, notFound);
         container.removeAttribute('data-rendered-id');
-        container.innerHTML = posterHTML({ word: texts.word, text: texts.text, link: texts.link, href: 'index.html', tag: 'h1', framed: true, role: 'status' });
+        container.innerHTML = posterHTML({ word: texts.word, text: texts.text, link: texts.link, href: '/', tag: 'h1', framed: true, role: 'status' });
         container.querySelectorAll('.state-poster-word, .state-link').forEach(underlineWords);
-        if (!notFoundTimer) notFoundTimer = setTimeout(() => location.replace('index.html'), NOT_FOUND_REDIRECT);
+        if (!notFoundTimer) notFoundTimer = setTimeout(() => location.replace('/'), NOT_FOUND_REDIRECT);
     }
 
     function renderProjectDetail(lang) {
         const container = document.getElementById('project-detail');
         if (!container) return;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const pid = urlParams.get('id');
+        // Projekt-id steht im HTML (work/<id>.html, generiert von npm run pages); /project.html?id= leitet nur noch um
+        const pid = container.dataset.project || null;
         const currentIndex = projectsData.findIndex(p => p.id === pid);
         const project = projectsData[currentIndex];
 

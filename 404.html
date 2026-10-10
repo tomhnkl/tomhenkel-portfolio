@@ -6,6 +6,10 @@
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Wird unter jeder unbekannten Adresse ausgeliefert (Vercel): darum nur absolute Pfade -->
+  <!-- Icons exportiert Tom (favicon.svg, favicon.ico 32 px, apple-touch-icon.png 180 px), liegen im Wurzelordner -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -13,11 +17,11 @@
        der deutsche Text unten gilt ohne JavaScript und bis die Texte geladen sind -->
   <main class="state-poster">
     <h1 class="state-poster-word"><span class="ul-w">404</span></h1>
-    <p class="state-poster-line"><span data-state="text">Diese Seite gibt es nicht.</span> <a class="text-link state-link" href="/index.html" data-state="link"><span class="ul-w">Zur</span> <span class="ul-w">Übersicht</span></a></p>
+    <p class="state-poster-line"><span data-state="text">Diese Seite gibt es nicht.</span> <a class="text-link state-link" href="/" data-state="link"><span class="ul-w">Zur</span> <span class="ul-w">Übersicht</span></a></p>
   </main>
   <script>
     // Sprache wie auf den anderen Seiten (gespeicherte Wahl > Browsersprache > Deutsch), Texte aus site-content.json.
-    // Eigenes kleines Skript statt main.js: dessen relative Pfade passen unter einer fremden Adresse nicht.
+    // Eigenes kleines Skript statt main.js: die Seite hat weder Nav noch Footer, nur diese zwei Texte.
     (() => {
       let choice = null;
       try { choice = localStorage.getItem('languageChoice'); } catch (e) { /* ohne Speicher: Browsersprache */ }

@@ -46,8 +46,9 @@
 .pd-links + .pd-accordions { margin-top: var(--space-m); }   /* Links belong to the text and its details */
 .pd-footer-nav { margin-top: var(--space-l); }             /* Last module → more projects (its h2 is only for screen readers) */
 
-/* 1. Hero: teaser loop or image; the Vimeo film is loaded on click (initHeroPlayer) */
+/* 1. Hero: teaser loop or image; the film (Bunny HLS video, or for now a Vimeo/YouTube iframe) loads on click (initHeroPlayer) */
 .pd-hero {
+  --hero-tap: 44px; /* Minimum tap target of the film buttons */
   width: 100%;
   aspect-ratio: 16 / 9;
   background: #111;
@@ -56,7 +57,7 @@
   @include grid-cols(1, -1);
 
   > .media-reveal,
-  iframe {
+  .hero-film {
     position: absolute;
     top: 0;
     left: 0;
@@ -70,104 +71,88 @@
     object-fit: cover;
     display: block;
     border: none;
-    pointer-events: none; /* Disable direct interaction with iframe to rely on custom controls */
+    pointer-events: none; /* The custom controls take all clicks */
   }
 
-  /* Film fades in over the teaser once it plays */
-  iframe {
+  /* Film fades in over the teaser once it plays; never cropped (letterbox on the hero background) */
+  .hero-film {
+    object-fit: contain;
     opacity: 0;
     transition: opacity var(--duration-base) var(--ease-out);
   }
 
-  &.film-visible iframe { opacity: 1; }
+  &.film-visible .hero-film { opacity: 1; }
 
-  /* Custom Controls overlay */
+  /* Click surface over the whole hero (below the controls): starts, pauses, or wakes the hidden controls */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    cursor: pointer;
+  }
+
+  /* Controls (D11, option B): one word in the centre of the film, "pause" while it plays, sound below.
+     Anchored at the exact centre; the buttons hang from that point, so the play word never moves. */
   .hero-controls {
     position: absolute;
-    bottom: var(--page-margin); /* Same inset as the page margin */
-    right: var(--page-margin);
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-s); /* Space between hint and buttons */
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
     z-index: 10;
     mix-blend-mode: difference;
+    pointer-events: none; /* Only the buttons catch clicks, the rest goes to the overlay */
+    transition: opacity var(--duration-base) var(--ease-out);
 
     button {
+      position: absolute;
+      left: 0;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--hero-tap);
+      min-height: var(--hero-tap);
+      padding: 0 8px;
+      white-space: nowrap;
       background: none;
       border: none;
       color: #fff;
-      font-family: var(--font-family-base); /* Setup base font like Nav */
-      font-size: var(--fs-ui); /* Match Nav size */
-      line-height: var(--lh-ui);
+      font-family: var(--font-family-base);
       cursor: pointer;
-      padding: 0;
-
-      /* Reset browser styles */
+      pointer-events: auto;
       appearance: none;
       -webkit-appearance: none;
 
-      &:hover {
-        @include underline; /* Match Nav hover style */
-      }
+      &:hover { @include underline; }
 
       &[hidden] { display: none; }
     }
-  }
 
-  /* Privacy hint until the film is loaded: nothing is sent to Vimeo before the click */
-  .hero-hint {
-    color: #fff;
-    font-family: var(--font-family-base);
-    font-size: var(--fs-small);
-    line-height: var(--lh-small);
+    /* UI size like the nav, centred on the film */
+    #btn-play {
+      top: 0;
+      transform: translate(-50%, -50%);
+      font-size: var(--fs-ui);
+      line-height: var(--lh-ui);
+    }
 
-    &[hidden] { display: none; }
-  }
-
-  /* Big Play Overlay (Initial & Pause State) */
-  .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9; /* Below controls (10) */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    background: transparent;
-    transition: opacity var(--duration-base) var(--ease-out);
-
-    .big-play-btn {
-      width: 80px;
-      height: 80px;
-      background: #fff;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      mix-blend-mode: difference;
-      pointer-events: none;
-
-      /* Triangle */
-      &::after {
-        content: '';
-        display: block;
-        width: 0;
-        height: 0;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
-        border-left: 20px solid #000;
-        margin-left: 4px; /* Optical center */
-      }
+    /* Sound directly below the play target, without overlapping it */
+    #btn-sound {
+      top: calc(var(--hero-tap) / 2);
+      font-size: var(--fs-small);
+      line-height: var(--lh-small);
     }
   }
 
-  /* Remove overlay when playing */
-  &.is-playing .hero-overlay {
+  /* Hovering the film underlines the word it would trigger */
+  .hero-overlay:hover ~ .hero-controls #btn-play { @include underline; }
+
+  /* While the film plays: controls rest after HERO_IDLE_MS (main.js); pointer, tap or keyboard focus brings them back */
+  &.controls-idle .hero-controls {
     opacity: 0;
-    pointer-events: none;
+
+    button { pointer-events: none; } /* A tap on the hidden word only wakes the controls (overlay) */
   }
 }
 

@@ -1130,8 +1130,9 @@ html.lenis body {
 .pd-footer-nav {
   margin-top: var(--space-l);
 } /* Last module → more projects (its h2 is only for screen readers) */
-/* 1. Hero: teaser loop or image; the Vimeo film is loaded on click (initHeroPlayer) */
+/* 1. Hero: teaser loop or image; the film (Bunny HLS video, or for now a Vimeo/YouTube iframe) loads on click (initHeroPlayer) */
 .pd-hero {
+  --hero-tap: 44px; /* Minimum tap target of the film buttons */
   width: 100%;
   aspect-ratio: 16/9;
   background: #111;
@@ -1140,7 +1141,7 @@ html.lenis body {
   grid-column: 1/-1;
 }
 .pd-hero > .media-reveal,
-.pd-hero iframe {
+.pd-hero .hero-film {
   position: absolute;
   top: 0;
   left: 0;
@@ -1154,41 +1155,61 @@ html.lenis body {
      object-fit: cover;
   display: block;
   border: none;
-  pointer-events: none; /* Disable direct interaction with iframe to rely on custom controls */
+  pointer-events: none; /* The custom controls take all clicks */
 }
 .pd-hero {
-  /* Film fades in over the teaser once it plays */
+  /* Film fades in over the teaser once it plays; never cropped (letterbox on the hero background) */
 }
-.pd-hero iframe {
+.pd-hero .hero-film {
+  -o-object-fit: contain;
+     object-fit: contain;
   opacity: 0;
   transition: opacity var(--duration-base) var(--ease-out);
 }
-.pd-hero.film-visible iframe {
+.pd-hero.film-visible .hero-film {
   opacity: 1;
 }
 .pd-hero {
-  /* Custom Controls overlay */
+  /* Click surface over the whole hero (below the controls): starts, pauses, or wakes the hidden controls */
+}
+.pd-hero .hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  cursor: pointer;
+}
+.pd-hero {
+  /* Controls (D11, option B): one word in the centre of the film, "pause" while it plays, sound below.
+     Anchored at the exact centre; the buttons hang from that point, so the play word never moves. */
 }
 .pd-hero .hero-controls {
   position: absolute;
-  bottom: var(--page-margin); /* Same inset as the page margin */
-  right: var(--page-margin);
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-s); /* Space between hint and buttons */
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
   z-index: 10;
   mix-blend-mode: difference;
+  pointer-events: none; /* Only the buttons catch clicks, the rest goes to the overlay */
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 .pd-hero .hero-controls button {
+  position: absolute;
+  left: 0;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--hero-tap);
+  min-height: var(--hero-tap);
+  padding: 0 8px;
+  white-space: nowrap;
   background: none;
   border: none;
   color: #fff;
-  font-family: var(--font-family-base); /* Setup base font like Nav */
-  font-size: var(--fs-ui); /* Match Nav size */
-  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
   cursor: pointer;
-  padding: 0;
-  /* Reset browser styles */
+  pointer-events: auto;
   -moz-appearance: none;
        appearance: none;
   -webkit-appearance: none;
@@ -1210,70 +1231,56 @@ html.lenis body {
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
 }
-.pd-hero .hero-controls button:hover {
-  /* Match Nav hover style */
-}
 .pd-hero .hero-controls button[hidden] {
   display: none;
 }
-.pd-hero {
-  /* Privacy hint until the film is loaded: nothing is sent to Vimeo before the click */
+.pd-hero .hero-controls {
+  /* UI size like the nav, centred on the film */
 }
-.pd-hero .hero-hint {
-  color: #fff;
-  font-family: var(--font-family-base);
+.pd-hero .hero-controls #btn-play {
+  top: 0;
+  transform: translate(-50%, -50%);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+}
+.pd-hero .hero-controls {
+  /* Sound directly below the play target, without overlapping it */
+}
+.pd-hero .hero-controls #btn-sound {
+  top: calc(var(--hero-tap) / 2);
   font-size: var(--fs-small);
   line-height: var(--lh-small);
 }
-.pd-hero .hero-hint[hidden] {
-  display: none;
+.pd-hero {
+  /* Hovering the film underlines the word it would trigger */
+}
+.pd-hero .hero-overlay:hover ~ .hero-controls #btn-play {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.pd-hero .hero-overlay:hover ~ .hero-controls #btn-play:has(.ul-w) {
+  text-decoration-line: none;
+}
+.pd-hero .hero-overlay:hover ~ .hero-controls #btn-play .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
 }
 .pd-hero {
-  /* Big Play Overlay (Initial & Pause State) */
+  /* While the film plays: controls rest after HERO_IDLE_MS (main.js); pointer, tap or keyboard focus brings them back */
 }
-.pd-hero .hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9; /* Below controls (10) */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background: transparent;
-  transition: opacity var(--duration-base) var(--ease-out);
-}
-.pd-hero .hero-overlay .big-play-btn {
-  width: 80px;
-  height: 80px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  /* Triangle */
-}
-.pd-hero .hero-overlay .big-play-btn::after {
-  content: "";
-  display: block;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  border-left: 20px solid #000;
-  margin-left: 4px; /* Optical center */
-}
-.pd-hero {
-  /* Remove overlay when playing */
-}
-.pd-hero.is-playing .hero-overlay {
+.pd-hero.controls-idle .hero-controls {
   opacity: 0;
+}
+.pd-hero.controls-idle .hero-controls button {
   pointer-events: none;
 }
+.pd-hero.controls-idle .hero-controls { /* A tap on the hidden word only wakes the controls (overlay) */ }
 
 /* 2.–4. Title block: title + meta, subtitle as second row
    (full-width block, so the modules always start below it) */

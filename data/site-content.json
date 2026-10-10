@@ -3,7 +3,8 @@
     "available_languages": ["de", "en"],
     "default_language": "de",
     "contact_email": "tom-henkel@gmx.de",
-    "instagram_url": "https://www.instagram.com/tomhnkl/"
+    "instagram_url": "https://www.instagram.com/tomhnkl/",
+    "bunny_cdn": ""
   },
   "ui": {
     "de": {
@@ -32,8 +33,7 @@
         "play": "abspielen",
         "pause": "pause",
         "sound_on": "ton an",
-        "sound_off": "ton aus",
-        "film_hint": "Film wird von {provider} geladen"
+        "sound_off": "ton aus"
       },
       "menu": {
         "open": "menü",
@@ -80,8 +80,7 @@
         "play": "play",
         "pause": "pause",
         "sound_on": "sound on",
-        "sound_off": "sound off",
-        "film_hint": "Film loads from {provider}"
+        "sound_off": "sound off"
       },
       "menu": {
         "open": "menu",
