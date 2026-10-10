@@ -734,13 +734,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobil: Hochformat-Video vollflächig, die Previews wechseln automatisch.
     // Desktop: Querformat-Video des Eintrags beim Hover, in Schleife.
     const STILL_DURATION = 6000; // Standbild ohne Video (Timing der Startseite, keine Bewegung -> kein Motion-Token)
+    const STALL_TIMEOUT = 8000; // Video ohne Fortschritt gilt als hängend und wird übersprungen (Timing, kein Motion-Token)
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const saveData = !!(navigator.connection && navigator.connection.saveData);
     let featuredProjects = [];
     let activePreview = -1;
     let cycleTimer;
     let hoverTimeout;
-    const prefetchedVideos = new Set();
+    let stallTimer;
+    let stallTime = -1;
+    let preload = null; // nächstes Video als Blob: { src, controller, url }
+    let videoObjectURL = null; // Blob-URL, die das Vorschauvideo gerade abspielt
 
     const autoplayAllowed = () => !reduceMotion.matches && !saveData;
     const cycleEnabled = () => mobileQuery.matches && autoplayAllowed() && featuredProjects.length > 1;
@@ -770,8 +774,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Autoplay verboten (z. B. Stromsparmodus): Standbild + Timer. Ein abgebrochenes play() (neue Quelle, pause()) zählt nicht
     const playRejected = (err) => {
-        if (err && err.name === 'NotAllowedError') scheduleNextPreview();
+        if (err && err.name === 'NotAllowedError') {
+            clearTimeout(stallTimer);
+            scheduleNextPreview();
+        }
     };
+
+    // Wächter: läuft der Wechsel, muss currentTime vorankommen, sonst wie bei einem Fehler weiter
+    function watchStall(video) {
+        clearTimeout(stallTimer);
+        if (!cycleEnabled() || document.hidden) return;
+        stallTime = video.currentTime;
+        stallTimer = setTimeout(() => skipPreviewVideo(video), STALL_TIMEOUT);
+    }
+
+    // Fehlendes oder hängendes Video: Standbild bleibt, nach STILL_DURATION das nächste Projekt
+    function skipPreviewVideo(video) {
+        clearTimeout(stallTimer);
+        video.pause();
+        video.classList.remove('visible');
+        scheduleNextPreview();
+    }
+
+    // Nächstes Video komplett als Blob vorladen (Safari/iOS ignorieren <link rel=prefetch>).
+    // Nur beim automatischen Wechsel und sichtbarer Seite; reduzierte Bewegung und Datensparen sind in cycleEnabled
+    function preloadNextVideo(video) {
+        if (!cycleEnabled() || document.hidden || !window.fetch || !window.AbortController) return;
+        const src = previewVideoSrc(featuredProjects[nextPreviewIndex()]);
+        if (!src || src === video.dataset.src || (preload && preload.src === src)) return;
+        discardPreload();
+        const entry = { src, controller: new AbortController(), url: null };
+        preload = entry;
+        fetch(src, { signal: entry.controller.signal })
+            .then(res => (res.ok ? res.blob() : Promise.reject(new Error(res.status))))
+            .then(blob => {
+                if (preload === entry) entry.url = URL.createObjectURL(blob);
+            })
+            .catch(() => { if (preload === entry) preload = null; }); // abgebrochen oder fehlgeschlagen: später normal laden
+    }
+
+    // Unfertigen Download abbrechen bzw. fertigen Blob freigeben
+    function discardPreload() {
+        if (!preload) return;
+        if (preload.url) URL.revokeObjectURL(preload.url);
+        else preload.controller.abort();
+        preload = null;
+    }
+
+    // Beim Wechsel: fertig vorgeladenes Video als Blob-URL übernehmen, sonst null (normale Quelle). Der Rest wird verworfen
+    function takePreload(src) {
+        let url = null;
+        if (preload && preload.src === src && preload.url) {
+            url = preload.url;
+            preload = null;
+        }
+        discardPreload();
+        return url;
+    }
+
+    // Quelle setzen; data-src merkt sich den Pfad, auch wenn eine Blob-URL spielt
+    function setVideoSource(video, src, url) {
+        const previous = videoObjectURL;
+        if (src) {
+            video.src = url || src;
+            video.dataset.src = src;
+        } else {
+            video.removeAttribute('src');
+            delete video.dataset.src;
+            video.load(); // den Download des vorherigen Videos wirklich beenden
+        }
+        videoObjectURL = url || null;
+        if (previous) URL.revokeObjectURL(previous);
+    }
 
     // Standbilder: ein gestapelter Media-Reveal-Block pro Projekt. Er lädt beim ersten Zeigen und bleibt geladen,
     // die unscharfe Vorschau erscheint also nur, solange ein Projekt noch lädt. Jeder Block lädt nur sich selbst,
@@ -829,24 +903,24 @@ document.addEventListener('DOMContentLoaded', () => {
         activePreview = index;
         markActivePreview();
         clearTimeout(cycleTimer);
+        clearTimeout(stallTimer);
         showSlide(index);
 
         if (!video) return;
         const src = previewVideoSrc(p);
+        const preloaded = takePreload(src);
         video.classList.remove('visible');
         if (!src) {
             video.pause();
-            if (video.getAttribute('src')) {
-                video.removeAttribute('src');
-                video.load(); // den Download des vorherigen Videos wirklich beenden
-            }
+            if (video.getAttribute('src')) setVideoSource(video, null);
             scheduleNextPreview();
             return;
         }
         video.loop = !mobileQuery.matches; // Mobil: danach das nächste Projekt
-        if (video.getAttribute('src') !== src) video.src = src;
+        if (video.dataset.src !== src) setVideoSource(video, src, preloaded);
         else video.currentTime = 0;
         video.play().catch(playRejected);
+        watchStall(video);
     }
 
     function initPreviewVideo() {
@@ -855,33 +929,30 @@ document.addEventListener('DOMContentLoaded', () => {
         video.dataset.init = 'true';
         video.muted = true;
 
-        video.addEventListener('playing', () => video.classList.add('visible'));
+        // Sobald das aktuelle Video läuft, das nächste vorladen (konkurriert nicht mit dessen Start)
+        video.addEventListener('playing', () => {
+            video.classList.add('visible');
+            preloadNextVideo(video);
+        });
         video.addEventListener('error', () => {
-            if (!video.getAttribute('src')) return;
-            video.classList.remove('visible'); // Fehlendes Video: Standbild bleibt
-            scheduleNextPreview();
+            if (video.getAttribute('src')) skipPreviewVideo(video);
         });
         video.addEventListener('ended', () => { if (cycleEnabled()) showPreview(nextPreviewIndex()); });
-
-        // Nächstes Video kurz vor Ende vorladen
+        // Fortschritt setzt den Wächter zurück
         video.addEventListener('timeupdate', () => {
-            if (!cycleEnabled() || !video.duration || video.currentTime / video.duration < 0.6) return;
-            const next = previewVideoSrc(featuredProjects[nextPreviewIndex()]);
-            if (!next || prefetchedVideos.has(next)) return;
-            prefetchedVideos.add(next);
-            const link = document.createElement('link');
-            link.rel = 'prefetch';
-            link.href = next;
-            document.head.appendChild(link);
+            if (!video.paused && video.currentTime !== stallTime) watchStall(video);
         });
 
-        // Versteckter Tab: pausieren, danach weiter
+        // Versteckter Tab: pausieren, Wächter und unfertiges Vorladen stoppen, danach weiter
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 video.pause();
                 clearTimeout(cycleTimer);
+                clearTimeout(stallTimer);
+                if (preload && !preload.url) discardPreload();
             } else if (video.getAttribute('src')) {
                 video.play().catch(playRejected);
+                watchStall(video);
             } else {
                 scheduleNextPreview();
             }
@@ -898,7 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
                     const p = featuredProjects[activePreview];
-                    if (p && previewVideoSrc(p) !== video.getAttribute('src')) showPreview(activePreview);
+                    if (p && previewVideoSrc(p) !== (video.dataset.src || null)) showPreview(activePreview);
                 }, 150);
             }).observe(visual);
         }
