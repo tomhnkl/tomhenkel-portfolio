@@ -148,6 +148,10 @@
   .home-list {
     align-self: stretch;
     mix-blend-mode: difference; /* Inverts over the video like nav and footer */
+    /* iOS composites the video in its own layer; difference only blends with it when the list is composited too
+       (verified on Tom's iPhone 2026-10-11; fixed nav/footer are composited anyway) */
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   /* Tapping the free area changes the project (main.js initStepControls); cursor: pointer lets iOS report the tap */

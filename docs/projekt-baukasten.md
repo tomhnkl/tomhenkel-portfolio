@@ -71,7 +71,7 @@ Ein Standbild zu einem Video hat denselben Namen als `.webp`, z. B. `05.mp4` und
 
 Vor dem Klick auf „abspielen“ geht keine einzige Anfrage an den Anbieter (auch hls.js lädt erst dann); ein Hinweis am Button entfällt, das deckt die Datenschutzerklärung ab.
 
-**Steuerung (D11):** „abspielen“ mittig über dem Hero (Differenz-Mischung wie Nav und Footer), der ganze Hero ist Klickfläche. Läuft der Film: „pause“ in der Mitte, darunter „ton aus“ / „ton an“. Nach 2,5 s ohne Maus, Tipp oder Tastaturfokus blendet die Steuerung aus (`HERO_IDLE_MS` in `js/main.js`); Mausbewegung, Tipp oder Tab holt sie zurück, ein Tipp auf den ruhenden Film zeigt nur die Steuerung. Pausiert bleibt sie stehen.
+**Steuerung (D11):** „abspielen“ mittig über dem Hero (Differenz-Mischung wie Nav und Footer), der ganze Hero ist Klickfläche. Läuft der Film: „pause“ und darunter „ton aus“ / „ton an“ fest unten rechts in der Ecke des Films, immer sichtbar. Ein Tipp oder Klick auf den Film pausiert ihn bzw. spielt weiter. Die Knöpfe behalten ihre IDs (`#btn-play`, `#btn-sound`), Icons statt Wörter sind vorbereitet, das Design folgt.
 
 ---
 
@@ -168,7 +168,7 @@ Eine Zeile pro Link, in Book und Fließtextgröße wie die Kontakt-Links auf Abo
 
 **Link-Standard für die ganze Seite** (`.text-link`, `css/components/_links.scss`):
 - **In Ruhe:** wie der umgebende Text, ohne Unterstreichung.
-- **Andere Websites:** Links auf fremde Seiten öffnen in einem neuen Tab und tragen automatisch ↗. Mail-Links und interne Links bekommen keinen Pfeil.
+- **Links, die die Seite verlassen:** andere Websites (öffnen in einem neuen Tab), Mail-Links (`mailto:`, z. B. „kontakt“ im Footer und die Adresse auf About) und Telefon-Links (`tel:`) tragen automatisch ↗, bei `.text-link` wie im Footer. Interne Links bekommen nie einen Pfeil. Der Pfeil wird nicht vorgelesen und ist nie unterstrichen, auch nicht bei Hover oder Fokus.
 - **Hover:** Unterstreichung, wie in Nav und Footer (Mixin `underline` in `css/base/_typography.scss`, Lage und Stärke aus den Tokens `--underline-offset` und `--underline-thickness`). Wie beim früheren Lining-Schnitt hat die Linie Lücken an Wortabständen. Die Schrift wechselt nicht, also springt nichts und keine Zeile bricht neu um.
 - **Tastaturfokus:** weiße 2px-Kontur mit 4px Abstand auf allem, was fokussierbar ist (`css/components/_focus.scss`). Sie erscheint nur bei Bedienung mit der Tastatur.
 

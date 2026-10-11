@@ -8,6 +8,9 @@ html, body {
 
 html {
   height: 100%;
+  /* Reserve the scrollbar's space on every page: with classic scrollbars, pages that fit the viewport (work, lab, about)
+     and pages that scroll (projects) get the same width, so right-aligned elements don't jump between them */
+  scrollbar-gutter: stable;
 }
 
 body {

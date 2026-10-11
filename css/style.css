@@ -100,6 +100,9 @@ html, body {
 
 html {
   height: 100%;
+  /* Reserve the scrollbar's space on every page: with classic scrollbars, pages that fit the viewport (work, lab, about)
+     and pages that scroll (projects) get the same width, so right-aligned elements don't jump between them */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -535,10 +538,7 @@ h1 {
 /* --- Loader --- */
 #loader {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0; /* Not 100vw: that would reach under a reserved scrollbar gutter */
   background: #000;
   z-index: 9999;
   display: flex;
@@ -552,7 +552,8 @@ h1 {
   pointer-events: none;
 }
 #loader {
-  /* Large centered word (a p, so the page keeps exactly one h1) */
+  /* Large centered word (a p, so the page keeps exactly one h1).
+     Hidden until loading takes longer than LOADER_WORD_DELAY (main.js sets .word-visible) */
 }
 #loader .loader-text {
   font-family: var(--font-family-base);
@@ -579,6 +580,10 @@ h1 {
   margin: 0;
   color: #fff;
   line-height: var(--lh-poster);
+  visibility: hidden;
+}
+#loader.word-visible .loader-text {
+  visibility: visible;
 }
 
 /* --- Dev: 12-column overlay (toggle with key G, see main.js) --- */
@@ -657,9 +662,10 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* --- Links in content (standard, 2026-10-01) ---
-   At rest like the surrounding text; links to other websites (new tab) are marked with ↗.
-   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss).
+/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11) ---
+   At rest like the surrounding text. Links that leave the site are marked with ↗: other websites (new tab),
+   mail (mailto:) and phone (tel:); internal links never.
+   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss), never on the arrow.
    Same font, so the width never changes and nothing shifts. */
 .text-link {
   color: inherit;
@@ -682,11 +688,17 @@ html.lenis body {
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
 }
-.text-link[target=_blank]::after {
+
+/* ↗ after the label. As an inline-block the link's underline never reaches it
+   (text decorations don't propagate into atomic inlines), not on hover and not on focus. */
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]) .ul-words::after, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"])::after {
   content: " ↗"; /* thin space + ↗ */
   content: " ↗"/""; /* decorative: not read out by screen readers */
+  display: inline-block;
 }
 
+/* Footer: the link's own ::after holds the label width (components/_nav.scss), so the arrow follows the words
+   (main.js wraps every footer label in .ul-words) */
 /* --- Keyboard focus (D10, option B 2026-10-10) ---
    Every focusable element: white 2px outline, 4px away from the element. Outline instead of border,
    so nothing shifts. Only for keyboard focus (:focus-visible), never after a mouse click or tap. */
@@ -948,6 +960,10 @@ html.lenis body {
   .home-list {
     align-self: stretch;
     mix-blend-mode: difference; /* Inverts over the video like nav and footer */
+    /* iOS composites the video in its own layer; difference only blends with it when the list is composited too
+       (verified on Tom's iPhone 2026-10-11; fixed nav/footer are composited anyway) */
+    will-change: transform;
+    transform: translateZ(0);
   }
   /* Tapping the free area changes the project (main.js initStepControls); cursor: pointer lets iOS report the tap */
   .home-stepping .home-container {
@@ -1077,7 +1093,8 @@ html.lenis body {
 #project-detail {
   /* Left half: columns 1–6, right half: columns 7–12 */
   row-gap: 0;
-  padding-top: 5vh; /* Standard top offset */
+  --detail-top: 5vh; /* Standard top offset (the hero controls compute the hero's position from it) */
+  padding-top: var(--detail-top);
   padding-bottom: var(--space-l); /* Page end; the body padding keeps it clear of the footer */
   width: 100%;
   box-sizing: border-box;
@@ -1136,6 +1153,10 @@ html.lenis body {
 /* 1. Hero: teaser loop or image; the film (Bunny HLS video, or for now a Vimeo/YouTube iframe) loads on click (initHeroPlayer) */
 .pd-hero {
   --hero-tap: 44px; /* Minimum tap target of the film buttons */
+  --hero-pad-x: 8px; /* Side padding of the film buttons */
+  /* Visible height of the lowest label while the film plays (the sound text line); the placement below only uses
+     --hero-tap, --hero-pad-x and this, so a different label (e.g. an icon) only has to set its own height here */
+  --hero-label-h: calc(var(--fs-small) * var(--lh-small));
   width: 100%;
   aspect-ratio: 16/9;
   background: #111;
@@ -1173,7 +1194,7 @@ html.lenis body {
   opacity: 1;
 }
 .pd-hero {
-  /* Click surface over the whole hero (below the controls): starts, pauses, or wakes the hidden controls */
+  /* Click surface over the whole hero (below the controls): starts or pauses the film */
 }
 .pd-hero .hero-overlay {
   position: absolute;
@@ -1182,7 +1203,7 @@ html.lenis body {
   cursor: pointer;
 }
 .pd-hero {
-  /* Controls (D11, option B): one word in the centre of the film, "pause" while it plays, sound below.
+  /* Controls (D11, option B): "abspielen" in the centre of the film (paused with the film loaded: sound below).
      Anchored at the exact centre; the buttons hang from that point, so the play word never moves. */
 }
 .pd-hero .hero-controls {
@@ -1193,8 +1214,9 @@ html.lenis body {
   height: 0;
   z-index: 10;
   mix-blend-mode: difference;
+  will-change: transform; /* Own layer: iOS only blends with the video layer then (see .home-list in _home.scss) */
+  transform: translateZ(0);
   pointer-events: none; /* Only the buttons catch clicks, the rest goes to the overlay */
-  transition: opacity var(--duration-base) var(--ease-out);
 }
 .pd-hero .hero-controls button {
   position: absolute;
@@ -1205,7 +1227,7 @@ html.lenis body {
   justify-content: center;
   min-width: var(--hero-tap);
   min-height: var(--hero-tap);
-  padding: 0 8px;
+  padding: 0 var(--hero-pad-x);
   white-space: nowrap;
   background: none;
   border: none;
@@ -1216,74 +1238,95 @@ html.lenis body {
   -moz-appearance: none;
        appearance: none;
   -webkit-appearance: none;
+  /* Only with a real pointer: on touch, :hover would stick after a tap */
 }
-.pd-hero .hero-controls button:hover {
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--underline-thickness);
-  text-underline-offset: var(--underline-offset);
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
-}
-.pd-hero .hero-controls button:hover:has(.ul-w) {
-  text-decoration-line: none;
-}
-.pd-hero .hero-controls button:hover .ul-w {
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--underline-thickness);
-  text-underline-offset: var(--underline-offset);
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+@media (hover: hover) {
+  .pd-hero .hero-controls button:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+  .pd-hero .hero-controls button:hover:has(.ul-w) {
+    text-decoration-line: none;
+  }
+  .pd-hero .hero-controls button:hover .ul-w {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
 }
 .pd-hero .hero-controls button[hidden] {
   display: none;
 }
 .pd-hero .hero-controls {
-  /* UI size like the nav, centred on the film */
+  /* Placement: play target centred on the film, sound directly below it without overlapping */
 }
 .pd-hero .hero-controls #btn-play {
   top: 0;
   transform: translate(-50%, -50%);
-  font-size: var(--fs-ui);
-  line-height: var(--lh-ui);
-}
-.pd-hero .hero-controls {
-  /* Sound directly below the play target, without overlapping it */
 }
 .pd-hero .hero-controls #btn-sound {
   top: calc(var(--hero-tap) / 2);
+}
+.pd-hero .hero-controls {
+  /* Labels (text from site-content.json ui.*.player): play at UI size like the nav, sound small */
+}
+.pd-hero .hero-controls #btn-play {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+}
+.pd-hero .hero-controls #btn-sound {
   font-size: var(--fs-small);
   line-height: var(--lh-small);
 }
 .pd-hero {
-  /* Hovering the film underlines the word it would trigger */
+  /* While the film plays (.is-playing, main.js): "pause" and the sound below it fixed in the film's bottom right corner,
+     always visible (Tom 2026-10-11: corner of the film, even where it meets the fixed footer "de / en" at the top of the page).
+     The labels sit on the page margin; the 44px tap areas reach past it
+     (--hero-pad-x at the side, (--hero-tap - --hero-label-h) / 2 below the sound). */
 }
-.pd-hero .hero-overlay:hover ~ .hero-controls #btn-play {
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--underline-thickness);
-  text-underline-offset: var(--underline-offset);
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+.pd-hero.is-playing .hero-controls {
+  top: auto;
+  left: auto;
+  right: calc(var(--page-margin) - var(--hero-pad-x));
+  bottom: calc(var(--page-margin) - (var(--hero-tap) - var(--hero-label-h)) / 2);
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
-.pd-hero .hero-overlay:hover ~ .hero-controls #btn-play:has(.ul-w) {
-  text-decoration-line: none;
-}
-.pd-hero .hero-overlay:hover ~ .hero-controls #btn-play .ul-w {
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--underline-thickness);
-  text-underline-offset: var(--underline-offset);
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+.pd-hero.is-playing .hero-controls #btn-play,
+.pd-hero.is-playing .hero-controls #btn-sound {
+  position: static;
+  transform: none;
 }
 .pd-hero {
-  /* While the film plays: controls rest after HERO_IDLE_MS (main.js); pointer, tap or keyboard focus brings them back */
+  /* Hovering the film underlines the word it would trigger (pointer devices only) */
 }
-.pd-hero.controls-idle .hero-controls {
-  opacity: 0;
+@media (hover: hover) {
+  .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+  .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play:has(.ul-w) {
+    text-decoration-line: none;
+  }
+  .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play .ul-w {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
 }
-.pd-hero.controls-idle .hero-controls button {
-  pointer-events: none;
-}
-.pd-hero.controls-idle .hero-controls { /* A tap on the hidden word only wakes the controls (overlay) */ }
 
 /* 2.–4. Title block: title + meta, subtitle as second row
    (full-width block, so the modules always start below it) */

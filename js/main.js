@@ -68,25 +68,36 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('showGrid', show ? '1' : '0');
     });
 
-    // Globale Daten laden
-    /* 
-       Updated Loading Logic:
-       Only show Main Loader on First Visit.
-       Subsequent pages use "Blur-Up" effect on images.
-    */
+    // --- Loader: nur beim ersten Besuch der Sitzung, Folgeseiten zeigen ihre Medien über den Media-Reveal ---
+    // Das schwarze Overlay steht, bis die Daten geladen sind und die Seite einmal gerendert ist; auf Bilder wartet es nicht
+    // (die klärt der Media-Reveal). Das Wort erscheint erst, wenn das Laden länger dauert, und steht dann eine Mindestzeit.
+    const LOADER_WORD_DELAY = 400; // ms ab Skriptstart (das Overlay steht dann schon), bis "tomh." erscheint; schnelles Laden zeigt nur Schwarz
+    const LOADER_WORD_MIN = 800; // so lange steht das Wort mindestens, bevor das Overlay ausblendet (kein Aufblitzen)
 
     const loader = document.getElementById('loader');
-    
-    // Check if we have already visited in this session
     const isSessionActive = sessionStorage.getItem('visited');
+    let loaderWordTimer = null;
+    let loaderWordSince = null; // Zeitpunkt (performance.now), seit dem das Wort steht
 
     if (isSessionActive && loader) {
-       // If visited, hide loader IMMEDIATELY (no animation) to allow internal nav
-       loader.style.display = 'none';
-    } else {
-       // First visit: Keep loader visible until assets are ready
+        loader.style.display = 'none'; // sofort, ohne Ausblenden
+    } else if (loader) {
+        loaderWordTimer = setTimeout(() => {
+            loader.classList.add('word-visible');
+            loaderWordSince = performance.now();
+        }, LOADER_WORD_DELAY);
     }
-    
+
+    // Overlay ausblenden (Dauer über --duration-slow); stand das Wort, erst nach LOADER_WORD_MIN
+    function hideLoader() {
+        clearTimeout(loaderWordTimer);
+        const wait = loaderWordSince === null ? 0 : Math.max(0, loaderWordSince + LOADER_WORD_MIN - performance.now());
+        setTimeout(() => {
+            loader.classList.add('hidden');
+            setTimeout(() => { loader.style.display = 'none'; }, motionMs('--duration-slow'));
+        }, wait);
+    }
+
     // Alle Pfade ab der Wurzel: Projektseiten liegen unter /work/<id> (D6), relative Pfade zeigten dort ins Leere.
     // Die JSON-Dateien schreiben Medien relativ ("images/…", "videos/…"); rootPaths setzt beim Laden ein "/" davor,
     // auch vor jeden Eintrag eines srcset. data:-Vorschauen, http(s) und schon absolute Pfade bleiben, wie sie sind
@@ -105,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('lab-canvas')
             ? fetch('/data/lab.json').then(r => r.json()).catch(error => { console.warn('lab.json nicht geladen:', error); return []; })
             : []
-    ]).then(async ([content, projects, lab]) => {
+    ]).then(([content, projects, lab]) => {
         siteContent = rootPaths(content);
         projectsData = rootPaths(projects);
         labData = Array.isArray(lab) ? rootPaths(lab) : [];
@@ -122,53 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentLang = langToUse;
         updateUI(langToUse);
 
-        // If it's the very first visit, run the preloader logic
-        if (!isSessionActive) {
-            // --- Asset Preloading (Splash Screen) ---
-            const assetsToLoad = [];
-            
-            // Nur das erste Standbild der Startseite; alle anderen Medien laden über den Media-Reveal, wenn sie gebraucht werden
-            const firstFeatured = document.getElementById('project-list') && projects.find(p => p.featured);
-            const firstPoster = firstFeatured && firstFeatured.hero && firstFeatured.hero.image;
-            if (firstPoster) assetsToLoad.push({ type: 'image', src: firstPoster.src });
-
-            // Helper to load image
-            const preloadImage = (src) => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.onload = () => { resolve(); };
-                    img.onerror = () => { resolve(); }; 
-                    img.src = src;
-                });
-            };
-
-            // Execute Preloading
-            const loadAssetsPromise = Promise.all(assetsToLoad.map(asset => {
-                if (asset.type === 'image') return preloadImage(asset.src);
-                return Promise.resolve();
-            }));
-
-            // Wait max 5 seconds for images, otherwise proceed
-            const timeoutPromise = new Promise(resolve => setTimeout(resolve, 5000));
-
-            await Promise.race([loadAssetsPromise, timeoutPromise]);
-            
-            // Minimum loading time of 1s for animation
-            await new Promise(r => setTimeout(r, 1000));
-
-            // Finish
-            sessionStorage.setItem('visited', 'true');
-            
-            if (loader) {
-                 // Fade out
-                loader.classList.add('hidden');
-                setTimeout(() => { loader.style.display = 'none'; }, motionMs('--duration-slow'));
-            }
-        } 
-
-
-
         setLanguage(langToUse);
+
+        // Erster Besuch: Daten da, Seite gerendert -> Overlay weg
+        if (!isSessionActive) {
+            sessionStorage.setItem('visited', 'true');
+            if (loader) hideLoader();
+        }
 
         // Lab Initialisierung (nur einmalig)
         if (document.getElementById('lab-canvas')) {
@@ -179,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ladefehler als Poster im Loader (D14): Wort, eine Zeile, "Neu laden"; deckt Nav und Footer
         console.error('Fehler beim Laden der Daten:', error);
         if (!loader) return;
+        clearTimeout(loaderWordTimer); // das Poster ersetzt das Wort
         const lang = currentLang || fallbackLanguage();
         const texts = stateTexts(lang).error;
         document.documentElement.lang = lang;
@@ -364,10 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Hero Player: Teaser-Loop läuft sofort, der Film lädt erst per Klick ---
     // Film von Bunny Stream als HLS im eigenen <video> (D4), übergangsweise auch Vimeo/YouTube im iframe.
     // Vor dem Klick geht keine Anfrage an den Anbieter (Datenschutz); der Klick erlaubt auch den Ton.
-    // Steuerung (D11): ein Wort mittig über dem Film; läuft er, "pause" und darunter der Ton, nach einer Ruhezeit ausgeblendet.
+    // Steuerung (D11): "abspielen" mittig über dem Film; läuft er, stehen "pause" und darunter der Ton unten rechts, immer sichtbar.
     // Zustand der eigenen Steuerung; Start = pausiert. film = Film geladen
     let heroState = { paused: true, muted: false, film: false };
-    const HERO_IDLE_MS = 2500; // so lange ohne Maus, Tipp oder Fokus, bis die Steuerung über dem laufenden Film ausblendet
     const IFRAME_START_MS = 4000; // Vimeo/YouTube: läuft der Film bis dahin nicht, übernimmt die Anzeige des Anbieters
     const MUTE_SYNC_MS = 500; // Abgleich des Ton-Zustands mit dem Player
     const HLS_SCRIPT = '/js/vendor/hls.light.min.js'; // hls.js 1.7.3 (light), selbst gehostet, lädt erst beim ersten Klick
@@ -571,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setWords(btnPlay, heroState.paused ? labels.play : labels.pause);
         setWords(btnSound, heroState.muted ? labels.sound_on : labels.sound_off);
         btnSound.hidden = !heroState.film; // Der Teaser hat keinen Ton
-        document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused);
+        document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused); // Steuerung unten rechts
     }
 
     function initHeroPlayer(film, title) {
@@ -583,46 +554,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const controls = wrapper.querySelector('.hero-controls');
         const teaser = wrapper.querySelector('video');
 
-        // Ruhezeit: läuft der Film, blendet die Steuerung nach HERO_IDLE_MS aus (.controls-idle, Dauer über Motion-Token).
-        // Maus bewegen, Tippen und Tastaturfokus holen sie zurück; pausiert bleibt sie stehen.
-        let idleTimer = null;
-        let pointerOnControls = false; // Maus ruht auf einem Button
-        let tapWoke = false; // der Tipp auf den ruhenden Film zeigt nur die Steuerung, pausiert nicht
-        const keyboardOnControls = () => {
-            try { return !!controls.querySelector(':focus-visible'); } catch (e) { return controls.contains(document.activeElement); }
-        };
-        const wake = () => {
-            clearTimeout(idleTimer);
-            wrapper.classList.remove('controls-idle');
-            if (heroState.paused || !controls) return;
-            idleTimer = setTimeout(function rest() {
-                if (pointerOnControls || keyboardOnControls()) {
-                    idleTimer = setTimeout(rest, HERO_IDLE_MS); // Maus oder Fokus auf der Steuerung: sichtbar lassen
-                    return;
-                }
-                if (!heroState.paused) wrapper.classList.add('controls-idle');
-            }, HERO_IDLE_MS);
-        };
-
         const setState = (changes) => {
-            const wasPaused = heroState.paused;
             Object.assign(heroState, changes);
             updateHeroControls();
-            if (heroState.paused !== wasPaused) wake(); // läuft: Ruhezeit beginnt, pausiert: Steuerung bleibt
         };
         setState({ paused: true, muted: false, film: false });
-
-        wrapper.addEventListener('pointermove', wake);
-        wrapper.addEventListener('pointerdown', (e) => {
-            tapWoke = e.pointerType !== 'mouse' && wrapper.classList.contains('controls-idle');
-            wake();
-        });
-        if (controls) controls.addEventListener('focusin', wake);
-        // Maus über einem Button: bei jeder Bewegung neu bestimmt (WebKit meldet kein pointerleave,
-        // wenn das Wort unter der Maus gerade getauscht wurde, z. B. "ton aus" -> "ton an")
-        document.addEventListener('pointermove', (e) => {
-            pointerOnControls = e.pointerType === 'mouse' && !!(e.target.closest && e.target.closest('.hero-controls button'));
-        });
 
         let playerSynced = null; // entsteht erst mit dem ersten Klick
         let connected = null; // der Player, sobald er bereit ist (Klicks rufen ihn dann direkt auf, noch in der Geste)
@@ -651,8 +587,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Fallback: Steuerung des Anbieters bzw. des Browsers übernehmen, ein Tipp direkt auf das Video startet ihn
             // (API lädt nicht, Anbieter meldet einen Fehler, oder der Start wird blockiert, z. B. Ton in Safari)
             const handOver = ({ keepControls }) => {
-                clearTimeout(idleTimer);
-                wrapper.classList.remove('controls-idle');
                 if (overlay) overlay.remove();
                 if (controls && !keepControls) controls.remove();
                 showFilm();
@@ -740,13 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Der ganze Hero ist Klickfläche; der Button ist das Ziel für Tastatur und Screenreader
-        if (overlay) overlay.addEventListener('click', () => {
-            if (tapWoke) {
-                tapWoke = false;
-                return;
-            }
-            togglePlay();
-        });
+        if (overlay) overlay.addEventListener('click', togglePlay);
         document.getElementById('btn-play').addEventListener('click', togglePlay);
 
         document.getElementById('btn-sound').addEventListener('click', () => {
@@ -1569,7 +1497,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return cells ? `<div class="accordion-media">${cells}</div>` : '';
     }
 
-    // Link-Modul: eine Zeile pro Link; Links zu anderen Websites öffnen im neuen Tab und tragen ↗ (Link-Standard .text-link)
+    // Link-Modul: eine Zeile pro Link; Links zu anderen Websites öffnen im neuen Tab. ↗ setzt das CSS an jeden Link,
+    // der die Seite verlässt (neuer Tab, mailto:, tel:; Link-Standard in css/components/_links.scss)
     const isExternal = (href) => /^https?:\/\//.test(href) && new URL(href).origin !== location.origin;
 
     function linksBlockHTML(block, lang, index, project) {

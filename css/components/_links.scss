@@ -1,6 +1,7 @@
-/* --- Links in content (standard, 2026-10-01) ---
-   At rest like the surrounding text; links to other websites (new tab) are marked with ↗.
-   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss).
+/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11) ---
+   At rest like the surrounding text. Links that leave the site are marked with ↗: other websites (new tab),
+   mail (mailto:) and phone (tel:); internal links never.
+   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss), never on the arrow.
    Same font, so the width never changes and nothing shifts. */
 .text-link {
   color: inherit;
@@ -10,9 +11,22 @@
   &:focus-visible {
     @include underline;
   }
+}
 
-  &[target="_blank"]::after {
-    content: "\2009\2197"; /* thin space + ↗ */
-    content: "\2009\2197" / ""; /* decorative: not read out by screen readers */
-  }
+/* ↗ after the label. As an inline-block the link's underline never reaches it
+   (text decorations don't propagate into atomic inlines), not on hover and not on focus. */
+%external-arrow {
+  content: "\2009\2197"; /* thin space + ↗ */
+  content: "\2009\2197" / ""; /* decorative: not read out by screen readers */
+  display: inline-block;
+}
+
+.text-link:is([target="_blank"], [href^="mailto:"], [href^="tel:"])::after {
+  @extend %external-arrow;
+}
+
+/* Footer: the link's own ::after holds the label width (components/_nav.scss), so the arrow follows the words
+   (main.js wraps every footer label in .ul-words) */
+.main-footer .footer-left a:is([target="_blank"], [href^="mailto:"], [href^="tel:"]) .ul-words::after {
+  @extend %external-arrow;
 }
