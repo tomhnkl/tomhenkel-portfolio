@@ -159,6 +159,23 @@
 
       a { opacity: 1; }
     }
+
+    .main-footer {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+
+  /* On phones the footer lives in the menu (Tom 2026-10-11): hidden on the pages,
+     shown at the bottom of the open menu in its usual arrangement, after the three links.
+     Only with JavaScript: without it the menu can't open, so the footer (impressum, datenschutz) stays on the page */
+  @media (scripting: enabled) {
+    .main-footer {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
   }
 
   /* Transitions (incl. delays) only after the visitor used the menu (body.menu-animate, set in main.js),
@@ -177,6 +194,10 @@
         a { transition: opacity var(--duration-base) var(--ease-out); }
       }
 
+      .main-footer {
+        transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+      }
+
       /* Opening: show immediately, links one after another */
       &.menu-open {
         &::before { transition-delay: 0s; }
@@ -187,6 +208,8 @@
           a:nth-child(2) { transition-delay: var(--duration-stagger); }
           a:nth-child(3) { transition-delay: calc(2 * var(--duration-stagger)); }
         }
+
+        .main-footer { transition-delay: calc(3 * var(--duration-stagger)), 0s; }
       }
     }
   }
