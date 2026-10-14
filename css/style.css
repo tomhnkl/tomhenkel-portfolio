@@ -1684,6 +1684,11 @@ details.pd-accordion .pd-timeline dd {
   margin-top: 0; /* No hero above: the title starts where a project's hero starts */
 }
 
+/* Sections of a long legal text stay together: --space-m between them (Tom 2026-10-14), title → first section as on projects */
+#legal-content .pd-text + .pd-text {
+  margin-top: var(--space-m);
+}
+
 /* --- Lab Page (Infinite Canvas) --- */
 body.lab-page {
   overflow: hidden; /* Prevent native scroll */
