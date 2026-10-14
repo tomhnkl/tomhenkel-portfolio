@@ -715,12 +715,21 @@ html.lenis body {
           text-decoration-skip-ink: auto;
 }
 
-/* ↗ after the label. As an inline-block the link's underline never reaches it
-   (text decorations don't propagate into atomic inlines), not on hover and not on focus. */
+/* ↗ after the label: own vector arrow (Tom 2026-10-14, option B "Helvetica-Strich"), because Helvetica has no ↗ glyph
+   (browsers fell back to other fonts, e.g. PingFang SC on macOS). Drawn to the typeface: box = cap height (0.717em),
+   stroke = stem of "l" (0.088em), open head of two arms (60 % of the box), square ends, sits on the baseline, 0.25em gap.
+   A mask in currentColor, so it takes the link colour and the difference blend. Decorative (empty content, not read out).
+   As an inline-block the link's underline never reaches it. Preview: _tooling/previews/arrows.html */
 .main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]) .ul-words::after, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"])::after {
-  content: " ↗"; /* thin space + ↗ */
-  content: " ↗"/""; /* decorative: not read out by screen readers */
+  content: "";
   display: inline-block;
+  width: 0.717em;
+  height: 0.717em;
+  margin-left: 0.25em;
+  vertical-align: baseline;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 717 717' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M331 44H673V386' stroke-width='88'/%3E%3Cpath d='M62.2 654.8L641.9 75.1' stroke-width='88'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 717 717' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M331 44H673V386' stroke-width='88'/%3E%3Cpath d='M62.2 654.8L641.9 75.1' stroke-width='88'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
