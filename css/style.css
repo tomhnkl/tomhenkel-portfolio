@@ -330,7 +330,8 @@ h1 {
     justify-content: flex-start;
     align-items: flex-start;
     width: auto;
-    padding: var(--page-top) var(--page-margin) var(--page-bottom);
+    /* Top minus half the link padding, so the first link stays where it was */
+    padding: calc(var(--page-top) - var(--space-s) / 2) var(--page-margin) var(--page-bottom);
     box-sizing: border-box;
     visibility: hidden;
     pointer-events: none; /* Taps pass through immediately while the menu fades out */
@@ -338,6 +339,8 @@ h1 {
   .main-nav .nav-right a {
     font-size: var(--fs-display);
     line-height: var(--lh-display);
+    /* --space-s between the items (Tom 2026-10-14) as padding: same visual gap, the whole height is the tap area (~58px) */
+    padding: calc(var(--space-s) / 2) 0;
     opacity: 0;
   }
 }
