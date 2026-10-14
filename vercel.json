@@ -7,6 +7,8 @@
     { "source": "/project", "has": [{ "type": "query", "key": "id", "value": "(?<id>[a-z0-9-]+)" }], "destination": "/work/:id", "permanent": true },
     { "source": "/project.html", "destination": "/", "permanent": true },
     { "source": "/project", "destination": "/", "permanent": true },
+    { "source": "/legal.html", "destination": "/", "permanent": true },
+    { "source": "/legal", "destination": "/", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/about.html", "destination": "/about", "permanent": true },
     { "source": "/work", "destination": "/", "permanent": true }

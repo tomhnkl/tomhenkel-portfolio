@@ -140,7 +140,8 @@ h1 {
 }
 
 /* --- 12-Column Grid --- */
-.pd-footer-nav, .pd-media, .pd-title-row, #project-detail, .grid-overlay, .main-nav, .about-section, .home-container {
+.pd-footer-nav, .pd-media, .pd-title-row, #project-detail,
+#legal-content, .grid-overlay, .main-nav, .about-section, .home-container {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   -moz-column-gap: var(--spacing-layout);
@@ -1112,8 +1113,10 @@ html.lenis body {
 }
 /* --- Project Detail ---
    Hero, title block, modules from the kit (media rows, text, accordions), more projects.
-   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md */
-#project-detail {
+   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md
+   The legal pages (#legal-content, pages/_legal.scss) share the container, the heading sizes and the title/text classes. */
+#project-detail,
+#legal-content {
   /* Left half: columns 1–6, right half: columns 7–12 */
   row-gap: 0;
   --detail-top: 5vh; /* Standard top offset (the hero controls compute the hero's position from it) */
@@ -1126,18 +1129,18 @@ html.lenis body {
 /* Headings: one size per level, set on the tag (h1 display via .pd-title, h2 title, h3 ui).
    h1 project title; h2 subtitle and more projects; h3 category/year, text, personal and accordion titles.
    Browser defaults are reset; :where() keeps specificity at 0, so classes only add layout and cut. */
-:where(#project-detail) :where(h2, h3) {
+:where(#project-detail, #legal-content) :where(h2, h3) {
   margin: 0;
   font-weight: inherit;
 }
 
-:where(#project-detail) :where(h2) {
+:where(#project-detail, #legal-content) :where(h2) {
   font-size: var(--fs-title);
   line-height: var(--lh-title);
   letter-spacing: var(--ls-title);
 }
 
-:where(#project-detail) :where(h3) {
+:where(#project-detail, #legal-content) :where(h3) {
   font-size: var(--fs-ui);
   line-height: var(--lh-ui);
   letter-spacing: normal;
@@ -1145,7 +1148,7 @@ html.lenis body {
 
 /* Default: unplaced children (e.g. "Project not found") span the full width.
    :where() keeps specificity at 0, so the .pd-* placements below still win. */
-:where(#project-detail) > * {
+:where(#project-detail, #legal-content) > * {
   grid-column: 1/-1;
 }
 
@@ -1673,6 +1676,14 @@ details.pd-accordion .pd-timeline dd {
     width: 100%;
   }
 }
+/* --- Legal pages (Impressum, Datenschutz) ---
+   Look of a project text (Tom 2026-10-14): the title as the page's h1 like a project title (.pd-title-row / .pd-title),
+   each section like a text module (.pd-text: h3 title, running text in the right half). Container, heading sizes
+   and these classes come from pages/_project.scss. Markup: legal.html → npm run pages (static DE text), renderLegal() in main.js */
+#legal-content .pd-title-row {
+  margin-top: 0; /* No hero above: the title starts where a project's hero starts */
+}
+
 /* --- Lab Page (Infinite Canvas) --- */
 body.lab-page {
   overflow: hidden; /* Prevent native scroll */

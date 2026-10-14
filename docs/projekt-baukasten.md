@@ -281,6 +281,80 @@ Das Lab ist eine freie Leinwand. Jeder Eintrag hat eine Position und eine Breite
 
 ---
 
+## Texte der Seite (`data/site-content.json`)
+
+Alle festen Wörter außerhalb der Projekte stehen in `data/site-content.json`, je Sprache unter `ui.de` und `ui.en`:
+
+| Feld | Was |
+|---|---|
+| `nav` | Navigation: projekte, das lab, über mich |
+| `footer` | Footer: kontakt, impressum, datenschutz |
+| `titles` | Seitentitel: Über mich, Das Lab, Projekt nicht gefunden |
+| `page_title` | Name hinter jedem Tab-Titel („Impressum — Tom Henkel“) |
+| `player` | Film-Knöpfe: abspielen, pause, ton an, ton aus |
+| `menu` | Handy-Menü: menü, schließen |
+| `states` | Poster für Ladefehler, „Projekt nicht gefunden“ und die 404-Seite |
+| `more` | Überschrift „Weitere Projekte“ |
+| `skip` | „Zum Inhalt“, der erste Tab-Stopp für die Tastatur |
+| `preview` | „weiter“ auf der Startseite (Handy ohne automatischen Wechsel) |
+| `buttons` | zurzeit nicht genutzt |
+
+Unter `settings` stehen die Angaben für die ganze Seite:
+
+| Feld | Was |
+|---|---|
+| `contact_email` | Adresse für „kontakt“ im Footer und auf About |
+| `instagram_url` | Instagram-Link auf About |
+| `bunny_cdn` | CDN-Host der Filme (siehe Hero) |
+
+Text und Porträt der About-Seite stehen unter `about`.
+
+**Text ändern:**
+1. Den Text unter `ui.de` **und** `ui.en` ändern.
+2. Speichern, Seite neu laden. Mehr braucht es nicht.
+
+Ausnahmen: `page_title` und `contact_email` stehen zusätzlich fest im HTML (Tab-Titel und Hinweis für Browser ohne JavaScript). Ändern sie sich, sag mir Bescheid, ich ziehe das HTML nach.
+
+Neue sichtbare Wörter, die ich für die Oberfläche vorschlage, sind Entwürfe, bis du sie freigibst.
+
+---
+
+## Rechtstexte (`data/legal.json`)
+
+Impressum (`/impressum`) und Datenschutz (`/datenschutz`) sehen aus wie ein Projekttext: großer Titel links wie der Projekttitel, darunter die Abschnitte in der rechten Hälfte, jeder mit Überschrift (wie ein Akkordeon-Titel) und Fließtext.
+
+```json
+{
+  "impressum": {
+    "title": { "de": "Impressum", "en": "Imprint" },
+    "sections": [
+      { "heading": { "de": "Überschrift", "en": "Heading" },
+        "text": { "de": "Zeile 1\nZeile 2\n\nNeuer Absatz mit <a href=\"mailto:…\">Mail</a>", "en": "…" } }
+    ]
+  },
+  "datenschutz": { "title": { "de": "Datenschutz", "en": "Privacy" }, "sections": [ … ] }
+}
+```
+
+- **`sections`:** beliebig viele, in dieser Reihenfolge. `heading` ist optional.
+- **Zeilenumbrüche:** `\n` beginnt eine neue Zeile, eine Leerzeile (`\n\n`) einen neuen Absatz.
+- **Links:** einfach `<a href="…">…</a>` in den Text. Sie folgen dem Link-Standard: andere Websites öffnen im neuen Tab und tragen ↗, Mail-Links (`mailto:`) auch, interne Links wie `/about` nicht.
+- **Nach jeder Änderung:** `npm run pages` (oder `npm run build`) in `_tooling`. Dann steht der deutsche Text auch fest im HTML (`impressum/index.html`, `datenschutz/index.html`) und ist ohne JavaScript lesbar. Englisch kommt beim Laden aus `legal.json`. Ist das HTML veraltet, schlägt `npm test` fehl.
+- **Vorlage:** Beide Seiten entstehen aus `legal.html`, wie die Projektseiten aus `project.html`. Die erzeugten Dateien nie von Hand ändern.
+- **Suchmaschinen:** Beide Seiten sind `noindex` und stehen nicht in `sitemap.xml`.
+- **Platzhalter:** `[Platzhalter]` und `[Text folgt]` meldet `npm run check:placeholders`, bis die echten Texte da sind.
+
+---
+
+## Vorschau
+
+- **Alltag:** VS Code Live Server auf `http://127.0.0.1:5501`. Auf dem iPhone im selben WLAN: `http://<IP des Mac im WLAN>:5501`.
+- **Seiten sind Ordner:** `/work/<id>/`, `/about/`, `/impressum/`, `/datenschutz/`.
+- **Wie online bei Vercel:** `npm run dev` in `_tooling` (oder in VS Code „Tasks: Run Task“ → „Portfolio-Vorschau“) auf `http://127.0.0.1:8765`, mit Live-Reload. Das braucht es nur, um die Weiterleitungen von Vercel und die 404-Seite zu sehen.
+- **Tests:** `npm test` in `_tooling` (Chrome und WebKit, etwa zwei Minuten).
+
+---
+
 ## Checkliste neues Projekt
 
 1. Alles, was ins Projekt soll, in `images/projects/<id>/_ROH` legen.

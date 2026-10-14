@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <!-- seo -->
+  <!-- Vorlage der Rechtsseiten: npm run pages (in _tooling) schreibt daraus impressum/index.html und datenschutz/index.html,
+       ersetzt diesen Block (Titel, canonical, noindex) und <main> (deutscher Text aus data/legal.json, lesbar ohne JavaScript).
+       Darum nur absolute Pfade. Online nie zu sehen: /legal.html leitet auf / um (vercel.json) -->
+  <title>Tom Henkel</title>
+  <meta name="robots" content="noindex">
+  <!-- /seo -->
+  <meta name="author" content="Tom Henkel">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Icons exportiert Tom (favicon.svg, favicon.ico 32 px, apple-touch-icon.png 180 px), liegen im Wurzelordner -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/vendor/lenis.min.js" defer></script>
+  <script src="/js/main.js" defer></script>
+  <noscript><style>#loader { display: none; }</style></noscript>
+</head>
+<body>
+  <a class="skip-link" href="#legal-content" data-i18n-skip>Zum Inhalt</a>
+  <div id="loader">
+    <p class="loader-text" aria-hidden="true"><span class="ul-w">tomh.</span></p>
+  </div>
+  <!-- Ohne JavaScript: Loader aus (noscript im head). Kein Poster wie auf den anderen Seiten: der Rechtstext steht
+       statisch im HTML und bleibt lesbar; Nav und Footer bleiben bedienbar -->
+  <nav class="main-nav">
+    <div class="nav-left"><a href="/">tomh.</a></div>
+    <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-menu">menü</button>
+    <div class="nav-right" id="nav-menu">
+      <a href="/" data-i18n-nav="projects">projekte</a>
+      <a role="link" aria-disabled="true" data-i18n-nav="lab">das lab</a>
+      <a href="/about" data-i18n-nav="about">über mich</a>
+    </div>
+  </nav>
+
+  <main id="legal-content" tabindex="-1">
+    <!-- Rechtstext: npm run pages setzt hier Titel und Abschnitte ein, main.js stellt sie auf DE/EN um (renderLegal) -->
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-left">
+      <span>©tomh</span>
+      <a data-i18n-footer="contact" data-text="kontakt">kontakt</a>
+      <a href="/impressum" data-i18n-footer="impressum" data-text="impressum">impressum</a>
+      <a href="/datenschutz" data-i18n-footer="privacy" data-text="datenschutz">datenschutz</a>
+    </div>
+    <div class="footer-right lang-switch-footer">
+      <button type="button" data-lang="de" data-text="de" aria-pressed="true">de</button>
+      <span class="separator">/</span>
+      <button type="button" data-lang="en" data-text="en" aria-pressed="false">en</button>
+    </div>
+  </footer>
+</body>
+</html>

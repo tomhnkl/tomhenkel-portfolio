@@ -1,7 +1,9 @@
 /* --- Project Detail ---
    Hero, title block, modules from the kit (media rows, text, accordions), more projects.
-   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md */
-#project-detail {
+   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md
+   The legal pages (#legal-content, pages/_legal.scss) share the container, the heading sizes and the title/text classes. */
+#project-detail,
+#legal-content {
   @extend %grid-12; /* Left half: columns 1–6, right half: columns 7–12 */
   row-gap: 0;
   --detail-top: 5vh; /* Standard top offset (the hero controls compute the hero's position from it) */
@@ -14,18 +16,18 @@
 /* Headings: one size per level, set on the tag (h1 display via .pd-title, h2 title, h3 ui).
    h1 project title; h2 subtitle and more projects; h3 category/year, text, personal and accordion titles.
    Browser defaults are reset; :where() keeps specificity at 0, so classes only add layout and cut. */
-:where(#project-detail) :where(h2, h3) {
+:where(#project-detail, #legal-content) :where(h2, h3) {
   margin: 0;
   font-weight: inherit;
 }
 
-:where(#project-detail) :where(h2) {
+:where(#project-detail, #legal-content) :where(h2) {
   font-size: var(--fs-title);
   line-height: var(--lh-title);
   letter-spacing: var(--ls-title);
 }
 
-:where(#project-detail) :where(h3) {
+:where(#project-detail, #legal-content) :where(h3) {
   font-size: var(--fs-ui);
   line-height: var(--lh-ui);
   letter-spacing: normal;
@@ -33,7 +35,7 @@
 
 /* Default: unplaced children (e.g. "Project not found") span the full width.
    :where() keeps specificity at 0, so the .pd-* placements below still win. */
-:where(#project-detail) > * {
+:where(#project-detail, #legal-content) > * {
   grid-column: 1 / -1;
 }
 

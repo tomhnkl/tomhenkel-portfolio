@@ -1,0 +1,7 @@
+/* --- Legal pages (Impressum, Datenschutz) ---
+   Look of a project text (Tom 2026-10-14): the title as the page's h1 like a project title (.pd-title-row / .pd-title),
+   each section like a text module (.pd-text: h3 title, running text in the right half). Container, heading sizes
+   and these classes come from pages/_project.scss. Markup: legal.html → npm run pages (static DE text), renderLegal() in main.js */
+#legal-content .pd-title-row {
+  margin-top: 0; /* No hero above: the title starts where a project's hero starts */
+}

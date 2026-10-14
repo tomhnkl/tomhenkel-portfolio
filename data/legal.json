@@ -1,0 +1,20 @@
+{
+  "impressum": {
+    "title": { "de": "Impressum", "en": "Imprint" },
+    "sections": [
+      {
+        "heading": { "de": "[Platzhalter]", "en": "[Platzhalter]" },
+        "text": { "de": "[Text folgt]", "en": "[Text folgt]" }
+      }
+    ]
+  },
+  "datenschutz": {
+    "title": { "de": "Datenschutz", "en": "Privacy" },
+    "sections": [
+      {
+        "heading": { "de": "[Platzhalter]", "en": "[Platzhalter]" },
+        "text": { "de": "[Text folgt]", "en": "[Text folgt]" }
+      }
+    ]
+  }
+}

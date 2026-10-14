@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let siteContent = {};
     let projectsData = [];
     let labData = [];
+    let legalData = null; // data/legal.json (nur Impressum und Datenschutz)
     let currentLang = null;
     // Texte für Navigation, Footer und Tab-Titel ({ ui, email, languages, defaultLang }); pro Sitzung zwischengespeichert,
     // damit Folgeseiten ohne Loader sofort in der richtigen Sprache erscheinen
@@ -115,11 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // lab.json lädt nur die Lab-Seite; fehlt sie oder ist sie kaputt, bleibt die Leinwand leer
         document.getElementById('lab-canvas')
             ? fetch('/data/lab.json').then(r => r.json()).catch(error => { console.warn('lab.json nicht geladen:', error); return []; })
-            : []
-    ]).then(([content, projects, lab]) => {
+            : [],
+        // legal.json lädt nur Impressum und Datenschutz; fehlt sie oder ist sie kaputt, bleibt der deutsche Text aus dem HTML stehen
+        document.getElementById('legal-content')
+            ? fetch('/data/legal.json').then(r => r.json()).catch(error => { console.warn('legal.json nicht geladen:', error); return null; })
+            : null
+    ]).then(([content, projects, lab, legal]) => {
         siteContent = rootPaths(content);
         projectsData = rootPaths(projects);
         labData = Array.isArray(lab) ? rootPaths(lab) : [];
+        legalData = legal && typeof legal === 'object' ? legal : null;
 
         // Sprache und Navigation/Footer umstellen, solange der Loader noch deckt
         uiText = {
@@ -282,6 +288,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         uiText = null;
     }
+
+    // Rechtsseiten: der Text im HTML ist deutsch (npm run pages). Startet die Seite in einer anderen Sprache, bleibt er
+    // bis renderLegal() unsichtbar (kein Aufblitzen); beim ersten Besuch deckt ihn der Loader, ohne JavaScript ist er immer zu sehen
+    const legalContainer = document.getElementById('legal-content');
+    if (legalContainer && currentLang && currentLang !== 'de') legalContainer.style.visibility = 'hidden';
 
 
 
@@ -703,6 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProjects(lang);
         renderProjectDetail(lang);
         renderAbout(lang);
+        renderLegal(lang);
         renderLab(lang);
     }
 
@@ -1704,6 +1716,60 @@ document.addEventListener('DOMContentLoaded', () => {
         `);
         underlineAll(container);
         initMediaReveal(container);
+    }
+
+    // --- Rechtsseiten (Impressum, Datenschutz): wie ein Projekttext. Titel wie der Projekttitel (h1 .pd-title),
+    // jeder Abschnitt wie ein Text-Modul (Überschrift h3, Fließtext in der rechten Hälfte: textBlockHTML, BLOCKS.text).
+    // Den deutschen Text schreibt npm run pages mit demselben Markup statisch ins HTML (lesbar ohne JavaScript);
+    // hier werden nur die Texte getauscht. Passt das HTML nicht mehr zu legal.json (nicht neu erzeugt), wird es neu aufgebaut ---
+    const legalSections = (page) => (Array.isArray(page.sections) ? page.sections : [])
+        .filter(section => section && typeof section === 'object')
+        .map(section => ({ title: section.heading, text: section.text })); // Form eines Text-Moduls
+
+    function legalHTML(page, lang) {
+        return `<div class="pd-title-row"><h1 class="pd-title">${localized(page.title, lang)}</h1></div>`
+            + legalSections(page).map((section, index) => textBlockHTML(section, lang, index)).join('');
+    }
+
+    // Links im Text nach dem Link-Standard: .text-link (Unterstreichung bei Hover/Fokus), andere Websites im neuen Tab (↗ setzt das CSS)
+    function textLinks(scope) {
+        scope.querySelectorAll('.pd-text-body a[href]').forEach(link => {
+            link.classList.add('text-link');
+            let external = false;
+            try { external = isExternal(link.getAttribute('href')); } catch (e) { /* kaputte Adresse: bleibt, wie sie ist */ }
+            if (external && !link.target) {
+                link.target = '_blank';
+                link.rel = 'noopener';
+            }
+        });
+    }
+
+    function renderLegal(lang) {
+        const container = document.getElementById('legal-content');
+        if (!container) return;
+
+        const page = legalData && legalData[container.dataset.legal];
+        if (page) {
+            const title = localized(page.title, lang);
+            const sections = legalSections(page);
+            document.title = pageTitle(lang, stripTags(title));
+
+            const heading = container.querySelector('.pd-title');
+            const blocks = container.querySelectorAll('[data-block]');
+            const fits = heading && blocks.length === sections.length
+                && sections.every((section, i) => !section.title === !blocks[i].querySelector('.pd-text-title'));
+            if (fits) {
+                heading.innerHTML = title;
+                blocks.forEach((el, i) => BLOCKS.text.update(el, sections[i], lang));
+            } else {
+                container.innerHTML = legalHTML(page, lang);
+            }
+            textLinks(container);
+            underlineAll(container);
+        } else if (legalData) {
+            console.warn(`[Rechtsseite ${container.dataset.legal}] fehlt in legal.json, der deutsche Text aus dem HTML bleibt stehen`);
+        }
+        container.style.visibility = ''; // war verborgen, falls die Seite nicht auf Deutsch gestartet ist
     }
 
     // --- Lab: freie Leinwand. Bilder und Videos laufen über den Media-Reveal und laden erst,
