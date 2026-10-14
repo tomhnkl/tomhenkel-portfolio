@@ -45,13 +45,12 @@ $external-link: '[target="_blank"], [href^="mailto:"], [href^="tel:"]';
   @extend %external-arrow;
 }
 
-/* External links: no underline on hover/focus (also not the footer's 1.5px nudge), the arrow moves instead */
+/* External links: no underline on hover/focus, the arrow moves instead */
 .text-link:is(#{$external-link}),
 .main-footer .footer-left a:is(#{$external-link}) {
   &:hover,
   &:focus-visible {
     text-decoration-line: none;
-    transform: none;
 
     .ul-w { text-decoration-line: none; }
   }

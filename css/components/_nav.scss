@@ -246,7 +246,6 @@
       display: inline-flex; 
       flex-direction: column;
       align-items: flex-start;
-      transition: transform var(--duration-fast) var(--ease-out);
       font-family: var(--font-family-base);
       
       &::after {
@@ -261,8 +260,7 @@
 
       &:hover {
         color: #fff;
-        @include underline;
-        transform: translateY(1.5px); 
+        @include underline; /* No position nudge any more (Tom 2026-10-14) */
       }
     }
     
@@ -290,11 +288,9 @@
       padding: 0;
       color: #fff;
       text-transform: lowercase;
-      transform-origin: bottom center; 
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      transition: transform var(--duration-fast) var(--ease-out);
 
       &::after {
         content: attr(data-text);
@@ -307,8 +303,7 @@
 
       &.active, &:hover {
         color: #fff;
-        @include underline;
-        transform: translateY(1.5px); 
+        @include underline; /* No position nudge any more (Tom 2026-10-14) */
       }
     }
     
