@@ -330,66 +330,64 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/present/_ABB/01.webp", "width": 2560, "height": 1440 }]
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/02.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAADQBQCdASogABYAPtFcpk2oJSOiKAqpABoJQBUil/wWpLf+F3gsunCk32keZeicwqoQNwZvGH8AAP7oRPnbToK4nU5xpbKZK7zhmzEuvknhlAdJ9E34iwH42+AUgxb0DMD4mRBDzqlqt4eg9uIgrUsN0zM2H76ofo5kKRZFpYacmMkrevnZY2YID9VvpY++6kkiCcdzSKqkL3KM5WPjggMiIxYoz4lSizqdvB7s/pb1LKtrvxJfAcD0Rn3Ku5rrYeyEpCCNKkmSMyn59WYEJA9iGigGz0w2BDM38Ou8gjKkL6GHF/+MwxutESe1PKa9ZE4nLJGL7cVSuV3taPoROc07b64Yjrpkv5HZOvFt3N2aQAAA", "color": "#9fa5a5", "alt": { "de": "Bild 2", "en": "Image 2" } }]
       },
       {
         "type": "media",
         "cols": [6, 6],
-        "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/present/_ABB/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/present/_ABB/03.webp", "width": 1440, "height": 1800 }
-        ]
-      },
-      {
-        "type": "text",
-        "text": {
-          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
-          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
-        }
-      },
-      {
-        "type": "accordions",
-        "items": [
-          {
-            "title": { "de": "Konzept", "en": "Concept" },
-            "media": [{ "type": "image", "src": "images/projects/present/_ABB/accordion-1.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
-          },
-          {
-            "title": { "de": "Umsetzung", "en": "Realisation" },
-            "media": [{ "type": "image", "src": "images/projects/present/_ABB/accordion-2.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
-          }
-        ]
-      },
-      {
-        "type": "media",
-        "cols": [4, 8],
-        "ratio": "16:9",
-        "items": [
-          { "type": "image", "src": "images/projects/present/_ABB/04.webp", "width": 1080, "height": 1242 },
           {
             "type": "video",
-            "src": "images/projects/present/_ABB/05.mp4",
-            "poster": "images/projects/present/_ABB/05.webp",
+            "src": "images/projects/present/_ABB/16.mp4",
+            "poster": "images/projects/present/_ABB/16.webp",
             "width": 1920,
-            "height": 1080
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAADQBQCdASogABIAPtFUo0uoJKMhsAgBABoJZQDI1y6eAFVPuRJ2QNzPn8bWwYtagz/qslSJKj1AAP6Rv7x9lJOFTDjX2WSZkFNgh8PTdO8tKhn3XNepBeyPqwMkxKMmLnqy1ult55rDzRPtdyQTfd2FdPZp0DmbYUdHoCc4iVbOY9Dvtiw3VMHxWbJlWiBxOAF1g9dvoM+TynKLeNP/mRI7xbdW9vT/Yrfq+p9Unp7ZgB8b/x65TWlWxUM0k/BcUmqnmgT2Z7QiTWdFR/8GqUwz/gNJHzz5DSR88+TVTlrUeDZSpYoOBuuRI5+rrV19oAA=",
+            "color": "#686e6d"
+          },
+          {
+            "type": "video",
+            "src": "images/projects/present/_ABB/19.mp4",
+            "poster": "images/projects/present/_ABB/19.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAAAQBQCdASogABIAPtFapEuoJSOhsAgBABoJaQAEQg8lZ0seCy13hQthNhc6nekqtaAAAP72E4JdTtxPY2L2cl21i+EJY5XFCbD4e/GR6d24T+W+aBwICRE8uWKTYdCHdKvASdPo8Qq6QmMjs79SgzzvwuCzUMKKo53wqxAbilwmfmOdOLVoF/ucyUVDmOB8yikG6Fb79K9ot08/E/I1SysrY24IfDFk0tVAPMuIpJoAAAAA",
+            "color": "#b3b1b1"
           }
         ]
       },
       {
-        "type": "media",
-        "cols": [6],
-        "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/present/_ABB/06.webp", "width": 1440, "height": 960 }]
-      },
-      {
         "type": "text",
         "text": {
-          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
-          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
+          "de": "Der App liegt die Idee zu Grunde, das Fotografieren wieder zu einer bewussten und bedachten Handlung zu machen. Jedes Foto soll mit Intention geschossen werden, und der Fotograf wird dazu gebracht, sich mittels der Einstellungsmöglichkeiten mit dem Motiv zu beschäftigen.\n\nDas geschossene Foto kann in der integrierten Galerie nach seiner Entwicklungszeit zusammen mit den anderen erstellten Fotos betrachtet werden. Diese sind pro Monat auf eine Anzahl von 8 beschränkt und können an andere Nutzer der App weitergeschickt werden, wobei sie aus der eigenen Galerie verschwinden, um den Charakter des Polaroid-Tauschens beizubehalten.",
+          "en": "The app is based on the idea of turning photography back into a conscious, considered act. Every photo is meant to be taken with intention, and the camera settings lead the photographer to engage with the subject.\n\nOnce it has developed, a photo can be viewed in the built-in gallery alongside the others. Photos are limited to eight per month and can be sent to other users of the app. A sent photo disappears from your own gallery, keeping the character of trading Polaroids."
         }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/04.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAADwBQCdASogABYAPtFapE0oJSMiMBgIAQAaCUAToj/8WxZRPxQG12u0I2670YMqc//kauYa67qt1AD+BeKIOTPGjKVE3va2Vc79/bisvlbWtvboBc4iaOiR2xNWvwzpcp5ttHXsK63B/FUbAOviu1ogWTcFRCkYPg68TWVT/E4TD38x6TOTEOWjRnouI01qb8WhCWCvyUpGQwcDv9V6GfjbrR1t/BOFW8HTw3f602VQtOEghHqT/f/FNL5D0jMoQrSI8e/2BnSM97/y8uSggRpQ5Gy2q460a0yVPyU3ujaOG/nYulklH4h/5GD4ZvxI5ZspncemajgIYMzt70YAAA==", "color": "#b6a399", "alt": { "de": "Bild 4", "en": "Image 4" } }]
+      },
+      {
+        "type": "media",
+        "cols": [8, 4],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/present/_ABB/17.mp4",
+            "poster": "images/projects/present/_ABB/17.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAwBACdASogABIAPtFWpEuoJKOhsAgBABoJaQDL4CHfZ4tQgpo0VlXf3IAA/vYC/0Pex3Z503eccsB7iC8P+xP4aSePe1x+QxrTperOF1uWKmtnlGi1akJocUjvmSvcH88ez+RQf2jfw02MGuNsQHL8KXF222hAqswQJVZ3sCZ33EQuHOAAAA==",
+            "color": "#cccece"
+          },
+          { "type": "image", "src": "images/projects/present/_ABB/13.webp", "width": 1080, "height": 1242, "placeholder": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAABQBQCdASogACQAPslUoUunpSMhtVgIAPAZCWQAytSbSACBUMU/hxfc/BwW7loErKZ47mAA/vlp1xTTSvPFv2xrO4b2/Qv4zrCBL7/Oh6T7QVzGFTho9We9+oqlEFglqzCDoqT8V8NqGGbEXGPlXAHZCQvrNjrVRKtXLTSMnDhOxb4kj68lbx/xFUeaYSFi3z0XHRsXO1oP+4RbiDp8kQxboP8QFFugeXvoyR4HjRc+RCnQmlXJkvo06wtMwCbeRatRpiU4EXLh9sTEZ1Yww89JQAA=", "color": "#dad1c7", "alt": { "de": "Bild 13", "en": "Image 13" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/03.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAADwBACdASogABYAPtFcpEyoJSOiMBgIAQAaCWcAw+mK5m+0aIK+pzIVZ+2KPX2C9gAA/upoX3FODYHtnxmWU/dngr2dDEyVYuNjVIb2dPX/4ke4HLZNuNGj2OhxDYZr62vGXtAdqazbFrwf+0QzkAnqS0WktPUSW3SSSuQBpXqCz0p9xKqnmDyvj62/3aJ0ScSZlG3urL1kJaRVXVcaV+yk2KI/6w+xwAA=", "color": "#c0bcb9", "alt": { "de": "Bild 3", "en": "Image 3" } }]
       }
     ],
     "personal": {
