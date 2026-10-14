@@ -1572,6 +1572,31 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<div class="pd-block pd-text pd-personal" data-personal>${title}<div class="pd-text-body">${localized(personal.text, lang)}</div></div>`;
     }
 
+    // Weitere Projekte (Tom 2026-10-14): zwei zufällige aus den übrigen, nie das aktuelle und nie das, von dem man kommt.
+    // Ohne Speicher im Browser: die Herkunft kommt aus document.referrer (eigene Seite, /work/<id>).
+    // Einmal pro Seitenaufruf gewählt, ein Sprachwechsel behält die Auswahl.
+    let morePicksFor = null;
+    let morePicksList = [];
+    function pickMoreProjects(pid) {
+        if (morePicksFor === pid) return morePicksList;
+        let cameFrom = null;
+        try {
+            const ref = new URL(document.referrer);
+            const match = ref.origin === location.origin && ref.pathname.match(/^\/work\/([^/]+)\/?$/);
+            if (match) cameFrom = decodeURIComponent(match[1]);
+        } catch (e) { /* kein oder fremder Referrer */ }
+        const others = projectsData.filter(p => p.id !== pid);
+        const fresh = others.filter(p => p.id !== cameFrom);
+        const pool = (fresh.length >= 2 ? fresh : others).slice(); // bei wenigen Projekten darf die Herkunft wieder dabei sein
+        for (let i = pool.length - 1; i > 0; i--) { // Fisher-Yates
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        morePicksFor = pid;
+        morePicksList = pool.slice(0, 2);
+        return morePicksList;
+    }
+
     // Karte "Weitere Projekte": Teaser als Loop, sonst das Hero-Bild (dekorativ, der Titel steht daneben)
     function projectCardHTML(p, lang) {
         const media = heroMedia(p.hero || {});
@@ -1618,9 +1643,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const content = project[lang];
         document.title = pageTitle(lang, stripTags(content.title));
 
-        // Weitere Projekte: vorheriges und nächstes (im Kreis)
-        const prevP = projectsData[(currentIndex - 1 + projectsData.length) % projectsData.length];
-        const nextP = projectsData[(currentIndex + 1) % projectsData.length];
+        // Weitere Projekte: zwei zufällige aus den übrigen (pickMoreProjects)
+        const morePicks = pickMoreProjects(pid);
         const moreTitle = moreTexts(lang).title || '';
 
         // --- UPDATE MODE: Sprachwechsel tauscht nur Texte, Medien bleiben stehen (kein neuer Request) ---
@@ -1637,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (personal) BLOCKS.text.update(personal, project.personal, lang);
             container.querySelector('.pd-footer-nav-title').innerHTML = moreTitle;
             container.querySelectorAll('.pd-footer-nav .nav-item').forEach((item, i) => {
-                const p = i === 0 ? prevP : nextP;
+                const p = morePicks[i];
                 item.querySelector('.nav-title').innerHTML = p[lang].title;
                 item.querySelector('.nav-desc').innerHTML = p[lang].category || '';
             });
@@ -1663,8 +1687,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${personalHTML(project, lang)}
             <h2 class="pd-footer-nav-title">${moreTitle}</h2>
             <div class="pd-footer-nav">
-                ${projectCardHTML(prevP, lang)}
-                ${projectCardHTML(nextP, lang)}
+                ${morePicks.map(p => projectCardHTML(p, lang)).join('')}
             </div>
         `;
         underlineAll(container);
