@@ -610,7 +610,7 @@ h1 {
   visibility: visible;
 }
 
-/* --- Dev: 12-column overlay (toggle with key G, see main.js) --- */
+/* --- Dev: 12-column overlay (key G, only on dev hosts: localhost, LAN; see main.js) --- */
 .grid-overlay {
   position: fixed;
   top: 0;

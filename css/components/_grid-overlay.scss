@@ -1,4 +1,4 @@
-/* --- Dev: 12-column overlay (toggle with key G, see main.js) --- */
+/* --- Dev: 12-column overlay (key G, only on dev hosts: localhost, LAN; see main.js) --- */
 .grid-overlay {
   @extend %grid-12;
   position: fixed;

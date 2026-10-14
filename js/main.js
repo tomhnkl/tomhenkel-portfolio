@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let labData = [];
     let legalData = null; // data/legal.json (nur Impressum und Datenschutz)
     let currentLang = null;
-    // Texte für Navigation, Footer und Tab-Titel ({ ui, email, languages, defaultLang }); pro Sitzung zwischengespeichert,
-    // damit Folgeseiten ohne Loader sofort in der richtigen Sprache erscheinen
+    // Texte für Navigation, Footer und Tab-Titel ({ ui, email, languages, defaultLang }) aus site-content.json.
+    // Nicht im Browser gespeichert: der Loader deckt jede Seite, bis sie in der richtigen Sprache steht
     let uiText = null;
     const LANG_CHOICE_KEY = 'languageChoice';
 
@@ -54,35 +54,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Statische Labels aus dem HTML (Navigation, Footer) sofort aufteilen
     document.querySelectorAll('.nav-right a, .footer-left a, .nav-burger').forEach(underlineWords);
 
-    // --- Dev: 12-Spalten-Overlay (Taste G) ---
-    const gridColumns = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-columns'), 10) || 12;
-    const gridOverlay = document.createElement('div');
-    gridOverlay.className = 'grid-overlay';
-    gridOverlay.innerHTML = '<span></span>'.repeat(gridColumns);
-    document.body.appendChild(gridOverlay);
-    document.body.classList.toggle('show-grid', localStorage.getItem('showGrid') === '1');
+    // --- Dev: 12-Spalten-Overlay (Taste G), nur auf Entwicklungs-Hosts ---
+    // localhost, Loopback und private LAN-Adressen (iPhone-Vorschau über npm run serve:lan). Auf jedem anderen Host
+    // gibt es weder das Element noch das Tastenkürzel. Ein- und Ausschalten gilt nur für die offene Seite, nichts wird gespeichert
+    function isDevHost(hostname) {
+        const host = String(hostname || '').toLowerCase().replace(/^\[(.*)\]$/, '$1'); // IPv6 steht in Klammern: [::1]
+        if (host === 'localhost' || host === '127.0.0.1' || host === '::1') return true;
+        const ip = host.match(/^(\d{1,3})\.(\d{1,3})\.\d{1,3}\.\d{1,3}$/);
+        if (!ip) return false;
+        const [a, b] = [Number(ip[1]), Number(ip[2])];
+        return a === 10 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31);
+    }
 
-    document.addEventListener('keydown', (e) => {
-        if (e.repeat || (e.key || '').toLowerCase() !== 'g' || e.metaKey || e.ctrlKey || e.altKey) return;
-        if (e.target.closest('input, textarea, [contenteditable]')) return;
-        const show = document.body.classList.toggle('show-grid');
-        localStorage.setItem('showGrid', show ? '1' : '0');
-    });
+    if (isDevHost(location.hostname)) {
+        const gridColumns = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-columns'), 10) || 12;
+        const gridOverlay = document.createElement('div');
+        gridOverlay.className = 'grid-overlay';
+        gridOverlay.innerHTML = '<span></span>'.repeat(gridColumns);
+        document.body.appendChild(gridOverlay);
 
-    // --- Loader: nur beim ersten Besuch der Sitzung, Folgeseiten zeigen ihre Medien über den Media-Reveal ---
+        document.addEventListener('keydown', (e) => {
+            if (e.repeat || (e.key || '').toLowerCase() !== 'g' || e.metaKey || e.ctrlKey || e.altKey) return;
+            if (e.target.closest('input, textarea, [contenteditable]')) return;
+            document.body.classList.toggle('show-grid');
+        });
+    }
+
+    // --- Loader: bei jedem Seitenaufruf; die Seite erscheint erst, wenn Sprache, Navigation und Inhalt stehen ---
     // Das schwarze Overlay steht, bis die Daten geladen sind und die Seite einmal gerendert ist; auf Bilder wartet es nicht
     // (die klärt der Media-Reveal). Das Wort erscheint erst, wenn das Laden länger dauert, und steht dann eine Mindestzeit.
+    // Schwarz auf der schwarzen Seite: bei schnellem Laden ist vom Overlay nichts zu sehen. Kein Sitzungsspeicher
     const LOADER_WORD_DELAY = 400; // ms ab Skriptstart (das Overlay steht dann schon), bis "tomh." erscheint; schnelles Laden zeigt nur Schwarz
     const LOADER_WORD_MIN = 800; // so lange steht das Wort mindestens, bevor das Overlay ausblendet (kein Aufblitzen)
 
     const loader = document.getElementById('loader');
-    const isSessionActive = sessionStorage.getItem('visited');
     let loaderWordTimer = null;
     let loaderWordSince = null; // Zeitpunkt (performance.now), seit dem das Wort steht
 
-    if (isSessionActive && loader) {
-        loader.style.display = 'none'; // sofort, ohne Ausblenden
-    } else if (loader) {
+    if (loader) {
         loaderWordTimer = setTimeout(() => {
             loader.classList.add('word-visible');
             loaderWordSince = performance.now();
@@ -127,25 +136,21 @@ document.addEventListener('DOMContentLoaded', () => {
         labData = Array.isArray(lab) ? rootPaths(lab) : [];
         legalData = legal && typeof legal === 'object' ? legal : null;
 
-        // Sprache und Navigation/Footer umstellen, solange der Loader noch deckt
+        // Sprache, Navigation/Footer und Inhalt umstellen, solange der Loader noch deckt (kein Aufblitzen der deutschen Texte)
         uiText = {
             ui: content.ui,
             email: content.settings.contact_email,
             languages: content.settings.available_languages,
             defaultLang: content.settings.default_language
         };
-        try { sessionStorage.setItem('uiText', JSON.stringify(uiText)); } catch (e) { /* ohne Speicher: nur kein Vorab-Umschalten */ }
         const langToUse = resolveLanguage();
         currentLang = langToUse;
         updateUI(langToUse);
 
         setLanguage(langToUse);
 
-        // Erster Besuch: Daten da, Seite gerendert -> Overlay weg
-        if (!isSessionActive) {
-            sessionStorage.setItem('visited', 'true');
-            if (loader) hideLoader();
-        }
+        // Daten da, Seite gerendert -> Overlay weg
+        if (loader) hideLoader();
 
         // Lab Initialisierung (nur einmalig)
         if (document.getElementById('lab-canvas')) {
@@ -279,20 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (available.includes(choice)) return choice;
         return browserLanguage(available) || uiText.defaultLang;
     }
-
-    // Folgeseiten (Loader schon aus): Navigation und Footer sofort aus dem Sitzungsspeicher umstellen, kein Aufblitzen der deutschen Texte
-    try { uiText = JSON.parse(sessionStorage.getItem('uiText')); } catch (e) { uiText = null; }
-    if (uiText && uiText.ui && Array.isArray(uiText.languages)) {
-        currentLang = resolveLanguage();
-        updateUI(currentLang);
-    } else {
-        uiText = null;
-    }
-
-    // Rechtsseiten: der Text im HTML ist deutsch (npm run pages). Startet die Seite in einer anderen Sprache, bleibt er
-    // bis renderLegal() unsichtbar (kein Aufblitzen); beim ersten Besuch deckt ihn der Loader, ohne JavaScript ist er immer zu sehen
-    const legalContainer = document.getElementById('legal-content');
-    if (legalContainer && currentLang && currentLang !== 'de') legalContainer.style.visibility = 'hidden';
 
 
 
@@ -1769,7 +1760,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (legalData) {
             console.warn(`[Rechtsseite ${container.dataset.legal}] fehlt in legal.json, der deutsche Text aus dem HTML bleibt stehen`);
         }
-        container.style.visibility = ''; // war verborgen, falls die Seite nicht auf Deutsch gestartet ist
     }
 
     // --- Lab: freie Leinwand. Bilder und Videos laufen über den Media-Reveal und laden erst,
