@@ -169,7 +169,8 @@ Eine Zeile pro Link, in Book und Fließtextgröße wie die Kontakt-Links auf Abo
 **Link-Standard für die ganze Seite** (`.text-link`, `css/components/_links.scss`):
 - **In Ruhe:** wie der umgebende Text, ohne Unterstreichung.
 - **Links, die die Seite verlassen:** andere Websites (öffnen in einem neuen Tab), Mail-Links (`mailto:`, z. B. „kontakt“ im Footer und die Adresse auf About) und Telefon-Links (`tel:`) tragen automatisch ↗, bei `.text-link` wie im Footer. Interne Links bekommen nie einen Pfeil. Der Pfeil wird nicht vorgelesen und ist nie unterstrichen, auch nicht bei Hover oder Fokus.
-- **Hover:** Unterstreichung, wie in Nav und Footer (Mixin `underline` in `css/base/_typography.scss`, Lage und Stärke aus den Tokens `--underline-offset` und `--underline-thickness`). Wie beim früheren Lining-Schnitt hat die Linie Lücken an Wortabständen. Die Schrift wechselt nicht, also springt nichts und keine Zeile bricht neu um.
+- **Hover bei internen Links:** Unterstreichung, wie in Nav und Footer (Mixin `underline` in `css/base/_typography.scss`, Lage und Stärke aus den Tokens `--underline-offset` und `--underline-thickness`). Wie beim früheren Lining-Schnitt hat die Linie Lücken an Wortabständen. Die Schrift wechselt nicht, also springt nichts und keine Zeile bricht neu um.
+- **Hover bei externen Links** (andere Websites, Mail, Telefon): keine Unterstreichung. Der Pfeil ↗ gleitet 3 px schräg nach oben rechts und beim Verlassen zurück (`--duration-fast`, `--ease-out`), auch beim Tastaturfokus.
 - **Tastaturfokus:** weiße 2px-Kontur mit 4px Abstand auf allem, was fokussierbar ist (`css/components/_focus.scss`). Sie erscheint nur bei Bedienung mit der Tastatur.
 
 ### Persönlicher Text am Ende

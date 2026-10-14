@@ -686,10 +686,12 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11) ---
+/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11;
+   internal vs. external hover, 2026-10-14) ---
    At rest like the surrounding text. Links that leave the site are marked with ↗: other websites (new tab),
    mail (mailto:) and phone (tel:); internal links never.
-   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss), never on the arrow.
+   Hover/focus: internal links get the underline (same as nav and footer, underline mixin in base/_typography.scss);
+   external links get no underline, instead the ↗ glides 3px up and to the right (after josefa-rackl.com).
    Same font, so the width never changes and nothing shifts. */
 .text-link {
   color: inherit;
@@ -719,10 +721,35 @@ html.lenis body {
   content: " ↗"; /* thin space + ↗ */
   content: " ↗"/""; /* decorative: not read out by screen readers */
   display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 /* Footer: the link's own ::after holds the label width (components/_nav.scss), so the arrow follows the words
    (main.js wraps every footer label in .ul-words) */
+/* External links: no underline on hover/focus (also not the footer's 1.5px nudge), the arrow moves instead */
+.text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible {
+  text-decoration-line: none;
+  transform: none;
+}
+.text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover .ul-w, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible .ul-w,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover .ul-w,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible .ul-w {
+  text-decoration-line: none;
+}
+
+@media (hover: hover) {
+  .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover::after,
+  .main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover .ul-words::after {
+    transform: translate(3px, -3px);
+  }
+}
+.text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible::after,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible .ul-words::after {
+  transform: translate(3px, -3px);
+}
+
 /* --- Keyboard focus (D10, option B 2026-10-10) ---
    Every focusable element: white 2px outline, 4px away from the element. Outline instead of border,
    so nothing shifts. Only for keyboard focus (:focus-visible), never after a mouse click or tap. */

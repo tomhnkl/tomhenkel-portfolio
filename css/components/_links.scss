@@ -1,8 +1,12 @@
-/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11) ---
+/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11;
+   internal vs. external hover, 2026-10-14) ---
    At rest like the surrounding text. Links that leave the site are marked with ↗: other websites (new tab),
    mail (mailto:) and phone (tel:); internal links never.
-   Hover/focus: underline (same as nav and footer, see the underline mixin in base/_typography.scss), never on the arrow.
+   Hover/focus: internal links get the underline (same as nav and footer, underline mixin in base/_typography.scss);
+   external links get no underline, instead the ↗ glides 3px up and to the right (after josefa-rackl.com).
    Same font, so the width never changes and nothing shifts. */
+$external-link: '[target="_blank"], [href^="mailto:"], [href^="tel:"]';
+
 .text-link {
   color: inherit;
   text-decoration: none;
@@ -19,6 +23,7 @@
   content: "\2009\2197"; /* thin space + ↗ */
   content: "\2009\2197" / ""; /* decorative: not read out by screen readers */
   display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 .text-link:is([target="_blank"], [href^="mailto:"], [href^="tel:"])::after {
@@ -29,4 +34,32 @@
    (main.js wraps every footer label in .ul-words) */
 .main-footer .footer-left a:is([target="_blank"], [href^="mailto:"], [href^="tel:"]) .ul-words::after {
   @extend %external-arrow;
+}
+
+/* External links: no underline on hover/focus (also not the footer's 1.5px nudge), the arrow moves instead */
+.text-link:is(#{$external-link}),
+.main-footer .footer-left a:is(#{$external-link}) {
+  &:hover,
+  &:focus-visible {
+    text-decoration-line: none;
+    transform: none;
+
+    .ul-w { text-decoration-line: none; }
+  }
+}
+
+@mixin external-arrow-moved {
+  transform: translate(3px, -3px);
+}
+
+@media (hover: hover) {
+  .text-link:is(#{$external-link}):hover::after,
+  .main-footer .footer-left a:is(#{$external-link}):hover .ul-words::after {
+    @include external-arrow-moved;
+  }
+}
+
+.text-link:is(#{$external-link}):focus-visible::after,
+.main-footer .footer-left a:is(#{$external-link}):focus-visible .ul-words::after {
+  @include external-arrow-moved;
 }
