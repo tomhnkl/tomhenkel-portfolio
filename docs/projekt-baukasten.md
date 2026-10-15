@@ -309,7 +309,7 @@ Alle festen Wörter außerhalb der Projekte stehen in `data/site-content.json`, 
 | `nav` | Navigation: projekte, das lab, über mich |
 | `footer` | Footer: kontakt, impressum, datenschutz |
 | `titles` | Seitentitel: Über mich, Das Lab, Projekt nicht gefunden |
-| `page_title` | Name hinter jedem Tab-Titel („Impressum — Tom Henkel“) |
+| `page_title` | Name hinter jedem Tab-Titel („Impressum – Tom Henkel“) |
 | `player` | Film-Knöpfe: abspielen, pause, ton an, ton aus |
 | `menu` | Handy-Menü: menü, schließen |
 | `states` | Poster für Ladefehler, „Projekt nicht gefunden“ und die 404-Seite |

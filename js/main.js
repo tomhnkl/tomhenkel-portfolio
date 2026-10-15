@@ -709,11 +709,11 @@ document.addEventListener('DOMContentLoaded', () => {
         renderLab(lang);
     }
 
-    // Tab-Titel: "<Seite> — Tom Henkel", ohne Seite nur "Tom Henkel"
+    // Tab-Titel: "<Seite> – Tom Henkel", ohne Seite nur "Tom Henkel"
     function pageTitle(lang, name) {
         const ui = uiText && uiText.ui[lang];
         const site = (ui && ui.page_title) || 'Tom Henkel';
-        return name ? `${name} — ${site}` : site;
+        return name ? `${name} – ${site}` : site;
     }
 
     // Navigation, Footer, Sprachknöpfe, <html lang> und Tab-Titel (ohne Seiteninhalt); läuft auch vor dem Laden der Daten

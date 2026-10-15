@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>404 — Tom Henkel</title>
+  <title>404 – Tom Henkel</title>
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Wird unter jeder unbekannten Adresse ausgeliefert (Vercel): darum nur absolute Pfade -->
@@ -37,7 +37,7 @@
         const texts = ui.states && ui.states.page_404;
         if (!texts) return;
         document.documentElement.lang = lang;
-        document.title = `404 — ${ui.page_title}`;
+        document.title = `404 – ${ui.page_title}`;
         document.querySelector('[data-state="text"]').textContent = texts.text;
         const link = document.querySelector('[data-state="link"]');
         link.textContent = '';
