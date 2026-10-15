@@ -416,7 +416,7 @@
   {
     "id": "boomtschakkaboom",
     "featured": true,
-    "year": "2022",
+    "year": "2025",
     "hero": {
       "image": { "src": "images/projects/boomtschakkaboom/_ABB/hero.webp", "width": 2560, "height": 1440 },
       "teaser": "images/projects/boomtschakkaboom/_ABB/teaser.mp4"
@@ -426,66 +426,142 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/01.webp", "width": 2560, "height": 1440 }]
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/17.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/17.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAACwBACdASogABIAPtFWpk0oJCOiMBgIAQAaCWMAA+NJBv5EjervMfGrpVQtwuaAAP73eW2sw56aQ5SzPBpYCgTIlvG9kKLXkYFMcBKQJVZmEscWgF2SYwxxiOx326iQ1Hih13Zo/SJ4bvkMN7xoudK/7rcpUWZ4T45dY28/jMQYQXLCwSDpcUMNl3t8jgAA",
+            "color": "#0c0b07"
+          }
+        ]
       },
       {
         "type": "media",
-        "cols": [6, 6],
-        "ratio": "4:5",
+        "cols": [12],
         "items": [
-          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/03.webp", "width": 1440, "height": 1800 }
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/06.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/06.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAACwBACdASogABIAPtFYpEuoJSOhsAgBABoJYgCdMt8CKzHOnX3SVnPE1JuodKAgAP7L+wdO5WjEj5nrejGj50jKOdnRxxoON916Q0JcIT6vfRgV8WS78uv1rK2tvtGwwfagz2ii8HJ0lKyFIEQLrzzKCG39qCYSUOR+/NE6CuXFcTWuLuJK1hgMvnNozGB3tZ3hZFKAAAA=",
+            "color": "#474129"
+          }
         ]
       },
       {
         "type": "text",
         "text": {
-          "de": "[Platzhalter] Kontext: Worum geht es in diesem Projekt? Hier steht, welches Thema, welche Frage oder welches Problem am Anfang stand und warum es relevant ist. Zwei bis drei Sätze reichen, damit Besucher:innen sofort verstehen, in welchem Feld sich die Arbeit bewegt.\n\n[Platzhalter] Ansatz: Wie wurde das Thema übersetzt? Dieser Absatz beschreibt die Idee hinter der Arbeit und die Haltung, mit der sie gestaltet wurde, zum Beispiel, was bewusst weggelassen wurde und was im Mittelpunkt steht.\n\n[Platzhalter] Aufbau: Wie ist die Arbeit gegliedert? Hier kann der Ablauf, die Dramaturgie oder die Struktur beschrieben werden, etwa in Kapiteln, Akten, Ebenen oder Interaktionsschritten.\n\n[Platzhalter] Gestaltung: Welche Mittel tragen die Arbeit? Typografie, Bild, Bewegung, Klang oder Code: Dieser Absatz erklärt das zentrale Gestaltungsmaterial und warum es gewählt wurde.",
-          "en": "[Placeholder] Context: What is this project about? This paragraph names the topic, question or problem it started from and why it matters. Two or three sentences are enough for visitors to understand right away which field the work moves in.\n\n[Placeholder] Approach: How was the topic translated? This paragraph describes the idea behind the work and the attitude it was designed with, for example what was deliberately left out and what is at its centre.\n\n[Placeholder] Structure: How is the work organised? Describe its sequence, dramaturgy or structure here, for instance in chapters, acts, layers or steps of interaction.\n\n[Placeholder] Design: Which means carry the work? Typography, image, motion, sound or code: this paragraph explains the central design material and why it was chosen."
+          "de": "Rhythmus in der Zeit macht Musik. Was macht Rhythmus in der Fläche, im Format? Dieser Frage sind wir in einem Kurs nachgegangen und haben Rhythmik als Gestaltungskonzept für Audio und Video untersucht.\n\nIn After Effects entstanden über das Semester viele Experimente. Einfache Muster und Animationen bauten aufeinander auf und wuchsen zu komplexen Strukturen.\n\nZum Abschluss haben wir eine Wand aus Röhrenfernsehern gebaut, die als ein großes Bild und als viele einzelne Bildschirme spielt. Die Animationen loten die Grenzen dieser alten Ausgabetechnik aus und folgen einer eigens komponierten Musik.",
+          "en": "Rhythm in time makes music. What does rhythm do on a surface, within a format? We explored this question in a course and studied rhythm as a design concept for audio and video.\n\nOver the semester, many experiments took shape in After Effects. Simple patterns and animations built on one another and grew into complex structures.\n\nTo conclude, we built a wall of CRT televisions that plays as one large image and as many individual screens. The animations push this old output technology to its limits and follow music composed especially for the project."
         }
       },
       {
         "type": "accordions",
         "items": [
           {
-            "title": { "de": "Konzept", "en": "Concept" },
-            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/accordion-1.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
+            "title": { "de": "Aufbau", "en": "Setup" },
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/20.webp", "width": 1440, "height": 1078, "placeholder": "data:image/webp;base64,UklGRggBAABXRUJQVlA4IPwAAAAwBgCdASogABgAPtFcpU0oJSOiMBgIAQAaCWcAE835GJpAK4YqjgXZJ5W3Cqft68PICI1etylTjx5AAP7qkDoro2tH0XWNmVXFugI0PrtFalYFavUnr7Jy2snGLtnfm4PdKUbYN0DShfAOfFMLsjMlulSozp6H4D4EpdSJ6aD7ckCzCuSyhHq15sYAeRyw5SL/TBkkHQ1CZUX2jWCE5PWWz8v2VdYem/RU6so/mvpVznOPY6qvWrgBzCbyJqW6364WkXm6Jm4gtqfYaFkOdLPNZ1T11UXL7Hcr8fIXH/YdCa6JMvnUkiguletY5rvKuaaYECBJTV5aCxEEAAA=", "color": "#676764", "alt": { "de": "Bild 20", "en": "Image 20" } }],
+            "content": { "de": "MacBook\n&nbsp;&nbsp;|\n&nbsp;&nbsp;HDMI\n&nbsp;&nbsp;|\n3x3 TV-Wall-Controller\n&nbsp;&nbsp;|\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 1\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 2\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 3\n&nbsp;&nbsp;:\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 9", "en": "MacBook\n&nbsp;&nbsp;|\n&nbsp;&nbsp;HDMI\n&nbsp;&nbsp;|\n3x3 TV wall controller\n&nbsp;&nbsp;|\n&nbsp;&nbsp;+-- HDMI > AV > TV 1\n&nbsp;&nbsp;+-- HDMI > AV > TV 2\n&nbsp;&nbsp;+-- HDMI > AV > TV 3\n&nbsp;&nbsp;:\n&nbsp;&nbsp;+-- HDMI > AV > TV 9" }
           },
           {
-            "title": { "de": "Umsetzung", "en": "Realisation" },
-            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/accordion-2.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "[Platzhalter] Text folgt.", "en": "[Placeholder] Text to follow." }
+            "title": { "de": "Team", "en": "Team" },
+            "content": { "de": "Anastasia Kitaev, Felix Ranftl, Noel Högerle, Tom Henkel", "en": "Anastasia Kitaev, Felix Ranftl, Noel Högerle, Tom Henkel" }
           }
         ]
       },
       {
         "type": "media",
-        "cols": [4, 8],
-        "ratio": "16:9",
+        "cols": [12],
         "items": [
-          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/04.webp", "width": 1080, "height": 1242 },
           {
             "type": "video",
-            "src": "images/projects/boomtschakkaboom/_ABB/05.mp4",
-            "poster": "images/projects/boomtschakkaboom/_ABB/05.webp",
+            "src": "images/projects/boomtschakkaboom/_ABB/04.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/04.webp",
             "width": 1920,
-            "height": 1080
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAwBACdASogABIAPsVOokunpCMhsAwA8BiJaQAAXK+QdU0i9bWOh6ELLQAA/vhVFOao/kxqtS2iMHlws1gEEBWKkCe9G/nHVTW796PbqH7d31k+WjQAAA==",
+            "color": "#050303"
           }
         ]
       },
       {
         "type": "media",
-        "cols": [6],
-        "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/06.webp", "width": 1440, "height": 960 }]
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/08.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/08.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAABQBACdASogABIAPtFao00oJSMiMBgIAQAaCWcAA+MBBv5EhMCvUwDWGsEAAP73eKQEuybLztYXsvCRjjt9m6Hr8te9G/YO1CRzMDVZIcufDymEDX3HCKwrf9iEPfptFCLioJaRfQr6bT9zpfcm1t1j6JYqD52rvcAAAA==",
+            "color": "#080a0a"
+          }
+        ]
       },
       {
-        "type": "text",
-        "text": {
-          "de": "[Platzhalter] Umsetzung: Wie wurde die Arbeit technisch oder räumlich realisiert? Hier stehen Aufbau, Werkzeuge und Formate, so konkret wie nötig und so knapp wie möglich.\n\n[Platzhalter] Zusammenspiel: Wie wirken die einzelnen Elemente zusammen? Zum Beispiel Bild und Ton, Raum und Bewegung oder Inhalt und Interaktion, und wer daran mitgewirkt hat.\n\n[Platzhalter] Wirkung: Was soll die Arbeit bei Betrachter:innen auslösen? Ein kurzer Absatz, der die Erfahrung zusammenfasst und den Bogen zum Anfang schlägt.\n\n[Platzhalter] Rahmen: In welchem Kontext ist das Projekt entstanden, im Studium, als Auftrag oder als freie Arbeit, und wann wurde es abgeschlossen?",
-          "en": "[Placeholder] Realisation: How was the work built, technically or spatially? Setup, tools and formats go here, as concrete as necessary and as brief as possible.\n\n[Placeholder] Interplay: How do the individual elements work together? For example image and sound, space and motion or content and interaction, and who contributed.\n\n[Placeholder] Effect: What should the work evoke in its audience? A short paragraph that sums up the experience and links back to the beginning.\n\n[Placeholder] Frame: In which context was the project created, as part of studies, as a commission or as self-initiated work, and when was it completed?"
-        }
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/14.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/14.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAQBQCdASogABIAPtFcpk6oJKMiKAqpABoJQBOmaFilV9m5nX/xFuRQBhb7PWwSmIpAAP73wqekP46P6lPRwlYzGAEO6oVmofjUwFuvEcOk7peUUjJwDks6ytZ+1ocG4a7/AyCl2ztk7zBbr4JKB5oFpBhWnN48nHiJvxABHj4gYAAA",
+            "color": "#1c252a"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/15.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/15.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAAAwBACdASogABIAPslQn0unpKKhsAwA8BkJZQDBkCPltjtI3ZGBcdQjcIAA/t3hMR0/Qu8toGd10uGX58zGHAaEDnUfjgK5quL1+dFSiY4Aknn/ML4ZR13nkg6N4rgrY0E5UAKh/NxyB2yOQIPo/eVjXaTZRg/G8AA=",
+            "color": "#393837"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/12.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/12.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAwCdASogABIAPtFYpU0oJSOiMBgIAQAaCUAZVoaN/ASsFyPhRCoAAP75vHaJmQhAfdWGB+jYK1nNjRcYq1ih3zu8yRsrz5iL9KyX5gG+CzEnSxqZL4Er8kZ7QmYKEAAAAA==",
+            "color": "#110404"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/19.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAABwBQCdASogABYAPslQoUunpKMht/VYAPAZCWUAxNmMHcX+dJRAkLS8WHY4U22ZHsqWtmSAAP74U1tnEHSJO55yt5O00nj3v4JNENT+jmcdL/D0sJCmv8CBk2PcALpJZGWzAGMqRmXEPf8I9lcSZVMv3cV4E8pwrVumxejy5tupxqC8zUqDIVjsIqnnGlsGISeRpDmpDarLdnzVsyVOXt6+Gr0cBRAAAAA=", "color": "#0d180f", "alt": { "de": "Bild 19", "en": "Image 19" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBACdASogABYAPtFYpUwoJSOiMAgBABoJYwAD5LIN/jx0beJfk+nbi+v78dIKAAD+9oJOaEJOUH72oJTEa9Xhe0Ipm8cLvnyPtD00UqMv4ttEZPgA0DDWDpQV2NgYfJJd2AWVD51bgSSPuVr/OdKVYEDN0HMjq97lV7Xxka4kgp+0JOVHY4eO0W2rFGzeQd00nBcyWWrB4kAA", "color": "#0e1314", "alt": { "de": "Bild 1", "en": "Image 1" } }
+        ]
       }
     ],
     "personal": {
@@ -495,7 +571,7 @@
         "en": "Placeholder: a personal note on the project will go here."
       }
     },
-    "de": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmische Lichtinstallation." },
-    "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmic light installation." }
+    "de": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmus in der Fläche durch eine Wand aus Röhrenfernsehern." },
+    "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythm across the surface through a wall of CRT televisions." }
   }
 ]
