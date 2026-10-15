@@ -213,16 +213,10 @@
     "blocks": [
       {
         "type": "media",
-        "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/01.webp", "width": 2560, "height": 1440 }]
-      },
-      {
-        "type": "media",
         "cols": [6, 6],
-        "ratio": "4:5",
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/02.webp", "width": 1440, "height": 1800 },
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/03.webp", "width": 1440, "height": 1800 }
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/10.webp", "width": 1299, "height": 945, "placeholder": "data:image/webp;base64,UklGRkQBAABXRUJQVlA4IDgBAADwBgCdASogABgAPtFUo0uoJKMhsAgBABoJQBbfXqd8mx9lEYDrLGV44QDQJ7i7Xue0Yo/Uotguzh3qnjWaXt8AAPude9b6oRXluJ/UXFu1WdHeQE/jkwNzw48MN31f0FEcsP1KDUX6p24Rqunwh1rhcNcVA55yA9UPu9Jocc9TIDNrRS/W3krq/sanh/qbxoaUTciTDs2G5urdITUxtKI9lc4lJaSdmf/VGw5QVocenpunOE3dYdpZHRIm77rYF8iH9Igjh1/cqaMqWPtQe87EhZnICc2NBU9weSRgtWjbyAdbupUSlQwjMSBA2h/mdWHuW4S19wJ9a6P0tIKaL2x8Hf48d5lJQmBV4QutVImox7JjMWTj4Z8ruxmW3y1IeeOi2ZwzMOjIB3abWSDA2rOMMDTLT6GGAAA=", "color": "#88817a", "alt": { "de": "Bild 10", "en": "Image 10" } },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/02.webp", "width": 1440, "height": 1048, "placeholder": "data:image/webp;base64,UklGRjoBAABXRUJQVlA4IC4BAAAQBwCdASogABgAPtFUo0uoJKMhsAgBABoJZACdMuN/WEA/KjESyiMCVP9yCBFpiZpBvf1UtHt/n9U2UF1YIEeUgAD4YQrQ/6lAcmeUOoq7zcjeQ91OsDwVazAVWU7dWVvc5Y4KCGkTID7GZVAFQPTma54i9T78eWor3WQtYqUFcd5kC0pQDZr77l9Jy3toeE7PmPAVRTQ+lHhIwwQFWlFeSBfF/2BU2UQqf2XbPN88IiC9DufHQ8RrzBPpafa91hgADj6r/2kKkgyGEW4G90+5uHWLUfS/L2sZ9ie/wM0ixd4YHswSSAGEDpJJubTS1jXnpgiVMHHq3YHhB8aNFywayY2vYw2QThgQX8nCxL4DYez35KkcmuUAhhZkKhpN/HMCSXRPMPRLSbNtAAAAAA==", "color": "#826949", "alt": { "de": "Bild 2", "en": "Image 2" } }
         ]
       },
       {
@@ -234,24 +228,19 @@
       },
       {
         "type": "media",
-        "cols": [4, 8],
-        "ratio": "16:9",
+        "cols": [6, 6],
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/04.webp", "width": 1080, "height": 1242 },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/11.webp", "width": 1440, "height": 1080, "placeholder": "data:image/webp;base64,UklGRjABAABXRUJQVlA4ICQBAAAQBgCdASogABgAPtFcp04oJSOiKAqpABoJQAXf+3ZTZyM+YEOpXcPMBjCb/zG5HQubZW9CYJ79NvAA/tqy4gkKMfayAPOksoFBvHXyqVXY6Hw6VczD9GyDOC+/13Oj9KQxr5drJynhwJFKZ9k7Tnqv/X3ak+syjSkAfxTOXXr1nc89NdtMgqgjyIPyDhsywF+qqcNMzkaxkCjyAprsqhVwi1dQMWElET2MJQOGgMRAcz2+ns2AFryH30ef5MHcmVqHxkmKmLq0Gm95plA4lEoifUoWBU0xe3cSrMEQZm3Zi46epItTNVVinRaR8mbKRPd207iU5ef39d+6xqi6+zUJJj6pJHangXuy4d0mpGO2OrH3n4tvCQuVY1f7FMnOM5vcD5AA", "color": "#666b71", "alt": { "de": "Bild 11", "en": "Image 11" } },
           {
             "type": "video",
-            "src": "images/projects/lonis-weltraumreise/_ABB/05.mp4",
-            "poster": "images/projects/lonis-weltraumreise/_ABB/05.webp",
-            "width": 1920,
-            "height": 1080
+            "src": "images/projects/lonis-weltraumreise/_ABB/12.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/12.webp",
+            "width": 1440,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAABQBQCdASogABgAPtFYpUyoJSOiKA1RABoJQBmLZdAbIPhsL8L03FetuB20vjdHEkv58gAA/vatEMIOq/MUQD1RDDhkLQddydk0v339qdQNzH9NwUd+lrlODIala4vwS7hzG5owTAd3SQjRylV8grNlUVMwKDfGR3xpIve6skUVpyYJ4OOkvP6sNXyEvbW+BDb/O9cGsraZB8qWKNZ3NQbfIetZ3oaGLAAAAA==",
+            "color": "#1c2522"
           }
         ]
-      },
-      {
-        "type": "media",
-        "cols": [6],
-        "start": 7,
-        "items": [{ "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/06.webp", "width": 1440, "height": 960 }]
       },
       {
         "type": "text",
@@ -259,6 +248,30 @@
           "de": "Das transdisziplinäre Projekt entstand im Innovationslabor der Technischen Hochschule Augsburg gemeinsam mit dem Tumorzentrum Freiburg – CCCF und „Tigerherz … wenn Eltern Krebs haben“. Zehn Studierende der Interaktiven Medien entwickelten ab Oktober 2023 die Idee, die Geschichte, einen eigenen Grafikstil und einen ersten Prototyp als React-Web-App.\n\nVon März 2024 bis März 2025 wurde die Web-App von Philipp Hettenkofer, Elias Ginter und Tom Henkel im Innolab weiterentwickelt, optimiert und um ein Glossar sowie weitere interaktive Elemente ergänzt. Die Geschichte wurde mit medizinischem Fachpersonal geprüft und mit einer Drehbuchautorin sprachlich an die Zielgruppe angepasst.\n\nNach Usability-Tests wurde die Web-App 2025 in einer Pilotstudie wissenschaftlich überprüft und auf der Jahrestagung der Arbeitsgemeinschaft Psychoonkologie in Würzburg vorgestellt. Seit Januar 2026 steht sie Familien und Fachpersonal als digitales Unterstützungsangebot zur Verfügung; 2026 wurde das Projekt mit dem ADC Talent Award ausgezeichnet.",
           "en": "The transdisciplinary project was created at the innovation lab of the Technical University of Applied Sciences Augsburg together with the Freiburg Comprehensive Cancer Center (CCCF) and „Tigerherz … wenn Eltern Krebs haben“, a counselling service for families in which a parent has cancer. From October 2023, ten Interactive Media students developed the idea, the story, a distinct illustration style and a first prototype as a React web app.\n\nFrom March 2024 to March 2025, Philipp Hettenkofer, Elias Ginter and Tom Henkel developed the web app further at the Innolab, optimized it and added a glossary and further interactive elements. The story was fact-checked with medical professionals and adapted linguistically to the target group together with a screenwriter.\n\nAfter usability tests, the web app was scientifically evaluated in a pilot study in 2025 and presented at the annual conference of the Psycho-Oncology Working Group in Würzburg. Since January 2026 it has been available to families and professionals as a digital support service; in 2026 the project received an ADC Talent Award."
         }
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/lonis-weltraumreise/_ABB/08.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/08.webp",
+            "width": 920,
+            "height": 1058,
+            "placeholder": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAAAQAwCdASogACQAPtFkq1CoJaOipWgBABoJaQAAKT7vwAAA/vDWa1gKZdrQgAAA",
+            "color": "#191719"
+          },
+          {
+            "type": "video",
+            "src": "images/projects/lonis-weltraumreise/_ABB/06.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/06.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASogABIAPs1YokunpaMhsBgMAPAZiWkAADywn7n9BXmRE6YgAP7wJk7ghMquciswWbg0I1Yd80IkGyLBMyN3pgjZTJgAAAAA",
+            "color": "#2b2e2e"
+          }
+        ]
       },
       {
         "type": "links",

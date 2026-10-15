@@ -5,8 +5,8 @@ images/projects/*/_ROH/
 # Quellen und Build-Reste (live wird nur css/style.css gebraucht)
 css/**/*.scss
 css/style.css.map
-# Schriften: seit der Umstellung auf Helvetica (D5) nicht mehr eingebunden
-fonts/
+# Schriften: Funnel Sans (SIL OFL) geht online; die Favorit-Trial-OTFs nie (Lizenz, zusätzlich in .gitignore)
+fonts/*-Trial.otf
 # Lab bleibt bis zur Fertigstellung offline (D1, T19)
 lab.html
 data/lab.json
