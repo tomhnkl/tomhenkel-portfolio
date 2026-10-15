@@ -17,9 +17,10 @@ $scale-g-large: 29px;      // Base g (= h3) at $scale-w-large, linear in between
 $scale-r-phone: 1.2;       // Ratio r at $scale-w-phone
 $scale-r-desktop: 1.333;   // Ratio r from $scale-w-desktop up, linear below
 $scale-n: 3;               // h1 = g · r^n
+$scale-h2-k-phone: 0;      // h2 = g · r^k: k = this at $scale-w-phone (0 = h3 size), linear to 1 at $scale-w-desktop (Tom 2026-10-15)
 // g · r^k is not linear in the viewport width, so each token is a polyline through these widths
-// (max. 0.17px off the exact formula between them; add a width here for more accuracy)
-$scale-anchors: ($scale-w-phone, 768px, 1024px, $scale-w-desktop, $scale-w-large);
+// (max. 0.13px off the exact formula between them; add a width here for more accuracy)
+$scale-anchors: ($scale-w-phone, 768px, 1024px, 1280px, $scale-w-desktop, $scale-w-large);
 // Below $scale-w-phone the h1 still shrinks like the former title size, so the longest title word fits the phone column
 // (100vw - 2 page margins): 'boomtschakkaboom' is 8.82em in Funnel Sans; 9.26 = 9.03em (measured in Helvetica) + 2.5%.
 // From $scale-w-phone up the scale is the smaller value, so this cap never acts there.
@@ -29,10 +30,14 @@ $scale-h1-fit-em: 9.26;
   @return $from + ($to - $from) * math.clamp(0, math.div($w - $w-from, $w-to - $w-from), 1);
 }
 
-// Exact size of step $k (0 = h3, 1 = h2, $scale-n = h1) at viewport width $w
+// Exact size of step $k (0 = h3, 1 = h2, $scale-n = h1) at viewport width $w.
+// $k can also be a pair (phone, desktop): the step then runs linearly from $scale-w-phone to $scale-w-desktop.
 @function scale-size($k, $w) {
   $g: scale-lerp($scale-g-phone, $scale-g-large, $w, $scale-w-phone, $scale-w-large);
   $r: scale-lerp($scale-r-phone, $scale-r-desktop, $w, $scale-w-phone, $scale-w-desktop);
+  @if list.length($k) == 2 {
+    $k: scale-lerp(list.nth($k, 1), list.nth($k, 2), $w, $scale-w-phone, $scale-w-desktop);
+  }
   @return $g * math.pow($r, $k);
 }
 
@@ -87,16 +92,16 @@ $scale-h1-fit-em: 9.26;
 
   /* Headings on project and legal pages (Tom 2026-10-15): fluid modular scale, computed from the $scale-* values above.
        h3 = g        (category/year, text, accordion and legal section titles)
-       h2 = g · r    (subtitle, "Weitere Projekte")
+       h2 = g · r^k  (subtitle, "Weitere Projekte"; k 0 @390 → 1 @1440, so on the phone h2 = h3 size)
        h1 = g · r^3  (project and legal titles)
      g grows linearly 21.24px @390 → 29px @2560, r 1.2 @390 → 1.333 @1440, then constant; both hold outside.
-     As polylines through 390, 768, 1024, 1440, 2560 (max. 0.17px off the formula):
-       390px:  h1 36.7  / h2 25.49 / h3 21.24
+     As polylines through 390, 768, 1024, 1280, 1440, 2560 (max. 0.13px off the formula):
+       390px:  h1 36.7  / h2 21.24 / h3 21.24
        1440px: h1 59.2  / h2 33.32 / h3 24.99
        2560px: h1 68.69 / h2 38.66 / h3 29
      h1 below 390px: also capped so 'boomtschakkaboom' fits the width ($scale-h1-fit-em). */
   --fs-h1: min(#{scale-round(math.div(100vw, $scale-h1-fit-em), 4)} - #{scale-round(math.div(50px, $scale-h1-fit-em), 2)}, #{scale-fluid($scale-n)});
-  --fs-h2: calc(#{scale-fluid(1)});
+  --fs-h2: calc(#{scale-fluid(($scale-h2-k-phone, 1))});
   --fs-h3: calc(#{scale-fluid(0)});
 
   /* Other font sizes: fluid, derived from the grid columns (px + vw)

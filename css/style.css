@@ -19,16 +19,16 @@
   --underline-thickness: 0.08em;
   /* Headings on project and legal pages (Tom 2026-10-15): fluid modular scale, computed from the $scale-* values above.
        h3 = g        (category/year, text, accordion and legal section titles)
-       h2 = g · r    (subtitle, "Weitere Projekte")
+       h2 = g · r^k  (subtitle, "Weitere Projekte"; k 0 @390 → 1 @1440, so on the phone h2 = h3 size)
        h1 = g · r^3  (project and legal titles)
      g grows linearly 21.24px @390 → 29px @2560, r 1.2 @390 → 1.333 @1440, then constant; both hold outside.
-     As polylines through 390, 768, 1024, 1440, 2560 (max. 0.17px off the formula):
-       390px:  h1 36.7  / h2 25.49 / h3 21.24
+     As polylines through 390, 768, 1024, 1280, 1440, 2560 (max. 0.13px off the formula):
+       390px:  h1 36.7  / h2 21.24 / h3 21.24
        1440px: h1 59.2  / h2 33.32 / h3 24.99
        2560px: h1 68.69 / h2 38.66 / h3 29
      h1 below 390px: also capped so 'boomtschakkaboom' fits the width ($scale-h1-fit-em). */
-  --fs-h1: min(10.7991vw - 5.4px, 36.703px + 0.019041 * clamp(0px, 100vw - 390px, 378px) + 0.021224 * clamp(0px, 100vw - 768px, 256px) + 0.023723 * clamp(0px, 100vw - 1024px, 416px) + 0.00847 * clamp(0px, 100vw - 1440px, 1120px));
-  --fs-h2: calc(25.488px + 0.007153 * clamp(0px, 100vw - 390px, 378px) + 0.00744 * clamp(0px, 100vw - 768px, 256px) + 0.007744 * clamp(0px, 100vw - 1024px, 416px) + 0.004767 * clamp(0px, 100vw - 1440px, 1120px));
+  --fs-h1: min(10.7991vw - 5.4px, 36.703px + 0.019041 * clamp(0px, 100vw - 390px, 378px) + 0.021224 * clamp(0px, 100vw - 768px, 256px) + 0.023106 * clamp(0px, 100vw - 1024px, 256px) + 0.024711 * clamp(0px, 100vw - 1280px, 160px) + 0.00847 * clamp(0px, 100vw - 1440px, 1120px));
+  --fs-h2: calc(21.24px + 0.008536 * clamp(0px, 100vw - 390px, 378px) + 0.011028 * clamp(0px, 100vw - 768px, 256px) + 0.013549 * clamp(0px, 100vw - 1024px, 256px) + 0.015999 * clamp(0px, 100vw - 1280px, 160px) + 0.004767 * clamp(0px, 100vw - 1440px, 1120px));
   --fs-h3: calc(21.24px + 0.003576 * clamp(0px, 100vw - 390px, 2170px));
   /* Other font sizes: fluid, derived from the grid columns (px + vw)
      Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):
@@ -1428,7 +1428,7 @@ html.lenis body {
 /* 2.–4. Title block (full-width block, so the modules always start below it).
    Markup order title (h1), subtitle (h2), meta (h3) = mobile order and heading order.
    Desktop: title + meta in the first row, subtitle as second row (the meta is pinned to row 1).
-   Up to $bp-title-stack (Tom 2026-10-15): title → subtitle → meta at full width, --space-s apart;
+   Up to $bp-title-stack (Tom 2026-10-15): title → subtitle (--space-s) → meta (--space-m) at full width;
    category and year in one line, spread to both edges (space-between). */
 .pd-title-row {
   align-items: start;
@@ -1482,7 +1482,7 @@ html.lenis body {
     -moz-column-gap: var(--space-s);
          column-gap: var(--space-s); /* Minimum gap before wrapping */
     text-align: left;
-    margin-top: var(--space-s);
+    margin-top: var(--space-m); /* Subtitle → meta */
   }
 }
 
