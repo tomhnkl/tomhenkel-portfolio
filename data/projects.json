@@ -381,7 +381,7 @@
     "featured": true,
     "year": { "de": "seit 2023", "en": "since 2023" },
     "hero": {
-      "image": { "src": "images/projects/lonis-weltraumreise/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "image": { "src": "images/projects/lonis-weltraumreise/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRgABAABXRUJQVlA4IPQAAAAQBgCdASogABIAPtFYpU0oJKOiMBgIAQAaCWwAnRHM2oZjk6svSpmCIrTmSUqxd2DapCkHXGIOowAA/urSvcc3eLdcvt0ZgNi7fEaDKwZp3NL7KrTI5hmLwxJ5yVN2LLPDdAYe0oI2TiGvUOfI1V1/YtuZmokSlGUAD337QQlvIdrml8McDPJg3Ot60GKgehG4g52PAMxUxdU+U2eHzk4pFvxIKVlLehlMZIL8gxw6YohXkKdbMlboxBi/OwQhmHDpskA3lJjeDT8GZEN/fQQ3jbP8PoxcplYDqyMJt4zscFTCUWujJ98f4e7fH8uPoO5BAwAA", "color": "#a4c4cb" },
       "teaser": "images/projects/lonis-weltraumreise/_ABB/teaser.mp4",
       "film": { "vimeo": "1092231191" }
     },
