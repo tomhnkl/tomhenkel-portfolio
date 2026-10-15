@@ -367,7 +367,7 @@ Impressum (`/impressum`) und Datenschutz (`/datenschutz`) sehen aus wie ein Proj
 
 ## Vorschau
 
-- **Alltag:** VS Code Live Server auf `http://127.0.0.1:5501`. Auf dem iPhone im selben WLAN: `http://<IP des Mac im WLAN>:5501`.
+- **Alltag:** VS Code Live Server auf `http://127.0.0.1:5501`. Auf dem iPhone im selben WLAN: `http://<IP des Mac im WLAN>:5501`. Schneller: im Ordner `_tooling` `npm run qr` (oder `npm run qr -- /work/<id>/`) zeigt die aktuelle Adresse als QR-Code fürs iPhone.
 - **Seiten sind Ordner:** `/work/<id>/`, `/about/`, `/impressum/`, `/datenschutz/`.
 - **Wie online bei Vercel:** `npm run dev` in `_tooling` (oder in VS Code „Tasks: Run Task“ → „Portfolio-Vorschau“) auf `http://127.0.0.1:8765`, mit Live-Reload. Das braucht es nur, um die Weiterleitungen von Vercel und die 404-Seite zu sehen.
 - **Tests:** `npm test` in `_tooling` (Chrome und WebKit, etwa zwei Minuten).
