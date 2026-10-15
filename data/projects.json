@@ -4,7 +4,7 @@
     "featured": true,
     "year": "2026",
     "hero": {
-      "image": { "src": "images/projects/reality-by-algorithm/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "image": { "src": "images/projects/reality-by-algorithm/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAADwBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAAW7XGpqyHKdH7KdLjo5qAASllj7AA/uxBwoWp/AweKsTbhwTd0e/mRwOgE2H51AddJPW138gpc5DFcT2lhNdOqkBT5jNa7RAj/4w6nZt6CN4L77gCaEWYoaae5xmIgcl72eW5PxCO1+oVbSoGkE1j3gAA", "color": "#555555" },
       "teaser": "images/projects/reality-by-algorithm/_ABB/teaser.mp4",
       "film": { "vimeo": "1224883384" }
     },
