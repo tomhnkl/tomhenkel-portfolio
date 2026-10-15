@@ -25,6 +25,7 @@
     margin: 0;
     color: #fff;
     line-height: var(--lh-poster);
+    @include poster-word-optical-centre;
     visibility: hidden;
   }
 

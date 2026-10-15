@@ -18,6 +18,14 @@
   .ul-w { @include underline-line; }
 }
 
+// Full-screen words (loader, state posters) are centred by their line box (--lh-poster 1). Helvetica's metrics put the
+// middle of the cap height on the box centre by themselves (0.014em high); Funnel Sans (ascent 1.0, descent 0.25) puts it
+// (1.0 - 0.25) / 2 - 0.675 / 2 = 0.0375em low, so the word moves up by that much (2026-10-15). Layout stays as it is.
+@mixin poster-word-optical-centre {
+  position: relative;
+  top: -0.0375em;
+}
+
 h1 {
   margin: 0;
   font-size: var(--fs-ui);

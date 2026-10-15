@@ -86,6 +86,8 @@
   cursor: pointer; 
   border: none;
   font-family: var(--font-family-book);
+  /* Hover/active weight change (variable font): very fast, only the weight; reduced motion sets the token to 0 (instant) */
+  transition: font-weight var(--duration-fast) var(--ease-out);
   
   &:first-child {
     border-top: none;
@@ -93,7 +95,9 @@
 
   &:last-child {
     padding-bottom: 0;
-    margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits ~0.3 em above the image bottom (re-measured for Helvetica 2026-10-10: same as Favorit) */
+    /* Visual adjustment: the last baseline sits 0.31em above the image bottom, as with Favorit and Helvetica.
+       Funnel Sans (2026-10-15): at --lh-ui 1.25 its baseline is 0.25em above the line box bottom (Helvetica 0.28em), so 0.06em here (was 0.03em) */
+    margin-bottom: calc(var(--fs-ui) * 0.06);
   }
   
   /* Active / Hover State */

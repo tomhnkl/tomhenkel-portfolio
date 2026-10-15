@@ -5,14 +5,17 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
 :root {
   /* --- Typography System --- */
   
-  /* Font Families (2026-10-10: Helvetica as system font instead of ABC Favorit, decision on Favorit later)
-     Roles stay separate, so a webfont can come back by changing only these tokens:
-       base  UI, nav, titles (was Favorit Regular)
-       book  running text (was Favorit Book; Helvetica has no Book, so Regular)
-       bold  home list hover/active (was Favorit Bold, its own family; now a weight) */
-  --font-family-base: Helvetica, Arial, sans-serif;
-  --font-family-book: Helvetica, Arial, sans-serif;
-  --font-weight-bold: 700;
+  /* Font Families (2026-10-15: Funnel Sans everywhere, self-hosted variable font, @font-face in base/_reset.scss;
+     2026-10-10 to 2026-10-14 the system Helvetica, before that ABC Favorit). Helvetica stays as the fallback.
+     Roles stay separate, so a cut can change by changing only these tokens:
+       base  UI, nav, titles (weight 400)
+       book  running text (weight 400, same cut as base for now)
+       bold  home list hover/active (a weight of the variable font, animated on hover, pages/_home.scss)
+     Funnel Sans metrics (for the optical compensations): cap height 0.675em, x-height 0.5em,
+     ascent 1.0em / descent 0.25em (hhea = typo, so the same line boxes in every engine), stem of "l" at 400: 0.09em */
+  --font-family-base: 'Funnel Sans', Helvetica, Arial, sans-serif;
+  --font-family-book: 'Funnel Sans', Helvetica, Arial, sans-serif;
+  --font-weight-bold: 650;
 
   /* Underline for hover/focus/active (replaces the Favorit Lining cut with its built-in line).
      Position and thickness measured from Lining: line top 0.165em below the baseline, 0.08em thick.

@@ -1,14 +1,17 @@
 @charset "UTF-8";
 :root {
   /* --- Typography System --- */
-  /* Font Families (2026-10-10: Helvetica as system font instead of ABC Favorit, decision on Favorit later)
-     Roles stay separate, so a webfont can come back by changing only these tokens:
-       base  UI, nav, titles (was Favorit Regular)
-       book  running text (was Favorit Book; Helvetica has no Book, so Regular)
-       bold  home list hover/active (was Favorit Bold, its own family; now a weight) */
-  --font-family-base: Helvetica, Arial, sans-serif;
-  --font-family-book: Helvetica, Arial, sans-serif;
-  --font-weight-bold: 700;
+  /* Font Families (2026-10-15: Funnel Sans everywhere, self-hosted variable font, @font-face in base/_reset.scss;
+     2026-10-10 to 2026-10-14 the system Helvetica, before that ABC Favorit). Helvetica stays as the fallback.
+     Roles stay separate, so a cut can change by changing only these tokens:
+       base  UI, nav, titles (weight 400)
+       book  running text (weight 400, same cut as base for now)
+       bold  home list hover/active (a weight of the variable font, animated on hover, pages/_home.scss)
+     Funnel Sans metrics (for the optical compensations): cap height 0.675em, x-height 0.5em,
+     ascent 1.0em / descent 0.25em (hhea = typo, so the same line boxes in every engine), stem of "l" at 400: 0.09em */
+  --font-family-base: 'Funnel Sans', Helvetica, Arial, sans-serif;
+  --font-family-book: 'Funnel Sans', Helvetica, Arial, sans-serif;
+  --font-weight-bold: 650;
   /* Underline for hover/focus/active (replaces the Favorit Lining cut with its built-in line).
      Position and thickness measured from Lining: line top 0.165em below the baseline, 0.08em thick.
      Applied via the underline mixin (base/_typography.scss). */
@@ -91,8 +94,17 @@
     --scroll-settle: 0ms;
   }
 }
-/* No webfonts for now: the system Helvetica stack from base/_variables.scss.
+/* Funnel Sans (Tom 2026-10-15): upright variable font v1.001 by Dicotype / NORD ID, SIL Open Font License 1.1 (fonts/OFL.txt),
+   self-hosted, one file for every weight (wght axis 300–800). Preloaded in every HTML head; until it has loaded the
+   Helvetica fallback from the role tokens in base/_variables.scss shows (swap). No italic file: the site sets no italics.
    The ABC Favorit @font-face rules (trial OTFs in fonts/) are in git history before 2026-10-10. */
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("../fonts/FunnelSans-VF.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
 html, body {
   margin: 0;
   overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
@@ -604,6 +616,8 @@ h1 {
   margin: 0;
   color: #fff;
   line-height: var(--lh-poster);
+  position: relative;
+  top: -0.0375em;
   visibility: hidden;
 }
 #loader.word-visible .loader-text {
@@ -715,21 +729,22 @@ html.lenis body {
           text-decoration-skip-ink: auto;
 }
 
-/* ↗ after the label: own vector arrow (Tom 2026-10-14, option B "Helvetica-Strich"), because Helvetica has no ↗ glyph
-   (browsers fell back to other fonts, e.g. PingFang SC on macOS). Drawn to the typeface: box = cap height (0.717em),
-   stroke = stem of "l" (0.088em), open head of two arms (60 % of the box), square ends, sits on the baseline, 0.25em gap.
+/* ↗ after the label: own vector arrow (Tom 2026-10-14, option B), because the site font has no ↗ glyph
+   (browsers fell back to other fonts, e.g. PingFang SC on macOS). Drawn to the typeface, Funnel Sans 400 (2026-10-15;
+   before: Helvetica, box 0.717em, stroke 0.088em): box = cap height (0.675em), stroke = stem of "l" (0.09em),
+   open head of two arms (60 % of the box), square ends, sits on the baseline, 0.25em gap.
    A mask in currentColor, so it takes the link colour and the difference blend. Decorative (empty content, not read out).
-   As an inline-block the link's underline never reaches it. Preview: _tooling/previews/arrows.html */
+   As an inline-block the link's underline never reaches it. Construction: svg() in _tooling/previews/arrows/variants.js */
 .main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]) .ul-words::after, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"])::after {
   content: "";
   display: inline-block;
-  width: 0.717em;
-  height: 0.717em;
+  width: 0.675em;
+  height: 0.675em;
   margin-left: 0.25em;
   vertical-align: baseline;
   background-color: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 717 717' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M331 44H673V386' stroke-width='88'/%3E%3Cpath d='M62.2 654.8L641.9 75.1' stroke-width='88'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 717 717' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M331 44H673V386' stroke-width='88'/%3E%3Cpath d='M62.2 654.8L641.9 75.1' stroke-width='88'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 675 675' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M315 45H630V360' stroke-width='90'/%3E%3Cpath d='M63.6 611.4L598.2 76.8' stroke-width='90'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 675 675' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M315 45H630V360' stroke-width='90'/%3E%3Cpath d='M63.6 611.4L598.2 76.8' stroke-width='90'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
@@ -843,6 +858,8 @@ html.lenis body {
 }
 .state-poster-word {
   /* Was the Lining cut */
+  position: relative;
+  top: -0.0375em;
 }
 
 .state-poster-line {
@@ -962,13 +979,17 @@ html.lenis body {
   cursor: pointer;
   border: none;
   font-family: var(--font-family-book);
+  /* Hover/active weight change (variable font): very fast, only the weight; reduced motion sets the token to 0 (instant) */
+  transition: font-weight var(--duration-fast) var(--ease-out);
 }
 .project-list-item:first-child {
   border-top: none;
 }
 .project-list-item:last-child {
   padding-bottom: 0;
-  margin-bottom: calc(var(--fs-ui) * 0.03); /* Visual adjustment: last baseline sits ~0.3 em above the image bottom (re-measured for Helvetica 2026-10-10: same as Favorit) */
+  /* Visual adjustment: the last baseline sits 0.31em above the image bottom, as with Favorit and Helvetica.
+     Funnel Sans (2026-10-15): at --lh-ui 1.25 its baseline is 0.25em above the line box bottom (Helvetica 0.28em), so 0.06em here (was 0.03em) */
+  margin-bottom: calc(var(--fs-ui) * 0.06);
 }
 .project-list-item {
   /* Active / Hover State */
@@ -1106,7 +1127,10 @@ html.lenis body {
 .about-section .about-text {
   grid-column: 9/13;
   align-self: start; /* Align to top of section */
-  margin-top: -0.333em; /* Visual adjustment to match image top edge exactly (font line-height compensation, scales with body size; re-measured for Helvetica 2026-10-10: still holds) */
+  /* Visual adjustment: the cap height of the first line meets the image top edge exactly (scales with the body size).
+     Funnel Sans (2026-10-15) at --lh-body 1.5: cap top = half leading (1.5 - 1.0 - 0.25) / 2 + ascent 1.0 - cap height 0.675 = 0.45em
+     below the line box top (Helvetica 0.378em, with the old -0.333em it sat 0.045em low) */
+  margin-top: -0.45em;
 }
 @media (min-width: 769px) and (max-width: 1220px) {
   .about-section .about-text {

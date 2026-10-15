@@ -25,6 +25,7 @@
   font-weight: 400;
   margin: 0;
   @include underline; /* Was the Lining cut */
+  @include poster-word-optical-centre;
 }
 
 .state-poster-line {

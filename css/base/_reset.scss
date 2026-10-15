@@ -1,5 +1,14 @@
-/* No webfonts for now: the system Helvetica stack from base/_variables.scss.
+/* Funnel Sans (Tom 2026-10-15): upright variable font v1.001 by Dicotype / NORD ID, SIL Open Font License 1.1 (fonts/OFL.txt),
+   self-hosted, one file for every weight (wght axis 300–800). Preloaded in every HTML head; until it has loaded the
+   Helvetica fallback from the role tokens in base/_variables.scss shows (swap). No italic file: the site sets no italics.
    The ABC Favorit @font-face rules (trial OTFs in fonts/) are in git history before 2026-10-10. */
+@font-face {
+  font-family: 'Funnel Sans';
+  src: url('../fonts/FunnelSans-VF.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 html, body {
   margin: 0;
