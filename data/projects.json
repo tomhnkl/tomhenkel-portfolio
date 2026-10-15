@@ -104,7 +104,7 @@
     "featured": true,
     "year": "2025",
     "hero": {
-      "image": { "src": "images/projects/sono-bricolage/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "image": { "src": "images/projects/sono-bricolage/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABwBACdASogABIAPtFcpEyoJaOiMBgIAQAaCWkAAI/X+tbp4JLTZsTSPdfTAAD+8NODg62G67z66u9NUDsUQRO3ftyd9GIlN6tsosByQTS/P/bnpfJlY3+iPHVg7Hy4v8qSGoy2ko3J3MsUUV0oNl8wAAA=", "color": "#383838" },
       "teaser": "images/projects/sono-bricolage/_ABB/teaser.mp4"
     },
     "preview": { "portrait": "images/projects/sono-bricolage/_ABB/preview-portrait.mp4" },
@@ -187,6 +187,21 @@
         "items": [
           { "type": "image", "src": "images/projects/sono-bricolage/_ABB/01.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwBQCdASogABYAPtFcp04oJSOiKAqpABoJaQAGaBVKlQKeQKwhIXn2K6YU+5128UG9QGIwqcUGAAD9RrqZUfo8TumrXIR/2A3W3+eUzzRzrAz667tUFyRWg36Wv1JoMsN/1c+odLS0TQMI3nJCYkczxEffT5OhdFL3ce1vAKwrSfY+8x8YyDP24bAMlRDJzMRhX/TYlvce5dkCTy9A51HCeqQ4JAj7ceOFgDn0xVshJ09LjGDMtiBFQU/rYf2ynrUtZRhV+yfvnyiYRGSgAAAA", "color": "#696969", "alt": { "de": "Bild 1", "en": "Image 1" } },
           { "type": "image", "src": "images/projects/sono-bricolage/_ABB/04.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAADQBACdASogABYAPtFcpU6oJSMiKAqpABoJaQAD5Ss1ziF/wLispbG96xM0bug/AAD+6fwRASncN7wwTmAZu5MWmV1nL/yzWCQOlyUpoc1xpYqFCKjtXZNoZqUqb+EEYd+qlO+oax6V6jWprSu7lwpugn5IhJR0UiM8iZx5aun9qIaCqeMHlrnka1WZE7Xv5pvwizyIjwL991uhz3WQqucAHCXi26k/7EdA2dcnYoV8/QZqpkLa8tkR0Ywf88v61BgiSRhXZKmqP0AAAAA=", "color": "#454545", "alt": { "de": "Bild 4", "en": "Image 4" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          { "type": "video", "src": "images/projects/sono-bricolage/_ABB/18.mp4", "poster": "images/projects/sono-bricolage/_ABB/18.webp", "width": 1920, "height": 1080, "placeholder": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAADwBACdASogABIAPtFWoEwoJKMiMBgMAQAaCWkXjMABR3fwUmdAj82U9cfkkl847AAA/oO9ENqeiZgm3rv1FAPUg5JqlpEaMbOP0WvTUhay7kyEq7eKaN/ZHQyb+LzrFo4kxWJJgZzWst2uVDfXbkKQ2jxl7qbZOkNhb/hYbsv/+ylMqEYD0OYsy22+VZoAAAA=", "color": "#343434" }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [8, 4],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/16.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRg4BAABXRUJQVlA4IAIBAADwBQCdASogABYAPtFUpk2oJCOiMBgIAQAaCWkACBAuick3lPQMvFpCSmYNHnGtAdH09rpAZEMPUgDeFwm5hEeAgV8vqxEr2sLvUaETo0rpZt3OhRjDvZGK05jGHiSxjKRDw7tZhbQOcWCLg6ScBRObTUPkjIRkF1D4z5vFMgYzbdZ/OO+iJr3iAAJcoAhLaqwz9A5j7MVBmOL6WqOY+MmA36p+Ama/4GRsfUQJ/J+LkuAdr3rc060X51Ostiw7Xm2/wCoLDZD95SU2/2t7kqOZ5CUJfPiIExAfEbpWasI2D5ZS151PPRXOw8VUcR/7CTP7y5qJ+CrU9QZK6UXIlwAAAAA=", "color": "#828282", "alt": { "de": "Bild 16", "en": "Image 16" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/17.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRlIBAABXRUJQVlA4IEYBAAAQBwCdASogACwAPtFgpE2oJiMiKrgMAQAaCWkAEgcCxC3owQvtLjT+PHDomDb0moz/NkfXHK4jYSirMbG++2t6AAD+5a278zRKspS/e6PuP7NebArHlXmWL06dbptZvxXlaNS0nyFNXzew4fFBGjTLZLXibsJvg4PVRu6Ngg54ghxqKUr6Sl2C56Pa5zXQX4Id26IxMvfOz8ljRWt81FHShIugHzn57d2xUXPZJHC2DHjVwQAx3e5sNFzdjWGET+/xuhj7vPjBvgyKhjyzRGRMZW01SMizEwAMAuMms6GATzRtoFPczxjrChgIShPUGW5TAkkZBEFlUeGrvuvEKqkT70lN7mqvIh/+S57ZXz7neMbNWziznsjYt1rC5xQuRUffccfJOMGxiMWsGRaDF6iSgyOGsJn2BbFUcIPKYXFjVG6XDAAAAA==", "color": "#6c6c6c", "alt": { "de": "Bild 17", "en": "Image 17" } }
         ]
       }
     ],
