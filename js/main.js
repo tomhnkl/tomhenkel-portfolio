@@ -1019,6 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Desktop: Querformat-Video des Eintrags beim Hover, in Schleife.
     const STILL_DURATION = 6000; // Standbild ohne Video (Timing der Startseite, keine Bewegung -> kein Motion-Token)
     const STALL_TIMEOUT = 8000; // Video ohne Fortschritt gilt als hängend und wird übersprungen (Timing, kein Motion-Token)
+    const PREVIEW_MAX_S = 10; // Mobil: jedes Vorschauvideo höchstens so viele Sekunden, dann das nächste Projekt (Tom 2026-10-15, erstmal)
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const saveData = !!(navigator.connection && navigator.connection.saveData);
     let featuredProjects = [];
@@ -1292,9 +1293,12 @@ document.addEventListener('DOMContentLoaded', () => {
             skipPreviewVideo(video);
         });
         video.addEventListener('ended', () => { if (cycleEnabled()) showPreview(nextPreviewIndex()); });
-        // Fortschritt setzt den Wächter zurück
+        // Fortschritt setzt den Wächter zurück. Mobil (ohne Schleife) nach PREVIEW_MAX_S weiter wie bei 'ended'.
+        // Nur vor dem Ende: dort feuern timeupdate und ended direkt nacheinander, das Ende übernimmt 'ended' (sonst doppelt).
+        // showPreview setzt die Position sofort auf 0 (neue Quelle oder currentTime = 0), ein späteres timeupdate löst nicht erneut aus
         video.addEventListener('timeupdate', () => {
             if (!video.paused && video.currentTime !== stallTime) watchStall(video);
+            if (!video.loop && cycleEnabled() && video.currentTime >= PREVIEW_MAX_S && !video.ended) showPreview(nextPreviewIndex());
         });
 
         // Versteckter Tab: pausieren, Wächter und unfertiges Vorladen stoppen, danach weiter
