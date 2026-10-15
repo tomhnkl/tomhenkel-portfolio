@@ -205,7 +205,7 @@
     "featured": true,
     "year": "2025",
     "hero": {
-      "image": { "src": "images/projects/boomtschakkaboom/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "image": { "src": "images/projects/boomtschakkaboom/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABwBACdASogABIAPtFcpk6oJSMiKAqpABoJZwAD5Ss4zX436pcUmZhESX9kwAD++2mgL8at7GEjbkADr5bnpPsrkWgK5Hfhr/v2c7GdhTqfMPUZa9LMa1fI+akvvSaDHuqtmY2eRD+RTiY5Y8svdnER2t4kRsY2fe1uvVBId5ZuceZecB6yV/6w/NZKT8oQAAA=", "color": "#1d1e20" },
       "teaser": "images/projects/boomtschakkaboom/_ABB/teaser.mp4"
     },
     "preview": { "portrait": "images/projects/boomtschakkaboom/_ABB/preview-portrait.mp4" },
@@ -496,7 +496,7 @@
     "featured": true,
     "year": "2023",
     "hero": {
-      "image": { "src": "images/projects/present/_ABB/hero.webp", "width": 2560, "height": 1440 },
+      "image": { "src": "images/projects/present/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAAAQBgCdASogABIAPtFUokuoJKMhsAgBABoJZQDM0ywjAHEBVUjkTF91OcW0nG2VHWURw7HHBmzQTNAA/pG/u/5rLU8TDmXFNSkg7pf5Ct7Q3rMrCGZ3WuS4T4aEnr6vAGOxWoVodLib11FiBtYo/usnhE9K+msZWBsMFzqD3T3r19edoYT6x6DC0GEtxDug3fCaQyWr1J4Vforo/uGwoWMcXFnUCvdYq9xWJZMW+jCNf/LlnKGpXSiuAZv6FMN29dxDMv7XM1eWiwvb+CXGAD+DQoNPv5KJZW9/IfzcdQehcXEHxVuXOQ9GbLcirOC0AAA=", "color": "#6d7372" },
       "teaser": "images/projects/present/_ABB/teaser.mp4"
     },
     "preview": { "portrait": "images/projects/present/_ABB/preview-portrait.mp4" },
