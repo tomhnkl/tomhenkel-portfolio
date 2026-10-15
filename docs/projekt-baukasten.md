@@ -195,6 +195,24 @@ Jedes Projekt kann am Ende, vor „Weitere Projekte“, einen persönlichen Text
 
 ---
 
+## Schriftgrößen (automatisch)
+
+Die Überschriften auf Projekt- und Rechtsseiten folgen einer fließenden Skala (Tom 2026-10-15): h3 = g, h2 = g · r, h1 = g · r³.
+
+| Ebene | Wo | 390px | 1440px | 2560px |
+|---|---|---|---|---|
+| h1 | Projekttitel, Titel der Rechtsseiten | 36,7 | 59,2 | 68,7 |
+| h2 | Untertitel, „Weitere Projekte“ | 25,5 | 33,3 | 38,7 |
+| h3 | Kategorie und Jahr, Text- und Akkordeon-Titel, Abschnitte der Rechtsseiten | 21,2 | 25,0 | 29,0 |
+
+- **g** wächst von 21,24px (390px breit) auf 29px (2560px), **r** von 1,2 (390px) auf 1,333 (ab 1440px). Davor und danach bleiben die Werte stehen.
+- **Ändern:** nur die `$scale-*`-Werte oben in `css/base/_variables.scss`, dann `npm run build` in `_tooling`. Sass rechnet daraus `--fs-h1`, `--fs-h2` und `--fs-h3` (als Linienzug durch 390, 768, 1024, 1440 und 2560px, höchstens 0,2px neben der Formel).
+- **Nicht in der Skala:** Navigation, Work-Liste, Kartentitel und „abspielen“ (`--fs-ui`), die großen Links im Handymenü (`--fs-display`), Fließtext (`--fs-body`).
+- **Titelblock auf dem Handy:** Titel, Untertitel, darunter Kategorie und Jahr in einer Zeile, jeweils `--space-s` Abstand. Auf dem Desktop stehen Kategorie und Jahr rechts neben dem Titel.
+- **Unter 390px** wird der Titel weiter kleiner, damit das längste Wort („boomtschakkaboom“) in die Breite passt.
+
+---
+
 ## Export
 
 **Bilder:** WebP, sRGB, ohne Transparenz, ohne Metadaten, Qualität ca. 75–80. Die Breite richtet sich nach der Feldgröße:

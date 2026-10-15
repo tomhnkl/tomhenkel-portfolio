@@ -1,6 +1,66 @@
+@use 'sass:list';
+@use 'sass:math';
+
 // Breakpoints (Sass variables, since CSS custom properties don't work in media queries)
 $bp-mobile: 768px;
 $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold hover included) -> 6/6
+
+// Heading scale (Tom 2026-10-15): fluid modular scale, h3 = g, h2 = g · r, h1 = g · r^n.
+// Retune here only; --fs-h1/-h2/-h3 below are computed from these values.
+$scale-w-phone: 390px;     // Phone anchor: g and r start here (held below)
+$scale-w-desktop: 1440px;  // r reaches $scale-r-desktop here and stays there
+$scale-w-large: 2560px;    // g reaches $scale-g-large here (held above)
+$scale-g-phone: 21.24px;   // Base g (= h3) at $scale-w-phone
+$scale-g-large: 29px;      // Base g (= h3) at $scale-w-large, linear in between
+$scale-r-phone: 1.2;       // Ratio r at $scale-w-phone
+$scale-r-desktop: 1.333;   // Ratio r from $scale-w-desktop up, linear below
+$scale-n: 3;               // h1 = g · r^n
+// g · r^k is not linear in the viewport width, so each token is a polyline through these widths
+// (max. 0.17px off the exact formula between them; add a width here for more accuracy)
+$scale-anchors: ($scale-w-phone, 768px, 1024px, $scale-w-desktop, $scale-w-large);
+// Below $scale-w-phone the h1 still shrinks like the former title size, so the longest title word fits the phone column
+// (100vw - 2 page margins): 'boomtschakkaboom' is 8.82em in Funnel Sans; 9.26 = 9.03em (measured in Helvetica) + 2.5%.
+// From $scale-w-phone up the scale is the smaller value, so this cap never acts there.
+$scale-h1-fit-em: 9.26;
+
+@function scale-lerp($from, $to, $w, $w-from, $w-to) {
+  @return $from + ($to - $from) * math.clamp(0, math.div($w - $w-from, $w-to - $w-from), 1);
+}
+
+// Exact size of step $k (0 = h3, 1 = h2, $scale-n = h1) at viewport width $w
+@function scale-size($k, $w) {
+  $g: scale-lerp($scale-g-phone, $scale-g-large, $w, $scale-w-phone, $scale-w-large);
+  $r: scale-lerp($scale-r-phone, $scale-r-desktop, $w, $scale-w-phone, $scale-w-desktop);
+  @return $g * math.pow($r, $k);
+}
+
+@function scale-round($x, $digits) {
+  $f: math.pow(10, $digits);
+  @return math.div(math.round($x * $f), $f);
+}
+
+// Step $k as a CSS sum: size at the first anchor + per segment its slope × the part of it the viewport covers
+// (clamp(0px, 100vw - start, length)). Below the first and above the last anchor the size holds.
+// Neighbouring segments with the same slope become one term (h3 is a single straight line).
+@function scale-fluid($k) {
+  $segments: ();
+  @for $i from 1 to list.length($scale-anchors) {
+    $w0: list.nth($scale-anchors, $i);
+    $w1: list.nth($scale-anchors, $i + 1);
+    $slope: math.div(scale-size($k, $w1) - scale-size($k, $w0), $w1 - $w0);
+    $last: list.length($segments);
+    @if $last > 0 and math.abs(list.nth(list.nth($segments, $last), 3) - $slope) < 0.000001 {
+      $segments: list.set-nth($segments, $last, (list.nth(list.nth($segments, $last), 1), $w1, $slope));
+    } @else {
+      $segments: list.append($segments, ($w0, $w1, $slope), $separator: comma);
+    }
+  }
+  $sum: '#{scale-round(scale-size($k, list.nth($scale-anchors, 1)), 3)}';
+  @each $w0, $w1, $slope in $segments {
+    $sum: $sum + ' + #{scale-round($slope, 6)} * clamp(0px, 100vw - #{$w0}, #{$w1 - $w0})';
+  }
+  @return $sum;
+}
 
 :root {
   /* --- Typography System --- */
@@ -23,20 +83,32 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
   --underline-offset: 0.165em;
   --underline-thickness: 0.08em;
 
-  /* Font Sizes: fluid, derived from the grid columns (px + vw)
+  /* Headings on project and legal pages (Tom 2026-10-15): fluid modular scale, computed from the $scale-* values above.
+       h3 = g        (category/year, text, accordion and legal section titles)
+       h2 = g · r    (subtitle, "Weitere Projekte")
+       h1 = g · r^3  (project and legal titles)
+     g grows linearly 21.24px @390 → 29px @2560, r 1.2 @390 → 1.333 @1440, then constant; both hold outside.
+     As polylines through 390, 768, 1024, 1440, 2560 (max. 0.17px off the formula):
+       390px:  h1 36.7  / h2 25.49 / h3 21.24
+       1440px: h1 59.2  / h2 33.32 / h3 24.99
+       2560px: h1 68.69 / h2 38.66 / h3 29
+     h1 below 390px: also capped so 'boomtschakkaboom' fits the width ($scale-h1-fit-em). */
+  --fs-h1: min(#{scale-round(math.div(100vw, $scale-h1-fit-em), 4)} - #{scale-round(math.div(50px, $scale-h1-fit-em), 2)}, #{scale-fluid($scale-n)});
+  --fs-h2: calc(#{scale-fluid(1)});
+  --fs-h3: calc(#{scale-fluid(0)});
+
+  /* Other font sizes: fluid, derived from the grid columns (px + vw)
      Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):
        phone ramp:   the column is the full width (100vw - 50px)
        plateau:      holds the size through 768/769, where the column halves
        desktop ramp: grows with the grid column
      Ratios are measured text width / font size with the real fonts (+2.5% safety margin). */
 
-  /* Project titles: 'boomtschakkaboom' (9.03em) fits the full width (mobile) or 6 columns */
+  /* Mobile menu links (only ≤ 768px, where this is min(10.8vw - 5.4px, 37.7px)); was the project title size up to 2026-10-15 */
   --fs-display: min(10.8vw - 5.4px, clamp(37.7px, 5.4vw - 3.8px, 134px));
-  /* Nav, home list, meta, subtitle, accordion titles, hero buttons, card titles:
+  /* UI: nav, home list, hero buttons, card titles, skip link (not the headings, those are --fs-h*):
      the widest home list row in bold (14.7em + 20px) fits its column; keeps $bp-tablet at 1220px */
   --fs-ui: min(6.6vw - 4.5px, clamp(21.9px, 0.4vw + 18.8px, 29px));
-  /* Section headings: one perfect fourth above ui */
-  --fs-title: calc(var(--fs-ui) * 4 / 3);
   /* Running text: 16px @320, 18px @1440, 20px @2560 */
   --fs-body: clamp(16px, 0.18vw + 15.42px, 20px);
   /* Footer, language switch, card category, lab captions: German footer row fits at 320px, never below 12px */
@@ -47,7 +119,7 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
   /* Measure: 30em / 0.464em per character = ~65 characters per line */
   --measure: 30em;
 
-  /* Line Heights */
+  /* Line Heights (headings: h1 display, h2 title, h3 ui) */
   --lh-display: 1.05;
   --lh-title: 1.15;
   --lh-ui: 1.25;
@@ -55,7 +127,7 @@ $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold ho
   --lh-small: 1.3;
   --lh-poster: 1;
 
-  /* Letter Spacing (display tracking is part of the measured 9.03em ratio) */
+  /* Letter Spacing: display = h1 (part of the measured 9.03em ratio), title = h2 */
   --ls-display: -0.02em;
   --ls-title: -0.01em;
   

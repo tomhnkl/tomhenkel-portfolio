@@ -1673,15 +1673,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- INITIAL RENDER MODE ---
         container.setAttribute('data-rendered-id', pid);
         const film = filmOf(project.hero);
+        // Titelblock: Titel, Untertitel, Meta = Überschriften h1 → h2 → h3 und Reihenfolge auf dem Handy;
+        // auf dem Desktop stellt das CSS die Meta neben den Titel (pages/_project.scss)
         container.innerHTML = `
             ${heroHTML(project, lang, film)}
             <div class="pd-title-row">
                 <h1 class="pd-title">${content.title}</h1>
+                <h2 class="pd-subtitle">${content.subtitle || ''}</h2>
                 <h3 class="pd-meta">
                     <span class="pd-cat">${content.category || ''}</span>
                     <span class="pd-year">${localized(project.year, lang)}</span>
                 </h3>
-                <h2 class="pd-subtitle">${content.subtitle || ''}</h2>
             </div>
             ${blocksHTML(project, lang)}
             ${personalHTML(project, lang)}

@@ -26,9 +26,10 @@
   top: -0.0375em;
 }
 
+/* Default h1 size from the heading scale; visible h1s set their own (project/legal title, posters, lab) */
 h1 {
   margin: 0;
-  font-size: var(--fs-ui);
+  font-size: var(--fs-h1);
   font-weight: 400;
 }
 

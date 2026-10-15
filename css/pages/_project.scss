@@ -13,7 +13,7 @@
   box-sizing: border-box;
 }
 
-/* Headings: one size per level, set on the tag (h1 display via .pd-title, h2 title, h3 ui).
+/* Headings: one size per level from the heading scale (base/_variables.scss), set on the tag (h1 via .pd-title).
    h1 project title; h2 subtitle and more projects; h3 category/year, text, personal and accordion titles.
    Browser defaults are reset; :where() keeps specificity at 0, so classes only add layout and cut. */
 :where(#project-detail, #legal-content) :where(h2, h3) {
@@ -22,13 +22,13 @@
 }
 
 :where(#project-detail, #legal-content) :where(h2) {
-  font-size: var(--fs-title);
+  font-size: var(--fs-h2);
   line-height: var(--lh-title);
   letter-spacing: var(--ls-title);
 }
 
 :where(#project-detail, #legal-content) :where(h3) {
-  font-size: var(--fs-ui);
+  font-size: var(--fs-h3);
   line-height: var(--lh-ui);
   letter-spacing: normal;
 }
@@ -189,8 +189,10 @@
   }
 }
 
-/* 2.–4. Title block: title + meta, subtitle as second row
-   (full-width block, so the modules always start below it) */
+/* 2.–4. Title block (full-width block, so the modules always start below it).
+   Markup order title (h1), subtitle (h2), meta (h3) = mobile order and heading order.
+   Desktop: title + meta in the first row, subtitle as second row (the meta is pinned to row 1).
+   Mobile (Tom 2026-10-15): title → subtitle → meta, --space-s apart; category and year in one line, left-aligned. */
 .pd-title-row {
   @extend %grid-12;
   align-items: start;
@@ -199,7 +201,7 @@
   h1.pd-title {
     display: block; /* Override global h1 none */
     margin: 0;
-    font-size: var(--fs-display);
+    font-size: var(--fs-h1);
     font-family: var(--font-family-base);
     line-height: var(--lh-display);
     letter-spacing: var(--ls-display); /* Tighten large text */
@@ -213,20 +215,33 @@
     text-align: right;      /* Text alignment */
     font-family: var(--font-family-base);
     color: #fff;
+    grid-row: 1; /* Next to the title, although it follows the subtitle in the markup */
     @include grid-cols(7, 13);
 
     .pd-year {
         color: #fff;
+    }
+
+    @media (max-width: $bp-mobile) {
+      grid-row: auto; /* Markup order: below the subtitle */
+      flex-direction: row;
+      flex-wrap: wrap; /* Safety net: the year drops below only if the line can't fit */
+      align-items: baseline;
+      column-gap: var(--space-s);
+      text-align: left;
+      margin-top: var(--space-s);
     }
   }
 }
 
 /* 4. Subtitle (second row inside .pd-title-row) */
 .pd-subtitle {
-  font-family: var(--font-family-book); /* h2 size (title) */
+  font-family: var(--font-family-book); /* h2 size */
   color: #fff;
   margin-top: var(--space-s);
   @include grid-cols(1, 7); /* Left half */
+
+  &:empty { display: none; } /* No subtitle: no empty gap between title and meta (mobile) */
 }
 
 /* 5. Media row: cells on the 12 columns (--col-start / --col-span).
@@ -276,7 +291,7 @@
   @include grid-cols(7, 13); /* Right half */
 
   .pd-text-title {
-    margin: 0 0 var(--space-s); /* h3 size (ui) */
+    margin: 0 0 var(--space-s); /* h3 size */
     font-family: var(--font-family-base);
   }
 
@@ -312,7 +327,7 @@ details.pd-accordion {
   summary {
     list-style: none; /* Hide default triangle */
     padding: var(--space-s) 0;
-    font-size: var(--fs-ui);
+    font-size: var(--fs-h3); /* Like its h3, so the icon matches it */
     line-height: var(--lh-ui);
     font-family: var(--font-family-base);
     cursor: pointer;
@@ -330,7 +345,7 @@ details.pd-accordion {
 
     &::after {
       content: '+';
-      font-size: var(--fs-ui);
+      font-size: var(--fs-h3);
     }
   }
 
@@ -397,7 +412,7 @@ details.pd-accordion {
 
 /* 8. More projects: previous / next */
 .pd-footer-nav-title {
-  font-family: var(--font-family-base); /* h2 size (title) */
+  font-family: var(--font-family-base); /* h2 size */
   @include grid-cols(1, 7); /* Left half */
 }
 
@@ -452,14 +467,5 @@ details.pd-accordion {
       line-height: var(--lh-small);
       color: #fff;
     }
-  }
-}
-
-
-/* Mobile: column placement is reset to full width by grid-cols() */
-@media (max-width: $bp-mobile) {
-  .pd-meta {
-    margin-top: var(--space-s);
-    width: 100%;
   }
 }
