@@ -384,7 +384,7 @@
         "type": "text",
         "text": {
           "de": "Die Diagnose Krebs ist nicht nur für Betroffene selbst eine große Herausforderung – auch Kinder spüren schnell, dass sich etwas verändert. Viele Eltern stehen vor der schwierigen Frage: Wie erkläre ich meinem Kind meine Krankheit, ohne es zu überfordern oder zu ängstigen?\n\nLonis Weltraumreise setzt genau hier an: Die interaktive Geschichte schafft einen geschützten Rahmen, in dem Kinder auf spielerische Weise verstehen lernen, was Krebs ist, wie er behandelt wird und wie sich der Alltag dadurch verändern kann. Eltern wählen aus, welcher Elternteil erkrankt ist und welche Therapieformen anstehen; die Geschichte passt sich daraufhin an die Situation der Familie an.\n\nIn vier Kapiteln lernen die Kinder Loni und das Leben im Raumschiff kennen, erfahren von Dr. Medika, wie Krebs entsteht, besuchen die Therapie-Planeten und blicken mit Loni auf ihre Reise zurück. Interaktive Elemente am Ende jedes Abschnitts festigen das Erlernte spielerisch.",
-          "en": "A cancer diagnosis is a major challenge not only for those affected – children, too, quickly sense that something is changing. Many parents face the difficult question: how do I explain my illness to my child without overwhelming or frightening them?\n\nLonis Weltraumreise (Loni's Space Journey) starts right here: the interactive story creates a safe space in which children playfully learn what cancer is, how it is treated and how everyday life may change. Parents choose which parent is ill and which treatments lie ahead; the story then adapts to the family's situation.\n\nIn four chapters, children get to know Loni and life on the spaceship, learn from Dr. Medika how cancer develops, visit the therapy planets and look back on the journey with Loni. Interactive elements at the end of each section playfully consolidate what they have learned."
+          "en": "A cancer diagnosis is a major challenge not only for those affected – children, too, quickly sense that something is changing. Many parents face the difficult question: how do I explain my illness to my child without overwhelming or frightening them?\n\nLonis Space Journey starts right here: the interactive story creates a safe space in which children playfully learn what cancer is, how it is treated and how everyday life may change. Parents choose which parent is ill and which treatments lie ahead; the story then adapts to the family's situation.\n\nIn four chapters, children get to know Loni and life on the spaceship, learn from Dr. Medika how cancer develops, visit the therapy planets and look back on the journey with Loni. Interactive elements at the end of each section playfully consolidate what they have learned."
         }
       },
       {
@@ -486,7 +486,7 @@
       "subtitle": "Eine interaktive Geschichte, die Kindern das Thema Krebs erklärt."
     },
     "en": {
-      "title": "lonis weltraumreise",
+      "title": "lonis space journey",
       "category": "web application",
       "subtitle": "An interactive story that explains cancer to children."
     }
