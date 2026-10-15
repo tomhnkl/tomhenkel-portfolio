@@ -208,7 +208,7 @@ Die Überschriften auf Projekt- und Rechtsseiten folgen einer fließenden Skala 
 - **g** wächst von 21,24px (390px breit) auf 29px (2560px), **r** von 1,2 (390px) auf 1,333 (ab 1440px). Davor und danach bleiben die Werte stehen.
 - **Ändern:** nur die `$scale-*`-Werte oben in `css/base/_variables.scss`, dann `npm run build` in `_tooling`. Sass rechnet daraus `--fs-h1`, `--fs-h2` und `--fs-h3` (als Linienzug durch 390, 768, 1024, 1440 und 2560px, höchstens 0,2px neben der Formel).
 - **Nicht in der Skala:** Navigation, Work-Liste, Kartentitel und „abspielen“ (`--fs-ui`), die großen Links im Handymenü (`--fs-display`), Fließtext (`--fs-body`).
-- **Titelblock auf dem Handy:** Titel, Untertitel, darunter Kategorie und Jahr in einer Zeile, jeweils `--space-s` Abstand. Auf dem Desktop stehen Kategorie und Jahr rechts neben dem Titel.
+- **Titelblock bis 960 px** (Handy und Tablet im Hochformat): Titel, Untertitel, darunter Kategorie links und Jahr rechts in einer Zeile, jeweils `--space-s` Abstand. Darüber stehen Kategorie und Jahr rechts neben dem Titel. Die Grenze hängt am längsten Titel: „boomtschakkaboom“ passt ab 914 px in seine 6 Spalten. Kommt ein längerer Titel dazu, meldet das der Test „Titel passen in ihre Spalten“, dann `$bp-title-stack` anheben.
 - **Unter 390px** wird der Titel weiter kleiner, damit das längste Wort („boomtschakkaboom“) in die Breite passt.
 
 ---

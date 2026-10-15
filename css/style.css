@@ -1428,7 +1428,8 @@ html.lenis body {
 /* 2.–4. Title block (full-width block, so the modules always start below it).
    Markup order title (h1), subtitle (h2), meta (h3) = mobile order and heading order.
    Desktop: title + meta in the first row, subtitle as second row (the meta is pinned to row 1).
-   Mobile (Tom 2026-10-15): title → subtitle → meta, --space-s apart; category and year in one line, left-aligned. */
+   Up to $bp-title-stack (Tom 2026-10-15): title → subtitle → meta at full width, --space-s apart;
+   category and year in one line, spread to both edges (space-between). */
 .pd-title-row {
   align-items: start;
   grid-column: 1/-1;
@@ -1443,6 +1444,11 @@ html.lenis body {
   grid-column: 1/7;
 }
 @media (max-width: 768px) {
+  .pd-title-row h1.pd-title {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 960px) {
   .pd-title-row h1.pd-title {
     grid-column: 1/-1;
   }
@@ -1465,14 +1471,16 @@ html.lenis body {
 .pd-title-row .pd-meta .pd-year {
   color: #fff;
 }
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .pd-title-row .pd-meta {
     grid-row: auto; /* Markup order: below the subtitle */
+    grid-column: 1/-1;
     flex-direction: row;
     flex-wrap: wrap; /* Safety net: the year drops below only if the line can't fit */
+    justify-content: space-between; /* Category left, year right */
     align-items: baseline;
     -moz-column-gap: var(--space-s);
-         column-gap: var(--space-s);
+         column-gap: var(--space-s); /* Minimum gap before wrapping */
     text-align: left;
     margin-top: var(--space-s);
   }
@@ -1493,6 +1501,12 @@ html.lenis body {
 .pd-subtitle {
   /* Left half */
 }
+@media (max-width: 960px) {
+  .pd-subtitle {
+    grid-column: 1/-1;
+  }
+}
+.pd-subtitle { /* Stacked title block */ }
 .pd-subtitle:empty {
   display: none;
 }

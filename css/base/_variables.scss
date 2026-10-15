@@ -4,6 +4,8 @@
 // Breakpoints (Sass variables, since CSS custom properties don't work in media queries)
 $bp-mobile: 768px;
 $bp-tablet: 1220px; // Below this the 4-column home list no longer fits (bold hover included) -> 6/6
+$bp-title-stack: 960px; // Up to here the project title block is stacked as on mobile (Tom 2026-10-15): 'boomtschakkaboom'
+                        // fits its 6 columns from 914px (Chrome), plus margin for other browsers
 
 // Heading scale (Tom 2026-10-15): fluid modular scale, h3 = g, h2 = g · r, h1 = g · r^n.
 // Retune here only; --fs-h1/-h2/-h3 below are computed from these values.
