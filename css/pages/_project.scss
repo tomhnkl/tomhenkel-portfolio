@@ -64,6 +64,18 @@
   overflow: hidden;
   @include grid-cols(1, -1);
 
+  /* Phone (Tom 2026-10-15, variant J): full-bleed 3:2 from the top edge, "tomh." and "menü" sit on it (difference).
+     Only the hero is pulled out (page margins, body padding-top, --detail-top); the container keeps its padding,
+     which the legal pages share. Teaser and still are cropped by object-fit: cover, the film stays letterboxed. */
+  @media (max-width: $bp-mobile) {
+    width: calc(100% + 2 * var(--page-margin));
+    margin: calc(-1 * (var(--page-top) + var(--detail-top))) calc(-1 * var(--page-margin)) 0;
+    aspect-ratio: 3 / 2;
+    /* Own stacking context: without it WebKit paints a black square over the top left of the pulled-out hero
+       once the page below has more video layers (Playwright WebKit 2026-10-15) */
+    z-index: 1;
+  }
+
   > .media-reveal,
   .hero-film {
     position: absolute;
