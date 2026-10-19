@@ -6,7 +6,7 @@
     "hero": {
       "image": { "src": "images/projects/reality-by-algorithm/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAADwBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAAW7XGpqyHKdH7KdLjo5qAASllj7AA/uxBwoWp/AweKsTbhwTd0e/mRwOgE2H51AddJPW138gpc5DFcT2lhNdOqkBT5jNa7RAj/4w6nZt6CN4L77gCaEWYoaae5xmIgcl72eW5PxCO1+oVbSoGkE1j3gAA", "color": "#555555" },
       "teaser": "images/projects/reality-by-algorithm/_ABB/teaser.mp4",
-      "film": { "vimeo": "1224883384" }
+      "film": { "bunny": "683f0c20-6bf5-44e0-b1d5-a22cc0966e6d" }
     },
     "preview": { "portrait": "images/projects/reality-by-algorithm/_ABB/preview-portrait.mp4" },
     "blocks": [
@@ -83,7 +83,8 @@
     "year": "2025",
     "hero": {
       "image": { "src": "images/projects/sono-bricolage/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABwBACdASogABIAPtFcpEyoJaOiMBgIAQAaCWkAAI/X+tbp4JLTZsTSPdfTAAD+8NODg62G67z66u9NUDsUQRO3ftyd9GIlN6tsosByQTS/P/bnpfJlY3+iPHVg7Hy4v8qSGoy2ko3J3MsUUV0oNl8wAAA=", "color": "#383838" },
-      "teaser": "images/projects/sono-bricolage/_ABB/teaser.mp4"
+      "teaser": "images/projects/sono-bricolage/_ABB/teaser.mp4",
+      "film": { "bunny": "b01b511d-a370-40a7-a649-2cb4c4d8ea85" }
     },
     "preview": { "portrait": "images/projects/sono-bricolage/_ABB/preview-portrait.mp4" },
     "blocks": [
@@ -192,7 +193,8 @@
     "year": "2025",
     "hero": {
       "image": { "src": "images/projects/boomtschakkaboom/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABwBACdASogABIAPtFcpk6oJSMiKAqpABoJZwAD5Ss4zX436pcUmZhESX9kwAD++2mgL8at7GEjbkADr5bnpPsrkWgK5Hfhr/v2c7GdhTqfMPUZa9LMa1fI+akvvSaDHuqtmY2eRD+RTiY5Y8svdnER2t4kRsY2fe1uvVBId5ZuceZecB6yV/6w/NZKT8oQAAA=", "color": "#1d1e20" },
-      "teaser": "images/projects/boomtschakkaboom/_ABB/teaser.mp4"
+      "teaser": "images/projects/boomtschakkaboom/_ABB/teaser.mp4",
+      "film": { "bunny": "9987c97d-ff66-4b49-a977-c36c5973ae2d" }
     },
     "preview": { "portrait": "images/projects/boomtschakkaboom/_ABB/preview-portrait.mp4" },
     "blocks": [
@@ -347,7 +349,7 @@
     "hero": {
       "image": { "src": "images/projects/lonis-weltraumreise/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRgABAABXRUJQVlA4IPQAAAAQBgCdASogABIAPtFYpU0oJKOiMBgIAQAaCWwAnRHM2oZjk6svSpmCIrTmSUqxd2DapCkHXGIOowAA/urSvcc3eLdcvt0ZgNi7fEaDKwZp3NL7KrTI5hmLwxJ5yVN2LLPDdAYe0oI2TiGvUOfI1V1/YtuZmokSlGUAD337QQlvIdrml8McDPJg3Ot60GKgehG4g52PAMxUxdU+U2eHzk4pFvxIKVlLehlMZIL8gxw6YohXkKdbMlboxBi/OwQhmHDpskA3lJjeDT8GZEN/fQQ3jbP8PoxcplYDqyMJt4zscFTCUWujJ98f4e7fH8uPoO5BAwAA", "color": "#a4c4cb" },
       "teaser": "images/projects/lonis-weltraumreise/_ABB/teaser.mp4",
-      "film": { "vimeo": "1092231191" }
+      "film": { "bunny": "f1e1ae1a-434c-4e3c-98cd-f337667d9dcb" }
     },
     "preview": { "portrait": "images/projects/lonis-weltraumreise/_ABB/preview-portrait.mp4" },
     "blocks": [
@@ -469,7 +471,8 @@
     "year": "2023",
     "hero": {
       "image": { "src": "images/projects/present/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAAAQBgCdASogABIAPtFUokuoJKMhsAgBABoJZQDM0ywjAHEBVUjkTF91OcW0nG2VHWURw7HHBmzQTNAA/pG/u/5rLU8TDmXFNSkg7pf5Ct7Q3rMrCGZ3WuS4T4aEnr6vAGOxWoVodLib11FiBtYo/usnhE9K+msZWBsMFzqD3T3r19edoYT6x6DC0GEtxDug3fCaQyWr1J4Vforo/uGwoWMcXFnUCvdYq9xWJZMW+jCNf/LlnKGpXSiuAZv6FMN29dxDMv7XM1eWiwvb+CXGAD+DQoNPv5KJZW9/IfzcdQehcXEHxVuXOQ9GbLcirOC0AAA=", "color": "#6d7372" },
-      "teaser": "images/projects/present/_ABB/teaser.mp4"
+      "teaser": "images/projects/present/_ABB/teaser.mp4",
+      "film": { "bunny": "418e0d51-abb9-42c4-a2f0-ed948925d1ec" }
     },
     "preview": { "portrait": "images/projects/present/_ABB/preview-portrait.mp4" },
     "blocks": [

@@ -429,8 +429,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                 };
 
-                // Safari/iOS: HLS nativ, Start noch im Klick (iOS erlaubt Ton nur direkt aus der Geste)
-                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Safari/iOS: HLS nativ, Start noch im Klick (iOS erlaubt Ton nur direkt aus der Geste).
+                // Chrome kann HLS inzwischen auch nativ (155 getestet), startet dort aber ~4 s in 240p: Chromium-Browser
+                // mit MediaSource nehmen deshalb hls.js mit Startstufe nach Playergröße (siehe unten)
+                const nativeHls = !!video.canPlayType('application/vnd.apple.mpegurl');
+                const mse = !!(window.MediaSource || window.ManagedMediaSource);
+                if (nativeHls && !(window.chrome && mse)) {
                     video.src = video.dataset.src;
                     start();
                     return Promise.resolve(player);
@@ -444,6 +448,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!Hls.isSupported()) throw new Error('HLS wird in diesem Browser nicht unterstützt');
                     hls = new Hls({ capLevelToPlayerSize: true });
                     hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        // Start in der Stufe, die zur Playerhöhe passt (höchstens 720p), statt in der ersten der Playlist (240p);
+                        // danach regelt hls.js nach Bandbreite
+                        const target = Math.min(720, video.clientHeight * (window.devicePixelRatio || 1));
+                        let first = 0;
+                        hls.levels.forEach((l, i) => { if (l.height <= target && l.height > hls.levels[first].height) first = i; });
+                        hls.startLevel = first;
                         start();
                         resolve(player);
                     });
