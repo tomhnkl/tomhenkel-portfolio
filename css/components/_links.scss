@@ -1,0 +1,74 @@
+/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11;
+   internal vs. external hover, 2026-10-14) ---
+   At rest like the surrounding text. Links that leave the site are marked with ↗: other websites (new tab),
+   mail (mailto:) and phone (tel:); internal links never.
+   Hover/focus: internal links get the underline (same as nav and footer, underline mixin in base/_typography.scss);
+   external links get no underline, instead the ↗ glides 3px up and to the right (after josefa-rackl.com).
+   Same font, so the width never changes and nothing shifts. */
+$external-link: '[target="_blank"], [href^="mailto:"], [href^="tel:"]';
+
+.text-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    @include underline;
+  }
+}
+
+/* ↗ after the label: own vector arrow (Tom 2026-10-14, option B), because the site font has no ↗ glyph
+   (browsers fell back to other fonts, e.g. PingFang SC on macOS). Drawn to the typeface, Funnel Sans 400 (2026-10-15;
+   before: Helvetica, box 0.717em, stroke 0.088em): box = cap height (0.675em), stroke = stem of "l" (0.09em),
+   open head of two arms (60 % of the box), square ends, sits on the baseline, 0.25em gap.
+   A mask in currentColor, so it takes the link colour and the difference blend. Decorative (empty content, not read out).
+   As an inline-block the link's underline never reaches it. Construction: svg() in _tooling/previews/arrows/variants.js */
+%external-arrow {
+  content: "";
+  display: inline-block;
+  width: 0.675em;
+  height: 0.675em;
+  margin-left: 0.25em;
+  vertical-align: baseline;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 675 675' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M315 45H630V360' stroke-width='90'/%3E%3Cpath d='M63.6 611.4L598.2 76.8' stroke-width='90'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 675 675' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M315 45H630V360' stroke-width='90'/%3E%3Cpath d='M63.6 611.4L598.2 76.8' stroke-width='90'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.text-link:is([target="_blank"], [href^="mailto:"], [href^="tel:"])::after {
+  @extend %external-arrow;
+}
+
+/* Footer: the link's own ::after holds the label width (components/_nav.scss), so the arrow follows the words
+   (main.js wraps every footer label in .ul-words) */
+.main-footer .footer-left a:is([target="_blank"], [href^="mailto:"], [href^="tel:"]) .ul-words::after {
+  @extend %external-arrow;
+}
+
+/* External links: no underline on hover/focus, the arrow moves instead */
+.text-link:is(#{$external-link}),
+.main-footer .footer-left a:is(#{$external-link}) {
+  &:hover,
+  &:focus-visible {
+    text-decoration-line: none;
+
+    .ul-w { text-decoration-line: none; }
+  }
+}
+
+@mixin external-arrow-moved {
+  transform: translate(3px, -3px);
+}
+
+@media (hover: hover) {
+  .text-link:is(#{$external-link}):hover::after,
+  .main-footer .footer-left a:is(#{$external-link}):hover .ul-words::after {
+    @include external-arrow-moved;
+  }
+}
+
+.text-link:is(#{$external-link}):focus-visible::after,
+.main-footer .footer-left a:is(#{$external-link}):focus-visible .ul-words::after {
+  @include external-arrow-moved;
+}

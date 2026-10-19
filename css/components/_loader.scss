@@ -1,0 +1,33 @@
+/* --- Loader --- */
+#loader {
+  position: fixed;
+  inset: 0; /* Not 100vw: that would reach under a reserved scrollbar gutter */
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity var(--duration-slow) var(--ease-out), visibility var(--duration-slow) var(--ease-out);
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Large centered word (a p, so the page keeps exactly one h1).
+     Hidden until loading takes longer than LOADER_WORD_DELAY (main.js sets .word-visible) */
+  .loader-text {
+    font-family: var(--font-family-base);
+    @include underline; /* Was the Lining cut */
+    font-size: var(--fs-poster);
+    font-weight: 400;
+    margin: 0;
+    color: #fff;
+    line-height: var(--lh-poster);
+    @include poster-word-optical-centre;
+    visibility: hidden;
+  }
+
+  &.word-visible .loader-text { visibility: visible; }
+}

@@ -1,0 +1,42 @@
+/* Funnel Sans (Tom 2026-10-15): upright variable font v1.001 by Dicotype / NORD ID, SIL Open Font License 1.1 (fonts/OFL.txt),
+   self-hosted, one file for every weight (wght axis 300–800). Preloaded in every HTML head; until it has loaded the
+   Helvetica fallback from the role tokens in base/_variables.scss shows (swap). No italic file: the site sets no italics.
+   The ABC Favorit @font-face rules (trial OTFs in fonts/) are in git history before 2026-10-10. */
+@font-face {
+  font-family: 'Funnel Sans';
+  src: url('../fonts/FunnelSans-VF.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+html, body {
+  margin: 0;
+  overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
+}
+
+html {
+  height: 100%;
+  /* Reserve the scrollbar's space on every page: with classic scrollbars, pages that fit the viewport (work, lab, about)
+     and pages that scroll (projects) get the same width, so right-aligned elements don't jump between them */
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-height: 100%; /* Grows with scrolling pages, so padding-bottom keeps the last content clear of the fixed footer */
+  font-family: var(--font-family-base);
+  background: #000;
+  color: #fff;
+  padding: var(--page-top) var(--page-margin) var(--page-bottom) var(--page-margin); /* Increased bottom padding for footer gap */
+  box-sizing: border-box;
+  position: relative;
+  
+  /* Typography improvements */
+  font-size: var(--fs-body); /* Default for text without its own size (instead of the browser's 16px) */
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}

@@ -1,0 +1,574 @@
+/* --- Project Detail ---
+   Hero, title block, modules from the kit (media rows, text, accordions), more projects.
+   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md
+   The legal pages (#legal-content, pages/_legal.scss) share the container, the heading sizes and the title/text classes. */
+#project-detail,
+#legal-content {
+  @extend %grid-12; /* Left half: columns 1–6, right half: columns 7–12 */
+  row-gap: 0;
+  --detail-top: 5vh; /* Standard top offset (the hero controls compute the hero's position from it) */
+  padding-top: var(--detail-top);
+  padding-bottom: var(--space-l); /* Page end; the body padding keeps it clear of the footer */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Headings: one size per level from the heading scale (base/_variables.scss), set on the tag (h1 via .pd-title).
+   h1 project title; h2 subtitle and more projects; h3 category/year, text, personal and accordion titles.
+   Browser defaults are reset; :where() keeps specificity at 0, so classes only add layout and cut. */
+:where(#project-detail, #legal-content) :where(h2, h3) {
+  margin: 0;
+  font-weight: inherit;
+}
+
+:where(#project-detail, #legal-content) :where(h2) {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+}
+
+:where(#project-detail, #legal-content) :where(h3) {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-ui);
+  letter-spacing: normal;
+}
+
+/* Default: unplaced children (e.g. "Project not found") span the full width.
+   :where() keeps specificity at 0, so the .pd-* placements below still win. */
+:where(#project-detail, #legal-content) > * {
+  grid-column: 1 / -1;
+}
+
+/* Vertical rhythm: spacing belongs to the relation between neighbours
+   (--space-s within a group, --space-m between related elements, --space-l between sections) */
+.pd-title-row { margin-top: var(--space-m); }             /* Hero → title block */
+.pd-block { margin-top: var(--space-l); }                  /* Title block → module, module → module */
+.pd-media + .pd-media { margin-top: var(--space-s); }      /* Consecutive media rows form one grid */
+.pd-text + .pd-accordions { margin-top: var(--space-m); }  /* Text and its details belong together */
+.pd-text + .pd-links,
+.pd-links + .pd-accordions { margin-top: var(--space-m); }   /* Links belong to the text and its details */
+.pd-footer-nav-title { margin-top: var(--space-l); }       /* Last module → more projects */
+.pd-footer-nav { margin-top: var(--space-m); }             /* Heading → cards */
+
+/* 1. Hero: teaser loop or image; the film (Bunny HLS video, or for now a Vimeo/YouTube iframe) loads on click (initHeroPlayer) */
+.pd-hero {
+  --hero-tap: 44px; /* Minimum tap target of the film buttons */
+  --hero-pad-x: 8px; /* Side padding of the film buttons */
+  /* Visible height of a control label (all at UI size); the row placement only uses --hero-tap, --hero-pad-x and this,
+     so a different label (e.g. an icon) only has to set its own height here */
+  --hero-label-h: calc(var(--fs-ui) * var(--lh-ui));
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #111;
+  position: relative; /* Context for media, film and custom controls */
+  overflow: hidden;
+  @include grid-cols(1, -1);
+
+  /* Phone (Tom 2026-10-15, variant J): full-bleed 3:2 from the top edge, "tomh." and "menü" sit on it (difference).
+     Only the hero is pulled out (page margins, body padding-top, --detail-top); the container keeps its padding,
+     which the legal pages share. Teaser and still are cropped by object-fit: cover, the film stays letterboxed. */
+  @media (max-width: $bp-mobile) {
+    width: calc(100% + 2 * var(--page-margin));
+    margin: calc(-1 * (var(--page-top) + var(--detail-top))) calc(-1 * var(--page-margin)) 0;
+    aspect-ratio: 3 / 2;
+    /* Own stacking context: without it WebKit paints a black square over the top left of the pulled-out hero
+       once the page below has more video layers (Playwright WebKit 2026-10-15) */
+    z-index: 1;
+  }
+
+  > .media-reveal,
+  .hero-film {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  iframe, video, img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border: none;
+    pointer-events: none; /* The custom controls take all clicks */
+  }
+
+  /* Film fades in over the teaser once it plays; never cropped (letterbox on the hero background) */
+  .hero-film {
+    object-fit: contain;
+    background-color: #111; /* Letterbox bars, if a film's format ever differs from the hero, cover the teaser/still */
+    /* Phones: the playing film fills the 3:2 hero like the teaser, cropped left/right, no bars, no jump
+       (Tom 2026-10-19); "vollbild" shows it whole */
+    @media (max-width: $bp-mobile) { object-fit: cover; }
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  &.film-visible .hero-film { opacity: 1; }
+
+  /* Click surface over the whole hero (below the controls): starts or pauses the film */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    cursor: pointer;
+  }
+
+  /* Controls (D11; Tom 2026-10-19): every word at UI size like the nav, no underline; hover thickens the word
+     (400 → 650 with the start page list's fast weight transition). A grid over the whole hero:
+       not loaded  only "abspielen", centred on the film
+       playing     "pause · ton aus · vollbild" as one right-aligned row at the bottom right
+       paused      "abspielen · ton aus · vollbild" in the same spot, only the first word changes (the row is
+                   right-aligned, so "ton aus" and "vollbild" never move; Tom 2026-10-19)
+     Centred only before the film has started (or after it fell back to the teaser): .has-film from main.js
+     The labels sit on the page margin, the 44px tap areas reach past it (--hero-pad-x at the side). */
+  .hero-controls {
+    --hero-row-bottom: var(--page-bottom); /* Above the fixed footer line, so the row never covers "de / en" */
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    grid-template-rows: 1fr auto;
+    column-gap: calc(var(--space-s) - 2 * var(--hero-pad-x)); /* Visible gap --space-s between the words */
+    padding-right: calc(var(--page-margin) - var(--hero-pad-x));
+    padding-bottom: calc(var(--hero-row-bottom) - (var(--hero-tap) - var(--hero-label-h)) / 2);
+    mix-blend-mode: difference;
+    will-change: transform; /* Own layer: iOS only blends with the video layer then (see .home-list in _home.scss) */
+    transform: translateZ(0); /* Also the containing block of the centred "abspielen" */
+    pointer-events: none; /* Only the buttons catch clicks, the rest goes to the overlay */
+
+    @media (max-width: $bp-mobile) { --hero-row-bottom: var(--page-margin); } /* Phones: footer only in the menu */
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--hero-tap);
+      min-height: var(--hero-tap);
+      padding: 0 var(--hero-pad-x);
+      white-space: nowrap;
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: var(--font-family-base);
+      font-size: var(--fs-ui);
+      line-height: var(--lh-ui);
+      font-weight: 400;
+      transition: font-weight var(--duration-fast) var(--ease-out);
+      cursor: pointer;
+      pointer-events: auto;
+      appearance: none;
+      -webkit-appearance: none;
+
+      /* Only with a real pointer: on touch, :hover would stick after a tap */
+      @media (hover: hover) {
+        &:hover { font-weight: var(--font-weight-bold); }
+      }
+
+      &[hidden] { display: none; }
+    }
+
+    /* The row (playing): pause · ton aus · vollbild */
+    #btn-play { grid-row: 2; grid-column: 2; }
+    #btn-sound { grid-row: 2; grid-column: 3; }
+    #btn-fullscreen { grid-row: 2; grid-column: 4; }
+  }
+
+  /* Before the first start: "abspielen" alone in the exact centre of the film */
+  &:not(.has-film) .hero-controls #btn-play {
+    grid-area: auto; /* Without a grid area the whole hero is its containing block, not the row cell */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Phones (Tom 2026-10-19, O1): "abspielen" plain white over a soft spot behind it instead of difference;
+     the spot sits below the overlay (9) and the buttons (10) and fades out while the film plays */
+  @media (max-width: $bp-mobile) {
+    .hero-controls { mix-blend-mode: normal; }
+
+    &:has(.hero-controls)::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 240px;
+      height: 130px;
+      transform: translate(-50%, -50%);
+      z-index: 8;
+      pointer-events: none;
+      background: radial-gradient(closest-side, rgba(0, 0, 0, 0.45) 40%, rgba(0, 0, 0, 0.248) 68%, rgba(0, 0, 0, 0));
+      transition: opacity var(--duration-base) var(--ease-out);
+    }
+
+    &.has-film::after { opacity: 0; } /* Once started the words sit in the row, the spot is no longer needed */
+  }
+
+  /* Timeline at the bottom edge (Tom 2026-10-19): the watched part white over a faint track, tap or drag to jump.
+     The tap area is taller than the 2px line; above the click overlay (9, earlier in the markup), below the buttons (10) */
+  .hero-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    z-index: 9;
+    cursor: pointer;
+    touch-action: none; /* Dragging seeks instead of scrolling the page */
+
+    &[hidden] { display: none; }
+
+    &::before,
+    .hero-progress-bar {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+    }
+
+    &::before { background: rgba(255, 255, 255, 0.3); }
+
+    .hero-progress-bar {
+      background: #fff;
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+
+    &:focus-visible { outline-offset: -2px; } /* Inside the hero, which clips overflow */
+  }
+
+  /* Fullscreen: the whole hero (film with its own controls) on black; iPhone uses the system player instead */
+  &:fullscreen {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    aspect-ratio: auto;
+    background: #000;
+
+    .hero-film {
+      object-fit: contain; /* The whole film, also on phones */
+      background-color: #000;
+    }
+  }
+
+  &:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    aspect-ratio: auto;
+    background: #000;
+
+    .hero-film {
+      object-fit: contain; /* The whole film, also on phones */
+      background-color: #000;
+    }
+  }
+
+  &::backdrop { background: #000; }
+
+  /* Hovering the film thickens the word it would trigger (pointer devices only), like hovering the word itself */
+  @media (hover: hover) {
+    .hero-overlay:hover ~ .hero-controls #btn-play { font-weight: var(--font-weight-bold); }
+  }
+}
+
+/* 2.–4. Title block (full-width block, so the modules always start below it).
+   Markup order title (h1), subtitle (h2), meta (h3) = mobile order and heading order.
+   Desktop: title + meta in the first row, subtitle as second row (the meta is pinned to row 1).
+   Up to $bp-title-stack (Tom 2026-10-15): title → subtitle (--space-s) → meta (--space-m) at full width;
+   category and year in one line, spread to both edges (space-between). */
+.pd-title-row {
+  @extend %grid-12;
+  align-items: start;
+  @include grid-cols(1, -1);
+
+  h1.pd-title {
+    display: block; /* Override global h1 none */
+    margin: 0;
+    font-size: var(--fs-h1);
+    font-family: var(--font-family-base);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display); /* Tighten large text */
+    @include grid-cols(1, 7);
+
+    @media (max-width: $bp-title-stack) { grid-column: 1 / -1; }
+  }
+
+  .pd-meta {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: flex-end;  /* Align to the right edge */
+    text-align: right;      /* Text alignment */
+    font-family: var(--font-family-base);
+    color: #fff;
+    grid-row: 1; /* Next to the title, although it follows the subtitle in the markup */
+    @include grid-cols(7, 13);
+
+    .pd-year {
+        color: #fff;
+    }
+
+    @media (max-width: $bp-title-stack) {
+      grid-row: auto; /* Markup order: below the subtitle */
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap; /* Safety net: the year drops below only if the line can't fit */
+      justify-content: space-between; /* Category left, year right */
+      align-items: baseline;
+      column-gap: var(--space-s); /* Minimum gap before wrapping */
+      text-align: left;
+      margin-top: var(--space-m); /* Subtitle → meta */
+    }
+  }
+}
+
+/* 4. Subtitle (second row inside .pd-title-row) */
+.pd-subtitle {
+  font-family: var(--font-family-book); /* h2 size */
+  color: #fff;
+  margin-top: var(--space-s);
+  @include grid-cols(1, 7); /* Left half */
+
+  @media (max-width: $bp-title-stack) { grid-column: 1 / -1; } /* Stacked title block */
+
+  &:empty { display: none; } /* No subtitle: no empty gap between title and meta (mobile) */
+}
+
+/* 5. Media row: cells on the 12 columns (--col-start / --col-span).
+   The largest cell sets the row height (--row-ratio), the others stretch to it and crop (cover).
+   Mobile: stacked at full width, each in its own exported format (--ratio). */
+.pd-media {
+  @extend %grid-12;
+  @include grid-cols(1, -1);
+
+  .pd-cell {
+    grid-column: var(--col-start, auto) / span var(--col-span, 12);
+    position: relative; /* Media lies absolute inside, so only the lead cell sizes the row */
+    overflow: hidden;
+
+    &.is-lead { aspect-ratio: var(--row-ratio); }
+
+    > .media-reveal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    img, video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @media (max-width: $bp-mobile) {
+    row-gap: var(--space-s);
+
+    .pd-cell,
+    .pd-cell.is-lead {
+      grid-column: 1 / -1;
+      aspect-ratio: var(--ratio); /* Also the lead cell: its own format instead of the row format */
+    }
+
+    .pd-cell.is-empty { display: none; }
+  }
+}
+
+/* 6. Text (right half), optional heading */
+.pd-text {
+  @include grid-cols(7, 13); /* Right half */
+
+  .pd-text-title {
+    margin: 0 0 var(--space-s); /* h3 size */
+    font-family: var(--font-family-base);
+  }
+
+  .pd-text-body {
+    font-size: var(--fs-body);
+    font-family: var(--font-family-book); /* Running text in Book, titles and UI in Regular */
+    line-height: var(--lh-body);
+    max-width: var(--measure);
+    white-space: pre-line; /* Respect breaks */
+  }
+}
+
+/* Links module (right half): one link per line at the size of the accordion titles */
+.pd-links {
+  @include grid-cols(7, 13); /* Right half */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-book); /* Same as running text and the About contact links */
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* 7. Accordions (right half); height animation: initAccordionAnimation() */
+.pd-accordions {
+  border-top: 1px solid #fff; /* First line */
+  @include grid-cols(7, 13); /* Right half */
+}
+
+details.pd-accordion {
+  border-bottom: 1px solid #fff;
+
+  summary {
+    list-style: none; /* Hide default triangle */
+    padding: var(--space-s) 0;
+    font-size: var(--fs-h3); /* Like its h3, so the icon matches it */
+    line-height: var(--lh-ui);
+    font-family: var(--font-family-base);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    /* Disable Text Selection and Hover Change */
+    user-select: none;
+    -webkit-user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '+';
+      font-size: var(--fs-h3);
+    }
+  }
+
+  &[open] summary::after {
+    content: '-';
+  }
+
+  .accordion-content {
+    font-size: var(--fs-body);
+    font-family: var(--font-family-book); /* Running text */
+    line-height: var(--lh-body);
+    color: #fff;
+    padding-bottom: var(--space-s);
+    box-sizing: border-box; /* Animated height includes the padding */
+    overflow: hidden;
+  }
+
+  /* Media on top at the full accordion width, each in its own format; the text below */
+  .accordion-media {
+    display: grid;
+    row-gap: var(--space-s);
+    margin-bottom: var(--space-s);
+  }
+
+  .accordion-media-item {
+    position: relative;
+    aspect-ratio: var(--ratio); /* Box is reserved before loading, so the open height is right */
+    overflow: hidden;
+
+    > .media-reveal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    img, video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .accordion-text {
+    max-width: var(--measure);
+    white-space: pre-line; /* Blank lines in the text become paragraphs */
+  }
+
+  /* Timeline (D12, option C): content as a list of { date, text }, each entry date above event */
+  .pd-timeline {
+    display: grid;
+    row-gap: var(--space-s);
+    margin: 0;
+    white-space: normal;
+
+    dt {
+      font-family: var(--font-family-base);
+    }
+
+    dd { margin: 0; }
+  }
+}
+
+/* 8. More projects: previous / next */
+.pd-footer-nav-title {
+  font-family: var(--font-family-base); /* h2 size */
+  @include grid-cols(1, 7); /* Left half */
+}
+
+.pd-footer-nav {
+  @extend %grid-12;
+  row-gap: var(--space-m); /* Only when the cards stack (mobile) */
+  @include grid-cols(1, -1);
+
+  .nav-item {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    @include grid-cols(span 6);
+
+    /* Hover (Tom 2026-10-19): title and category go bold like the start page list, no underline (pointer devices only) */
+    .nav-title,
+    .nav-desc {
+      font-weight: 400;
+      transition: font-weight var(--duration-fast) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      &:hover .nav-title,
+      &:hover .nav-desc { font-weight: var(--font-weight-bold); }
+    }
+
+    .nav-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      margin-bottom: var(--space-s);
+
+      > .media-reveal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      img, video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .nav-title {
+      font-size: var(--fs-ui);
+      line-height: var(--lh-ui);
+      font-family: var(--font-family-base);
+      margin: 0 0 5px 0;
+      display: block;
+    }
+
+    .nav-desc {
+      font-size: var(--fs-small);
+      line-height: var(--lh-small);
+      color: #fff;
+    }
+  }
+}

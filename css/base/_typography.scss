@@ -1,0 +1,44 @@
+// Hover/focus/active underline (replaces the Favorit Lining cut).
+// Line position and thickness come from tokens in base/_variables.scss and scale with the font size (em);
+// skip-ink leaves gaps at descenders like Lining did.
+// Gaps at word spaces (D24, like Lining): text-decoration-skip-spaces only works in Chrome, not in WebKit (tested 2026-10-10),
+// so main.js wraps each word of the affected labels in .ul-w (underlineWords). With word spans the line sits on the words only,
+// the element itself draws none (a line on the element would also run under the spaces).
+@mixin underline-line {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  text-decoration-skip-ink: auto;
+}
+
+@mixin underline {
+  @include underline-line;
+
+  &:has(.ul-w) { text-decoration-line: none; }
+  .ul-w { @include underline-line; }
+}
+
+// Full-screen words (loader, state posters) are centred by their line box (--lh-poster 1). Helvetica's metrics put the
+// middle of the cap height on the box centre by themselves (0.014em high); Funnel Sans (ascent 1.0, descent 0.25) puts it
+// (1.0 - 0.25) / 2 - 0.675 / 2 = 0.0375em low, so the word moves up by that much (2026-10-15). Layout stays as it is.
+@mixin poster-word-optical-centre {
+  position: relative;
+  top: -0.0375em;
+}
+
+/* Default h1 size from the heading scale; visible h1s set their own (project/legal title, posters, lab) */
+h1 {
+  margin: 0;
+  font-size: var(--fs-h1);
+  font-weight: 400;
+}
+
+/* Hidden for the eye, read by screen readers (e.g. the home page h1) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

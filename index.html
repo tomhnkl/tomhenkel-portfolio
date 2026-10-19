@@ -3,165 +3,83 @@
 <head>
   <meta charset="utf-8">
   <title>Tom Henkel</title>
+  <!-- Meta-Texte von Tom (D17, 2026-10-15), gleich in DE und EN. og.jpg exportiert Tom (1200 × 630) -->
+  <meta name="description" content="Portfolio">
+  <meta name="author" content="Tom Henkel">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#000">
+  <link rel="canonical" href="https://www.tomhenkel.xyz/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tom Henkel">
+  <meta property="og:title" content="Tom Henkel – Design Engineer">
+  <meta property="og:description" content="Portfolio">
+  <meta property="og:url" content="https://www.tomhenkel.xyz/">
+  <meta property="og:image" content="https://www.tomhenkel.xyz/images/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      font-family: Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #000;
-      color: #fff;
-      position: relative;
-      -webkit-font-smoothing: antialiased; /* Like the portfolio: white on black stays light */
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    .wip {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      font-size: 14px;
-      pointer-events: none;
-    }
-
-    .wip p {
-      margin: 0;
-    }
-
-    /* Name above the two links, bottom right */
-    .corner {
-      position: absolute;
-      right: 64px;
-      bottom: 64px;
-      text-align: right;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    .corner h1 {
-      margin: 0;
-      font: inherit; /* Same size and weight as the links */
-    }
-
-    .corner a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .corner a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .corner {
-        right: 24px;
-        bottom: 24px;
-      }
-    }
-  </style>
+  <!-- Icons exportiert Tom (favicon.svg, favicon.ico 32 px, apple-touch-icon.png 180 px), liegen im Wurzelordner -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Schrift: Funnel Sans (SIL OFL 1.1, fonts/OFL.txt), selbst gehostet; vorladen, damit Helvetica nur kurz oder gar nicht zu sehen ist -->
+  <link rel="preload" href="/fonts/FunnelSans-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/vendor/lenis.min.js" defer></script>
+  <script src="/js/main.js" defer></script>
+  <noscript><style>#loader { display: none; }</style></noscript>
 </head>
 
 <body>
-  <main class="wip">
-    <canvas id="ring" aria-hidden="true"></canvas>
-    <p lang="en">work in progress</p>
+  <a class="skip-link" href="#inhalt" data-i18n-skip>Zum Inhalt</a>
+  <div id="loader">
+    <p class="loader-text" aria-hidden="true"><span class="ul-w">tomh.</span></p>
+  </div>
+  <!-- Ohne JavaScript: Loader aus (noscript im head), stattdessen dieses Poster; Nav und Footer bleiben bedienbar.
+       Einzige Stelle mit fester Mailadresse, ohne JavaScript ist site-content.json nicht lesbar. Texte: Entwurf -->
+  <noscript>
+    <div class="state-poster is-framed">
+      <p class="state-poster-word"><span class="ul-w">tom</span> <span class="ul-w">henkel</span></p>
+      <p class="state-poster-line">Bitte JavaScript aktivieren. / <span lang="en">Please enable JavaScript.</span> <a class="text-link state-link" href="mailto:tom-henkel@gmx.de">tom-henkel@gmx.de</a></p>
+    </div>
+  </noscript>
+
+  <nav class="main-nav">
+    <div class="nav-left"><a href="/">tomh.</a></div>
+    <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-menu">menü</button>
+    <div class="nav-right" id="nav-menu">
+      <a href="/" class="active" data-i18n-nav="projects">projekte</a>
+      <a role="link" aria-disabled="true" data-i18n-nav="lab">das lab</a>
+      <a href="/about" data-i18n-nav="about">über mich</a>
+    </div>
+  </nav>
+
+  <main class="home-container" id="inhalt" tabindex="-1">
+    <h1 class="visually-hidden">Tom Henkel</h1>
+    <div class="home-visual">
+      <!-- Standbilder: ein Block pro Projekt, via JS (buildPreviewSlides) -->
+      <video id="project-preview-video" muted playsinline preload="auto" aria-hidden="true"></video>
+    </div>
+    <!-- Telefon ohne automatischen Wechsel (Bewegung reduzieren, Datensparen): Projekt per Knopf, Tippen oder Wischen (D13) -->
+    <button class="home-step" id="home-step" type="button" hidden></button>
+    <div id="project-list" class="home-list">
+      <!-- Projekte werden hier via JS geladen -->
+    </div>
   </main>
 
-  <div class="corner">
-    <h1>Tom Henkel</h1>
-    <a href="https://www.instagram.com/tomhnkl/" target="_blank" rel="noopener">
-      instagram.com/tomhnkl
-    </a><br>
-    <a href="mailto:tom-henkel@gmx.de">
-      tom-henkel@gmx.de
-    </a>
-  </div>
+  <footer class="main-footer">
+    <div class="footer-left">
+      <span>©tomh</span>
+      <a data-i18n-footer="contact" data-text="kontakt">kontakt</a>
+      <a href="/impressum" data-i18n-footer="impressum" data-text="impressum">impressum</a>
+      <a href="/datenschutz" data-i18n-footer="privacy" data-text="datenschutz">datenschutz</a>
+    </div>
+    <div class="footer-right lang-switch-footer">
+      <button type="button" data-lang="de" data-text="de" aria-pressed="true">de</button>
+      <span class="separator">/</span>
+      <button type="button" data-lang="en" data-text="en" aria-pressed="false">en</button>
+    </div>
+  </footer>
 
-  <script>
-    // ASCII ring: a line of dots with a tail that thins out behind the head.
-    // Helvetica, centred in a fixed character grid so the circle stays round.
-    (() => {
-      const RING = {
-        size: 12,       // character size in px
-        rows: 17,       // outer diameter in text rows
-        thickness: 3,   // 1 = single line, each step adds one character width inwards
-        turn: 4.8,      // seconds per revolution
-        fps: 12,        // drawing is stepped, like a terminal
-        tail: 0.65,     // tail length as a share of the circle
-      };
-      // Grey values from light to dark, measured in Helvetica; no round glyphs
-      const RAMP = ' .-:*+=#', TAU = Math.PI * 2;
-
-      const canvas = document.getElementById('ring'), ctx = canvas.getContext('2d');
-      const still = matchMedia('(prefers-reduced-motion: reduce)');
-      let cells = [], raf = 0, frame = -1;
-
-      function layout() {
-        const W = RING.size * 0.6, H = RING.size * 1.15;
-        // Shrinks on narrow screens so the ring always fits next to the side margins
-        const R = Math.min((RING.rows - 1) / 2 * H, (innerWidth - 48) / 2 - W);
-        const band = Math.min((RING.thickness - 1) * W, R * 0.8);
-        const cols = 2 * Math.round(R / W) + 1, rows = 2 * Math.round(R / H) + 1;
-        const cc = (cols - 1) / 2, rc = (rows - 1) / 2, seen = new Map();
-        // Thickness: concentric lines half a character apart, so the band has no gaps
-        for (let s = 0; s <= Math.round(band / (W / 2)); s++) {
-          const r0 = R - s * W / 2;
-          for (let i = 0; i < 2880; i++) {
-            const a = i / 2880 * TAU;
-            const c = Math.round(cc + r0 * Math.cos(a) / W), r = Math.round(rc + r0 * Math.sin(a) / H);
-            if (!seen.has(r * cols + c)) seen.set(r * cols + c, { x: (c + 0.5) * W, y: (r + 0.5) * H, a: Math.atan2((r - rc) * H, (c - cc) * W) });
-          }
-        }
-        cells = [...seen.values()];
-
-        const dpr = window.devicePixelRatio || 1;
-        canvas.style.width = cols * W + 'px';
-        canvas.style.height = rows * H + 'px';
-        canvas.width = Math.round(cols * W * dpr);
-        canvas.height = Math.round(rows * H * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.font = `${RING.size}px Helvetica, Arial, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillStyle = '#fff';
-      }
-
-      function draw(t) {
-        const head = t / RING.turn * TAU, tail = RING.tail * TAU;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const p of cells) {
-          const d = ((head - p.a) % TAU + TAU) % TAU, i = d < tail ? 1 - d / tail : 0;
-          ctx.fillText(i > 0 ? RAMP[Math.max(1, Math.round(i * (RAMP.length - 1)))] : '.', p.x, p.y);
-        }
-      }
-
-      function loop(now) {
-        const f = Math.floor(now / 1000 * RING.fps);
-        if (f !== frame) { frame = f; draw(now / 1000); }
-        raf = requestAnimationFrame(loop);
-      }
-
-      function start() {
-        cancelAnimationFrame(raf);
-        layout();
-        frame = -1;
-        if (still.matches) draw(0); // Reduced motion: the ring stands still
-        else raf = requestAnimationFrame(loop);
-      }
-
-      start();
-      addEventListener('resize', start);
-      still.addEventListener('change', start);
-    })();
-  </script>
 </body>
 </html>

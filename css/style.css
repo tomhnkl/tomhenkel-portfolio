@@ -1,0 +1,2012 @@
+@charset "UTF-8";
+:root {
+  /* --- Typography System --- */
+  /* Font Families (2026-10-15: Funnel Sans everywhere, self-hosted variable font, @font-face in base/_reset.scss;
+     2026-10-10 to 2026-10-14 the system Helvetica, before that ABC Favorit). Helvetica stays as the fallback.
+     Roles stay separate, so a cut can change by changing only these tokens:
+       base  UI, nav, titles (weight 400)
+       book  running text (weight 400, same cut as base for now)
+       bold  home list hover/active (a weight of the variable font, animated on hover, pages/_home.scss)
+     Funnel Sans metrics (for the optical compensations): cap height 0.675em, x-height 0.5em,
+     ascent 1.0em / descent 0.25em (hhea = typo, so the same line boxes in every engine), stem of "l" at 400: 0.09em */
+  --font-family-base: 'Funnel Sans', Helvetica, Arial, sans-serif;
+  --font-family-book: 'Funnel Sans', Helvetica, Arial, sans-serif;
+  --font-weight-bold: 650;
+  /* Underline for hover/focus/active (replaces the Favorit Lining cut with its built-in line).
+     Position and thickness measured from Lining: line top 0.165em below the baseline, 0.08em thick.
+     Applied via the underline mixin (base/_typography.scss). */
+  --underline-offset: 0.165em;
+  --underline-thickness: 0.08em;
+  /* Headings on project and legal pages (Tom 2026-10-15): fluid modular scale, computed from the $scale-* values above.
+       h3 = g        (category/year, text, accordion and legal section titles)
+       h2 = g · r^k  (subtitle, "Weitere Projekte"; k 0 @390 → 1 @1440, so on the phone h2 = h3 size)
+       h1 = g · r^3  (project and legal titles)
+     g grows linearly 21.24px @390 → 29px @2560, r 1.2 @390 → 1.333 @1440, then constant; both hold outside.
+     As polylines through 390, 768, 1024, 1280, 1440, 2560 (max. 0.13px off the formula):
+       390px:  h1 36.7  / h2 21.24 / h3 21.24
+       1440px: h1 59.2  / h2 33.32 / h3 24.99
+       2560px: h1 68.69 / h2 38.66 / h3 29
+     h1 below 390px: also capped so 'boomtschakkaboom' fits the width ($scale-h1-fit-em). */
+  --fs-h1: min(10.7991vw - 5.4px, 36.703px + 0.019041 * clamp(0px, 100vw - 390px, 378px) + 0.021224 * clamp(0px, 100vw - 768px, 256px) + 0.023106 * clamp(0px, 100vw - 1024px, 256px) + 0.024711 * clamp(0px, 100vw - 1280px, 160px) + 0.00847 * clamp(0px, 100vw - 1440px, 1120px));
+  --fs-h2: calc(21.24px + 0.008536 * clamp(0px, 100vw - 390px, 378px) + 0.011028 * clamp(0px, 100vw - 768px, 256px) + 0.013549 * clamp(0px, 100vw - 1024px, 256px) + 0.015999 * clamp(0px, 100vw - 1280px, 160px) + 0.004767 * clamp(0px, 100vw - 1440px, 1120px));
+  --fs-h3: calc(21.24px + 0.003576 * clamp(0px, 100vw - 390px, 2170px));
+  /* Other font sizes: fluid, derived from the grid columns (px + vw)
+     Fitted tokens = min(phone ramp, clamp(plateau, desktop ramp, max)):
+       phone ramp:   the column is the full width (100vw - 50px)
+       plateau:      holds the size through 768/769, where the column halves
+       desktop ramp: grows with the grid column
+     Ratios are measured text width / font size with the real fonts (+2.5% safety margin). */
+  /* Mobile menu links (only ≤ 768px, where this is min(10.8vw - 5.4px, 37.7px)); was the project title size up to 2026-10-15 */
+  --fs-display: min(10.8vw - 5.4px, clamp(37.7px, 5.4vw - 3.8px, 134px));
+  /* UI: nav, home list, hero buttons, card titles, skip link (not the headings, those are --fs-h*):
+     the widest home list row in bold (14.7em + 20px) fits its column; keeps $bp-tablet at 1220px */
+  --fs-ui: min(6.6vw - 4.5px, clamp(21.9px, 0.4vw + 18.8px, 29px));
+  /* Running text: 16px @320, 18px @1440, 20px @2560 */
+  --fs-body: clamp(16px, 0.18vw + 15.42px, 20px);
+  /* Footer, language switch, card category, lab captions: German footer row fits at 320px, never below 12px */
+  --fs-small: max(12px, min(5.1vw - 5.4px, clamp(13px, 0.18vw + 11.4px, 16px)));
+  /* Full-screen words (loader, lab overlay) */
+  --fs-poster: clamp(48px, 15vw, 384px);
+  /* Measure: 30em / 0.464em per character = ~65 characters per line */
+  --measure: 30em;
+  /* Line Heights (headings: h1 display, h2 title, h3 ui) */
+  --lh-display: 1.05;
+  --lh-title: 1.15;
+  --lh-ui: 1.25;
+  --lh-body: 1.5;
+  --lh-small: 1.3;
+  --lh-poster: 1;
+  /* Letter Spacing: display = h1 (part of the measured 9.03em ratio), title = h2 */
+  --ls-display: -0.02em;
+  --ls-title: -0.01em;
+  /* --- Spacing System ---
+     s: within a group (= grid gap), m: between related elements, l: between sections (always 2 × m)
+     m grows 40px @320 → 60px @1440 → 80px @2560 */
+  --space-s: 20px;
+  --space-m: clamp(40px, 1.786vw + 34.29px, 80px);
+  --space-l: calc(var(--space-m) * 2);
+  --spacing-layout: var(--space-s); /* Grid gap */
+  /* --- Grid System --- */
+  --grid-columns: 12;
+  --page-margin: 25px; /* Left/right page margin (body, nav, footer) */
+  --page-top: 85px; /* Space for the fixed nav (body padding-top, mobile menu) */
+  --page-bottom: 65px; /* Space for the fixed footer (body padding-bottom) */
+  /* --- Motion System: character B "soft-flowing" (chosen 2026-10-01, fine-tuning later) ---
+     Every animation uses only these tokens:
+       fast    small feedback (hover nudge, captions)
+       base    fades, crossfades, menu, accordion
+       slow    large surfaces (loader)
+       stagger offset between items in a sequence (menu links)
+     One curve for everything: a long, soft ease-out. */
+  --duration-fast: 200ms;
+  --duration-base: 500ms;
+  --duration-slow: 900ms;
+  --duration-stagger: 90ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Media reveal: tiny blurred placeholder sharpens once the real image/video has loaded */
+  --reveal-blur: 24px;
+  --duration-reveal: 600ms;
+  --ease-reveal: var(--ease-out);
+  /* Lab canvas glide: half-life of the remaining distance (time-based, same at 60 and 120 Hz) */
+  --glide-half-life: 140ms;
+  /* Smooth scroll (wheel/trackpad): time until a wheel step has arrived (~95 %) */
+  --scroll-settle: 150ms;
+}
+
+/* Reduced motion: all durations 0, so every animation becomes an instant change */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-stagger: 0ms;
+    --duration-reveal: 0ms;
+    --glide-half-life: 0ms;
+    --scroll-settle: 0ms;
+  }
+}
+/* Funnel Sans (Tom 2026-10-15): upright variable font v1.001 by Dicotype / NORD ID, SIL Open Font License 1.1 (fonts/OFL.txt),
+   self-hosted, one file for every weight (wght axis 300–800). Preloaded in every HTML head; until it has loaded the
+   Helvetica fallback from the role tokens in base/_variables.scss shows (swap). No italic file: the site sets no italics.
+   The ABC Favorit @font-face rules (trial OTFs in fonts/) are in git history before 2026-10-10. */
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("../fonts/FunnelSans-VF.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+html, body {
+  margin: 0;
+  overscroll-behavior: none; /* Disable scroll bounce/rubber-banding */
+}
+
+html {
+  height: 100%;
+  /* Reserve the scrollbar's space on every page: with classic scrollbars, pages that fit the viewport (work, lab, about)
+     and pages that scroll (projects) get the same width, so right-aligned elements don't jump between them */
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-height: 100%; /* Grows with scrolling pages, so padding-bottom keeps the last content clear of the fixed footer */
+  font-family: var(--font-family-base);
+  background: #000;
+  color: #fff;
+  padding: var(--page-top) var(--page-margin) var(--page-bottom) var(--page-margin); /* Increased bottom padding for footer gap */
+  box-sizing: border-box;
+  position: relative;
+  /* Typography improvements */
+  font-size: var(--fs-body); /* Default for text without its own size (instead of the browser's 16px) */
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+/* Default h1 size from the heading scale; visible h1s set their own (project/legal title, posters, lab) */
+h1 {
+  margin: 0;
+  font-size: var(--fs-h1);
+  font-weight: 400;
+}
+
+/* Hidden for the eye, read by screen readers (e.g. the home page h1) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- 12-Column Grid --- */
+.pd-footer-nav, .pd-media, .pd-title-row, #project-detail,
+#legal-content, .grid-overlay, .main-nav, .about-section, .home-container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  -moz-column-gap: var(--spacing-layout);
+       column-gap: var(--spacing-layout);
+}
+
+/* --- Layout Mixin --- */
+.about-section, .home-container {
+  grid-template-rows: 1fr; /* Fill available height */
+  /*
+     Height Calculation:
+     100vh
+     - --page-top (Body Padding Top, 85px)
+     - --page-bottom (Body Padding Bottom, 65px)
+  */
+  height: calc(100vh - var(--page-top) - var(--page-bottom));
+  /* Breathing Room: applied as padding so it pushes content down
+     without affecting the container's bottom edge */
+  padding-top: 10vh;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .about-section, .home-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto; /* Allow stacking */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    margin-top: 20px;
+  }
+}
+
+/* --- Navigation --- */
+.main-nav {
+  /* Logo: columns 1–8, links: columns 9–12 (tablet: 1–6 / 7–12) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--page-margin);
+  box-sizing: border-box;
+  align-items: start;
+  z-index: 1000;
+  background-color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  /* Enable pointer events on children */
+}
+.main-nav .nav-left, .main-nav .nav-right, .main-nav .nav-burger {
+  pointer-events: auto;
+}
+.main-nav .nav-left {
+  grid-column: 1/9;
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  color: #fff;
+  font-family: var(--font-family-base);
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .main-nav .nav-left {
+    grid-column: 1/7;
+  }
+}
+.main-nav .nav-left {
+  /* Logo = link to the work page, looks like plain text (D10) */
+}
+.main-nav .nav-left a {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  /* Tap area ~44px+ without changing the layout */
+}
+.main-nav .nav-left a::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
+.main-nav .nav-right {
+  grid-column: 9/13;
+  display: flex;
+  justify-content: space-between;
+  gap: 0;
+  width: 100%;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .main-nav .nav-right {
+    grid-column: 7/13;
+  }
+}
+.main-nav .nav-right a {
+  color: #fff;
+  text-decoration: none;
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+}
+.main-nav .nav-right a[href]:hover, .main-nav .nav-right a.active {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-nav .nav-right a[href]:hover:has(.ul-w), .main-nav .nav-right a.active:has(.ul-w) {
+  text-decoration-line: none;
+}
+.main-nav .nav-right a[href]:hover .ul-w, .main-nav .nav-right a.active .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-nav .nav-right a {
+  /* Not finished yet (the lab, D1): struck through in the same colour, no link, no hover */
+}
+.main-nav .nav-right a[aria-disabled=true] {
+  text-decoration-line: line-through;
+  text-decoration-thickness: var(--underline-thickness);
+  cursor: default;
+}
+.main-nav {
+  /* Menu toggle ("menü" / "schließen"), mobile only */
+}
+.main-nav .nav-burger {
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  /* Only with a real pointer: on touch the hover state would stick after tapping */
+}
+@media (hover: hover) {
+  .main-nav .nav-burger:hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+  .main-nav .nav-burger:hover:has(.ul-w) {
+    text-decoration-line: none;
+  }
+  .main-nav .nav-burger:hover .ul-w {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+}
+.main-nav {
+  /* Mobile: logo + menu toggle; the links become a full-screen menu
+     (kept last so it overrides the column placement above) */
+}
+@media (max-width: 768px) {
+  .main-nav {
+    grid-template-columns: 2fr 1fr;
+    mix-blend-mode: normal; /* Phones: white over the scrim below (body::after), see the readability note there */
+  }
+  .main-nav .nav-left {
+    grid-column: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .main-nav .nav-burger {
+    display: block;
+    grid-column: 2;
+    justify-self: end;
+    position: relative;
+    z-index: 1; /* Above the open menu */
+    /* Bigger tap target (~44px+) without moving the text */
+    padding: 12px;
+    margin: -12px;
+  }
+  .main-nav .nav-right {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: auto;
+    /* Top minus half the link padding, so the first link stays where it was */
+    padding: calc(var(--page-top) - var(--space-s) / 2) var(--page-margin) var(--page-bottom);
+    box-sizing: border-box;
+    visibility: hidden;
+    pointer-events: none; /* Taps pass through immediately while the menu fades out */
+  }
+  .main-nav .nav-right a {
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    /* --space-s between the items (Tom 2026-10-14) as padding: same visual gap, the whole height is the tap area (~58px) */
+    padding: calc(var(--space-s) / 2) 0;
+    opacity: 0;
+  }
+}
+
+/* --- Mobile Menu: open state + black backdrop ---
+   The backdrop sits outside the nav (below it), so the nav keeps mix-blend-mode: difference
+   and renders white on black. Footer and language switch stay visible above it. */
+@media (max-width: 768px) {
+  /* Readability over video (Tom 2026-10-19, option O1): on phones the UI text is plain white over a soft black scrim (45 %)
+     instead of mix-blend-mode: difference, which vanished over mid-tones and the bright reality text wall.
+     Top scrim behind "tomh." / "menü" on every page, below the menu backdrop (999) and the nav (1000), never clickable. */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--page-top) + 55px);
+    z-index: 998;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.45) 20%, rgba(0, 0, 0, 0.369) 40%, rgba(0, 0, 0, 0.225) 60%, rgba(0, 0, 0, 0.081) 80%, rgba(0, 0, 0, 0) 100%);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 999; /* Below nav + footer (1000) */
+    background: #000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  body.menu-open {
+    overflow: hidden; /* No scrolling behind the menu */
+  }
+  body.menu-open::before {
+    opacity: 1;
+    visibility: visible;
+  }
+  body.menu-open .main-nav .nav-right {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  body.menu-open .main-nav .nav-right a {
+    opacity: 1;
+  }
+  body.menu-open .main-footer {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  /* On phones the footer lives in the menu (Tom 2026-10-11): hidden on the pages,
+     shown at the bottom of the open menu in its usual arrangement, after the three links.
+     Only with JavaScript: without it the menu can't open, so the footer (impressum, datenschutz) stays on the page */
+}
+@media (max-width: 768px) and (scripting: enabled) {
+  .main-footer {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+@media (max-width: 768px) {
+  /* Transitions (incl. delays) only after the visitor used the menu (body.menu-animate, set in main.js),
+     so rotating the phone, crossing the breakpoint or returning via bfcache switch instantly.
+     No transitions at all with reduced motion. */
+}
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  body.menu-animate::before {
+    transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+  }
+  body.menu-animate .main-nav .nav-right {
+    /* Stay visible until the last link has faded out */
+    transition: visibility 0s linear calc(var(--duration-base) + 2 * var(--duration-stagger));
+  }
+  body.menu-animate .main-nav .nav-right a {
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+  body.menu-animate .main-footer {
+    transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+  }
+  body.menu-animate {
+    /* Opening: show immediately, links one after another */
+  }
+  body.menu-animate.menu-open::before {
+    transition-delay: 0s;
+  }
+  body.menu-animate.menu-open .main-nav .nav-right {
+    transition-delay: 0s;
+  }
+  body.menu-animate.menu-open .main-nav .nav-right a:nth-child(2) {
+    transition-delay: var(--duration-stagger);
+  }
+  body.menu-animate.menu-open .main-nav .nav-right a:nth-child(3) {
+    transition-delay: calc(2 * var(--duration-stagger));
+  }
+  body.menu-animate.menu-open .main-footer {
+    transition-delay: calc(3 * var(--duration-stagger)), 0s;
+  }
+}
+/* --- Universal Footer --- */
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--page-margin);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 1000;
+  background-color: transparent;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.main-footer .footer-left {
+  pointer-events: auto;
+  display: flex;
+  gap: clamp(8px, 4.88vw - 7.5px, 30px); /* Space between items: 8px on small phones, 30px from 768px */
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-family: var(--font-family-base);
+  color: #fff;
+}
+.main-footer .footer-left a {
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-family-base);
+}
+.main-footer .footer-left a::after {
+  content: attr(data-text);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
+  /* Was set in the Lining cut to reserve its hover width; the underline does not change the width */
+}
+.main-footer .footer-left a:hover {
+  color: #fff;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-footer .footer-left a:hover:has(.ul-w) {
+  text-decoration-line: none;
+}
+.main-footer .footer-left a:hover .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-footer .footer-left a:hover {
+  /* No position nudge any more (Tom 2026-10-14) */
+}
+.main-footer .footer-left span {
+  /* Text items like ©tomh */
+  color: #fff;
+}
+.main-footer .footer-right {
+  pointer-events: auto;
+  /* Reuse lang switch styles logic */
+  display: flex;
+  gap: 7px; /* 2px more than before, so the focus outline (6px) doesn't touch the "/" */
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+.main-footer .footer-right button {
+  background: none;
+  border: none;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  cursor: pointer;
+  padding: 0;
+  color: #fff;
+  text-transform: lowercase;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-footer .footer-right button::after {
+  content: attr(data-text);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
+}
+.main-footer .footer-right button.active, .main-footer .footer-right button:hover {
+  color: #fff;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-footer .footer-right button.active:has(.ul-w), .main-footer .footer-right button:hover:has(.ul-w) {
+  text-decoration-line: none;
+}
+.main-footer .footer-right button.active .ul-w, .main-footer .footer-right button:hover .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.main-footer .footer-right button.active, .main-footer .footer-right button:hover {
+  /* No position nudge any more (Tom 2026-10-14) */
+}
+.main-footer .footer-right span.separator {
+  color: #fff;
+}
+
+/* Remove old footer styles */
+.lang-switch-footer {
+  /* Kept only if needed as selector for legacy, but style moved to .main-footer .footer-right */
+  display: contents; /* If used inside flex container */
+}
+
+/* --- Loader --- */
+#loader {
+  position: fixed;
+  inset: 0; /* Not 100vw: that would reach under a reserved scrollbar gutter */
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity var(--duration-slow) var(--ease-out), visibility var(--duration-slow) var(--ease-out);
+}
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#loader {
+  /* Large centered word (a p, so the page keeps exactly one h1).
+     Hidden until loading takes longer than LOADER_WORD_DELAY (main.js sets .word-visible) */
+}
+#loader .loader-text {
+  font-family: var(--font-family-base);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+#loader .loader-text:has(.ul-w) {
+  text-decoration-line: none;
+}
+#loader .loader-text .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+#loader .loader-text {
+  /* Was the Lining cut */
+  font-size: var(--fs-poster);
+  font-weight: 400;
+  margin: 0;
+  color: #fff;
+  line-height: var(--lh-poster);
+  position: relative;
+  top: -0.0375em;
+  visibility: hidden;
+}
+#loader.word-visible .loader-text {
+  visibility: visible;
+}
+
+/* --- Dev: 12-column overlay (key G, only on dev hosts: localhost, LAN; see main.js) --- */
+.grid-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  z-index: 9998; /* Above nav/footer (1000), below loader (9999) */
+  pointer-events: none;
+  display: none;
+}
+.grid-overlay span {
+  background: rgba(255, 0, 90, 0.15);
+  box-shadow: inset 1px 0 rgba(255, 0, 90, 0.5), inset -1px 0 rgba(255, 0, 90, 0.5);
+}
+
+body.show-grid .grid-overlay {
+  display: grid;
+  /* No mobile layout uses the 12 columns */
+}
+@media (max-width: 768px) {
+  body.show-grid .grid-overlay {
+    display: none;
+  }
+}
+
+/* --- Media Reveal (images + videos, site-wide) ---
+   A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
+   Markup + loading: mediaHTML() / initMediaReveal() in main.js */
+.media-reveal {
+  display: block;
+  overflow: hidden;
+  background-color: var(--media-bg, #111); /* Photo's base colour hides the soft blur edge */
+}
+.media-reveal img, .media-reveal video {
+  display: block;
+  filter: blur(var(--reveal-blur));
+  -o-object-position: var(--focus, 50% 50%);
+     object-position: var(--focus, 50% 50%); /* Focus point for cover crops, e.g. --focus: 30% 50% */
+}
+.media-reveal.is-loaded img, .media-reveal.is-loaded video {
+  filter: blur(0);
+}
+.media-reveal {
+  /* Missing file: keep the colour field instead of a broken image icon */
+}
+.media-reveal.is-error img {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .media-reveal img, .media-reveal video {
+    transition: filter var(--duration-reveal) var(--ease-reveal);
+  }
+}
+/* --- Smooth scroll (Lenis, js/vendor/lenis.min.js; set up in main.js) ---
+   Only wheel/trackpad is smoothed, touch stays native; off with reduced motion and in the lab.
+   Rules from Lenis' own lenis.css */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Iframes would swallow the wheel while the page glides past them */
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* --- Links in content (standard, 2026-10-01; arrow on every link that leaves the site, 2026-10-11;
+   internal vs. external hover, 2026-10-14) ---
+   At rest like the surrounding text. Links that leave the site are marked with ↗: other websites (new tab),
+   mail (mailto:) and phone (tel:); internal links never.
+   Hover/focus: internal links get the underline (same as nav and footer, underline mixin in base/_typography.scss);
+   external links get no underline, instead the ↗ glides 3px up and to the right (after josefa-rackl.com).
+   Same font, so the width never changes and nothing shifts. */
+.text-link {
+  color: inherit;
+  text-decoration: none;
+}
+.text-link:hover, .text-link:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.text-link:hover:has(.ul-w), .text-link:focus-visible:has(.ul-w) {
+  text-decoration-line: none;
+}
+.text-link:hover .ul-w, .text-link:focus-visible .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+
+/* ↗ after the label: own vector arrow (Tom 2026-10-14, option B), because the site font has no ↗ glyph
+   (browsers fell back to other fonts, e.g. PingFang SC on macOS). Drawn to the typeface, Funnel Sans 400 (2026-10-15;
+   before: Helvetica, box 0.717em, stroke 0.088em): box = cap height (0.675em), stroke = stem of "l" (0.09em),
+   open head of two arms (60 % of the box), square ends, sits on the baseline, 0.25em gap.
+   A mask in currentColor, so it takes the link colour and the difference blend. Decorative (empty content, not read out).
+   As an inline-block the link's underline never reaches it. Construction: svg() in _tooling/previews/arrows/variants.js */
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]) .ul-words::after, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"])::after {
+  content: "";
+  display: inline-block;
+  width: 0.675em;
+  height: 0.675em;
+  margin-left: 0.25em;
+  vertical-align: baseline;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 675 675' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M315 45H630V360' stroke-width='90'/%3E%3Cpath d='M63.6 611.4L598.2 76.8' stroke-width='90'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 675 675' fill='none' stroke='%23000' stroke-linecap='square' stroke-linejoin='miter'%3E%3Cpath d='M315 45H630V360' stroke-width='90'/%3E%3Cpath d='M63.6 611.4L598.2 76.8' stroke-width='90'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+/* Footer: the link's own ::after holds the label width (components/_nav.scss), so the arrow follows the words
+   (main.js wraps every footer label in .ul-words) */
+/* External links: no underline on hover/focus, the arrow moves instead */
+.text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible {
+  text-decoration-line: none;
+}
+.text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover .ul-w, .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible .ul-w,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover .ul-w,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible .ul-w {
+  text-decoration-line: none;
+}
+
+@media (hover: hover) {
+  .text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover::after,
+  .main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):hover .ul-words::after {
+    transform: translate(3px, -3px);
+  }
+}
+.text-link:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible::after,
+.main-footer .footer-left a:is([target=_blank], [href^="mailto:"], [href^="tel:"]):focus-visible .ul-words::after {
+  transform: translate(3px, -3px);
+}
+
+/* --- Keyboard focus (D10, option B 2026-10-10) ---
+   Every focusable element: white 2px outline, 4px away from the element. Outline instead of border,
+   so nothing shifts. Only for keyboard focus (:focus-visible), never after a mouse click or tap. */
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+/* Jump targets of the skip link (tabindex="-1") get focus without a frame around the whole page */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Skip link: first tab stop, hidden until it has focus; then black box top left above everything */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10001; /* Above loader (9999) and nav (1000) */
+  padding: var(--page-margin);
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  color: #fff;
+  background: #000;
+  text-decoration: none;
+}
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0;
+}
+.skip-link {
+  /* The box fills the corner: the outline sits on the text like everywhere else */
+}
+.skip-link:focus-visible {
+  outline-offset: calc(4px - var(--page-margin));
+}
+
+/* --- System states as posters (D14, option C 2026-10-10) ---
+   One large underlined word fills the state, like the loader; one small line at the bottom.
+   Used for: load error (in the loader), page without JavaScript (noscript), project not found, 404.html.
+   Texts: site-content.json ui.*.states (noscript and 404.html carry their own copy, see there). */
+.state-poster {
+  position: fixed;
+  inset: 0;
+  z-index: 9999; /* Covers nav and footer (load error, 404) */
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Nav and footer stay usable above it (no JavaScript, project not found) */
+}
+.state-poster.is-framed {
+  z-index: 999; /* Below nav + footer (1000) */
+}
+
+.state-poster-word {
+  font-family: var(--font-family-base);
+  font-size: var(--fs-poster);
+  line-height: var(--lh-poster);
+  font-weight: 400;
+  margin: 0;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.state-poster-word:has(.ul-w) {
+  text-decoration-line: none;
+}
+.state-poster-word .ul-w {
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-offset: var(--underline-offset);
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+.state-poster-word {
+  /* Was the Lining cut */
+  position: relative;
+  top: -0.0375em;
+}
+
+.state-poster-line {
+  position: absolute;
+  left: var(--page-margin);
+  right: var(--page-margin);
+  bottom: var(--page-margin);
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  /* With nav and footer visible: above the footer row */
+}
+.is-framed .state-poster-line {
+  bottom: var(--page-bottom);
+}
+
+/* Links in a state line: tap area at least 44px high without moving the text (padding out, margin back in) */
+.state-link {
+  display: inline-block;
+  padding-block: 14px;
+  margin-block: -14px;
+}
+
+/* --- Homepage Split Layout --- */
+.home-visual {
+  grid-column: 1/9;
+  height: 100%; /* Fill the fixed vertical space */
+  position: relative; /* Fixed container for absolute children */
+  overflow: hidden;
+  background-color: #333;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .home-visual {
+    grid-column: 1/7;
+  }
+}
+.home-visual > video {
+  /* Preview video above the stills; fades in once it plays */
+  position: absolute; /* Prevent intrinsic size jumps on load/swap */
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+  display: block;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.home-visual > video.visible {
+  opacity: 1;
+}
+
+/* Stills: one Media-Reveal block per project (buildPreviewSlides); the active one fades in on top */
+.home-slides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Own stacking context, so the slide order stays below the video */
+  width: 100%;
+  height: 100%;
+}
+
+.home-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.home-slide.is-shown {
+  opacity: 1;
+}
+.home-slide .media-reveal,
+.home-slide img {
+  width: 100%;
+  height: 100%;
+}
+.home-slide img {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-slide.is-shown {
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+}
+.home-list {
+  grid-column: 9/13;
+  display: flex;
+  flex-direction: column;
+  /* Align the list to the bottom of the grid row. 
+     Since the Visual defines the row height (assuming it's taller), 
+     the list bottom will sit flush with the visual bottom. */
+  align-self: end;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .home-list {
+    grid-column: 7/13;
+  }
+}
+
+.project-list-item {
+  display: flex;
+  flex-wrap: wrap; /* Safety net: category drops below only if the row can't fit at all */
+  justify-content: space-between;
+  align-items: baseline;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 0;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-family-book);
+  /* Hover/active weight change (variable font): very fast, only the weight; reduced motion sets the token to 0 (instant) */
+  transition: font-weight var(--duration-fast) var(--ease-out);
+}
+.project-list-item:first-child {
+  border-top: none;
+}
+.project-list-item:last-child {
+  padding-bottom: 0;
+  /* Visual adjustment: the last baseline sits 0.31em above the image bottom, as with Favorit and Helvetica.
+     Funnel Sans (2026-10-15): at --lh-ui 1.25 its baseline is 0.25em above the line box bottom (Helvetica 0.28em), so 0.06em here (was 0.03em) */
+  margin-bottom: calc(var(--fs-ui) * 0.06);
+}
+.project-list-item {
+  /* Active / Hover State */
+}
+.project-list-item.active, .project-list-item:hover {
+  font-weight: var(--font-weight-bold);
+  color: #fff; /* Ensure it stays white */
+}
+.project-list-item .p-title {
+  flex: 1 1 0; /* Wrap check uses the title's min-content; the title then fills the row */
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  margin-right: 20px;
+  font-weight: inherit; /* inherit from parent */
+}
+.project-list-item .p-category {
+  margin-left: auto; /* Stay right-aligned when wrapped onto its own line */
+  font-family: inherit; /* Inherit matching font */
+  font-size: var(--fs-ui); /* Identical size to title */
+  line-height: var(--lh-ui);
+  color: #fff; /* Force white, was #888 */
+  white-space: nowrap;
+  text-align: right;
+  font-weight: inherit;
+}
+
+/* Step button "01 / 05 weiter" (D13): only on phones when the previews may not change by themselves
+   (reduced motion, Save-Data); main.js shows it. Tapping the free image area and swiping also change the project. */
+.home-step {
+  display: none;
+}
+
+/* Mobile: the preview fills the whole screen (cropped like "clip content"),
+   the list sits at the bottom above the footer (kept last to override the rules above) */
+@media (max-width: 768px) {
+  .home-visual {
+    position: fixed;
+    inset: 0;
+    z-index: -1; /* Behind the content, above the black page background */
+    background-color: #000;
+    /* Scrim behind the project list (Tom 2026-10-19, O1): full up to 350px (list text 67–332px above the bottom),
+       fading out by 500px; above the stills (0) and the video (1), never clickable */
+  }
+  .home-visual::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 500px;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.45) 70%, rgba(0, 0, 0, 0.369) 77.5%, rgba(0, 0, 0, 0.225) 85%, rgba(0, 0, 0, 0.081) 92.5%, rgba(0, 0, 0, 0) 100%);
+  }
+  .home-container {
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+    min-height: calc(100svh - var(--page-top) - var(--page-bottom)); /* Visible height with browser bars */
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+  .home-list {
+    align-self: stretch;
+    /* Plain white over the scrim (.home-visual::after); difference vanished over mid-tones (Tom 2026-10-19, O1) */
+  }
+  /* Tapping the free area changes the project (main.js initStepControls); cursor: pointer lets iOS report the tap */
+  .home-stepping .home-container {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .home-step:not([hidden]) {
+    display: block;
+    align-self: flex-start;
+    margin: 0 0 calc(var(--fs-ui) * 0.6);
+    padding: 10px 0; /* Tap area ~47px */
+    min-height: 44px;
+    border: none;
+    background: none;
+    color: #fff;
+    font-family: var(--font-family-base);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    cursor: pointer; /* White over the scrim like the list (Tom 2026-10-19, O1) */
+  }
+}
+@media (max-width: 768px) and (hover: hover) {
+  .home-step:not([hidden]):hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+  .home-step:not([hidden]):hover:has(.ul-w) {
+    text-decoration-line: none;
+  }
+  .home-step:not([hidden]):hover .ul-w {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--underline-thickness);
+    text-underline-offset: var(--underline-offset);
+    -webkit-text-decoration-skip: ink;
+            text-decoration-skip-ink: auto;
+  }
+}
+/* --- About Page --- */
+@media (min-width: 769px) {
+  .about-section {
+    /* Grow with longer text instead of overflowing into the footer (e.g. 1280x720) */
+    height: auto;
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+  }
+}
+
+.about-section .about-image {
+  grid-column: 1/9;
+  align-self: end; /* Explicit bottom alignment */
+  height: 100%; /* Fill vertical space */
+  overflow: hidden;
+  position: relative; /* Fixed container for the absolute portrait */
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .about-section .about-image {
+    grid-column: 1/7;
+  }
+}
+.about-section .about-image .media-reveal {
+  /* Portrait via media reveal (pictureHTML): desktop 1.357:1 source, tablet/mobile square.
+     Out of flow, so it fills the row instead of sizing it */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.about-section .about-image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center; /* Align center */
+}
+
+.about-section .about-text {
+  grid-column: 9/13;
+  align-self: start; /* Align to top of section */
+  /* Visual adjustment: the cap height of the first line meets the image top edge exactly (scales with the body size).
+     Funnel Sans (2026-10-15) at --lh-body 1.5: cap top = half leading (1.5 - 1.0 - 0.25) / 2 + ascent 1.0 - cap height 0.675 = 0.45em
+     below the line box top (Helvetica 0.378em, with the old -0.333em it sat 0.045em low) */
+  margin-top: -0.45em;
+}
+@media (min-width: 769px) and (max-width: 1220px) {
+  .about-section .about-text {
+    grid-column: 7/13;
+  }
+}
+.about-section .about-text .description {
+  font-family: var(--font-family-book); /* Explicitly set to Book */
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  margin-bottom: var(--space-m);
+}
+.about-section .about-text .contact-info {
+  /* Set on the container, so the link standard (.text-link) can switch the cut on hover */
+  font-family: var(--font-family-book);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.about-section .about-text .contact-info a {
+  color: #fff;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.about-section .about-text .contact-info a:last-child {
+  margin-bottom: 0px;
+}
+
+@media (max-width: 768px) {
+  /* Mobile adjustments for About specific elements */
+  .about-section .about-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1; /* Square portrait */
+  }
+  .about-section .about-text {
+    margin-top: var(--space-s); /* Gap below the image (the -0.333em alignment is desktop only) */
+  }
+}
+/* --- Project Detail ---
+   Hero, title block, modules from the kit (media rows, text, accordions), more projects.
+   Markup: renderProjectDetail() in main.js, data model: docs/projekt-baukasten.md
+   The legal pages (#legal-content, pages/_legal.scss) share the container, the heading sizes and the title/text classes. */
+#project-detail,
+#legal-content {
+  /* Left half: columns 1–6, right half: columns 7–12 */
+  row-gap: 0;
+  --detail-top: 5vh; /* Standard top offset (the hero controls compute the hero's position from it) */
+  padding-top: var(--detail-top);
+  padding-bottom: var(--space-l); /* Page end; the body padding keeps it clear of the footer */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Headings: one size per level from the heading scale (base/_variables.scss), set on the tag (h1 via .pd-title).
+   h1 project title; h2 subtitle and more projects; h3 category/year, text, personal and accordion titles.
+   Browser defaults are reset; :where() keeps specificity at 0, so classes only add layout and cut. */
+:where(#project-detail, #legal-content) :where(h2, h3) {
+  margin: 0;
+  font-weight: inherit;
+}
+
+:where(#project-detail, #legal-content) :where(h2) {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+}
+
+:where(#project-detail, #legal-content) :where(h3) {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-ui);
+  letter-spacing: normal;
+}
+
+/* Default: unplaced children (e.g. "Project not found") span the full width.
+   :where() keeps specificity at 0, so the .pd-* placements below still win. */
+:where(#project-detail, #legal-content) > * {
+  grid-column: 1/-1;
+}
+
+/* Vertical rhythm: spacing belongs to the relation between neighbours
+   (--space-s within a group, --space-m between related elements, --space-l between sections) */
+.pd-title-row {
+  margin-top: var(--space-m);
+} /* Hero → title block */
+.pd-block {
+  margin-top: var(--space-l);
+} /* Title block → module, module → module */
+.pd-media + .pd-media {
+  margin-top: var(--space-s);
+} /* Consecutive media rows form one grid */
+.pd-text + .pd-accordions {
+  margin-top: var(--space-m);
+} /* Text and its details belong together */
+.pd-text + .pd-links,
+.pd-links + .pd-accordions {
+  margin-top: var(--space-m);
+} /* Links belong to the text and its details */
+.pd-footer-nav-title {
+  margin-top: var(--space-l);
+} /* Last module → more projects */
+.pd-footer-nav {
+  margin-top: var(--space-m);
+} /* Heading → cards */
+/* 1. Hero: teaser loop or image; the film (Bunny HLS video, or for now a Vimeo/YouTube iframe) loads on click (initHeroPlayer) */
+.pd-hero {
+  --hero-tap: 44px; /* Minimum tap target of the film buttons */
+  --hero-pad-x: 8px; /* Side padding of the film buttons */
+  /* Visible height of a control label (all at UI size); the row placement only uses --hero-tap, --hero-pad-x and this,
+     so a different label (e.g. an icon) only has to set its own height here */
+  --hero-label-h: calc(var(--fs-ui) * var(--lh-ui));
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #111;
+  position: relative; /* Context for media, film and custom controls */
+  overflow: hidden;
+  grid-column: 1/-1;
+  /* Phone (Tom 2026-10-15, variant J): full-bleed 3:2 from the top edge, "tomh." and "menü" sit on it (difference).
+     Only the hero is pulled out (page margins, body padding-top, --detail-top); the container keeps its padding,
+     which the legal pages share. Teaser and still are cropped by object-fit: cover, the film stays letterboxed. */
+}
+@media (max-width: 768px) {
+  .pd-hero {
+    width: calc(100% + 2 * var(--page-margin));
+    margin: calc(-1 * (var(--page-top) + var(--detail-top))) calc(-1 * var(--page-margin)) 0;
+    aspect-ratio: 3/2;
+    /* Own stacking context: without it WebKit paints a black square over the top left of the pulled-out hero
+       once the page below has more video layers (Playwright WebKit 2026-10-15) */
+    z-index: 1;
+  }
+}
+.pd-hero > .media-reveal,
+.pd-hero .hero-film {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.pd-hero iframe, .pd-hero video, .pd-hero img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+  border: none;
+  pointer-events: none; /* The custom controls take all clicks */
+}
+.pd-hero {
+  /* Film fades in over the teaser once it plays; never cropped (letterbox on the hero background) */
+}
+.pd-hero .hero-film {
+  -o-object-fit: contain;
+     object-fit: contain;
+  background-color: #111; /* Letterbox bars, if a film's format ever differs from the hero, cover the teaser/still */
+  /* Phones: the playing film fills the 3:2 hero like the teaser, cropped left/right, no bars, no jump
+     (Tom 2026-10-19); "vollbild" shows it whole */
+}
+@media (max-width: 768px) {
+  .pd-hero .hero-film {
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+}
+.pd-hero .hero-film {
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.pd-hero.film-visible .hero-film {
+  opacity: 1;
+}
+.pd-hero {
+  /* Click surface over the whole hero (below the controls): starts or pauses the film */
+}
+.pd-hero .hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  cursor: pointer;
+}
+.pd-hero {
+  /* Controls (D11; Tom 2026-10-19): every word at UI size like the nav, no underline; hover thickens the word
+     (400 → 650 with the start page list's fast weight transition). A grid over the whole hero:
+       not loaded  only "abspielen", centred on the film
+       playing     "pause · ton aus · vollbild" as one right-aligned row at the bottom right
+       paused      "abspielen · ton aus · vollbild" in the same spot, only the first word changes (the row is
+                   right-aligned, so "ton aus" and "vollbild" never move; Tom 2026-10-19)
+     Centred only before the film has started (or after it fell back to the teaser): .has-film from main.js
+     The labels sit on the page margin, the 44px tap areas reach past it (--hero-pad-x at the side). */
+}
+.pd-hero .hero-controls {
+  --hero-row-bottom: var(--page-bottom); /* Above the fixed footer line, so the row never covers "de / en" */
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  grid-template-rows: 1fr auto;
+  -moz-column-gap: calc(var(--space-s) - 2 * var(--hero-pad-x));
+       column-gap: calc(var(--space-s) - 2 * var(--hero-pad-x)); /* Visible gap --space-s between the words */
+  padding-right: calc(var(--page-margin) - var(--hero-pad-x));
+  padding-bottom: calc(var(--hero-row-bottom) - (var(--hero-tap) - var(--hero-label-h)) / 2);
+  mix-blend-mode: difference;
+  will-change: transform; /* Own layer: iOS only blends with the video layer then (see .home-list in _home.scss) */
+  transform: translateZ(0); /* Also the containing block of the centred "abspielen" */
+  pointer-events: none; /* Only the buttons catch clicks, the rest goes to the overlay */
+}
+@media (max-width: 768px) {
+  .pd-hero .hero-controls {
+    --hero-row-bottom: var(--page-margin);
+  }
+}
+.pd-hero .hero-controls { /* Phones: footer only in the menu */ }
+.pd-hero .hero-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--hero-tap);
+  min-height: var(--hero-tap);
+  padding: 0 var(--hero-pad-x);
+  white-space: nowrap;
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-weight: 400;
+  transition: font-weight var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+  pointer-events: auto;
+  -moz-appearance: none;
+       appearance: none;
+  -webkit-appearance: none;
+  /* Only with a real pointer: on touch, :hover would stick after a tap */
+}
+@media (hover: hover) {
+  .pd-hero .hero-controls button:hover {
+    font-weight: var(--font-weight-bold);
+  }
+}
+.pd-hero .hero-controls button[hidden] {
+  display: none;
+}
+.pd-hero .hero-controls {
+  /* The row (playing): pause · ton aus · vollbild */
+}
+.pd-hero .hero-controls #btn-play {
+  grid-row: 2;
+  grid-column: 2;
+}
+.pd-hero .hero-controls #btn-sound {
+  grid-row: 2;
+  grid-column: 3;
+}
+.pd-hero .hero-controls #btn-fullscreen {
+  grid-row: 2;
+  grid-column: 4;
+}
+.pd-hero {
+  /* Before the first start: "abspielen" alone in the exact centre of the film */
+}
+.pd-hero:not(.has-film) .hero-controls #btn-play {
+  grid-area: auto; /* Without a grid area the whole hero is its containing block, not the row cell */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.pd-hero {
+  /* Phones (Tom 2026-10-19, O1): "abspielen" plain white over a soft spot behind it instead of difference;
+     the spot sits below the overlay (9) and the buttons (10) and fades out while the film plays */
+}
+@media (max-width: 768px) {
+  .pd-hero .hero-controls {
+    mix-blend-mode: normal;
+  }
+  .pd-hero:has(.hero-controls)::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 240px;
+    height: 130px;
+    transform: translate(-50%, -50%);
+    z-index: 8;
+    pointer-events: none;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.45) 40%, rgba(0, 0, 0, 0.248) 68%, rgba(0, 0, 0, 0));
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+  .pd-hero.has-film::after {
+    opacity: 0;
+  }
+  .pd-hero { /* Once started the words sit in the row, the spot is no longer needed */ }
+}
+.pd-hero {
+  /* Timeline at the bottom edge (Tom 2026-10-19): the watched part white over a faint track, tap or drag to jump.
+     The tap area is taller than the 2px line; above the click overlay (9, earlier in the markup), below the buttons (10) */
+}
+.pd-hero .hero-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  z-index: 9;
+  cursor: pointer;
+  touch-action: none; /* Dragging seeks instead of scrolling the page */
+}
+.pd-hero .hero-progress[hidden] {
+  display: none;
+}
+.pd-hero .hero-progress::before,
+.pd-hero .hero-progress .hero-progress-bar {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+}
+.pd-hero .hero-progress::before {
+  background: rgba(255, 255, 255, 0.3);
+}
+.pd-hero .hero-progress .hero-progress-bar {
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.pd-hero .hero-progress:focus-visible {
+  outline-offset: -2px;
+}
+.pd-hero .hero-progress { /* Inside the hero, which clips overflow */ }
+.pd-hero {
+  /* Fullscreen: the whole hero (film with its own controls) on black; iPhone uses the system player instead */
+}
+.pd-hero:fullscreen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  background: #000;
+}
+.pd-hero:fullscreen .hero-film {
+  -o-object-fit: contain;
+     object-fit: contain; /* The whole film, also on phones */
+  background-color: #000;
+}
+.pd-hero:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  background: #000;
+}
+.pd-hero:-webkit-full-screen .hero-film {
+  object-fit: contain; /* The whole film, also on phones */
+  background-color: #000;
+}
+.pd-hero::backdrop {
+  background: #000;
+}
+.pd-hero {
+  /* Hovering the film thickens the word it would trigger (pointer devices only), like hovering the word itself */
+}
+@media (hover: hover) {
+  .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play {
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+/* 2.–4. Title block (full-width block, so the modules always start below it).
+   Markup order title (h1), subtitle (h2), meta (h3) = mobile order and heading order.
+   Desktop: title + meta in the first row, subtitle as second row (the meta is pinned to row 1).
+   Up to $bp-title-stack (Tom 2026-10-15): title → subtitle (--space-s) → meta (--space-m) at full width;
+   category and year in one line, spread to both edges (space-between). */
+.pd-title-row {
+  align-items: start;
+  grid-column: 1/-1;
+}
+.pd-title-row h1.pd-title {
+  display: block; /* Override global h1 none */
+  margin: 0;
+  font-size: var(--fs-h1);
+  font-family: var(--font-family-base);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display); /* Tighten large text */
+  grid-column: 1/7;
+}
+@media (max-width: 768px) {
+  .pd-title-row h1.pd-title {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 960px) {
+  .pd-title-row h1.pd-title {
+    grid-column: 1/-1;
+  }
+}
+.pd-title-row .pd-meta {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  align-items: flex-end; /* Align to the right edge */
+  text-align: right; /* Text alignment */
+  font-family: var(--font-family-base);
+  color: #fff;
+  grid-row: 1; /* Next to the title, although it follows the subtitle in the markup */
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-title-row .pd-meta {
+    grid-column: 1/-1;
+  }
+}
+.pd-title-row .pd-meta .pd-year {
+  color: #fff;
+}
+@media (max-width: 960px) {
+  .pd-title-row .pd-meta {
+    grid-row: auto; /* Markup order: below the subtitle */
+    grid-column: 1/-1;
+    flex-direction: row;
+    flex-wrap: wrap; /* Safety net: the year drops below only if the line can't fit */
+    justify-content: space-between; /* Category left, year right */
+    align-items: baseline;
+    -moz-column-gap: var(--space-s);
+         column-gap: var(--space-s); /* Minimum gap before wrapping */
+    text-align: left;
+    margin-top: var(--space-m); /* Subtitle → meta */
+  }
+}
+
+/* 4. Subtitle (second row inside .pd-title-row) */
+.pd-subtitle {
+  font-family: var(--font-family-book); /* h2 size */
+  color: #fff;
+  margin-top: var(--space-s);
+  grid-column: 1/7;
+}
+@media (max-width: 768px) {
+  .pd-subtitle {
+    grid-column: 1/-1;
+  }
+}
+.pd-subtitle {
+  /* Left half */
+}
+@media (max-width: 960px) {
+  .pd-subtitle {
+    grid-column: 1/-1;
+  }
+}
+.pd-subtitle { /* Stacked title block */ }
+.pd-subtitle:empty {
+  display: none;
+}
+.pd-subtitle { /* No subtitle: no empty gap between title and meta (mobile) */ }
+
+/* 5. Media row: cells on the 12 columns (--col-start / --col-span).
+   The largest cell sets the row height (--row-ratio), the others stretch to it and crop (cover).
+   Mobile: stacked at full width, each in its own exported format (--ratio). */
+.pd-media {
+  grid-column: 1/-1;
+}
+.pd-media .pd-cell {
+  grid-column: var(--col-start, auto)/span var(--col-span, 12);
+  position: relative; /* Media lies absolute inside, so only the lead cell sizes the row */
+  overflow: hidden;
+}
+.pd-media .pd-cell.is-lead {
+  aspect-ratio: var(--row-ratio);
+}
+.pd-media .pd-cell > .media-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.pd-media .pd-cell img, .pd-media .pd-cell video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+@media (max-width: 768px) {
+  .pd-media {
+    row-gap: var(--space-s);
+  }
+  .pd-media .pd-cell,
+  .pd-media .pd-cell.is-lead {
+    grid-column: 1/-1;
+    aspect-ratio: var(--ratio); /* Also the lead cell: its own format instead of the row format */
+  }
+  .pd-media .pd-cell.is-empty {
+    display: none;
+  }
+}
+
+/* 6. Text (right half), optional heading */
+.pd-text {
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-text {
+    grid-column: 1/-1;
+  }
+}
+.pd-text {
+  /* Right half */
+}
+.pd-text .pd-text-title {
+  margin: 0 0 var(--space-s); /* h3 size */
+  font-family: var(--font-family-base);
+}
+.pd-text .pd-text-body {
+  font-size: var(--fs-body);
+  font-family: var(--font-family-book); /* Running text in Book, titles and UI in Regular */
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+  white-space: pre-line; /* Respect breaks */
+}
+
+/* Links module (right half): one link per line at the size of the accordion titles */
+.pd-links {
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-links {
+    grid-column: 1/-1;
+  }
+}
+.pd-links {
+  /* Right half */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-book); /* Same as running text and the About contact links */
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* 7. Accordions (right half); height animation: initAccordionAnimation() */
+.pd-accordions {
+  border-top: 1px solid #fff; /* First line */
+  grid-column: 7/13;
+}
+@media (max-width: 768px) {
+  .pd-accordions {
+    grid-column: 1/-1;
+  }
+}
+.pd-accordions {
+  /* Right half */
+}
+
+details.pd-accordion {
+  border-bottom: 1px solid #fff;
+}
+details.pd-accordion summary {
+  list-style: none; /* Hide default triangle */
+  padding: var(--space-s) 0;
+  font-size: var(--fs-h3); /* Like its h3, so the icon matches it */
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Disable Text Selection and Hover Change */
+  -moz-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+}
+details.pd-accordion summary::-webkit-details-marker {
+  display: none;
+}
+details.pd-accordion summary::after {
+  content: "+";
+  font-size: var(--fs-h3);
+}
+details.pd-accordion[open] summary::after {
+  content: "-";
+}
+details.pd-accordion .accordion-content {
+  font-size: var(--fs-body);
+  font-family: var(--font-family-book); /* Running text */
+  line-height: var(--lh-body);
+  color: #fff;
+  padding-bottom: var(--space-s);
+  box-sizing: border-box; /* Animated height includes the padding */
+  overflow: hidden;
+}
+details.pd-accordion {
+  /* Media on top at the full accordion width, each in its own format; the text below */
+}
+details.pd-accordion .accordion-media {
+  display: grid;
+  row-gap: var(--space-s);
+  margin-bottom: var(--space-s);
+}
+details.pd-accordion .accordion-media-item {
+  position: relative;
+  aspect-ratio: var(--ratio); /* Box is reserved before loading, so the open height is right */
+  overflow: hidden;
+}
+details.pd-accordion .accordion-media-item > .media-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+details.pd-accordion .accordion-media-item img, details.pd-accordion .accordion-media-item video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+details.pd-accordion .accordion-text {
+  max-width: var(--measure);
+  white-space: pre-line; /* Blank lines in the text become paragraphs */
+}
+details.pd-accordion {
+  /* Timeline (D12, option C): content as a list of { date, text }, each entry date above event */
+}
+details.pd-accordion .pd-timeline {
+  display: grid;
+  row-gap: var(--space-s);
+  margin: 0;
+  white-space: normal;
+}
+details.pd-accordion .pd-timeline dt {
+  font-family: var(--font-family-base);
+}
+details.pd-accordion .pd-timeline dd {
+  margin: 0;
+}
+
+/* 8. More projects: previous / next */
+.pd-footer-nav-title {
+  font-family: var(--font-family-base); /* h2 size */
+  grid-column: 1/7;
+}
+@media (max-width: 768px) {
+  .pd-footer-nav-title {
+    grid-column: 1/-1;
+  }
+}
+.pd-footer-nav-title {
+  /* Left half */
+}
+
+.pd-footer-nav {
+  row-gap: var(--space-m); /* Only when the cards stack (mobile) */
+  grid-column: 1/-1;
+}
+.pd-footer-nav .nav-item {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  grid-column: span 6;
+}
+@media (max-width: 768px) {
+  .pd-footer-nav .nav-item {
+    grid-column: 1/-1;
+  }
+}
+.pd-footer-nav .nav-item {
+  /* Hover (Tom 2026-10-19): title and category go bold like the start page list, no underline (pointer devices only) */
+}
+.pd-footer-nav .nav-item .nav-title,
+.pd-footer-nav .nav-item .nav-desc {
+  font-weight: 400;
+  transition: font-weight var(--duration-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .pd-footer-nav .nav-item:hover .nav-title, .pd-footer-nav .nav-item:hover .nav-desc {
+    font-weight: var(--font-weight-bold);
+  }
+}
+.pd-footer-nav .nav-item .nav-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  margin-bottom: var(--space-s);
+}
+.pd-footer-nav .nav-item .nav-media > .media-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.pd-footer-nav .nav-item .nav-media img, .pd-footer-nav .nav-item .nav-media video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+.pd-footer-nav .nav-item .nav-title {
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-family: var(--font-family-base);
+  margin: 0 0 5px 0;
+  display: block;
+}
+.pd-footer-nav .nav-item .nav-desc {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: #fff;
+}
+
+/* --- Legal pages (Impressum, Datenschutz) ---
+   Look of a project text (Tom 2026-10-14): the title as the page's h1 like a project title (.pd-title-row / .pd-title),
+   each section like a text module (.pd-text: h3 title, running text), but on the left under the title (Tom 2026-10-14). Container, heading sizes
+   and these classes come from pages/_project.scss. Markup: legal.html → npm run pages (static DE text), renderLegal() in main.js */
+#legal-content .pd-title-row {
+  margin-top: 0; /* No hero above: the title starts where a project's hero starts */
+}
+
+/* Sections of a long legal text stay together: --space-m between them (Tom 2026-10-14), title → first section as on projects */
+#legal-content .pd-text + .pd-text {
+  margin-top: var(--space-m);
+}
+
+/* Text on the left under the title instead of the right half (Tom 2026-10-14); line length stays at --measure */
+#legal-content .pd-text {
+  grid-column: 1/-1;
+}
+
+/* --- Lab Page (Infinite Canvas) --- */
+body.lab-page {
+  overflow: hidden; /* Prevent native scroll */
+  padding: 0;
+}
+
+#lab-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #111; /* Slightly lighter bg specific for lab? or kept #000 */
+  background-color: #000;
+  cursor: grab;
+}
+#lab-canvas-container.grabbing {
+  cursor: grabbing;
+}
+
+#lab-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Size is effectively infinite, managed via transforms */
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.lab-title-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-family-mono);
+  font-size: var(--fs-poster); /* Sehr groß */
+  line-height: var(--lh-poster);
+  font-weight: 700;
+  color: #888; /* Grau statt Weiß */
+  mix-blend-mode: difference;
+  pointer-events: none; /* Klicks gehen durch */
+  z-index: 50;
+  white-space: nowrap;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.lab-item {
+  position: absolute;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none; /* Prevent text selection during drag */
+}
+.lab-item > .media-reveal {
+  /* Media fill the reserved box: width from size.w, height fixed or from the file's format (renderLab) */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.lab-item img, .lab-item video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  pointer-events: none; /* Let clicks pass through for dragging (unless we want interactions) */
+}
+.lab-item {
+  /* Text block style */
+}
+.lab-item.lab-item-text-block {
+  background: #000;
+  border: 1px solid #333;
+  padding: 20px;
+  width: 300px;
+}
+.lab-item.lab-item-text-block h3 {
+  margin-top: 0;
+  font-family: var(--font-family-lining);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+}
+.lab-item.lab-item-text-block p {
+  margin-bottom: 0;
+  color: #ccc;
+  font-family: var(--font-family-book);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+.lab-item {
+  /* Caption Overlay on Hover */
+}
+.lab-item .lab-caption {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+  background: #000;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+.lab-item:hover .lab-caption {
+  opacity: 1;
+}/*# sourceMappingURL=style.css.map */

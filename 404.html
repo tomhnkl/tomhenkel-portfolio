@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>404 – Tom Henkel</title>
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Wird unter jeder unbekannten Adresse ausgeliefert (Vercel): darum nur absolute Pfade -->
+  <!-- Icons exportiert Tom (favicon.svg, favicon.ico 32 px, apple-touch-icon.png 180 px), liegen im Wurzelordner -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Schrift: Funnel Sans (SIL OFL 1.1, fonts/OFL.txt), selbst gehostet; vorladen, damit Helvetica nur kurz oder gar nicht zu sehen ist -->
+  <link rel="preload" href="/fonts/FunnelSans-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Poster wie der Loader (D14, Option C), ohne Nav und Footer. Texte: Entwurf, aus site-content.json ui.*.states.page_404;
+       der deutsche Text unten gilt ohne JavaScript und bis die Texte geladen sind -->
+  <main class="state-poster">
+    <h1 class="state-poster-word"><span class="ul-w">404</span></h1>
+    <p class="state-poster-line"><span data-state="text">Diese Seite gibt es nicht.</span> <a class="text-link state-link" href="/" data-state="link"><span class="ul-w">Zur</span> <span class="ul-w">Übersicht</span></a></p>
+  </main>
+  <script>
+    // Sprache wie auf den anderen Seiten (gespeicherte Wahl > Browsersprache > Deutsch), Texte aus site-content.json.
+    // Eigenes kleines Skript statt main.js: die Seite hat weder Nav noch Footer, nur diese zwei Texte.
+    (() => {
+      let choice = null;
+      try { choice = localStorage.getItem('languageChoice'); } catch (e) { /* ohne Speicher: Browsersprache */ }
+      fetch('/data/site-content.json').then((r) => r.json()).then((content) => {
+        const available = content.settings.available_languages;
+        const browser = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''])
+          .map((l) => String(l).toLowerCase().split('-')[0])
+          .find((l) => available.includes(l));
+        const lang = available.includes(choice) ? choice : (browser || content.settings.default_language);
+        const ui = content.ui[lang];
+        const texts = ui.states && ui.states.page_404;
+        if (!texts) return;
+        document.documentElement.lang = lang;
+        document.title = `404 – ${ui.page_title}`;
+        document.querySelector('[data-state="text"]').textContent = texts.text;
+        const link = document.querySelector('[data-state="link"]');
+        link.textContent = '';
+        texts.link.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { link.appendChild(document.createTextNode(part)); return; }
+          const word = document.createElement('span'); // Wörter einzeln unterstreichen (Lücken an Leerzeichen, D24)
+          word.className = 'ul-w';
+          word.textContent = part;
+          link.appendChild(word);
+        });
+      }).catch(() => { /* Texte bleiben deutsch */ });
+    })();
+  </script>
+</body>
+</html>

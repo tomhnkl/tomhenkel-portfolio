@@ -1,0 +1,545 @@
+[
+  {
+    "id": "reality-by-algorithm",
+    "featured": true,
+    "year": "2026",
+    "hero": {
+      "image": { "src": "images/projects/reality-by-algorithm/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAADwBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAAW7XGpqyHKdH7KdLjo5qAASllj7AA/uxBwoWp/AweKsTbhwTd0e/mRwOgE2H51AddJPW138gpc5DFcT2lhNdOqkBT5jNa7RAj/4w6nZt6CN4L77gCaEWYoaae5xmIgcl72eW5PxCO1+oVbSoGkE1j3gAA", "color": "#555555" },
+      "teaser": "images/projects/reality-by-algorithm/_ABB/teaser.mp4",
+      "film": { "bunny": "683f0c20-6bf5-44e0-b1d5-a22cc0966e6d" }
+    },
+    "preview": { "portrait": "images/projects/reality-by-algorithm/_ABB/preview-portrait.mp4" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/07.webp", "width": 2560, "height": 1920, "placeholder": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADQBACdASogABgAPr1On0unJKKht/qoAOAXiWkAAFu0cHG5x1BsvIAGgoi9RCQogAD++FB803PoywJFyinno2rH/e5aaRYpSDSuN67MQB7oHOgvEkaM3WB+OMMTGPwh3bkAWcMmeOUT6rTfCoAAAA==", "color": "#161616", "alt": { "de": "reality, by algorithm – Bild 7", "en": "reality, by algorithm – Image 7" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/02.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAACQBQCdASogABIAPtFWo0uoJKMhsAgBABoJaQALAEcAJ4qiM24T6ujGagtxz85polJaGm+ngAD+3fOzvRkLQTktx5bRv79+8j5nA/wI0YfNPQ3x7By8MN0djVw8N1tbkwfxDZoZnZA3Z1tKYnPQJu0HqGMfyXPh9pOyBl1dgZoxnxiZiAlriP9XF0cWmgcEPyzHQx2wZWwr9I7xlDESsw//kh++nn35zGDOFPXTvGC/i6PzzrEUmNsbXQLo80mwjWAAAA==", "color": "#4a4a4a", "alt": { "de": "reality, by algorithm – Bild 2", "en": "reality, by algorithm – Image 2" } }]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Algorithmische Empfehlungssysteme prägen, welche Inhalte in digitalen Umgebungen sichtbar werden und wie Aufmerksamkeit, Diskurse und kulturelle Ausdrucksformen organisiert sind. Ihre Funktionsweisen bleiben für Nutzer:innen oft undurchsichtig, obwohl sie Wahrnehmung und Kommunikationspraktiken spürbar strukturieren.\n\nDie audiovisuelle Installation untersucht diese strukturellen Effekte und übersetzt sie in eine räumliche Erfahrung. Sie verzichtet dabei bewusst auf Didaktik: Algorithmische Logiken werden nicht erklärt, sondern als sinnliche, räumlich-atmosphärische und zeitlich sequenzierte Erfahrung inszeniert.\n\nDie Arbeit entfaltet sich in fünf dramaturgisch aufeinander abgestimmten Akten und organisiert Wahrnehmung als zeitlich sequenzierte Erfahrung: von den Mechanismen algorithmischer Selektion über die Normalisierung kultureller Muster und Algorithmen als infrastrukturelle Machtstrukturen bis hin zu digitalen Sprachökologien und der Frage nach Orientierung und Handlungsmacht.\n\nText fungiert als zentrales Gestaltungsmaterial der Arbeit. Digitale Öffentlichkeiten sind in hohem Maße über Text organisiert, und algorithmische Systeme operieren primär durch das Verarbeiten, Gewichten und Strukturieren textueller Inhalte. Text wird damit zur Schnittstelle zwischen kulturellem Ausdruck und technischer Logik. Als Bedeutungsträger und zugleich formbares typografisches Material wird er verdichtet, verschoben und fragmentiert. Auf diese Weise werden algorithmische Dynamiken in ihrer strukturellen Logik formal inszeniert.",
+          "en": "Algorithmic recommendation systems shape which content becomes visible in digital environments and how attention, discourses and cultural expressions are organized. Their workings often remain opaque to users, even though they noticeably structure perception and communicative practices.\n\nThe audiovisual installation examines these structural effects and translates them into a spatial experience. It deliberately avoids didacticism: algorithmic logics are not explained but staged as a sensory, spatially atmospheric and temporally sequenced experience.\n\nThe work unfolds across five dramaturgically coordinated acts, organizing perception as a temporally sequenced experience: from the mechanisms of algorithmic selection through the normalization of cultural patterns and algorithms as infrastructural power structures to digital language ecologies and the question of orientation and agency.\n\nText serves as the central design material of the work. Digital publics are organized to a large extent through text, and algorithmic systems operate primarily by processing, weighting and structuring textual content. Text thus becomes the interface between cultural expression and technical logic. As a carrier of meaning and at the same time a shapeable typographic material, it is condensed, shifted and fragmented. In this way, algorithmic dynamics are formally staged in their structural logic."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "ratio": "3:2",
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/05.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADQBACdASogABIAPtFgqE+oJSOiKAgBABoJaQAA7OV0fy7x70Rtq0P92UvCMA/xYAD+/VGcVEqhn9Z2rA/hnh+QpbT8oO8TGB/NGrZSYFXdcgvxI9hlxGHZkC/9zXaGkHSIQznQTAcNUSsI0tdyhaj7IuBRd6kpipOgAAAA", "color": "#282828", "alt": { "de": "reality, by algorithm – Bild 5", "en": "reality, by algorithm – Image 5" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/06.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwBACdASogABIAPtFWokuoJKMqMAgBQBoJaQAAW+vpfRd9whME/Amx1AAA/vQsBzEEbNFsHRqyphKn6NSEWjnEabDubXmKgZBP/727KtVyNdy6GL2opmrThRHQPvcgiiWN0pqMAAAAAA==", "color": "#252525", "alt": { "de": "reality, by algorithm – Bild 6", "en": "reality, by algorithm – Image 6" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBgCdASogABYAPtFcpEyoJSOiMBgIAQAaCWkACwA3ANJe0UGCndUNizAe0OhcE8PDY1GHgH4b095q8wAA/umyS2FID0Q6yDHa8MZcRqqce6AOs10+nZ9x09R1LL8a+BXxy6IQ5KNpjFPU7VMNjckkeMo4UT6wdBmd3kousSxQONLjYDdBW7gVqaRxOpsiQIvcFQ9ARLda9qqyG6NbcYdwWbvhOmjKB3WUobHF5kMeXru3+lrrDo9P5z0X1dQyhlcwPyysPnLr6Sk3F403XSQcAgyyheSsb98z9kRCguY3+s0ISAAAAA==", "color": "#3e3e3e", "alt": { "de": "reality, by algorithm – Bild 1", "en": "reality, by algorithm – Image 1" } }]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Ein mehrschichtiges Gestell bildet die räumliche Struktur der Installation. Projektionen auf semitransparente Flächen erzeugen Überlagerungen und Verschiebungen, die algorithmische Prozesse des Filterns und der Transformation in eine visuelle Struktur übersetzen.\n\nAudio rahmt die visuellen Zustände affektiv und körperlich. Die Musik, komponiert von Lorenz Schauler, intensiviert die emotionalen Qualitäten der einzelnen Akte und macht ihre zeitliche Entwicklung wahrnehmbar. Unterschiedliche Klangatmosphären rufen intuitive Zustände von Ordnung, Dichte, Irritation oder Überforderung hervor und verstärken so die dramaturgische Struktur der Installation.\n\nAls künstlerische Auseinandersetzung mit algorithmischen Systemen eröffnet die Arbeit einen Erfahrungsraum, in dem strukturelle Effekte wahrnehmbar werden und Bedeutung sich durch individuelle Erfahrung entfalten kann.\n\nDas Projekt entstand im Rahmen einer Bachelorarbeit im Studiengang Interaktive Medien an der Technischen Hochschule Augsburg und wurde 2026 abgeschlossen.",
+          "en": "A multi-layered scaffold forms the spatial structure of the installation. Projections onto semi-transparent surfaces generate overlaps and displacements that translate algorithmic processes of filtering and transformation into a visual structure.\n\nAudio frames the visual states affectively and physically. The music, scored by Lorenz Schauler, intensifies the emotional qualities of the individual acts and makes their temporal development perceptible. Different sonic atmospheres evoke intuitive states of order, density, irritation or overwhelm and thus reinforce the dramaturgical structure of the installation.\n\nAs an artistic engagement with algorithmic systems, the work opens a space of experience in which structural effects become perceptible and meaning can unfold through individual experience.\n\nThe project was developed as a bachelor's thesis in the Interactive Media programme at the Technical University of Applied Sciences Augsburg and completed in 2026."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/12.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAOfBcAHof+z0MCCd8dbneAAP70K7GmRZ4fByln2KSLA6QKc8u4j8nTKszNbwGHxAukV3gbVD3KtWLztV2jVMLWQklRXDrQYvDKqcSFRP0zvZHkv/08j04CsGvKeB5WUA3E3dXxdpboz5XmKgnUM3PEUgAA", "color": "#303030", "alt": { "de": "reality, by algorithm – Bild 12", "en": "reality, by algorithm – Image 12" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/04.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASogABIAPtFUoUuoJKMhsAgBABoJaQAAQQKujfhBQ5LTLw9SAAD+8wjKQfOM6Wjajdav58dz4FFcQ2fEd1cXt/clfH1xKIBK+EiWbRlj6VcCy6w0olpvWz3SqlxhZDIBbzXB0LNmLKJlVAq6rUAAAA==", "color": "#181818", "alt": { "de": "reality, by algorithm – Bild 4", "en": "reality, by algorithm – Image 4" } }]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/03.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADQBACdASogABIAPtFapE0oJSMiMBgIAQAaCWkAACF5Vuo3n/SGEcanXW2/Z8XOQAD+9DGZaGMa023xWWifcOd7ZoCYOP/+cUa/0jums++3P5HY42qGv1SP+mG8Hn+zxWi+8917e8HPqYdk8WuNAnhNgOtjlb+ug8R1HXvSXW3qi1f4YX3h2jQAAAA=", "color": "#2a2a2a", "alt": { "de": "reality, by algorithm – Bild 3", "en": "reality, by algorithm – Image 3" } }]
+      }
+    ],
+    "de": {
+      "title": "reality,<br>by algorithm.",
+      "category": "installation",
+      "subtitle": "Eine audiovisuelle Installation über die strukturellen Wirkungen algorithmischer Systeme."
+    },
+    "en": {
+      "title": "reality,<br>by algorithm.",
+      "category": "installation",
+      "subtitle": "An audiovisual installation on the structural effects of algorithmic systems."
+    }
+  },
+  {
+    "id": "sono-bricolage",
+    "featured": true,
+    "year": "2025",
+    "hero": {
+      "image": { "src": "images/projects/sono-bricolage/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABwBACdASogABIAPtFcpEyoJaOiMBgIAQAaCWkAAI/X+tbp4JLTZsTSPdfTAAD+8NODg62G67z66u9NUDsUQRO3ftyd9GIlN6tsosByQTS/P/bnpfJlY3+iPHVg7Hy4v8qSGoy2ko3J3MsUUV0oNl8wAAA=", "color": "#383838" },
+      "teaser": "images/projects/sono-bricolage/_ABB/teaser.mp4",
+      "film": { "bunny": "b01b511d-a370-40a7-a649-2cb4c4d8ea85" }
+    },
+    "preview": { "portrait": "images/projects/sono-bricolage/_ABB/preview-portrait.mp4" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/14.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwBACdASogABYAPslQn0unpKKhsAwA8BkJaQAAW+xDCQxeTZ9epBpAMqAA/vd8gP5qjkSrQh/xN4O+ySQJO6oXt898x7rvgrOdBSu1C3TtGq2oYhAvqv7e8uZ8Q4Rnsvsr0BzAAAA=", "color": "#1b1b1b", "alt": { "de": "sono bricolage – Bild 14", "en": "sono bricolage – Image 14" } }]
+      },
+      {
+        "type": "media",
+        "cols": [3, 9],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/sono-bricolage/_ABB/09.mp4",
+            "poster": "images/projects/sono-bricolage/_ABB/09.webp",
+            "width": 800,
+            "height": 1660,
+            "placeholder": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAADwCACdASogAEIAPsFOokunpCOhuZQMAPAYCWkAALwAjBrWLj6eWLvlkD5LL3SlSgavf7EaVI1ij8YpKyQ8DgPw5kheW7vS8wPDPFmJZr/6AAD+78kPu2P/TVGl5kAUQpCYg9JrT0Hn323KEhnVhg0qZSQj9L0iLEeg6EtWuj9EpVd881Bl4ImI7CsA6gSw4mxUVUqyI27ZMCnYsmws6xhihCoO7awud2CA17N6vrftz6GIHwzkynwWh+ErUXT/C0eqGLRIyYMmcNJ1wfv3zWq4Q0p2uFLU+BDMwA/2QRyYLO9MrLKIp54c8iqK3qKv95lqhMLnC4Z+QP/kLcciXw8ZAXslx8uLP/JmZYML0NKIs9I2/SkYAAAA",
+            "color": "#515151"
+          },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/02.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAACwBQCdASogABYAPtFaqU2oJSQiKAqpABoJaQAOfA0ga1l0zKbTMo+QIBzdbS5QsYG06Ku9uNYA/vBIe6c1uP3rUxcRE7JAPHW+4ly2+5E79fIA/DRhbaS6MCnELzOmc+BU0XrRQTOwdsPWA+8mT9WNC/9uiy7gX7HPv5RbclzA35D9tem66bpAay8p/S8KtbwfeTAViVXXl0u+b/rgv1x9W6kGUtDp90P5K9/mVsXLXPxpMFfbrttnOXU+Bvtabscl0HpXyObiFj7O3oUrAaZPj/yQ38tvNjsNwQq4hyCznlD5q0QEDnpW6A0bg0YTXqnV2q+2TFF8QAAA", "color": "#696969", "alt": { "de": "sono bricolage – Bild 2", "en": "sono bricolage – Image 2" } }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Mitte des letzten Jahrhunderts wurden erste Methoden entwickelt, Raumhall zu simulieren. Neben den Bandechos waren sogenannte Hallspiralen und Hallplatten im Einsatz. Weder Spiralen noch Platten erzeugen einen natürlichen Raumhall; vielmehr erzeugt der Körperschall innerhalb der Federn oder Platten einen eigentümlichen „Materialhall“.\n\nSeit Jahrzehnten können digitale Hallsysteme jeden erdenklichen Raumeindruck realistisch nachahmen. Um Realismus konnte es bei den Experimenten also nicht gehen. Vielmehr sollten die spezifischen Klangeigenschaften dieser Hallverfahren untersucht werden. Ausgangspunkt war ein Vorhaben von Prof. Robert Rose für das Klanglabor.",
+          "en": "In the middle of the last century, the first methods for simulating room reverberation were developed. Alongside tape echoes, so-called spring reverbs and plate reverbs were in use. Neither springs nor plates produce a natural room reverb; rather, the structure-borne sound within the springs or plates creates a peculiar “material reverb”.\n\nFor decades, digital reverb systems have been able to imitate any conceivable sense of space realistically. Realism, then, could not be the point of the experiments. Instead, the aim was to explore the specific sonic qualities of these reverb techniques. The starting point was a proposal by Prof. Robert Rose for the university's sound lab, the Klanglabor."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [9, 3],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/07.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRu4AAABXRUJQVlA4IOIAAACwBQCdASogABYAPtFYo0uoJSMhsAgBABoJaQAIEC6VGr9PsITcGPmLRHflY+4Zs1G4JenoS8gA/mo/vbWXP4g7gUthCPL7jcjd79QknHidEj3QHLAcMaUzGtpHJDkYLLOGUMMBsWf30LcxAdqSTdrxHKvU1YhxHrmpHGUrbINrEr95qfQrnS8+OENji90TWqgEoyNVU8qZP4qxzK8klQYgNojKRwNszQcGw5e7lq4l5eOwjFMIjyAD3PJDVBE/zNW8z3VL0gusDiWp2K6rZX+ppqAWTqG3GlDXpxXbfQfQoAAA", "color": "#525252", "alt": { "de": "sono bricolage – Bild 7", "en": "sono bricolage – Image 7" } },
+          {
+            "type": "video",
+            "src": "images/projects/sono-bricolage/_ABB/11.mp4",
+            "poster": "images/projects/sono-bricolage/_ABB/11.webp",
+            "width": 800,
+            "height": 1660,
+            "placeholder": "data:image/webp;base64,UklGRvoBAABXRUJQVlA4IO4BAABQCwCdASogAEIAPtFSpEuoJKOhsBmbMQAaCWkAEgTd7mVtvYaB7me/mUGETZJZ5uJB61Sp4e+PhPA70YgDN7jIy0dl7CGpS5McdrDR7r630/h5+qED99MnIURnfeAPB4+jBDAA/uU2Bb6ZVofkRAF/3jexgfjA6UBaWjuxaGHvk6qEZ4dzOrAW8FY+96vA33aLCVMxGD38I7yeCtVvvm3mLrNr3TFM7vl+jCJvfvT005zisRwqTUP7e91aJ7JGRG7DP7E65oFJ2W6ZQ87nPma7QQe1JLhLhYi934Yl/30jkiFrOKCl9TeI0L4XYO+0cpE4X2RZDr+QeGvQnXIFjJvN38+xiIiE7BwZyjdXz+UMZCWsa04RD9YGMNPnCFUHKcaUAht2VHezWECfYoXq/6p886okwToE5zRqNcnXyA2GC9b9Vy4QbSogwpefex9LY4q6OOWhEYrs19/9OOaJdipaJBb2Mp9QtWuqHLvr/ZE/42pZbuJ9ZAFA5NaSA6fAxWWo55Su7EscVE1SEa8nslcvtUuwkIpChKwpnEfu27Rk14zFtJwCcIe0jlNO1bqiRxPZ4lJR4/HT5hu+cuju3yFhWg8ESUwQpdxHWv+J0qDLN/ZI4F6HxBr4PnGks4JM9gXKHzGWowpNOf76YAAAAA==",
+            "color": "#353535"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/03.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAABwBQCdASogABYAPtFcpUyoJSOiMBgIAQAaCWkAAI92Y21JUM8t/uUfe1fehbUgSd2gQmgAAP7Y8xaWKNMBtxzhadPM4IrR51hjURXRzX59MPougBIL4ZmOt6fKPB55gcuWMZY7ytkh13KuLfjAbOnBvH435WbzyiykI2vO0M1cCzqUSTU2OaRyJgAAAA==", "color": "#515151", "alt": { "de": "sono bricolage – Bild 3", "en": "sono bricolage – Image 3" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/06.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBQCdASogABYAPtFcqE4oJSQiKAqpABoJaQAGaBVNFOuI+WCITPA+f244jvQ0g/mTjHR0AP7zEIsX862GTBNYoQfqAmgfuiOeoa7P8J0gR9C/5yxTKEveaUzibJqP0+1UTcx/8PfhGThNRnAYd4QOt3Ua/4QV7lmDEIAuhBl7ZM3+a2ckPvW3q+XcK/B64nWwCYEMySPpL5mzD9JJrtpN0+ehP+fOPevJTfw7h5lJot8Jau/oqq9Baxd3H3T3nvSKDzmlPKeR9Pies45OxsPJF+OcJ8OkgYzvlz6ZP+yexKj00S4AAA==", "color": "#545454", "alt": { "de": "sono bricolage – Bild 6", "en": "sono bricolage – Image 6" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/10.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRm4BAABXRUJQVlA4IGIBAADwBwCdASogACwAPsFMnUunpCKhtUgA8BgJaQAOkFYnLrCSMh1WK3sFL2Wu8aoVyXjkYdxo2NaPh8WRL5RBxLMxa0xWYScvuwAA/rxqruePDuv/FAWXu/YSvogSpJr0ZeZzcAz9s/Rnaq61osHlcJcTxRC1qyBqmHBNO7yN7XB2+M3MRm+otmxTTDMmVmcoPIby26+nxqeo2EFBzzrcQ2Wbx3bI+YgJVmltFpRM4Nx6mPtsIlrEFjRioV1kHqfxyAWAhHervYmeBafCXZoZ0n9eTtAA0r6tlBYtuVyJAksrS0wTIud8x2r6KIpiZ8wxwNNVpeDNIqCyqxLNQDlOTPaYKqYtblZ1OOo9S0qApkD4TpiV5UVER6DtE4BP6Z/cS+8/UMzmd+lxCqxDZiGN962pidtqgqRdg9a3e5OaJ/ht+M8M9EhF7cK3yY4bExt5ADUDtJi/61Omn9IS/55f+YiAAAA=", "color": "#8f8f8f", "alt": { "de": "sono bricolage – Bild 10", "en": "sono bricolage – Image 10" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/12.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAADQBACdASogABYAPtFWpUwoJKOiKA1RABoJaQAALbudrNJ751NXxlAkX+kXzxh78AD+9CnI5pQbxcM/Zugp18ZA/Mrlls1zcZZh3VwtD/rTSJdY4/GE4FXwqrADVhx/GbFISrX8zFs38mY5dzgC7AQXd4/o+lWFrnfY05L2pRqX79aiL7W3oscD4gZ8f13ptiCBXHG7QIjRE2ugAAA=", "color": "#404040", "alt": { "de": "sono bricolage – Bild 12", "en": "sono bricolage – Image 12" } }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "In der Experimentierphase entwarfen wir ein Gestell, in dem sich Metallplatten verschiedener Dicke schallentkoppelt aufhängen lassen. Entgegen den historischen Vorbildern sind die Platten nicht in einem Kasten verbaut, sondern offen zugänglich. Über Körperschallwandler schickten wir die Signale analoger Synthesizer und Effektgeräte in die Platten und nahmen sie wieder ab: Durch ihre Schwingung wurden die Platten selbst zum analogen Halleffekt.\n\nZusätzlich versahen wir weitere Blechobjekte mit Körperschallwandlern und setzten sie teils als Lautsprecher ein, die nicht neutral klingen, sondern wie ein Instrument einen spezifischen Klang erzeugen. Schritt für Schritt steigerten wir uns bis zu dichten Geräuschkulissen und Rückkopplungsschleifen und loteten aus, wo die Grenzen liegen.\n\nAls Ergebnis inszenierten wir im Rahmen der Werkschau 2025 der Technischen Hochschule Augsburg eine Aufführung vor Publikum, in der wir die Experimente gebündelt zeigten. Gestell und Platten sind danach in den Fundus des Klanglabors übergegangen und stehen dort für weitere Experimente zur Verfügung.",
+          "en": "During the experimental phase, we designed a frame in which metal plates of different thicknesses can be suspended, acoustically decoupled. Unlike their historical models, the plates are not enclosed in a box but openly accessible. Using exciters, we fed the signals of analogue synthesizers and effects units into the plates and picked them up again: through their vibration, the plates themselves became an analogue reverb effect.\n\nIn addition, we fitted further sheet-metal objects with exciters and partly used them as loudspeakers that do not sound neutral but, like an instrument, produce a specific sound. Step by step, we pushed towards dense soundscapes and feedback loops, exploring where the limits lie.\n\nAs a result, we staged a performance in front of an audience at the 2025 Werkschau, the annual exhibition of the Technical University of Applied Sciences Augsburg, bringing our experiments together. Afterwards, the frame and plates went into the Klanglabor's collection, where they remain available for further experiments."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/15.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBQCdASogABYAPtFWo0uoJKMhsBgMAQAaCWkAAI90k+ms2JVNd49C+UeSTVu/KIAAAP74X2rFetav5Yzsb/TOZUixP0C5zMeCZS+61v44T8bNHnmgHWWSmBTluridkshNW2mfpf3jSZuxRIq3XF6r4iAAAA==", "color": "#1f1f1f", "alt": { "de": "sono bricolage – Bild 15", "en": "sono bricolage – Image 15" } }]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/01.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwBQCdASogABYAPtFcp04oJSOiKAqpABoJaQAGaBVKlQKeQKwhIXn2K6YU+5128UG9QGIwqcUGAAD9RrqZUfo8TumrXIR/2A3W3+eUzzRzrAz667tUFyRWg36Wv1JoMsN/1c+odLS0TQMI3nJCYkczxEffT5OhdFL3ce1vAKwrSfY+8x8YyDP24bAMlRDJzMRhX/TYlvce5dkCTy9A51HCeqQ4JAj7ceOFgDn0xVshJ09LjGDMtiBFQU/rYf2ynrUtZRhV+yfvnyiYRGSgAAAA", "color": "#696969", "alt": { "de": "sono bricolage – Bild 1", "en": "sono bricolage – Image 1" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/04.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAADQBACdASogABYAPtFcpU6oJSMiKAqpABoJaQAD5Ss1ziF/wLispbG96xM0bug/AAD+6fwRASncN7wwTmAZu5MWmV1nL/yzWCQOlyUpoc1xpYqFCKjtXZNoZqUqb+EEYd+qlO+oax6V6jWprSu7lwpugn5IhJR0UiM8iZx5aun9qIaCqeMHlrnka1WZE7Xv5pvwizyIjwL991uhz3WQqucAHCXi26k/7EdA2dcnYoV8/QZqpkLa8tkR0Ywf88v61BgiSRhXZKmqP0AAAAA=", "color": "#454545", "alt": { "de": "sono bricolage – Bild 4", "en": "sono bricolage – Image 4" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          { "type": "video", "src": "images/projects/sono-bricolage/_ABB/18.mp4", "poster": "images/projects/sono-bricolage/_ABB/18.webp", "width": 1920, "height": 1080, "placeholder": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAADwBACdASogABIAPtFWoEwoJKMiMBgMAQAaCWkXjMABR3fwUmdAj82U9cfkkl847AAA/oO9ENqeiZgm3rv1FAPUg5JqlpEaMbOP0WvTUhay7kyEq7eKaN/ZHQyb+LzrFo4kxWJJgZzWst2uVDfXbkKQ2jxl7qbZOkNhb/hYbsv/+ylMqEYD0OYsy22+VZoAAAA=", "color": "#343434" }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [8, 4],
+        "items": [
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/16.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRg4BAABXRUJQVlA4IAIBAADwBQCdASogABYAPtFUpk2oJCOiMBgIAQAaCWkACBAuick3lPQMvFpCSmYNHnGtAdH09rpAZEMPUgDeFwm5hEeAgV8vqxEr2sLvUaETo0rpZt3OhRjDvZGK05jGHiSxjKRDw7tZhbQOcWCLg6ScBRObTUPkjIRkF1D4z5vFMgYzbdZ/OO+iJr3iAAJcoAhLaqwz9A5j7MVBmOL6WqOY+MmA36p+Ama/4GRsfUQJ/J+LkuAdr3rc060X51Ostiw7Xm2/wCoLDZD95SU2/2t7kqOZ5CUJfPiIExAfEbpWasI2D5ZS151PPRXOw8VUcR/7CTP7y5qJ+CrU9QZK6UXIlwAAAAA=", "color": "#828282", "alt": { "de": "sono bricolage – Bild 16", "en": "sono bricolage – Image 16" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/17.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRlIBAABXRUJQVlA4IEYBAAAQBwCdASogACwAPtFgpE2oJiMiKrgMAQAaCWkAEgcCxC3owQvtLjT+PHDomDb0moz/NkfXHK4jYSirMbG++2t6AAD+5a278zRKspS/e6PuP7NebArHlXmWL06dbptZvxXlaNS0nyFNXzew4fFBGjTLZLXibsJvg4PVRu6Ngg54ghxqKUr6Sl2C56Pa5zXQX4Id26IxMvfOz8ljRWt81FHShIugHzn57d2xUXPZJHC2DHjVwQAx3e5sNFzdjWGET+/xuhj7vPjBvgyKhjyzRGRMZW01SMizEwAMAuMms6GATzRtoFPczxjrChgIShPUGW5TAkkZBEFlUeGrvuvEKqkT70lN7mqvIh/+S57ZXz7neMbNWziznsjYt1rC5xQuRUffccfJOMGxiMWsGRaDF6iSgyOGsJn2BbFUcIPKYXFjVG6XDAAAAA==", "color": "#6c6c6c", "alt": { "de": "sono bricolage – Bild 17", "en": "sono bricolage – Image 17" } }
+        ]
+      }
+    ],
+    "de": { "title": "sono bricolage", "category": "klangexperiment", "subtitle": "Experimentelle Klangforschung." },
+    "en": { "title": "sono bricolage", "category": "sound experiment", "subtitle": "Experimental sound research." }
+  },
+  {
+    "id": "boomtschakkaboom",
+    "featured": true,
+    "year": "2025",
+    "hero": {
+      "image": { "src": "images/projects/boomtschakkaboom/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABwBACdASogABIAPtFcpk6oJSMiKAqpABoJZwAD5Ss4zX436pcUmZhESX9kwAD++2mgL8at7GEjbkADr5bnpPsrkWgK5Hfhr/v2c7GdhTqfMPUZa9LMa1fI+akvvSaDHuqtmY2eRD+RTiY5Y8svdnER2t4kRsY2fe1uvVBId5ZuceZecB6yV/6w/NZKT8oQAAA=", "color": "#1d1e20" },
+      "teaser": "images/projects/boomtschakkaboom/_ABB/teaser.mp4",
+      "film": { "bunny": "9987c97d-ff66-4b49-a977-c36c5973ae2d" }
+    },
+    "preview": { "portrait": "images/projects/boomtschakkaboom/_ABB/preview-portrait.mp4" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/17.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/17.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAACwBACdASogABIAPtFWpk0oJCOiMBgIAQAaCWMAA+NJBv5EjervMfGrpVQtwuaAAP73eW2sw56aQ5SzPBpYCgTIlvG9kKLXkYFMcBKQJVZmEscWgF2SYwxxiOx326iQ1Hih13Zo/SJ4bvkMN7xoudK/7rcpUWZ4T45dY28/jMQYQXLCwSDpcUMNl3t8jgAA",
+            "color": "#0c0b07"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/06.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/06.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAACwBACdASogABIAPtFYpEuoJSOhsAgBABoJYgCdMt8CKzHOnX3SVnPE1JuodKAgAP7L+wdO5WjEj5nrejGj50jKOdnRxxoON916Q0JcIT6vfRgV8WS78uv1rK2tvtGwwfagz2ii8HJ0lKyFIEQLrzzKCG39qCYSUOR+/NE6CuXFcTWuLuJK1hgMvnNozGB3tZ3hZFKAAAA=",
+            "color": "#474129"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Rhythmus in der Zeit macht Musik. Was macht Rhythmus in der Fläche, im Format? Dieser Frage sind wir in einem Kurs nachgegangen und haben Rhythmik als Gestaltungskonzept für Audio und Video untersucht.\n\nIn After Effects entstanden über das Semester viele Experimente. Einfache Muster und Animationen bauten aufeinander auf und wuchsen zu komplexen Strukturen.\n\nZum Abschluss haben wir eine Wand aus Röhrenfernsehern gebaut, die als ein großes Bild und als viele einzelne Bildschirme spielt. Die Animationen loten die Grenzen dieser alten Ausgabetechnik aus und folgen einer eigens komponierten Musik.",
+          "en": "Rhythm in time makes music. What does rhythm do on a surface, within a format? We explored this question in a course and studied rhythm as a design concept for audio and video.\n\nOver the semester, many experiments took shape in After Effects. Simple patterns and animations built on one another and grew into complex structures.\n\nTo conclude, we built a wall of CRT televisions that plays as one large image and as many individual screens. The animations push this old output technology to its limits and follow music composed especially for the project."
+        }
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Aufbau", "en": "Setup" },
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/20.webp", "width": 1440, "height": 1078, "placeholder": "data:image/webp;base64,UklGRggBAABXRUJQVlA4IPwAAAAwBgCdASogABgAPtFcpU0oJSOiMBgIAQAaCWcAE835GJpAK4YqjgXZJ5W3Cqft68PICI1etylTjx5AAP7qkDoro2tH0XWNmVXFugI0PrtFalYFavUnr7Jy2snGLtnfm4PdKUbYN0DShfAOfFMLsjMlulSozp6H4D4EpdSJ6aD7ckCzCuSyhHq15sYAeRyw5SL/TBkkHQ1CZUX2jWCE5PWWz8v2VdYem/RU6so/mvpVznOPY6qvWrgBzCbyJqW6364WkXm6Jm4gtqfYaFkOdLPNZ1T11UXL7Hcr8fIXH/YdCa6JMvnUkiguletY5rvKuaaYECBJTV5aCxEEAAA=", "color": "#676764", "alt": { "de": "boomtschakkaboom – Bild 20", "en": "boomtschakkaboom – Image 20" } }],
+            "content": { "de": "MacBook\n&nbsp;&nbsp;|\n&nbsp;&nbsp;HDMI\n&nbsp;&nbsp;|\n3x3 TV-Wall-Controller\n&nbsp;&nbsp;|\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 1\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 2\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 3\n&nbsp;&nbsp;:\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 9", "en": "MacBook\n&nbsp;&nbsp;|\n&nbsp;&nbsp;HDMI\n&nbsp;&nbsp;|\n3x3 TV wall controller\n&nbsp;&nbsp;|\n&nbsp;&nbsp;+-- HDMI > AV > TV 1\n&nbsp;&nbsp;+-- HDMI > AV > TV 2\n&nbsp;&nbsp;+-- HDMI > AV > TV 3\n&nbsp;&nbsp;:\n&nbsp;&nbsp;+-- HDMI > AV > TV 9" }
+          },
+          {
+            "title": { "de": "Team", "en": "Team" },
+            "content": { "de": "Anastasia Kitaev, Felix Ranftl, Noel Högerle, Tom Henkel", "en": "Anastasia Kitaev, Felix Ranftl, Noel Högerle, Tom Henkel" }
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/04.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/04.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAwBACdASogABIAPsVOokunpCMhsAwA8BiJaQAAXK+QdU0i9bWOh6ELLQAA/vhVFOao/kxqtS2iMHlws1gEEBWKkCe9G/nHVTW796PbqH7d31k+WjQAAA==",
+            "color": "#050303"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/08.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/08.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAABQBACdASogABIAPtFao00oJSMiMBgIAQAaCWcAA+MBBv5EhMCvUwDWGsEAAP73eKQEuybLztYXsvCRjjt9m6Hr8te9G/YO1CRzMDVZIcufDymEDX3HCKwrf9iEPfptFCLioJaRfQr6bT9zpfcm1t1j6JYqD52rvcAAAA==",
+            "color": "#080a0a"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/14.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/14.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAQBQCdASogABIAPtFcpk6oJKMiKAqpABoJQBOmaFilV9m5nX/xFuRQBhb7PWwSmIpAAP73wqekP46P6lPRwlYzGAEO6oVmofjUwFuvEcOk7peUUjJwDks6ytZ+1ocG4a7/AyCl2ztk7zBbr4JKB5oFpBhWnN48nHiJvxABHj4gYAAA",
+            "color": "#1c252a"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/15.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/15.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAAAwBACdASogABIAPslQn0unpKKhsAwA8BkJZQDBkCPltjtI3ZGBcdQjcIAA/t3hMR0/Qu8toGd10uGX58zGHAaEDnUfjgK5quL1+dFSiY4Aknn/ML4ZR13nkg6N4rgrY0E5UAKh/NxyB2yOQIPo/eVjXaTZRg/G8AA=",
+            "color": "#393837"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/boomtschakkaboom/_ABB/12.mp4",
+            "poster": "images/projects/boomtschakkaboom/_ABB/12.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAwCdASogABIAPtFYpU0oJSOiMBgIAQAaCUAZVoaN/ASsFyPhRCoAAP75vHaJmQhAfdWGB+jYK1nNjRcYq1ih3zu8yRsrz5iL9KyX5gG+CzEnSxqZL4Er8kZ7QmYKEAAAAA==",
+            "color": "#110404"
+          }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/19.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAABwBQCdASogABYAPslQoUunpKMht/VYAPAZCWUAxNmMHcX+dJRAkLS8WHY4U22ZHsqWtmSAAP74U1tnEHSJO55yt5O00nj3v4JNENT+jmcdL/D0sJCmv8CBk2PcALpJZGWzAGMqRmXEPf8I9lcSZVMv3cV4E8pwrVumxejy5tupxqC8zUqDIVjsIqnnGlsGISeRpDmpDarLdnzVsyVOXt6+Gr0cBRAAAAA=", "color": "#0d180f", "alt": { "de": "boomtschakkaboom – Bild 19", "en": "boomtschakkaboom – Image 19" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBACdASogABYAPtFYpUwoJSOiMAgBABoJYwAD5LIN/jx0beJfk+nbi+v78dIKAAD+9oJOaEJOUH72oJTEa9Xhe0Ipm8cLvnyPtD00UqMv4ttEZPgA0DDWDpQV2NgYfJJd2AWVD51bgSSPuVr/OdKVYEDN0HMjq97lV7Xxka4kgp+0JOVHY4eO0W2rFGzeQd00nBcyWWrB4kAA", "color": "#0e1314", "alt": { "de": "boomtschakkaboom – Bild 1", "en": "boomtschakkaboom – Image 1" } }
+        ]
+      }
+    ],
+    "de": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmus in der Fläche durch eine Wand aus Röhrenfernsehern." },
+    "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythm across the surface through a wall of CRT televisions." }
+  },
+  {
+    "id": "lonis-weltraumreise",
+    "featured": true,
+    "year": { "de": "seit 2023", "en": "since 2023" },
+    "hero": {
+      "image": { "src": "images/projects/lonis-weltraumreise/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRgABAABXRUJQVlA4IPQAAAAQBgCdASogABIAPtFYpU0oJKOiMBgIAQAaCWwAnRHM2oZjk6svSpmCIrTmSUqxd2DapCkHXGIOowAA/urSvcc3eLdcvt0ZgNi7fEaDKwZp3NL7KrTI5hmLwxJ5yVN2LLPDdAYe0oI2TiGvUOfI1V1/YtuZmokSlGUAD337QQlvIdrml8McDPJg3Ot60GKgehG4g52PAMxUxdU+U2eHzk4pFvxIKVlLehlMZIL8gxw6YohXkKdbMlboxBi/OwQhmHDpskA3lJjeDT8GZEN/fQQ3jbP8PoxcplYDqyMJt4zscFTCUWujJ98f4e7fH8uPoO5BAwAA", "color": "#a4c4cb" },
+      "teaser": "images/projects/lonis-weltraumreise/_ABB/teaser.mp4",
+      "film": { "bunny": "f1e1ae1a-434c-4e3c-98cd-f337667d9dcb" }
+    },
+    "preview": { "portrait": "images/projects/lonis-weltraumreise/_ABB/preview-portrait.mp4" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/10.webp", "width": 1299, "height": 945, "placeholder": "data:image/webp;base64,UklGRkQBAABXRUJQVlA4IDgBAADwBgCdASogABgAPtFUo0uoJKMhsAgBABoJQBbfXqd8mx9lEYDrLGV44QDQJ7i7Xue0Yo/Uotguzh3qnjWaXt8AAPude9b6oRXluJ/UXFu1WdHeQE/jkwNzw48MN31f0FEcsP1KDUX6p24Rqunwh1rhcNcVA55yA9UPu9Jocc9TIDNrRS/W3krq/sanh/qbxoaUTciTDs2G5urdITUxtKI9lc4lJaSdmf/VGw5QVocenpunOE3dYdpZHRIm77rYF8iH9Igjh1/cqaMqWPtQe87EhZnICc2NBU9weSRgtWjbyAdbupUSlQwjMSBA2h/mdWHuW4S19wJ9a6P0tIKaL2x8Hf48d5lJQmBV4QutVImox7JjMWTj4Z8ruxmW3y1IeeOi2ZwzMOjIB3abWSDA2rOMMDTLT6GGAAA=", "color": "#88817a", "alt": { "de": "lonis weltraumreise – Bild 10", "en": "lonis space journey – Image 10" } },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/02.webp", "width": 1440, "height": 1048, "placeholder": "data:image/webp;base64,UklGRjoBAABXRUJQVlA4IC4BAAAQBwCdASogABgAPtFUo0uoJKMhsAgBABoJZACdMuN/WEA/KjESyiMCVP9yCBFpiZpBvf1UtHt/n9U2UF1YIEeUgAD4YQrQ/6lAcmeUOoq7zcjeQ91OsDwVazAVWU7dWVvc5Y4KCGkTID7GZVAFQPTma54i9T78eWor3WQtYqUFcd5kC0pQDZr77l9Jy3toeE7PmPAVRTQ+lHhIwwQFWlFeSBfF/2BU2UQqf2XbPN88IiC9DufHQ8RrzBPpafa91hgADj6r/2kKkgyGEW4G90+5uHWLUfS/L2sZ9ie/wM0ixd4YHswSSAGEDpJJubTS1jXnpgiVMHHq3YHhB8aNFywayY2vYw2QThgQX8nCxL4DYez35KkcmuUAhhZkKhpN/HMCSXRPMPRLSbNtAAAAAA==", "color": "#826949", "alt": { "de": "lonis weltraumreise – Bild 2", "en": "lonis space journey – Image 2" } }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Die Diagnose Krebs ist nicht nur für Betroffene selbst eine große Herausforderung – auch Kinder spüren schnell, dass sich etwas verändert. Viele Eltern stehen vor der schwierigen Frage: Wie erkläre ich meinem Kind meine Krankheit, ohne es zu überfordern oder zu ängstigen?\n\nLonis Weltraumreise setzt genau hier an: Die interaktive Geschichte schafft einen geschützten Rahmen, in dem Kinder auf spielerische Weise verstehen lernen, was Krebs ist, wie er behandelt wird und wie sich der Alltag dadurch verändern kann. Eltern wählen aus, welcher Elternteil erkrankt ist und welche Therapieformen anstehen; die Geschichte passt sich daraufhin an die Situation der Familie an.\n\nIn vier Kapiteln lernen die Kinder Loni und das Leben im Raumschiff kennen, erfahren von Dr. Medika, wie Krebs entsteht, besuchen die Therapie-Planeten und blicken mit Loni auf ihre Reise zurück. Interaktive Elemente am Ende jedes Abschnitts festigen das Erlernte spielerisch.",
+          "en": "A cancer diagnosis is a major challenge not only for those affected – children, too, quickly sense that something is changing. Many parents face the difficult question: how do I explain my illness to my child without overwhelming or frightening them?\n\nLonis Space Journey starts right here: the interactive story creates a safe space in which children playfully learn what cancer is, how it is treated and how everyday life may change. Parents choose which parent is ill and which treatments lie ahead; the story then adapts to the family's situation.\n\nIn four chapters, children get to know Loni and life on the spaceship, learn from Dr. Medika how cancer develops, visit the therapy planets and look back on the journey with Loni. Interactive elements at the end of each section playfully consolidate what they have learned."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/11.webp", "width": 1440, "height": 1080, "placeholder": "data:image/webp;base64,UklGRjABAABXRUJQVlA4ICQBAAAQBgCdASogABgAPtFcp04oJSOiKAqpABoJQAXf+3ZTZyM+YEOpXcPMBjCb/zG5HQubZW9CYJ79NvAA/tqy4gkKMfayAPOksoFBvHXyqVXY6Hw6VczD9GyDOC+/13Oj9KQxr5drJynhwJFKZ9k7Tnqv/X3ak+syjSkAfxTOXXr1nc89NdtMgqgjyIPyDhsywF+qqcNMzkaxkCjyAprsqhVwi1dQMWElET2MJQOGgMRAcz2+ns2AFryH30ef5MHcmVqHxkmKmLq0Gm95plA4lEoifUoWBU0xe3cSrMEQZm3Zi46epItTNVVinRaR8mbKRPd207iU5ef39d+6xqi6+zUJJj6pJHangXuy4d0mpGO2OrH3n4tvCQuVY1f7FMnOM5vcD5AA", "color": "#666b71", "alt": { "de": "lonis weltraumreise – Bild 11", "en": "lonis space journey – Image 11" } },
+          {
+            "type": "video",
+            "src": "images/projects/lonis-weltraumreise/_ABB/12.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/12.webp",
+            "width": 1440,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAABQBQCdASogABgAPtFYpUyoJSOiKA1RABoJQBmLZdAbIPhsL8L03FetuB20vjdHEkv58gAA/vatEMIOq/MUQD1RDDhkLQddydk0v339qdQNzH9NwUd+lrlODIala4vwS7hzG5owTAd3SQjRylV8grNlUVMwKDfGR3xpIve6skUVpyYJ4OOkvP6sNXyEvbW+BDb/O9cGsraZB8qWKNZ3NQbfIetZ3oaGLAAAAA==",
+            "color": "#1c2522"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Das transdisziplinäre Projekt entstand im Innovationslabor der Technischen Hochschule Augsburg gemeinsam mit dem Tumorzentrum Freiburg – CCCF und „Tigerherz … wenn Eltern Krebs haben“. Zehn Studierende der Interaktiven Medien entwickelten ab Oktober 2023 die Idee, die Geschichte, einen eigenen Grafikstil und einen ersten Prototyp als React-Web-App.\n\nVon März 2024 bis März 2025 wurde die Web-App von Philipp Hettenkofer, Elias Ginter und Tom Henkel im Innolab weiterentwickelt, optimiert und um ein Glossar sowie weitere interaktive Elemente ergänzt. Die Geschichte wurde mit medizinischem Fachpersonal geprüft und mit einer Drehbuchautorin sprachlich an die Zielgruppe angepasst.\n\nNach Usability-Tests wurde die Web-App 2025 in einer Pilotstudie wissenschaftlich überprüft und auf der Jahrestagung der Arbeitsgemeinschaft Psychoonkologie in Würzburg vorgestellt. Seit Januar 2026 steht sie Familien und Fachpersonal als digitales Unterstützungsangebot zur Verfügung; 2026 wurde das Projekt mit dem ADC Talent Award ausgezeichnet.",
+          "en": "The transdisciplinary project was created at the innovation lab of the Technical University of Applied Sciences Augsburg together with the Freiburg Comprehensive Cancer Center (CCCF) and „Tigerherz … wenn Eltern Krebs haben“, a counselling service for families in which a parent has cancer. From October 2023, ten Interactive Media students developed the idea, the story, a distinct illustration style and a first prototype as a React web app.\n\nFrom March 2024 to March 2025, Philipp Hettenkofer, Elias Ginter and Tom Henkel developed the web app further at the Innolab, optimized it and added a glossary and further interactive elements. The story was fact-checked with medical professionals and adapted linguistically to the target group together with a screenwriter.\n\nAfter usability tests, the web app was scientifically evaluated in a pilot study in 2025 and presented at the annual conference of the Psycho-Oncology Working Group in Würzburg. Since January 2026 it has been available to families and professionals as a digital support service; in 2026 the project received an ADC Talent Award."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [4, 8],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/lonis-weltraumreise/_ABB/08.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/08.webp",
+            "width": 920,
+            "height": 1058,
+            "placeholder": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAAAQAwCdASogACQAPtFkq1CoJaOipWgBABoJaQAAKT7vwAAA/vDWa1gKZdrQgAAA",
+            "color": "#191719"
+          },
+          {
+            "type": "video",
+            "src": "images/projects/lonis-weltraumreise/_ABB/06.mp4",
+            "poster": "images/projects/lonis-weltraumreise/_ABB/06.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASogABIAPs1YokunpaMhsBgMAPAZiWkAADywn7n9BXmRE6YgAP7wJk7ghMquciswWbg0I1Yd80IkGyLBMyN3pgjZTJgAAAAA",
+            "color": "#2b2e2e"
+          }
+        ]
+      },
+      {
+        "type": "links",
+        "items": [
+          { "label": { "de": "Zur Website", "en": "Visit the website" }, "href": "https://lonis-weltraumreise.de/story" }
+        ]
+      },
+      {
+        "type": "accordions",
+        "items": [
+          {
+            "title": { "de": "Team & Partner", "en": "Team & partners" },
+            "content": {
+              "de": "Studierende: Lisa Kerridge, Florentine Schwab, Elisabeth Breitenhuber, Lena Vogentanz, Tom Henkel, Elias Ginter, Alexandra Zerbe, Philipp Hettenkofer, Leonie Bulling, Johannes Dejori\nProfessor*innen: Prof. Dr. Alexandra Teynor, Prof. Daniel Rothaug\nWissenschaftliche Mitarbeit: Fabian Kopf\nDrehbuch: Alexandra Heneka\nMit Psychoonkolog*innen, Sozialwissenschaftler*innen und medizinischem Fachpersonal des Universitätsklinikums Freiburg sowie Familien mit Krebserkrankungen.\n\nPartner: Innovationslabor der Technischen Hochschule Augsburg (THA_innolab), Tumorzentrum Freiburg – CCCF, „Tigerherz … wenn Eltern Krebs haben“ (Ansprechpartnerin: Dr.in Stefanie Pietsch)\nGefördert durch: Wilhelm Giesin Stiftung, Hans-Benedikt Stiftung\nSchrift: Rumiko von TypeMates",
+              "en": "Students: Lisa Kerridge, Florentine Schwab, Elisabeth Breitenhuber, Lena Vogentanz, Tom Henkel, Elias Ginter, Alexandra Zerbe, Philipp Hettenkofer, Leonie Bulling, Johannes Dejori\nProfessors: Prof. Dr. Alexandra Teynor, Prof. Daniel Rothaug\nResearch associate: Fabian Kopf\nScreenplay: Alexandra Heneka\nWith psycho-oncologists, social scientists and medical staff of the University Medical Center Freiburg as well as families affected by cancer.\n\nPartners: innovation lab of the Technical University of Applied Sciences Augsburg (THA_innolab), Freiburg Comprehensive Cancer Center (CCCF), „Tigerherz … wenn Eltern Krebs haben“ (contact: Dr. Stefanie Pietsch)\nFunded by: Wilhelm Giesin Stiftung, Hans-Benedikt Stiftung\nTypeface: Rumiko by TypeMates"
+            }
+          },
+          {
+            "title": { "de": "Zeitlicher Verlauf", "en": "Timeline" },
+            "content": [
+              { "date": { "de": "Oktober 2023", "en": "October 2023" }, "text": { "de": "Idee und Konzeption, Design-Thinking-Workshop in Freiburg", "en": "idea and concept, design thinking workshop in Freiburg" } },
+              { "date": { "de": "Oktober 2023 – März 2024", "en": "October 2023 – March 2024" }, "text": { "de": "Geschichte, Grafikstil und erster Prototyp, ausgestellt beim Sichtraum der THA", "en": "story, illustration style and first prototype, exhibited at the THA Sichtraum" } },
+              { "date": { "de": "März 2024 – März 2025", "en": "March 2024 – March 2025" }, "text": { "de": "Weiterentwicklung im Innolab", "en": "further development at the Innolab" } },
+              { "date": { "de": "November 2024 – März 2025", "en": "November 2024 – March 2025" }, "text": { "de": "Usability-Tests und Ethikantrag", "en": "usability tests and ethics application" } },
+              { "date": { "de": "Februar – April 2025", "en": "February – April 2025" }, "text": { "de": "Pilotstudie", "en": "pilot study" } },
+              { "date": { "de": "September 2025", "en": "September 2025" }, "text": { "de": "Vorstellung auf der 23. Jahrestagung der Arbeitsgemeinschaft Psychoonkologie (PSO) der Deutschen Krebsgesellschaft in Würzburg", "en": "presentation at the 23rd annual conference of the Psycho-Oncology Working Group (PSO) of the German Cancer Society in Würzburg" } },
+              { "date": { "de": "Januar 2026", "en": "January 2026" }, "text": { "de": "Dauerbetrieb", "en": "permanent operation" } },
+              { "date": { "de": "Juni 2026", "en": "June 2026" }, "text": { "de": "ADC Talent Award", "en": "ADC Talent Award" } }
+            ]
+          },
+          {
+            "title": { "de": "Studie", "en": "Study" },
+            "content": {
+              "de": "Von Februar bis April 2025 wurde die Web-App in einer Pilotstudie im Mixed-Methods-Design wissenschaftlich überprüft. Die Studie wurde von der Ethikkommission der Albert-Ludwigs-Universität Freiburg bewilligt (Antragsnummer 25-1091-S1) und ist im Deutschen Register Klinischer Studien registriert (DRKS00036255).\n\nGetestet haben erwachsene Patient*innen und Angehörige, die Kinder sowie psychoonkologisches und medizinisches Fachpersonal, auf einem Tablet mit der vorinstallierten App.\n\nErhoben wurden das Nutzungsverhalten (Verweildauer, Nutzung der interaktiven Elemente), ein Fragebogen zu Verständlichkeit, Benutzerfreundlichkeit, Akzeptanz, Informationsgehalt, Zielerreichung und Wirkungen sowie Interviews zu den subjektiven Erfahrungen.",
+              "en": "From February to April 2025, the web app was scientifically evaluated in a mixed-methods pilot study. The study was approved by the ethics committee of the University of Freiburg (application no. 25-1091-S1) and is registered in the German Clinical Trials Register (DRKS00036255).\n\nIt was tested by adult patients and relatives, the children, and psycho-oncological and medical professionals, on a tablet with the app pre-installed.\n\nThe study recorded usage behaviour (time spent per page, use of the interactive elements), a questionnaire on comprehensibility, usability, acceptance, information content, goal attainment and effects, and interviews about the subjective experience."
+            }
+          }
+        ]
+      }
+    ],
+    "de": {
+      "title": "lonis weltraumreise",
+      "category": "webanwendung",
+      "subtitle": "Eine interaktive Geschichte, die Kindern das Thema Krebs erklärt."
+    },
+    "en": {
+      "title": "lonis space journey",
+      "category": "web application",
+      "subtitle": "An interactive story that explains cancer to children."
+    }
+  },
+  {
+    "id": "present",
+    "featured": true,
+    "year": "2023",
+    "hero": {
+      "image": { "src": "images/projects/present/_ABB/hero.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAAAQBgCdASogABIAPtFUokuoJKMhsAgBABoJZQDM0ywjAHEBVUjkTF91OcW0nG2VHWURw7HHBmzQTNAA/pG/u/5rLU8TDmXFNSkg7pf5Ct7Q3rMrCGZ3WuS4T4aEnr6vAGOxWoVodLib11FiBtYo/usnhE9K+msZWBsMFzqD3T3r19edoYT6x6DC0GEtxDug3fCaQyWr1J4Vforo/uGwoWMcXFnUCvdYq9xWJZMW+jCNf/LlnKGpXSiuAZv6FMN29dxDMv7XM1eWiwvb+CXGAD+DQoNPv5KJZW9/IfzcdQehcXEHxVuXOQ9GbLcirOC0AAA=", "color": "#6d7372" },
+      "teaser": "images/projects/present/_ABB/teaser.mp4",
+      "film": { "bunny": "418e0d51-abb9-42c4-a2f0-ed948925d1ec" }
+    },
+    "preview": { "portrait": "images/projects/present/_ABB/preview-portrait.mp4" },
+    "blocks": [
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/02.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAADQBQCdASogABYAPtFcpk2oJSOiKAqpABoJQBUil/wWpLf+F3gsunCk32keZeicwqoQNwZvGH8AAP7oRPnbToK4nU5xpbKZK7zhmzEuvknhlAdJ9E34iwH42+AUgxb0DMD4mRBDzqlqt4eg9uIgrUsN0zM2H76ofo5kKRZFpYacmMkrevnZY2YID9VvpY++6kkiCcdzSKqkL3KM5WPjggMiIxYoz4lSizqdvB7s/pb1LKtrvxJfAcD0Rn3Ku5rrYeyEpCCNKkmSMyn59WYEJA9iGigGz0w2BDM38Ou8gjKkL6GHF/+MwxutESe1PKa9ZE4nLJGL7cVSuV3taPoROc07b64Yjrpkv5HZOvFt3N2aQAAA", "color": "#9fa5a5", "alt": { "de": "present – Bild 2", "en": "present – Image 2" } }]
+      },
+      {
+        "type": "media",
+        "cols": [6, 6],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/present/_ABB/16.mp4",
+            "poster": "images/projects/present/_ABB/16.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAADQBQCdASogABIAPtFUo0uoJKMhsAgBABoJZQDI1y6eAFVPuRJ2QNzPn8bWwYtagz/qslSJKj1AAP6Rv7x9lJOFTDjX2WSZkFNgh8PTdO8tKhn3XNepBeyPqwMkxKMmLnqy1ult55rDzRPtdyQTfd2FdPZp0DmbYUdHoCc4iVbOY9Dvtiw3VMHxWbJlWiBxOAF1g9dvoM+TynKLeNP/mRI7xbdW9vT/Yrfq+p9Unp7ZgB8b/x65TWlWxUM0k/BcUmqnmgT2Z7QiTWdFR/8GqUwz/gNJHzz5DSR88+TVTlrUeDZSpYoOBuuRI5+rrV19oAA=",
+            "color": "#686e6d"
+          },
+          {
+            "type": "video",
+            "src": "images/projects/present/_ABB/19.mp4",
+            "poster": "images/projects/present/_ABB/19.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAAAQBQCdASogABIAPtFapEuoJSOhsAgBABoJaQAEQg8lZ0seCy13hQthNhc6nekqtaAAAP72E4JdTtxPY2L2cl21i+EJY5XFCbD4e/GR6d24T+W+aBwICRE8uWKTYdCHdKvASdPo8Qq6QmMjs79SgzzvwuCzUMKKo53wqxAbilwmfmOdOLVoF/ucyUVDmOB8yikG6Fb79K9ot08/E/I1SysrY24IfDFk0tVAPMuIpJoAAAAA",
+            "color": "#b3b1b1"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "text": {
+          "de": "Der App liegt die Idee zu Grunde, das Fotografieren wieder zu einer bewussten und bedachten Handlung zu machen. Jedes Foto soll mit Intention geschossen werden, und der Fotograf wird dazu gebracht, sich mittels der Einstellungsmöglichkeiten mit dem Motiv zu beschäftigen.\n\nDas geschossene Foto kann in der integrierten Galerie nach seiner Entwicklungszeit zusammen mit den anderen erstellten Fotos betrachtet werden. Diese sind pro Monat auf eine Anzahl von 8 beschränkt und können an andere Nutzer der App weitergeschickt werden, wobei sie aus der eigenen Galerie verschwinden, um den Charakter des Polaroid-Tauschens beizubehalten.",
+          "en": "The app is based on the idea of turning photography back into a conscious, considered act. Every photo is meant to be taken with intention, and the camera settings lead the photographer to engage with the subject.\n\nOnce it has developed, a photo can be viewed in the built-in gallery alongside the others. Photos are limited to eight per month and can be sent to other users of the app. A sent photo disappears from your own gallery, keeping the character of trading Polaroids."
+        }
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/04.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAADwBQCdASogABYAPtFapE0oJSMiMBgIAQAaCUAToj/8WxZRPxQG12u0I2670YMqc//kauYa67qt1AD+BeKIOTPGjKVE3va2Vc79/bisvlbWtvboBc4iaOiR2xNWvwzpcp5ttHXsK63B/FUbAOviu1ogWTcFRCkYPg68TWVT/E4TD38x6TOTEOWjRnouI01qb8WhCWCvyUpGQwcDv9V6GfjbrR1t/BOFW8HTw3f602VQtOEghHqT/f/FNL5D0jMoQrSI8e/2BnSM97/y8uSggRpQ5Gy2q460a0yVPyU3ujaOG/nYulklH4h/5GD4ZvxI5ZspncemajgIYMzt70YAAA==", "color": "#b6a399", "alt": { "de": "present – Bild 4", "en": "present – Image 4" } }]
+      },
+      {
+        "type": "media",
+        "cols": [8, 4],
+        "items": [
+          {
+            "type": "video",
+            "src": "images/projects/present/_ABB/17.mp4",
+            "poster": "images/projects/present/_ABB/17.webp",
+            "width": 1920,
+            "height": 1080,
+            "placeholder": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAwBACdASogABIAPtFWpEuoJKOhsAgBABoJaQDL4CHfZ4tQgpo0VlXf3IAA/vYC/0Pex3Z503eccsB7iC8P+xP4aSePe1x+QxrTperOF1uWKmtnlGi1akJocUjvmSvcH88ez+RQf2jfw02MGuNsQHL8KXF222hAqswQJVZ3sCZ33EQuHOAAAA==",
+            "color": "#cccece"
+          },
+          { "type": "image", "src": "images/projects/present/_ABB/13.webp", "width": 1080, "height": 1242, "placeholder": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAABQBQCdASogACQAPslUoUunpSMhtVgIAPAZCWQAytSbSACBUMU/hxfc/BwW7loErKZ47mAA/vlp1xTTSvPFv2xrO4b2/Qv4zrCBL7/Oh6T7QVzGFTho9We9+oqlEFglqzCDoqT8V8NqGGbEXGPlXAHZCQvrNjrVRKtXLTSMnDhOxb4kj68lbx/xFUeaYSFi3z0XHRsXO1oP+4RbiDp8kQxboP8QFFugeXvoyR4HjRc+RCnQmlXJkvo06wtMwCbeRatRpiU4EXLh9sTEZ1Yww89JQAA=", "color": "#dad1c7", "alt": { "de": "present – Bild 13", "en": "present – Image 13" } }
+        ]
+      },
+      {
+        "type": "media",
+        "cols": [12],
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/03.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAADwBACdASogABYAPtFcpEyoJSOiMBgIAQAaCWcAw+mK5m+0aIK+pzIVZ+2KPX2C9gAA/upoX3FODYHtnxmWU/dngr2dDEyVYuNjVIb2dPX/4ke4HLZNuNGj2OhxDYZr62vGXtAdqazbFrwf+0QzkAnqS0WktPUSW3SSSuQBpXqCz0p9xKqnmDyvj62/3aJ0ScSZlG3urL1kJaRVXVcaV+yk2KI/6w+xwAA=", "color": "#c0bcb9", "alt": { "de": "present – Bild 3", "en": "present – Image 3" } }]
+      }
+    ],
+    "de": { "title": "present", "category": "interface", "subtitle": "Design für die Gegenwart." },
+    "en": { "title": "present", "category": "interface", "subtitle": "Design for the present." }
+  }
+]

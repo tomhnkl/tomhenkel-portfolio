@@ -1,0 +1,135 @@
+{
+  "settings": {
+    "available_languages": ["de", "en"],
+    "default_language": "de",
+    "contact_email": "tom-henkel@gmx.de",
+    "instagram_url": "https://www.instagram.com/tomhnkl/",
+    "bunny_cdn": "vz-064ab7c1-403.b-cdn.net"
+  },
+  "ui": {
+    "de": {
+      "page_title": "Tom Henkel",
+      "nav": {
+        "projects": "projekte",
+        "lab": "das lab",
+        "about": "über mich"
+      },
+      "footer": {
+        "contact": "kontakt",
+        "impressum": "impressum",
+        "privacy": "datenschutz"
+      },
+      "titles": {
+        "about": "Über mich",
+        "lab": "Das Lab",
+        "not_found": "Projekt nicht gefunden"
+      },
+      "buttons": {
+        "read_more": "Mehr lesen",
+        "view_project": "Projekt ansehen",
+        "next_project": "Nächstes Projekt"
+      },
+      "player": {
+        "play": "abspielen",
+        "pause": "pause",
+        "sound_on": "ton an",
+        "sound_off": "ton aus",
+        "fullscreen": "vollbild",
+        "fullscreen_exit": "vollbild aus",
+        "timeline": "Filmposition"
+      },
+      "menu": {
+        "open": "menü",
+        "close": "schließen"
+      },
+      "skip": "Zum Inhalt",
+      "preview": {
+        "next": "weiter"
+      },
+      "more": {
+        "title": "Weitere Projekte"
+      },
+      "states": {
+        "error": { "word": "hm.", "text": "Die Inhalte sind nicht angekommen.", "reload": "Neu laden" },
+        "not_found": { "word": "404", "text": "Projekt nicht gefunden. Weiter zur Übersicht …", "link": "Sofort weiter" },
+        "page_404": { "text": "Diese Seite gibt es nicht.", "link": "Zur Übersicht" }
+      }
+    },
+    "en": {
+      "page_title": "Tom Henkel",
+      "nav": {
+        "projects": "work",
+        "lab": "the lab",
+        "about": "about me"
+      },
+      "footer": {
+        "contact": "contact",
+        "impressum": "imprint",
+        "privacy": "privacy"
+      },
+      "titles": {
+        "about": "About me",
+        "lab": "The Lab",
+        "not_found": "Project not found"
+      },
+      "buttons": {
+        "read_more": "Read more",
+        "view_project": "View project",
+        "next_project": "Next project"
+      },
+      "player": {
+        "play": "play",
+        "pause": "pause",
+        "sound_on": "sound on",
+        "sound_off": "sound off",
+        "fullscreen": "fullscreen",
+        "fullscreen_exit": "exit fullscreen",
+        "timeline": "Film position"
+      },
+      "menu": {
+        "open": "menu",
+        "close": "close"
+      },
+      "skip": "Skip to content",
+      "preview": {
+        "next": "next"
+      },
+      "more": {
+        "title": "More Work"
+      },
+      "states": {
+        "error": { "word": "hm.", "text": "The content didn’t arrive.", "reload": "Reload" },
+        "not_found": { "word": "404", "text": "Project not found. Taking you to all work …", "link": "Go now" },
+        "page_404": { "text": "This page doesn’t exist.", "link": "See all work" }
+      }
+    }
+  },
+  "about": {
+    "portrait": {
+      "alt": { "de": "Porträt von Tom Henkel", "en": "Portrait of Tom Henkel" },
+      "color": "#9faba7",
+      "eager": true,
+      "sources": [
+        {
+          "media": "(max-width: 1220px)",
+          "srcset": "images/about/Tom-Henkel_1500x1500px.webp 1500w",
+          "sizes": "(max-width: 768px) calc(100vw - 50px), calc(90vh - 150px)",
+          "placeholder": "data:image/webp;base64,UklGRiABAABXRUJQVlA4IBQBAADwBQCdASogACAAPrVQoUwnJKMiKAqo4BaJYwAD48Zl9PunVHv5W1jg+9PMpALkj/RcSowqWZVQAAD+8ANvdzpItse9iX/2fh2DVlJ8SpX2oWBgXkS7hRxeWNpWTCmz/SQ3PIHXehvE9Q53gF0IsQSNB2x8iTaH9wdwsBBJCPUTVoObokl2pCVgNgFcsu301VVuZWEP1JhsqqLz5F+p5f0HXJ92+YT9AR8xrlaOAn6Ki9ixHY6h3C0BVd2pVEPmKEAcCGIq+hQWaU+jQTeTMiKHfp/Dzjc9bClVzjuJqYpDmPwpwKGi20J29Uo2P5AxbFG9aDCttPY+qn6upRCxGqYwmucEqrqqZ6NmC8eeK0IVx7tgAAA="
+        }
+      ],
+      "img": {
+        "srcset": "images/about/Tom-Henkel_1920x1415px.webp 1920w",
+        "sizes": "calc((100vw - 270px) * 2 / 3 + 140px)",
+        "width": 1920,
+        "height": 1415,
+        "placeholder": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAACwBQCdASogABgAPrVIn0unI6KhsBgIAOAWiWUAA+Mrzn0AFr6km0vYP+iyv5Nq4cZRkbeLsAAA/vAFf1gUc9aM20gPbZFM3mtxx9sRL2u20DUFUmggdnWkbFEQE/More+99SgOsu39aXbMd4HGR5fvZBwNpMcTEP07VncGLn5Pqt50/Y32BubPZGajvergaFDPTJ/2evF6A+KG6pIu8F/bO4zT0B0XTqx1MQepX+enqpOKE67c+pVuB3MAHuF//EwUO0Jd69O6X661R7OZxN+4/Nv5vk8AhR7wuD2GfV46WNcXWZUdmcet/q7HFsmNAAA="
+      }
+    },
+    "de": {
+      "description": "Hey,<br>ich bin Tom :)<br><br>Studiert habe ich Interaktive Medien an der Technischen Hochschule Augsburg, gelernt Mediengestalter. Heute arbeite ich als Design Engineer.<br><br>Mein Schwerpunkt liegt auf Interface Design und Motion. Dazu kommen Code, Installationen und Print.<br><br>Am meisten Spaß macht es mir, Projekte wirklich zu verstehen. Danach greife ich zu allem, was ich kann, oder eigne mir an, was benötigt wird, bis die Lösung passt."
+    },
+    "en": {
+      "description": "Hey,<br>i'm Tom :)<br><br>I studied Interactive Media at Augsburg Technical University of Applied Sciences and trained as a media designer. Today I work as a Design Engineer.<br><br>My focus is on interface design and motion. I also work with code, installations and print.<br><br>What I enjoy most is really understanding a project. Then I reach for everything I know, or learn what is needed, until the solution fits."
+    }
+  }
+}

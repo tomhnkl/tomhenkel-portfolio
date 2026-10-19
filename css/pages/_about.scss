@@ -1,0 +1,84 @@
+/* --- About Page --- */
+.about-section {
+  @extend %fixed-frame-layout;
+
+  @media (min-width: $bp-mobile + 1) {
+    /* Grow with longer text instead of overflowing into the footer (e.g. 1280x720) */
+    height: auto;
+    min-height: calc(100vh - var(--page-top) - var(--page-bottom));
+  }
+}
+
+.about-section .about-image {
+  grid-column: 1 / 9;
+  align-self: end;  /* Explicit bottom alignment */
+  height: 100%; /* Fill vertical space */
+  overflow: hidden;
+  position: relative; /* Fixed container for the absolute portrait */
+  @include tablet { grid-column: 1 / 7; }
+
+  .media-reveal {
+    /* Portrait via media reveal (pictureHTML): desktop 1.357:1 source, tablet/mobile square.
+       Out of flow, so it fills the row instead of sizing it */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center; /* Align center */
+  }
+}
+
+.about-section .about-text {
+  grid-column: 9 / 13;
+  align-self: start; /* Align to top of section */
+  /* Visual adjustment: the cap height of the first line meets the image top edge exactly (scales with the body size).
+     Funnel Sans (2026-10-15) at --lh-body 1.5: cap top = half leading (1.5 - 1.0 - 0.25) / 2 + ascent 1.0 - cap height 0.675 = 0.45em
+     below the line box top (Helvetica 0.378em, with the old -0.333em it sat 0.045em low) */
+  margin-top: -0.45em;
+  @include tablet { grid-column: 7 / 13; }
+
+    .description {
+      font-family: var(--font-family-book); /* Explicitly set to Book */
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+      max-width: var(--measure);
+      margin-bottom: var(--space-m);
+    }
+
+    .contact-info {
+      /* Set on the container, so the link standard (.text-link) can switch the cut on hover */
+      font-family: var(--font-family-book);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+
+      a {
+        color: #fff;
+        display: inline-block;
+        margin-bottom: 8px;
+
+        &:last-child {
+          margin-bottom: 0px;
+        }
+      }
+    }
+}
+
+@media (max-width: $bp-mobile) {
+  /* Mobile adjustments for About specific elements */
+  .about-section .about-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Square portrait */
+  }
+
+  .about-section .about-text {
+    margin-top: var(--space-s); /* Gap below the image (the -0.333em alignment is desktop only) */
+  }
+}

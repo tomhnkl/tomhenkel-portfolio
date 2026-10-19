@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/project.html", "has": [{ "type": "query", "key": "id", "value": "(?<id>[a-z0-9-]+)" }], "destination": "/work/:id", "permanent": true },
+    { "source": "/project", "has": [{ "type": "query", "key": "id", "value": "(?<id>[a-z0-9-]+)" }], "destination": "/work/:id", "permanent": true },
+    { "source": "/project.html", "destination": "/", "permanent": true },
+    { "source": "/project", "destination": "/", "permanent": true },
+    { "source": "/legal.html", "destination": "/", "permanent": true },
+    { "source": "/legal", "destination": "/", "permanent": true },
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/about.html", "destination": "/about", "permanent": true },
+    { "source": "/work", "destination": "/", "permanent": true },
+    { "source": "/lab", "destination": "/", "permanent": false },
+    { "source": "/lab.html", "destination": "/", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/((?!images/).*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
+    }
+  ]
+}

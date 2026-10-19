@@ -1,0 +1,27 @@
+/* --- Media Reveal (images + videos, site-wide) ---
+   A tiny placeholder is shown blurred first; the real source sharpens in once loaded.
+   Markup + loading: mediaHTML() / initMediaReveal() in main.js */
+.media-reveal {
+  display: block;
+  overflow: hidden;
+  background-color: var(--media-bg, #111); /* Photo's base colour hides the soft blur edge */
+
+  img, video {
+    display: block;
+    filter: blur(var(--reveal-blur));
+    object-position: var(--focus, 50% 50%); /* Focus point for cover crops, e.g. --focus: 30% 50% */
+  }
+
+  &.is-loaded {
+    img, video { filter: blur(0); }
+  }
+
+  /* Missing file: keep the colour field instead of a broken image icon */
+  &.is-error img { visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .media-reveal {
+    img, video { transition: filter var(--duration-reveal) var(--ease-reveal); }
+  }
+}

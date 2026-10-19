@@ -1,0 +1,20 @@
+/* --- Smooth scroll (Lenis, js/vendor/lenis.min.js; set up in main.js) ---
+   Only wheel/trackpad is smoothed, touch stays native; off with reduced motion and in the lab.
+   Rules from Lenis' own lenis.css */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Iframes would swallow the wheel while the page glides past them */
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

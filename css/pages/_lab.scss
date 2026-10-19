@@ -1,0 +1,98 @@
+/* --- Lab Page (Infinite Canvas) --- */
+body.lab-page {
+  overflow: hidden; /* Prevent native scroll */
+  padding: 0;
+}
+
+#lab-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #111; /* Slightly lighter bg specific for lab? or kept #000 */
+  background-color: #000;
+  cursor: grab;
+
+  &.grabbing {
+    cursor: grabbing;
+  }
+}
+
+#lab-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Size is effectively infinite, managed via transforms */
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.lab-title-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-family-mono);
+  font-size: var(--fs-poster); /* Sehr groß */
+  line-height: var(--lh-poster);
+  font-weight: 700;
+  color: #888; /* Grau statt Weiß */
+  mix-blend-mode: difference;
+  pointer-events: none; /* Klicks gehen durch */
+  z-index: 50;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.lab-item {
+  position: absolute;
+  user-select: none; /* Prevent text selection during drag */
+
+  > .media-reveal {
+    /* Media fill the reserved box: width from size.w, height fixed or from the file's format (renderLab) */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  img, video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; /* Let clicks pass through for dragging (unless we want interactions) */
+  }
+  
+  /* Text block style */
+  &.lab-item-text-block {
+    background: #000;
+    border: 1px solid #333;
+    padding: 20px;
+    width: 300px;
+    
+    h3 { margin-top: 0; font-family: var(--font-family-lining); font-size: var(--fs-ui); line-height: var(--lh-ui); }
+    p { margin-bottom: 0; color: #ccc; font-family: var(--font-family-book); font-size: var(--fs-body); line-height: var(--lh-body); }
+  }
+
+  /* Caption Overlay on Hover */
+  .lab-caption {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+    background: #000;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  &:hover .lab-caption {
+    opacity: 1;
+  }
+}
