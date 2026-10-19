@@ -418,6 +418,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 video.addEventListener('playing', () => events.emit('play')); // erst mit dem ersten Bild, vorher bleibt der Teaser
                 video.addEventListener('pause', () => events.emit('pause'));
+                // iPhone: Verlassen des System-Players ("vollbild") pausiert den Film. Lief er bis zum Verlassen, geht es
+                // eingebettet an derselben Stelle weiter (Tom 2026-10-19); hat der Besucher im Player pausiert, bleibt er stehen.
+                // iOS meldet die Pause kurz vor oder nach webkitendfullscreen, daher ein kurzes Fenster in beide Richtungen
+                const EXIT_PAUSE_MS = 800;
+                let inSystemPlayer = false;
+                let lastPauseAt = -Infinity;
+                let exitedAt = -Infinity;
+                const resume = () => video.play().catch(() => {}); // abgelehnt: bleibt pausiert, Ton unverändert
+                video.addEventListener('webkitbeginfullscreen', () => { inSystemPlayer = true; });
+                video.addEventListener('pause', () => {
+                    const now = performance.now();
+                    if (inSystemPlayer) lastPauseAt = now;
+                    else if (now - exitedAt < EXIT_PAUSE_MS && !video.ended) resume(); // Pause kam erst nach dem Verlassen
+                });
+                video.addEventListener('webkitendfullscreen', () => {
+                    inSystemPlayer = false;
+                    exitedAt = performance.now();
+                    if (video.paused && !video.ended && exitedAt - lastPauseAt < EXIT_PAUSE_MS) resume(); // Pause kam mit dem Verlassen
+                });
                 video.addEventListener('error', () => events.emit('error'));
                 const player = {
                     play: start,
@@ -573,7 +592,9 @@ document.addEventListener('DOMContentLoaded', () => {
             progress.hidden = !heroState.film;
             progress.setAttribute('aria-label', labels.timeline);
         }
-        document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused); // Steuerung unten rechts
+        const wrapper = document.getElementById('hero-wrapper');
+        wrapper.classList.toggle('is-playing', !heroState.paused); // "pause" statt "abspielen"
+        wrapper.classList.toggle('has-film', heroState.film); // ab dem ersten Start: Steuerung als Zeile unten rechts
     }
 
     function initHeroPlayer(film, title) {

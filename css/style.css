@@ -1274,9 +1274,9 @@ html.lenis body {
 .pd-hero {
   --hero-tap: 44px; /* Minimum tap target of the film buttons */
   --hero-pad-x: 8px; /* Side padding of the film buttons */
-  /* Visible height of the lowest label while the film plays (the sound text line); the placement below only uses
-     --hero-tap, --hero-pad-x and this, so a different label (e.g. an icon) only has to set its own height here */
-  --hero-label-h: calc(var(--fs-small) * var(--lh-small));
+  /* Visible height of a control label (all at UI size); the row placement only uses --hero-tap, --hero-pad-x and this,
+     so a different label (e.g. an icon) only has to set its own height here */
+  --hero-label-h: calc(var(--fs-ui) * var(--lh-ui));
   width: 100%;
   aspect-ratio: 16/9;
   background: #111;
@@ -1320,7 +1320,17 @@ html.lenis body {
 .pd-hero .hero-film {
   -o-object-fit: contain;
      object-fit: contain;
-  background-color: #111; /* Letterbox bars (16:9 film in the 3:2 phone hero) cover the teaser/still behind it */
+  background-color: #111; /* Letterbox bars, if a film's format ever differs from the hero, cover the teaser/still */
+  /* Phones: the playing film fills the 3:2 hero like the teaser, cropped left/right, no bars, no jump
+     (Tom 2026-10-19); "vollbild" shows it whole */
+}
+@media (max-width: 768px) {
+  .pd-hero .hero-film {
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+}
+.pd-hero .hero-film {
   opacity: 0;
   transition: opacity var(--duration-base) var(--ease-out);
 }
@@ -1337,25 +1347,39 @@ html.lenis body {
   cursor: pointer;
 }
 .pd-hero {
-  /* Controls (D11, option B): "abspielen" in the centre of the film (paused with the film loaded: sound below).
-     Anchored at the exact centre; the buttons hang from that point, so the play word never moves. */
+  /* Controls (D11; Tom 2026-10-19): every word at UI size like the nav, no underline; hover thickens the word
+     (400 → 650 with the start page list's fast weight transition). A grid over the whole hero:
+       not loaded  only "abspielen", centred on the film
+       playing     "pause · ton aus · vollbild" as one right-aligned row at the bottom right
+       paused      "abspielen · ton aus · vollbild" in the same spot, only the first word changes (the row is
+                   right-aligned, so "ton aus" and "vollbild" never move; Tom 2026-10-19)
+     Centred only before the film has started (or after it fell back to the teaser): .has-film from main.js
+     The labels sit on the page margin, the 44px tap areas reach past it (--hero-pad-x at the side). */
 }
 .pd-hero .hero-controls {
+  --hero-row-bottom: var(--page-bottom); /* Above the fixed footer line, so the row never covers "de / en" */
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
+  inset: 0;
   z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  grid-template-rows: 1fr auto;
+  -moz-column-gap: calc(var(--space-s) - 2 * var(--hero-pad-x));
+       column-gap: calc(var(--space-s) - 2 * var(--hero-pad-x)); /* Visible gap --space-s between the words */
+  padding-right: calc(var(--page-margin) - var(--hero-pad-x));
+  padding-bottom: calc(var(--hero-row-bottom) - (var(--hero-tap) - var(--hero-label-h)) / 2);
   mix-blend-mode: difference;
   will-change: transform; /* Own layer: iOS only blends with the video layer then (see .home-list in _home.scss) */
-  transform: translateZ(0);
+  transform: translateZ(0); /* Also the containing block of the centred "abspielen" */
   pointer-events: none; /* Only the buttons catch clicks, the rest goes to the overlay */
 }
+@media (max-width: 768px) {
+  .pd-hero .hero-controls {
+    --hero-row-bottom: var(--page-margin);
+  }
+}
+.pd-hero .hero-controls { /* Phones: footer only in the menu */ }
 .pd-hero .hero-controls button {
-  position: absolute;
-  left: 0;
-  transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1367,6 +1391,10 @@ html.lenis body {
   border: none;
   color: #fff;
   font-family: var(--font-family-base);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-ui);
+  font-weight: 400;
+  transition: font-weight var(--duration-fast) var(--ease-out);
   cursor: pointer;
   pointer-events: auto;
   -moz-appearance: none;
@@ -1376,50 +1404,36 @@ html.lenis body {
 }
 @media (hover: hover) {
   .pd-hero .hero-controls button:hover {
-    text-decoration-line: underline;
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
-    -webkit-text-decoration-skip: ink;
-            text-decoration-skip-ink: auto;
-  }
-  .pd-hero .hero-controls button:hover:has(.ul-w) {
-    text-decoration-line: none;
-  }
-  .pd-hero .hero-controls button:hover .ul-w {
-    text-decoration-line: underline;
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
-    -webkit-text-decoration-skip: ink;
-            text-decoration-skip-ink: auto;
+    font-weight: var(--font-weight-bold);
   }
 }
 .pd-hero .hero-controls button[hidden] {
   display: none;
 }
 .pd-hero .hero-controls {
-  /* Placement: play target centred on the film, sound directly below it without overlapping */
+  /* The row (playing): pause · ton aus · vollbild */
 }
 .pd-hero .hero-controls #btn-play {
-  top: 0;
-  transform: translate(-50%, -50%);
+  grid-row: 2;
+  grid-column: 2;
 }
 .pd-hero .hero-controls #btn-sound {
-  top: calc(var(--hero-tap) / 2);
+  grid-row: 2;
+  grid-column: 3;
 }
 .pd-hero .hero-controls #btn-fullscreen {
-  top: calc(var(--hero-tap) * 1.5);
+  grid-row: 2;
+  grid-column: 4;
 }
-.pd-hero .hero-controls { /* "vollbild" below the sound (Tom 2026-10-19) */
-  /* Labels (text from site-content.json ui.*.player): play at UI size like the nav, sound small */
+.pd-hero {
+  /* Before the first start: "abspielen" alone in the exact centre of the film */
 }
-.pd-hero .hero-controls #btn-play {
-  font-size: var(--fs-ui);
-  line-height: var(--lh-ui);
-}
-.pd-hero .hero-controls #btn-sound,
-.pd-hero .hero-controls #btn-fullscreen {
-  font-size: var(--fs-small);
-  line-height: var(--lh-small);
+.pd-hero:not(.has-film) .hero-controls #btn-play {
+  grid-area: auto; /* Without a grid area the whole hero is its containing block, not the row cell */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .pd-hero {
   /* Phones (Tom 2026-10-19, O1): "abspielen" plain white over a soft spot behind it instead of difference;
@@ -1442,32 +1456,10 @@ html.lenis body {
     background: radial-gradient(closest-side, rgba(0, 0, 0, 0.45) 40%, rgba(0, 0, 0, 0.248) 68%, rgba(0, 0, 0, 0));
     transition: opacity var(--duration-base) var(--ease-out);
   }
-  .pd-hero.is-playing::after {
+  .pd-hero.has-film::after {
     opacity: 0;
   }
-}
-.pd-hero {
-  /* While the film plays (.is-playing, main.js): "pause" and the sound below it fixed in the film's bottom right corner,
-     always visible (Tom 2026-10-11: corner of the film, even where it meets the fixed footer "de / en" at the top of the page).
-     The labels sit on the page margin; the 44px tap areas reach past it
-     (--hero-pad-x at the side, (--hero-tap - --hero-label-h) / 2 below the sound). */
-}
-.pd-hero.is-playing .hero-controls {
-  top: auto;
-  left: auto;
-  right: calc(var(--page-margin) - var(--hero-pad-x));
-  bottom: calc(var(--page-margin) - (var(--hero-tap) - var(--hero-label-h)) / 2);
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-.pd-hero.is-playing .hero-controls #btn-play,
-.pd-hero.is-playing .hero-controls #btn-sound,
-.pd-hero.is-playing .hero-controls #btn-fullscreen {
-  position: static;
-  transform: none;
+  .pd-hero { /* Once started the words sit in the row, the spot is no longer needed */ }
 }
 .pd-hero {
   /* Timeline at the bottom edge (Tom 2026-10-19): the watched part white over a faint track, tap or drag to jump.
@@ -1518,6 +1510,8 @@ html.lenis body {
   background: #000;
 }
 .pd-hero:fullscreen .hero-film {
+  -o-object-fit: contain;
+     object-fit: contain; /* The whole film, also on phones */
   background-color: #000;
 }
 .pd-hero:-webkit-full-screen {
@@ -1528,31 +1522,18 @@ html.lenis body {
   background: #000;
 }
 .pd-hero:-webkit-full-screen .hero-film {
+  object-fit: contain; /* The whole film, also on phones */
   background-color: #000;
 }
 .pd-hero::backdrop {
   background: #000;
 }
 .pd-hero {
-  /* Hovering the film underlines the word it would trigger (pointer devices only) */
+  /* Hovering the film thickens the word it would trigger (pointer devices only), like hovering the word itself */
 }
 @media (hover: hover) {
   .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play {
-    text-decoration-line: underline;
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
-    -webkit-text-decoration-skip: ink;
-            text-decoration-skip-ink: auto;
-  }
-  .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play:has(.ul-w) {
-    text-decoration-line: none;
-  }
-  .pd-hero .hero-overlay:hover ~ .hero-controls #btn-play .ul-w {
-    text-decoration-line: underline;
-    text-decoration-thickness: var(--underline-thickness);
-    text-underline-offset: var(--underline-offset);
-    -webkit-text-decoration-skip: ink;
-            text-decoration-skip-ink: auto;
+    font-weight: var(--font-weight-bold);
   }
 }
 
@@ -1853,22 +1834,18 @@ details.pd-accordion .pd-timeline dd {
     grid-column: 1/-1;
   }
 }
-.pd-footer-nav .nav-item:hover .nav-title {
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--underline-thickness);
-  text-underline-offset: var(--underline-offset);
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+.pd-footer-nav .nav-item {
+  /* Hover (Tom 2026-10-19): title and category go bold like the start page list, no underline (pointer devices only) */
 }
-.pd-footer-nav .nav-item:hover .nav-title:has(.ul-w) {
-  text-decoration-line: none;
+.pd-footer-nav .nav-item .nav-title,
+.pd-footer-nav .nav-item .nav-desc {
+  font-weight: 400;
+  transition: font-weight var(--duration-fast) var(--ease-out);
 }
-.pd-footer-nav .nav-item:hover .nav-title .ul-w {
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--underline-thickness);
-  text-underline-offset: var(--underline-offset);
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+@media (hover: hover) {
+  .pd-footer-nav .nav-item:hover .nav-title, .pd-footer-nav .nav-item:hover .nav-desc {
+    font-weight: var(--font-weight-bold);
+  }
 }
 .pd-footer-nav .nav-item .nav-media {
   position: relative;
