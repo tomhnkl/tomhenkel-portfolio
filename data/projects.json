@@ -13,12 +13,12 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/07.webp", "width": 2560, "height": 1920, "placeholder": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADQBACdASogABgAPr1On0unJKKht/qoAOAXiWkAAFu0cHG5x1BsvIAGgoi9RCQogAD++FB803PoywJFyinno2rH/e5aaRYpSDSuN67MQB7oHOgvEkaM3WB+OMMTGPwh3bkAWcMmeOUT6rTfCoAAAA==", "color": "#161616", "alt": { "de": "Bild 7", "en": "Image 7" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/07.webp", "width": 2560, "height": 1920, "placeholder": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADQBACdASogABgAPr1On0unJKKht/qoAOAXiWkAAFu0cHG5x1BsvIAGgoi9RCQogAD++FB803PoywJFyinno2rH/e5aaRYpSDSuN67MQB7oHOgvEkaM3WB+OMMTGPwh3bkAWcMmeOUT6rTfCoAAAA==", "color": "#161616", "alt": { "de": "reality, by algorithm – Bild 7", "en": "reality, by algorithm – Image 7" } }]
       },
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/02.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAACQBQCdASogABIAPtFWo0uoJKMhsAgBABoJaQALAEcAJ4qiM24T6ujGagtxz85polJaGm+ngAD+3fOzvRkLQTktx5bRv79+8j5nA/wI0YfNPQ3x7By8MN0djVw8N1tbkwfxDZoZnZA3Z1tKYnPQJu0HqGMfyXPh9pOyBl1dgZoxnxiZiAlriP9XF0cWmgcEPyzHQx2wZWwr9I7xlDESsw//kh++nn35zGDOFPXTvGC/i6PzzrEUmNsbXQLo80mwjWAAAA==", "color": "#4a4a4a", "alt": { "de": "Bild 2", "en": "Image 2" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/02.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAACQBQCdASogABIAPtFWo0uoJKMhsAgBABoJaQALAEcAJ4qiM24T6ujGagtxz85polJaGm+ngAD+3fOzvRkLQTktx5bRv79+8j5nA/wI0YfNPQ3x7By8MN0djVw8N1tbkwfxDZoZnZA3Z1tKYnPQJu0HqGMfyXPh9pOyBl1dgZoxnxiZiAlriP9XF0cWmgcEPyzHQx2wZWwr9I7xlDESsw//kh++nn35zGDOFPXTvGC/i6PzzrEUmNsbXQLo80mwjWAAAA==", "color": "#4a4a4a", "alt": { "de": "reality, by algorithm – Bild 2", "en": "reality, by algorithm – Image 2" } }]
       },
       {
         "type": "text",
@@ -28,35 +28,20 @@
         }
       },
       {
-        "type": "accordions",
-        "items": [
-          {
-            "title": { "de": "Notation", "en": "Notation" },
-            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/notation.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "Text folgt.", "en": "Text to follow." }
-          },
-          {
-            "title": { "de": "Dimensionen", "en": "Dimensions" },
-            "media": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/dimensions.webp", "width": 1440, "height": 960 }],
-            "content": { "de": "Text folgt.", "en": "Text to follow." }
-          }
-        ]
-      },
-      {
         "type": "media",
         "cols": [12],
         "ratio": "3:2",
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/05.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADQBACdASogABIAPtFgqE+oJSOiKAgBABoJaQAA7OV0fy7x70Rtq0P92UvCMA/xYAD+/VGcVEqhn9Z2rA/hnh+QpbT8oO8TGB/NGrZSYFXdcgvxI9hlxGHZkC/9zXaGkHSIQznQTAcNUSsI0tdyhaj7IuBRd6kpipOgAAAA", "color": "#282828", "alt": { "de": "Bild 5", "en": "Image 5" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/05.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADQBACdASogABIAPtFgqE+oJSOiKAgBABoJaQAA7OV0fy7x70Rtq0P92UvCMA/xYAD+/VGcVEqhn9Z2rA/hnh+QpbT8oO8TGB/NGrZSYFXdcgvxI9hlxGHZkC/9zXaGkHSIQznQTAcNUSsI0tdyhaj7IuBRd6kpipOgAAAA", "color": "#282828", "alt": { "de": "reality, by algorithm – Bild 5", "en": "reality, by algorithm – Image 5" } }]
       },
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/06.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwBACdASogABIAPtFWokuoJKMqMAgBQBoJaQAAW+vpfRd9whME/Amx1AAA/vQsBzEEbNFsHRqyphKn6NSEWjnEabDubXmKgZBP/727KtVyNdy6GL2opmrThRHQPvcgiiWN0pqMAAAAAA==", "color": "#252525", "alt": { "de": "Bild 6", "en": "Image 6" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/06.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwBACdASogABIAPtFWokuoJKMqMAgBQBoJaQAAW+vpfRd9whME/Amx1AAA/vQsBzEEbNFsHRqyphKn6NSEWjnEabDubXmKgZBP/727KtVyNdy6GL2opmrThRHQPvcgiiWN0pqMAAAAAA==", "color": "#252525", "alt": { "de": "reality, by algorithm – Bild 6", "en": "reality, by algorithm – Image 6" } }]
       },
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBgCdASogABYAPtFcpEyoJSOiMBgIAQAaCWkACwA3ANJe0UGCndUNizAe0OhcE8PDY1GHgH4b095q8wAA/umyS2FID0Q6yDHa8MZcRqqce6AOs10+nZ9x09R1LL8a+BXxy6IQ5KNpjFPU7VMNjckkeMo4UT6wdBmd3kousSxQONLjYDdBW7gVqaRxOpsiQIvcFQ9ARLda9qqyG6NbcYdwWbvhOmjKB3WUobHF5kMeXru3+lrrDo9P5z0X1dQyhlcwPyysPnLr6Sk3F403XSQcAgyyheSsb98z9kRCguY3+s0ISAAAAA==", "color": "#3e3e3e", "alt": { "de": "Bild 1", "en": "Image 1" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBgCdASogABYAPtFcpEyoJSOiMBgIAQAaCWkACwA3ANJe0UGCndUNizAe0OhcE8PDY1GHgH4b095q8wAA/umyS2FID0Q6yDHa8MZcRqqce6AOs10+nZ9x09R1LL8a+BXxy6IQ5KNpjFPU7VMNjckkeMo4UT6wdBmd3kousSxQONLjYDdBW7gVqaRxOpsiQIvcFQ9ARLda9qqyG6NbcYdwWbvhOmjKB3WUobHF5kMeXru3+lrrDo9P5z0X1dQyhlcwPyysPnLr6Sk3F403XSQcAgyyheSsb98z9kRCguY3+s0ISAAAAA==", "color": "#3e3e3e", "alt": { "de": "reality, by algorithm – Bild 1", "en": "reality, by algorithm – Image 1" } }]
       },
       {
         "type": "text",
@@ -68,26 +53,19 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/12.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAOfBcAHof+z0MCCd8dbneAAP70K7GmRZ4fByln2KSLA6QKc8u4j8nTKszNbwGHxAukV3gbVD3KtWLztV2jVMLWQklRXDrQYvDKqcSFRP0zvZHkv/08j04CsGvKeB5WUA3E3dXxdpboz5XmKgnUM3PEUgAA", "color": "#303030", "alt": { "de": "Bild 12", "en": "Image 12" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/12.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASogABIAPtFYpEuoJSOhsAgBABoJaQAOfBcAHof+z0MCCd8dbneAAP70K7GmRZ4fByln2KSLA6QKc8u4j8nTKszNbwGHxAukV3gbVD3KtWLztV2jVMLWQklRXDrQYvDKqcSFRP0zvZHkv/08j04CsGvKeB5WUA3E3dXxdpboz5XmKgnUM3PEUgAA", "color": "#303030", "alt": { "de": "reality, by algorithm – Bild 12", "en": "reality, by algorithm – Image 12" } }]
       },
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/04.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASogABIAPtFUoUuoJKMhsAgBABoJaQAAQQKujfhBQ5LTLw9SAAD+8wjKQfOM6Wjajdav58dz4FFcQ2fEd1cXt/clfH1xKIBK+EiWbRlj6VcCy6w0olpvWz3SqlxhZDIBbzXB0LNmLKJlVAq6rUAAAA==", "color": "#181818", "alt": { "de": "Bild 4", "en": "Image 4" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/04.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASogABIAPtFUoUuoJKMhsAgBABoJaQAAQQKujfhBQ5LTLw9SAAD+8wjKQfOM6Wjajdav58dz4FFcQ2fEd1cXt/clfH1xKIBK+EiWbRlj6VcCy6w0olpvWz3SqlxhZDIBbzXB0LNmLKJlVAq6rUAAAA==", "color": "#181818", "alt": { "de": "reality, by algorithm – Bild 4", "en": "reality, by algorithm – Image 4" } }]
       },
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/03.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADQBACdASogABIAPtFapE0oJSMiMBgIAQAaCWkAACF5Vuo3n/SGEcanXW2/Z8XOQAD+9DGZaGMa023xWWifcOd7ZoCYOP/+cUa/0jums++3P5HY42qGv1SP+mG8Hn+zxWi+8917e8HPqYdk8WuNAnhNgOtjlb+ug8R1HXvSXW3qi1f4YX3h2jQAAAA=", "color": "#2a2a2a", "alt": { "de": "Bild 3", "en": "Image 3" } }]
+        "items": [{ "type": "image", "src": "images/projects/reality-by-algorithm/_ABB/03.webp", "width": 2560, "height": 1440, "placeholder": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADQBACdASogABIAPtFapE0oJSMiMBgIAQAaCWkAACF5Vuo3n/SGEcanXW2/Z8XOQAD+9DGZaGMa023xWWifcOd7ZoCYOP/+cUa/0jums++3P5HY42qGv1SP+mG8Hn+zxWi+8917e8HPqYdk8WuNAnhNgOtjlb+ug8R1HXvSXW3qi1f4YX3h2jQAAAA=", "color": "#2a2a2a", "alt": { "de": "reality, by algorithm – Bild 3", "en": "reality, by algorithm – Image 3" } }]
       }
     ],
-    "personal": {
-      "title": { "de": "Persönlich", "en": "Personal" },
-      "text": {
-        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
-        "en": "Placeholder: a personal note on the project will go here."
-      }
-    },
     "de": {
       "title": "reality,<br>by algorithm.",
       "category": "installation",
@@ -112,7 +90,7 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/14.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwBACdASogABYAPslQn0unpKKhsAwA8BkJaQAAW+xDCQxeTZ9epBpAMqAA/vd8gP5qjkSrQh/xN4O+ySQJO6oXt898x7rvgrOdBSu1C3TtGq2oYhAvqv7e8uZ8Q4Rnsvsr0BzAAAA=", "color": "#1b1b1b", "alt": { "de": "Bild 14", "en": "Image 14" } }]
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/14.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwBACdASogABYAPslQn0unpKKhsAwA8BkJaQAAW+xDCQxeTZ9epBpAMqAA/vd8gP5qjkSrQh/xN4O+ySQJO6oXt898x7rvgrOdBSu1C3TtGq2oYhAvqv7e8uZ8Q4Rnsvsr0BzAAAA=", "color": "#1b1b1b", "alt": { "de": "sono bricolage – Bild 14", "en": "sono bricolage – Image 14" } }]
       },
       {
         "type": "media",
@@ -127,7 +105,7 @@
             "placeholder": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAADwCACdASogAEIAPsFOokunpCOhuZQMAPAYCWkAALwAjBrWLj6eWLvlkD5LL3SlSgavf7EaVI1ij8YpKyQ8DgPw5kheW7vS8wPDPFmJZr/6AAD+78kPu2P/TVGl5kAUQpCYg9JrT0Hn323KEhnVhg0qZSQj9L0iLEeg6EtWuj9EpVd881Bl4ImI7CsA6gSw4mxUVUqyI27ZMCnYsmws6xhihCoO7awud2CA17N6vrftz6GIHwzkynwWh+ErUXT/C0eqGLRIyYMmcNJ1wfv3zWq4Q0p2uFLU+BDMwA/2QRyYLO9MrLKIp54c8iqK3qKv95lqhMLnC4Z+QP/kLcciXw8ZAXslx8uLP/JmZYML0NKIs9I2/SkYAAAA",
             "color": "#515151"
           },
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/02.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAACwBQCdASogABYAPtFaqU2oJSQiKAqpABoJaQAOfA0ga1l0zKbTMo+QIBzdbS5QsYG06Ku9uNYA/vBIe6c1uP3rUxcRE7JAPHW+4ly2+5E79fIA/DRhbaS6MCnELzOmc+BU0XrRQTOwdsPWA+8mT9WNC/9uiy7gX7HPv5RbclzA35D9tem66bpAay8p/S8KtbwfeTAViVXXl0u+b/rgv1x9W6kGUtDp90P5K9/mVsXLXPxpMFfbrttnOXU+Bvtabscl0HpXyObiFj7O3oUrAaZPj/yQ38tvNjsNwQq4hyCznlD5q0QEDnpW6A0bg0YTXqnV2q+2TFF8QAAA", "color": "#696969", "alt": { "de": "Bild 2", "en": "Image 2" } }
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/02.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAACwBQCdASogABYAPtFaqU2oJSQiKAqpABoJaQAOfA0ga1l0zKbTMo+QIBzdbS5QsYG06Ku9uNYA/vBIe6c1uP3rUxcRE7JAPHW+4ly2+5E79fIA/DRhbaS6MCnELzOmc+BU0XrRQTOwdsPWA+8mT9WNC/9uiy7gX7HPv5RbclzA35D9tem66bpAay8p/S8KtbwfeTAViVXXl0u+b/rgv1x9W6kGUtDp90P5K9/mVsXLXPxpMFfbrttnOXU+Bvtabscl0HpXyObiFj7O3oUrAaZPj/yQ38tvNjsNwQq4hyCznlD5q0QEDnpW6A0bg0YTXqnV2q+2TFF8QAAA", "color": "#696969", "alt": { "de": "sono bricolage – Bild 2", "en": "sono bricolage – Image 2" } }
         ]
       },
       {
@@ -141,7 +119,7 @@
         "type": "media",
         "cols": [9, 3],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/07.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRu4AAABXRUJQVlA4IOIAAACwBQCdASogABYAPtFYo0uoJSMhsAgBABoJaQAIEC6VGr9PsITcGPmLRHflY+4Zs1G4JenoS8gA/mo/vbWXP4g7gUthCPL7jcjd79QknHidEj3QHLAcMaUzGtpHJDkYLLOGUMMBsWf30LcxAdqSTdrxHKvU1YhxHrmpHGUrbINrEr95qfQrnS8+OENji90TWqgEoyNVU8qZP4qxzK8klQYgNojKRwNszQcGw5e7lq4l5eOwjFMIjyAD3PJDVBE/zNW8z3VL0gusDiWp2K6rZX+ppqAWTqG3GlDXpxXbfQfQoAAA", "color": "#525252", "alt": { "de": "Bild 7", "en": "Image 7" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/07.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRu4AAABXRUJQVlA4IOIAAACwBQCdASogABYAPtFYo0uoJSMhsAgBABoJaQAIEC6VGr9PsITcGPmLRHflY+4Zs1G4JenoS8gA/mo/vbWXP4g7gUthCPL7jcjd79QknHidEj3QHLAcMaUzGtpHJDkYLLOGUMMBsWf30LcxAdqSTdrxHKvU1YhxHrmpHGUrbINrEr95qfQrnS8+OENji90TWqgEoyNVU8qZP4qxzK8klQYgNojKRwNszQcGw5e7lq4l5eOwjFMIjyAD3PJDVBE/zNW8z3VL0gusDiWp2K6rZX+ppqAWTqG3GlDXpxXbfQfQoAAA", "color": "#525252", "alt": { "de": "sono bricolage – Bild 7", "en": "sono bricolage – Image 7" } },
           {
             "type": "video",
             "src": "images/projects/sono-bricolage/_ABB/11.mp4",
@@ -157,16 +135,16 @@
         "type": "media",
         "cols": [6, 6],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/03.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAABwBQCdASogABYAPtFcpUyoJSOiMBgIAQAaCWkAAI92Y21JUM8t/uUfe1fehbUgSd2gQmgAAP7Y8xaWKNMBtxzhadPM4IrR51hjURXRzX59MPougBIL4ZmOt6fKPB55gcuWMZY7ytkh13KuLfjAbOnBvH435WbzyiykI2vO0M1cCzqUSTU2OaRyJgAAAA==", "color": "#515151", "alt": { "de": "Bild 3", "en": "Image 3" } },
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/06.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBQCdASogABYAPtFcqE4oJSQiKAqpABoJaQAGaBVNFOuI+WCITPA+f244jvQ0g/mTjHR0AP7zEIsX862GTBNYoQfqAmgfuiOeoa7P8J0gR9C/5yxTKEveaUzibJqP0+1UTcx/8PfhGThNRnAYd4QOt3Ua/4QV7lmDEIAuhBl7ZM3+a2ckPvW3q+XcK/B64nWwCYEMySPpL5mzD9JJrtpN0+ehP+fOPevJTfw7h5lJot8Jau/oqq9Baxd3H3T3nvSKDzmlPKeR9Pies45OxsPJF+OcJ8OkgYzvlz6ZP+yexKj00S4AAA==", "color": "#545454", "alt": { "de": "Bild 6", "en": "Image 6" } }
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/03.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAABwBQCdASogABYAPtFcpUyoJSOiMBgIAQAaCWkAAI92Y21JUM8t/uUfe1fehbUgSd2gQmgAAP7Y8xaWKNMBtxzhadPM4IrR51hjURXRzX59MPougBIL4ZmOt6fKPB55gcuWMZY7ytkh13KuLfjAbOnBvH435WbzyiykI2vO0M1cCzqUSTU2OaRyJgAAAA==", "color": "#515151", "alt": { "de": "sono bricolage – Bild 3", "en": "sono bricolage – Image 3" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/06.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAABwBQCdASogABYAPtFcqE4oJSQiKAqpABoJaQAGaBVNFOuI+WCITPA+f244jvQ0g/mTjHR0AP7zEIsX862GTBNYoQfqAmgfuiOeoa7P8J0gR9C/5yxTKEveaUzibJqP0+1UTcx/8PfhGThNRnAYd4QOt3Ua/4QV7lmDEIAuhBl7ZM3+a2ckPvW3q+XcK/B64nWwCYEMySPpL5mzD9JJrtpN0+ehP+fOPevJTfw7h5lJot8Jau/oqq9Baxd3H3T3nvSKDzmlPKeR9Pies45OxsPJF+OcJ8OkgYzvlz6ZP+yexKj00S4AAA==", "color": "#545454", "alt": { "de": "sono bricolage – Bild 6", "en": "sono bricolage – Image 6" } }
         ]
       },
       {
         "type": "media",
         "cols": [4, 8],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/10.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRm4BAABXRUJQVlA4IGIBAADwBwCdASogACwAPsFMnUunpCKhtUgA8BgJaQAOkFYnLrCSMh1WK3sFL2Wu8aoVyXjkYdxo2NaPh8WRL5RBxLMxa0xWYScvuwAA/rxqruePDuv/FAWXu/YSvogSpJr0ZeZzcAz9s/Rnaq61osHlcJcTxRC1qyBqmHBNO7yN7XB2+M3MRm+otmxTTDMmVmcoPIby26+nxqeo2EFBzzrcQ2Wbx3bI+YgJVmltFpRM4Nx6mPtsIlrEFjRioV1kHqfxyAWAhHervYmeBafCXZoZ0n9eTtAA0r6tlBYtuVyJAksrS0wTIud8x2r6KIpiZ8wxwNNVpeDNIqCyqxLNQDlOTPaYKqYtblZ1OOo9S0qApkD4TpiV5UVER6DtE4BP6Z/cS+8/UMzmd+lxCqxDZiGN962pidtqgqRdg9a3e5OaJ/ht+M8M9EhF7cK3yY4bExt5ADUDtJi/61Omn9IS/55f+YiAAAA=", "color": "#8f8f8f", "alt": { "de": "Bild 10", "en": "Image 10" } },
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/12.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAADQBACdASogABYAPtFWpUwoJKOiKA1RABoJaQAALbudrNJ751NXxlAkX+kXzxh78AD+9CnI5pQbxcM/Zugp18ZA/Mrlls1zcZZh3VwtD/rTSJdY4/GE4FXwqrADVhx/GbFISrX8zFs38mY5dzgC7AQXd4/o+lWFrnfY05L2pRqX79aiL7W3oscD4gZ8f13ptiCBXHG7QIjRE2ugAAA=", "color": "#404040", "alt": { "de": "Bild 12", "en": "Image 12" } }
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/10.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRm4BAABXRUJQVlA4IGIBAADwBwCdASogACwAPsFMnUunpCKhtUgA8BgJaQAOkFYnLrCSMh1WK3sFL2Wu8aoVyXjkYdxo2NaPh8WRL5RBxLMxa0xWYScvuwAA/rxqruePDuv/FAWXu/YSvogSpJr0ZeZzcAz9s/Rnaq61osHlcJcTxRC1qyBqmHBNO7yN7XB2+M3MRm+otmxTTDMmVmcoPIby26+nxqeo2EFBzzrcQ2Wbx3bI+YgJVmltFpRM4Nx6mPtsIlrEFjRioV1kHqfxyAWAhHervYmeBafCXZoZ0n9eTtAA0r6tlBYtuVyJAksrS0wTIud8x2r6KIpiZ8wxwNNVpeDNIqCyqxLNQDlOTPaYKqYtblZ1OOo9S0qApkD4TpiV5UVER6DtE4BP6Z/cS+8/UMzmd+lxCqxDZiGN962pidtqgqRdg9a3e5OaJ/ht+M8M9EhF7cK3yY4bExt5ADUDtJi/61Omn9IS/55f+YiAAAA=", "color": "#8f8f8f", "alt": { "de": "sono bricolage – Bild 10", "en": "sono bricolage – Image 10" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/12.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAADQBACdASogABYAPtFWpUwoJKOiKA1RABoJaQAALbudrNJ751NXxlAkX+kXzxh78AD+9CnI5pQbxcM/Zugp18ZA/Mrlls1zcZZh3VwtD/rTSJdY4/GE4FXwqrADVhx/GbFISrX8zFs38mY5dzgC7AQXd4/o+lWFrnfY05L2pRqX79aiL7W3oscD4gZ8f13ptiCBXHG7QIjRE2ugAAA=", "color": "#404040", "alt": { "de": "sono bricolage – Bild 12", "en": "sono bricolage – Image 12" } }
         ]
       },
       {
@@ -179,14 +157,14 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/15.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBQCdASogABYAPtFWo0uoJKMhsBgMAQAaCWkAAI90k+ms2JVNd49C+UeSTVu/KIAAAP74X2rFetav5Yzsb/TOZUixP0C5zMeCZS+61v44T8bNHnmgHWWSmBTluridkshNW2mfpf3jSZuxRIq3XF6r4iAAAA==", "color": "#1f1f1f", "alt": { "de": "Bild 15", "en": "Image 15" } }]
+        "items": [{ "type": "image", "src": "images/projects/sono-bricolage/_ABB/15.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBQCdASogABYAPtFWo0uoJKMhsBgMAQAaCWkAAI90k+ms2JVNd49C+UeSTVu/KIAAAP74X2rFetav5Yzsb/TOZUixP0C5zMeCZS+61v44T8bNHnmgHWWSmBTluridkshNW2mfpf3jSZuxRIq3XF6r4iAAAA==", "color": "#1f1f1f", "alt": { "de": "sono bricolage – Bild 15", "en": "sono bricolage – Image 15" } }]
       },
       {
         "type": "media",
         "cols": [6, 6],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/01.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwBQCdASogABYAPtFcp04oJSOiKAqpABoJaQAGaBVKlQKeQKwhIXn2K6YU+5128UG9QGIwqcUGAAD9RrqZUfo8TumrXIR/2A3W3+eUzzRzrAz667tUFyRWg36Wv1JoMsN/1c+odLS0TQMI3nJCYkczxEffT5OhdFL3ce1vAKwrSfY+8x8YyDP24bAMlRDJzMRhX/TYlvce5dkCTy9A51HCeqQ4JAj7ceOFgDn0xVshJ09LjGDMtiBFQU/rYf2ynrUtZRhV+yfvnyiYRGSgAAAA", "color": "#696969", "alt": { "de": "Bild 1", "en": "Image 1" } },
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/04.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAADQBACdASogABYAPtFcpU6oJSMiKAqpABoJaQAD5Ss1ziF/wLispbG96xM0bug/AAD+6fwRASncN7wwTmAZu5MWmV1nL/yzWCQOlyUpoc1xpYqFCKjtXZNoZqUqb+EEYd+qlO+oax6V6jWprSu7lwpugn5IhJR0UiM8iZx5aun9qIaCqeMHlrnka1WZE7Xv5pvwizyIjwL991uhz3WQqucAHCXi26k/7EdA2dcnYoV8/QZqpkLa8tkR0Ywf88v61BgiSRhXZKmqP0AAAAA=", "color": "#454545", "alt": { "de": "Bild 4", "en": "Image 4" } }
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/01.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwBQCdASogABYAPtFcp04oJSOiKAqpABoJaQAGaBVKlQKeQKwhIXn2K6YU+5128UG9QGIwqcUGAAD9RrqZUfo8TumrXIR/2A3W3+eUzzRzrAz667tUFyRWg36Wv1JoMsN/1c+odLS0TQMI3nJCYkczxEffT5OhdFL3ce1vAKwrSfY+8x8YyDP24bAMlRDJzMRhX/TYlvce5dkCTy9A51HCeqQ4JAj7ceOFgDn0xVshJ09LjGDMtiBFQU/rYf2ynrUtZRhV+yfvnyiYRGSgAAAA", "color": "#696969", "alt": { "de": "sono bricolage – Bild 1", "en": "sono bricolage – Image 1" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/04.webp", "width": 1440, "height": 960, "placeholder": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAADQBACdASogABYAPtFcpU6oJSMiKAqpABoJaQAD5Ss1ziF/wLispbG96xM0bug/AAD+6fwRASncN7wwTmAZu5MWmV1nL/yzWCQOlyUpoc1xpYqFCKjtXZNoZqUqb+EEYd+qlO+oax6V6jWprSu7lwpugn5IhJR0UiM8iZx5aun9qIaCqeMHlrnka1WZE7Xv5pvwizyIjwL991uhz3WQqucAHCXi26k/7EdA2dcnYoV8/QZqpkLa8tkR0Ywf88v61BgiSRhXZKmqP0AAAAA=", "color": "#454545", "alt": { "de": "sono bricolage – Bild 4", "en": "sono bricolage – Image 4" } }
         ]
       },
       {
@@ -200,18 +178,11 @@
         "type": "media",
         "cols": [8, 4],
         "items": [
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/16.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRg4BAABXRUJQVlA4IAIBAADwBQCdASogABYAPtFUpk2oJCOiMBgIAQAaCWkACBAuick3lPQMvFpCSmYNHnGtAdH09rpAZEMPUgDeFwm5hEeAgV8vqxEr2sLvUaETo0rpZt3OhRjDvZGK05jGHiSxjKRDw7tZhbQOcWCLg6ScBRObTUPkjIRkF1D4z5vFMgYzbdZ/OO+iJr3iAAJcoAhLaqwz9A5j7MVBmOL6WqOY+MmA36p+Ama/4GRsfUQJ/J+LkuAdr3rc060X51Ostiw7Xm2/wCoLDZD95SU2/2t7kqOZ5CUJfPiIExAfEbpWasI2D5ZS151PPRXOw8VUcR/7CTP7y5qJ+CrU9QZK6UXIlwAAAAA=", "color": "#828282", "alt": { "de": "Bild 16", "en": "Image 16" } },
-          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/17.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRlIBAABXRUJQVlA4IEYBAAAQBwCdASogACwAPtFgpE2oJiMiKrgMAQAaCWkAEgcCxC3owQvtLjT+PHDomDb0moz/NkfXHK4jYSirMbG++2t6AAD+5a278zRKspS/e6PuP7NebArHlXmWL06dbptZvxXlaNS0nyFNXzew4fFBGjTLZLXibsJvg4PVRu6Ngg54ghxqKUr6Sl2C56Pa5zXQX4Id26IxMvfOz8ljRWt81FHShIugHzn57d2xUXPZJHC2DHjVwQAx3e5sNFzdjWGET+/xuhj7vPjBvgyKhjyzRGRMZW01SMizEwAMAuMms6GATzRtoFPczxjrChgIShPUGW5TAkkZBEFlUeGrvuvEKqkT70lN7mqvIh/+S57ZXz7neMbNWziznsjYt1rC5xQuRUffccfJOMGxiMWsGRaDF6iSgyOGsJn2BbFUcIPKYXFjVG6XDAAAAA==", "color": "#6c6c6c", "alt": { "de": "Bild 17", "en": "Image 17" } }
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/16.webp", "width": 1920, "height": 1280, "placeholder": "data:image/webp;base64,UklGRg4BAABXRUJQVlA4IAIBAADwBQCdASogABYAPtFUpk2oJCOiMBgIAQAaCWkACBAuick3lPQMvFpCSmYNHnGtAdH09rpAZEMPUgDeFwm5hEeAgV8vqxEr2sLvUaETo0rpZt3OhRjDvZGK05jGHiSxjKRDw7tZhbQOcWCLg6ScBRObTUPkjIRkF1D4z5vFMgYzbdZ/OO+iJr3iAAJcoAhLaqwz9A5j7MVBmOL6WqOY+MmA36p+Ama/4GRsfUQJ/J+LkuAdr3rc060X51Ostiw7Xm2/wCoLDZD95SU2/2t7kqOZ5CUJfPiIExAfEbpWasI2D5ZS151PPRXOw8VUcR/7CTP7y5qJ+CrU9QZK6UXIlwAAAAA=", "color": "#828282", "alt": { "de": "sono bricolage – Bild 16", "en": "sono bricolage – Image 16" } },
+          { "type": "image", "src": "images/projects/sono-bricolage/_ABB/17.webp", "width": 1080, "height": 1472, "placeholder": "data:image/webp;base64,UklGRlIBAABXRUJQVlA4IEYBAAAQBwCdASogACwAPtFgpE2oJiMiKrgMAQAaCWkAEgcCxC3owQvtLjT+PHDomDb0moz/NkfXHK4jYSirMbG++2t6AAD+5a278zRKspS/e6PuP7NebArHlXmWL06dbptZvxXlaNS0nyFNXzew4fFBGjTLZLXibsJvg4PVRu6Ngg54ghxqKUr6Sl2C56Pa5zXQX4Id26IxMvfOz8ljRWt81FHShIugHzn57d2xUXPZJHC2DHjVwQAx3e5sNFzdjWGET+/xuhj7vPjBvgyKhjyzRGRMZW01SMizEwAMAuMms6GATzRtoFPczxjrChgIShPUGW5TAkkZBEFlUeGrvuvEKqkT70lN7mqvIh/+S57ZXz7neMbNWziznsjYt1rC5xQuRUffccfJOMGxiMWsGRaDF6iSgyOGsJn2BbFUcIPKYXFjVG6XDAAAAA==", "color": "#6c6c6c", "alt": { "de": "sono bricolage – Bild 17", "en": "sono bricolage – Image 17" } }
         ]
       }
     ],
-    "personal": {
-      "title": { "de": "Persönlich", "en": "Personal" },
-      "text": {
-        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
-        "en": "Placeholder: a personal note on the project will go here."
-      }
-    },
     "de": { "title": "sono bricolage", "category": "klangexperiment", "subtitle": "Experimentelle Klangforschung." },
     "en": { "title": "sono bricolage", "category": "sound experiment", "subtitle": "Experimental sound research." }
   },
@@ -267,7 +238,7 @@
         "items": [
           {
             "title": { "de": "Aufbau", "en": "Setup" },
-            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/20.webp", "width": 1440, "height": 1078, "placeholder": "data:image/webp;base64,UklGRggBAABXRUJQVlA4IPwAAAAwBgCdASogABgAPtFcpU0oJSOiMBgIAQAaCWcAE835GJpAK4YqjgXZJ5W3Cqft68PICI1etylTjx5AAP7qkDoro2tH0XWNmVXFugI0PrtFalYFavUnr7Jy2snGLtnfm4PdKUbYN0DShfAOfFMLsjMlulSozp6H4D4EpdSJ6aD7ckCzCuSyhHq15sYAeRyw5SL/TBkkHQ1CZUX2jWCE5PWWz8v2VdYem/RU6so/mvpVznOPY6qvWrgBzCbyJqW6364WkXm6Jm4gtqfYaFkOdLPNZ1T11UXL7Hcr8fIXH/YdCa6JMvnUkiguletY5rvKuaaYECBJTV5aCxEEAAA=", "color": "#676764", "alt": { "de": "Bild 20", "en": "Image 20" } }],
+            "media": [{ "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/20.webp", "width": 1440, "height": 1078, "placeholder": "data:image/webp;base64,UklGRggBAABXRUJQVlA4IPwAAAAwBgCdASogABgAPtFcpU0oJSOiMBgIAQAaCWcAE835GJpAK4YqjgXZJ5W3Cqft68PICI1etylTjx5AAP7qkDoro2tH0XWNmVXFugI0PrtFalYFavUnr7Jy2snGLtnfm4PdKUbYN0DShfAOfFMLsjMlulSozp6H4D4EpdSJ6aD7ckCzCuSyhHq15sYAeRyw5SL/TBkkHQ1CZUX2jWCE5PWWz8v2VdYem/RU6so/mvpVznOPY6qvWrgBzCbyJqW6364WkXm6Jm4gtqfYaFkOdLPNZ1T11UXL7Hcr8fIXH/YdCa6JMvnUkiguletY5rvKuaaYECBJTV5aCxEEAAA=", "color": "#676764", "alt": { "de": "boomtschakkaboom – Bild 20", "en": "boomtschakkaboom – Image 20" } }],
             "content": { "de": "MacBook\n&nbsp;&nbsp;|\n&nbsp;&nbsp;HDMI\n&nbsp;&nbsp;|\n3x3 TV-Wall-Controller\n&nbsp;&nbsp;|\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 1\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 2\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 3\n&nbsp;&nbsp;:\n&nbsp;&nbsp;+-- HDMI > AV > Fernseher 9", "en": "MacBook\n&nbsp;&nbsp;|\n&nbsp;&nbsp;HDMI\n&nbsp;&nbsp;|\n3x3 TV wall controller\n&nbsp;&nbsp;|\n&nbsp;&nbsp;+-- HDMI > AV > TV 1\n&nbsp;&nbsp;+-- HDMI > AV > TV 2\n&nbsp;&nbsp;+-- HDMI > AV > TV 3\n&nbsp;&nbsp;:\n&nbsp;&nbsp;+-- HDMI > AV > TV 9" }
           },
           {
@@ -355,24 +326,17 @@
         "type": "media",
         "cols": [12],
         "items": [
-          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/19.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAABwBQCdASogABYAPslQoUunpKMht/VYAPAZCWUAxNmMHcX+dJRAkLS8WHY4U22ZHsqWtmSAAP74U1tnEHSJO55yt5O00nj3v4JNENT+jmcdL/D0sJCmv8CBk2PcALpJZGWzAGMqRmXEPf8I9lcSZVMv3cV4E8pwrVumxejy5tupxqC8zUqDIVjsIqnnGlsGISeRpDmpDarLdnzVsyVOXt6+Gr0cBRAAAAA=", "color": "#0d180f", "alt": { "de": "Bild 19", "en": "Image 19" } }
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/19.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAABwBQCdASogABYAPslQoUunpKMht/VYAPAZCWUAxNmMHcX+dJRAkLS8WHY4U22ZHsqWtmSAAP74U1tnEHSJO55yt5O00nj3v4JNENT+jmcdL/D0sJCmv8CBk2PcALpJZGWzAGMqRmXEPf8I9lcSZVMv3cV4E8pwrVumxejy5tupxqC8zUqDIVjsIqnnGlsGISeRpDmpDarLdnzVsyVOXt6+Gr0cBRAAAAA=", "color": "#0d180f", "alt": { "de": "boomtschakkaboom – Bild 19", "en": "boomtschakkaboom – Image 19" } }
         ]
       },
       {
         "type": "media",
         "cols": [12],
         "items": [
-          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBACdASogABYAPtFYpUwoJSOiMAgBABoJYwAD5LIN/jx0beJfk+nbi+v78dIKAAD+9oJOaEJOUH72oJTEa9Xhe0Ipm8cLvnyPtD00UqMv4ttEZPgA0DDWDpQV2NgYfJJd2AWVD51bgSSPuVr/OdKVYEDN0HMjq97lV7Xxka4kgp+0JOVHY4eO0W2rFGzeQd00nBcyWWrB4kAA", "color": "#0e1314", "alt": { "de": "Bild 1", "en": "Image 1" } }
+          { "type": "image", "src": "images/projects/boomtschakkaboom/_ABB/01.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBACdASogABYAPtFYpUwoJSOiMAgBABoJYwAD5LIN/jx0beJfk+nbi+v78dIKAAD+9oJOaEJOUH72oJTEa9Xhe0Ipm8cLvnyPtD00UqMv4ttEZPgA0DDWDpQV2NgYfJJd2AWVD51bgSSPuVr/OdKVYEDN0HMjq97lV7Xxka4kgp+0JOVHY4eO0W2rFGzeQd00nBcyWWrB4kAA", "color": "#0e1314", "alt": { "de": "boomtschakkaboom – Bild 1", "en": "boomtschakkaboom – Image 1" } }
         ]
       }
     ],
-    "personal": {
-      "title": { "de": "Persönlich", "en": "Personal" },
-      "text": {
-        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
-        "en": "Placeholder: a personal note on the project will go here."
-      }
-    },
     "de": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythmus in der Fläche durch eine Wand aus Röhrenfernsehern." },
     "en": { "title": "boomtschakkaboom", "category": "installation", "subtitle": "Rhythm across the surface through a wall of CRT televisions." }
   },
@@ -391,8 +355,8 @@
         "type": "media",
         "cols": [6, 6],
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/10.webp", "width": 1299, "height": 945, "placeholder": "data:image/webp;base64,UklGRkQBAABXRUJQVlA4IDgBAADwBgCdASogABgAPtFUo0uoJKMhsAgBABoJQBbfXqd8mx9lEYDrLGV44QDQJ7i7Xue0Yo/Uotguzh3qnjWaXt8AAPude9b6oRXluJ/UXFu1WdHeQE/jkwNzw48MN31f0FEcsP1KDUX6p24Rqunwh1rhcNcVA55yA9UPu9Jocc9TIDNrRS/W3krq/sanh/qbxoaUTciTDs2G5urdITUxtKI9lc4lJaSdmf/VGw5QVocenpunOE3dYdpZHRIm77rYF8iH9Igjh1/cqaMqWPtQe87EhZnICc2NBU9weSRgtWjbyAdbupUSlQwjMSBA2h/mdWHuW4S19wJ9a6P0tIKaL2x8Hf48d5lJQmBV4QutVImox7JjMWTj4Z8ruxmW3y1IeeOi2ZwzMOjIB3abWSDA2rOMMDTLT6GGAAA=", "color": "#88817a", "alt": { "de": "Bild 10", "en": "Image 10" } },
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/02.webp", "width": 1440, "height": 1048, "placeholder": "data:image/webp;base64,UklGRjoBAABXRUJQVlA4IC4BAAAQBwCdASogABgAPtFUo0uoJKMhsAgBABoJZACdMuN/WEA/KjESyiMCVP9yCBFpiZpBvf1UtHt/n9U2UF1YIEeUgAD4YQrQ/6lAcmeUOoq7zcjeQ91OsDwVazAVWU7dWVvc5Y4KCGkTID7GZVAFQPTma54i9T78eWor3WQtYqUFcd5kC0pQDZr77l9Jy3toeE7PmPAVRTQ+lHhIwwQFWlFeSBfF/2BU2UQqf2XbPN88IiC9DufHQ8RrzBPpafa91hgADj6r/2kKkgyGEW4G90+5uHWLUfS/L2sZ9ie/wM0ixd4YHswSSAGEDpJJubTS1jXnpgiVMHHq3YHhB8aNFywayY2vYw2QThgQX8nCxL4DYez35KkcmuUAhhZkKhpN/HMCSXRPMPRLSbNtAAAAAA==", "color": "#826949", "alt": { "de": "Bild 2", "en": "Image 2" } }
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/10.webp", "width": 1299, "height": 945, "placeholder": "data:image/webp;base64,UklGRkQBAABXRUJQVlA4IDgBAADwBgCdASogABgAPtFUo0uoJKMhsAgBABoJQBbfXqd8mx9lEYDrLGV44QDQJ7i7Xue0Yo/Uotguzh3qnjWaXt8AAPude9b6oRXluJ/UXFu1WdHeQE/jkwNzw48MN31f0FEcsP1KDUX6p24Rqunwh1rhcNcVA55yA9UPu9Jocc9TIDNrRS/W3krq/sanh/qbxoaUTciTDs2G5urdITUxtKI9lc4lJaSdmf/VGw5QVocenpunOE3dYdpZHRIm77rYF8iH9Igjh1/cqaMqWPtQe87EhZnICc2NBU9weSRgtWjbyAdbupUSlQwjMSBA2h/mdWHuW4S19wJ9a6P0tIKaL2x8Hf48d5lJQmBV4QutVImox7JjMWTj4Z8ruxmW3y1IeeOi2ZwzMOjIB3abWSDA2rOMMDTLT6GGAAA=", "color": "#88817a", "alt": { "de": "lonis weltraumreise – Bild 10", "en": "lonis space journey – Image 10" } },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/02.webp", "width": 1440, "height": 1048, "placeholder": "data:image/webp;base64,UklGRjoBAABXRUJQVlA4IC4BAAAQBwCdASogABgAPtFUo0uoJKMhsAgBABoJZACdMuN/WEA/KjESyiMCVP9yCBFpiZpBvf1UtHt/n9U2UF1YIEeUgAD4YQrQ/6lAcmeUOoq7zcjeQ91OsDwVazAVWU7dWVvc5Y4KCGkTID7GZVAFQPTma54i9T78eWor3WQtYqUFcd5kC0pQDZr77l9Jy3toeE7PmPAVRTQ+lHhIwwQFWlFeSBfF/2BU2UQqf2XbPN88IiC9DufHQ8RrzBPpafa91hgADj6r/2kKkgyGEW4G90+5uHWLUfS/L2sZ9ie/wM0ixd4YHswSSAGEDpJJubTS1jXnpgiVMHHq3YHhB8aNFywayY2vYw2QThgQX8nCxL4DYez35KkcmuUAhhZkKhpN/HMCSXRPMPRLSbNtAAAAAA==", "color": "#826949", "alt": { "de": "lonis weltraumreise – Bild 2", "en": "lonis space journey – Image 2" } }
         ]
       },
       {
@@ -406,7 +370,7 @@
         "type": "media",
         "cols": [6, 6],
         "items": [
-          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/11.webp", "width": 1440, "height": 1080, "placeholder": "data:image/webp;base64,UklGRjABAABXRUJQVlA4ICQBAAAQBgCdASogABgAPtFcp04oJSOiKAqpABoJQAXf+3ZTZyM+YEOpXcPMBjCb/zG5HQubZW9CYJ79NvAA/tqy4gkKMfayAPOksoFBvHXyqVXY6Hw6VczD9GyDOC+/13Oj9KQxr5drJynhwJFKZ9k7Tnqv/X3ak+syjSkAfxTOXXr1nc89NdtMgqgjyIPyDhsywF+qqcNMzkaxkCjyAprsqhVwi1dQMWElET2MJQOGgMRAcz2+ns2AFryH30ef5MHcmVqHxkmKmLq0Gm95plA4lEoifUoWBU0xe3cSrMEQZm3Zi46epItTNVVinRaR8mbKRPd207iU5ef39d+6xqi6+zUJJj6pJHangXuy4d0mpGO2OrH3n4tvCQuVY1f7FMnOM5vcD5AA", "color": "#666b71", "alt": { "de": "Bild 11", "en": "Image 11" } },
+          { "type": "image", "src": "images/projects/lonis-weltraumreise/_ABB/11.webp", "width": 1440, "height": 1080, "placeholder": "data:image/webp;base64,UklGRjABAABXRUJQVlA4ICQBAAAQBgCdASogABgAPtFcp04oJSOiKAqpABoJQAXf+3ZTZyM+YEOpXcPMBjCb/zG5HQubZW9CYJ79NvAA/tqy4gkKMfayAPOksoFBvHXyqVXY6Hw6VczD9GyDOC+/13Oj9KQxr5drJynhwJFKZ9k7Tnqv/X3ak+syjSkAfxTOXXr1nc89NdtMgqgjyIPyDhsywF+qqcNMzkaxkCjyAprsqhVwi1dQMWElET2MJQOGgMRAcz2+ns2AFryH30ef5MHcmVqHxkmKmLq0Gm95plA4lEoifUoWBU0xe3cSrMEQZm3Zi46epItTNVVinRaR8mbKRPd207iU5ef39d+6xqi6+zUJJj6pJHangXuy4d0mpGO2OrH3n4tvCQuVY1f7FMnOM5vcD5AA", "color": "#666b71", "alt": { "de": "lonis weltraumreise – Bild 11", "en": "lonis space journey – Image 11" } },
           {
             "type": "video",
             "src": "images/projects/lonis-weltraumreise/_ABB/12.mp4",
@@ -488,13 +452,6 @@
         ]
       }
     ],
-    "personal": {
-      "title": { "de": "Persönlich", "en": "Personal" },
-      "text": {
-        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
-        "en": "Placeholder: a personal note on the project will go here."
-      }
-    },
     "de": {
       "title": "lonis weltraumreise",
       "category": "webanwendung",
@@ -519,7 +476,7 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/present/_ABB/02.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAADQBQCdASogABYAPtFcpk2oJSOiKAqpABoJQBUil/wWpLf+F3gsunCk32keZeicwqoQNwZvGH8AAP7oRPnbToK4nU5xpbKZK7zhmzEuvknhlAdJ9E34iwH42+AUgxb0DMD4mRBDzqlqt4eg9uIgrUsN0zM2H76ofo5kKRZFpYacmMkrevnZY2YID9VvpY++6kkiCcdzSKqkL3KM5WPjggMiIxYoz4lSizqdvB7s/pb1LKtrvxJfAcD0Rn3Ku5rrYeyEpCCNKkmSMyn59WYEJA9iGigGz0w2BDM38Ou8gjKkL6GHF/+MwxutESe1PKa9ZE4nLJGL7cVSuV3taPoROc07b64Yjrpkv5HZOvFt3N2aQAAA", "color": "#9fa5a5", "alt": { "de": "Bild 2", "en": "Image 2" } }]
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/02.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAADQBQCdASogABYAPtFcpk2oJSOiKAqpABoJQBUil/wWpLf+F3gsunCk32keZeicwqoQNwZvGH8AAP7oRPnbToK4nU5xpbKZK7zhmzEuvknhlAdJ9E34iwH42+AUgxb0DMD4mRBDzqlqt4eg9uIgrUsN0zM2H76ofo5kKRZFpYacmMkrevnZY2YID9VvpY++6kkiCcdzSKqkL3KM5WPjggMiIxYoz4lSizqdvB7s/pb1LKtrvxJfAcD0Rn3Ku5rrYeyEpCCNKkmSMyn59WYEJA9iGigGz0w2BDM38Ou8gjKkL6GHF/+MwxutESe1PKa9ZE4nLJGL7cVSuV3taPoROc07b64Yjrpkv5HZOvFt3N2aQAAA", "color": "#9fa5a5", "alt": { "de": "present – Bild 2", "en": "present – Image 2" } }]
       },
       {
         "type": "media",
@@ -555,7 +512,7 @@
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/present/_ABB/04.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAADwBQCdASogABYAPtFapE0oJSMiMBgIAQAaCUAToj/8WxZRPxQG12u0I2670YMqc//kauYa67qt1AD+BeKIOTPGjKVE3va2Vc79/bisvlbWtvboBc4iaOiR2xNWvwzpcp5ttHXsK63B/FUbAOviu1ogWTcFRCkYPg68TWVT/E4TD38x6TOTEOWjRnouI01qb8WhCWCvyUpGQwcDv9V6GfjbrR1t/BOFW8HTw3f602VQtOEghHqT/f/FNL5D0jMoQrSI8e/2BnSM97/y8uSggRpQ5Gy2q460a0yVPyU3ujaOG/nYulklH4h/5GD4ZvxI5ZspncemajgIYMzt70YAAA==", "color": "#b6a399", "alt": { "de": "Bild 4", "en": "Image 4" } }]
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/04.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAADwBQCdASogABYAPtFapE0oJSMiMBgIAQAaCUAToj/8WxZRPxQG12u0I2670YMqc//kauYa67qt1AD+BeKIOTPGjKVE3va2Vc79/bisvlbWtvboBc4iaOiR2xNWvwzpcp5ttHXsK63B/FUbAOviu1ogWTcFRCkYPg68TWVT/E4TD38x6TOTEOWjRnouI01qb8WhCWCvyUpGQwcDv9V6GfjbrR1t/BOFW8HTw3f602VQtOEghHqT/f/FNL5D0jMoQrSI8e/2BnSM97/y8uSggRpQ5Gy2q460a0yVPyU3ujaOG/nYulklH4h/5GD4ZvxI5ZspncemajgIYMzt70YAAA==", "color": "#b6a399", "alt": { "de": "present – Bild 4", "en": "present – Image 4" } }]
       },
       {
         "type": "media",
@@ -570,22 +527,15 @@
             "placeholder": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAwBACdASogABIAPtFWpEuoJKOhsAgBABoJaQDL4CHfZ4tQgpo0VlXf3IAA/vYC/0Pex3Z503eccsB7iC8P+xP4aSePe1x+QxrTperOF1uWKmtnlGi1akJocUjvmSvcH88ez+RQf2jfw02MGuNsQHL8KXF222hAqswQJVZ3sCZ33EQuHOAAAA==",
             "color": "#cccece"
           },
-          { "type": "image", "src": "images/projects/present/_ABB/13.webp", "width": 1080, "height": 1242, "placeholder": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAABQBQCdASogACQAPslUoUunpSMhtVgIAPAZCWQAytSbSACBUMU/hxfc/BwW7loErKZ47mAA/vlp1xTTSvPFv2xrO4b2/Qv4zrCBL7/Oh6T7QVzGFTho9We9+oqlEFglqzCDoqT8V8NqGGbEXGPlXAHZCQvrNjrVRKtXLTSMnDhOxb4kj68lbx/xFUeaYSFi3z0XHRsXO1oP+4RbiDp8kQxboP8QFFugeXvoyR4HjRc+RCnQmlXJkvo06wtMwCbeRatRpiU4EXLh9sTEZ1Yww89JQAA=", "color": "#dad1c7", "alt": { "de": "Bild 13", "en": "Image 13" } }
+          { "type": "image", "src": "images/projects/present/_ABB/13.webp", "width": 1080, "height": 1242, "placeholder": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAABQBQCdASogACQAPslUoUunpSMhtVgIAPAZCWQAytSbSACBUMU/hxfc/BwW7loErKZ47mAA/vlp1xTTSvPFv2xrO4b2/Qv4zrCBL7/Oh6T7QVzGFTho9We9+oqlEFglqzCDoqT8V8NqGGbEXGPlXAHZCQvrNjrVRKtXLTSMnDhOxb4kj68lbx/xFUeaYSFi3z0XHRsXO1oP+4RbiDp8kQxboP8QFFugeXvoyR4HjRc+RCnQmlXJkvo06wtMwCbeRatRpiU4EXLh9sTEZ1Yww89JQAA=", "color": "#dad1c7", "alt": { "de": "present – Bild 13", "en": "present – Image 13" } }
         ]
       },
       {
         "type": "media",
         "cols": [12],
-        "items": [{ "type": "image", "src": "images/projects/present/_ABB/03.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAADwBACdASogABYAPtFcpEyoJSOiMBgIAQAaCWcAw+mK5m+0aIK+pzIVZ+2KPX2C9gAA/upoX3FODYHtnxmWU/dngr2dDEyVYuNjVIb2dPX/4ke4HLZNuNGj2OhxDYZr62vGXtAdqazbFrwf+0QzkAnqS0WktPUSW3SSSuQBpXqCz0p9xKqnmDyvj62/3aJ0ScSZlG3urL1kJaRVXVcaV+yk2KI/6w+xwAA=", "color": "#c0bcb9", "alt": { "de": "Bild 3", "en": "Image 3" } }]
+        "items": [{ "type": "image", "src": "images/projects/present/_ABB/03.webp", "width": 2560, "height": 1707, "placeholder": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAADwBACdASogABYAPtFcpEyoJSOiMBgIAQAaCWcAw+mK5m+0aIK+pzIVZ+2KPX2C9gAA/upoX3FODYHtnxmWU/dngr2dDEyVYuNjVIb2dPX/4ke4HLZNuNGj2OhxDYZr62vGXtAdqazbFrwf+0QzkAnqS0WktPUSW3SSSuQBpXqCz0p9xKqnmDyvj62/3aJ0ScSZlG3urL1kJaRVXVcaV+yk2KI/6w+xwAA=", "color": "#c0bcb9", "alt": { "de": "present – Bild 3", "en": "present – Image 3" } }]
       }
     ],
-    "personal": {
-      "title": { "de": "Persönlich", "en": "Personal" },
-      "text": {
-        "de": "Platzhalter: Hier steht später ein persönlicher Text zum Projekt.",
-        "en": "Placeholder: a personal note on the project will go here."
-      }
-    },
     "de": { "title": "present", "category": "interface", "subtitle": "Design für die Gegenwart." },
     "en": { "title": "present", "category": "interface", "subtitle": "Design for the present." }
   }
