@@ -43,10 +43,17 @@
         }
       },
       {
-        "heading": { "de": "Keine Cookies, kein Tracking", "en": "No cookies, no tracking" },
+        "heading": { "de": "Statistik", "en": "Statistics" },
         "text": {
-          "de": "Diese Website setzt keine Cookies und nutzt keine Statistik- oder Tracking-Dienste. Wenn Sie über „de / en“ eine Sprache wählen, wird diese Wahl im Speicher Ihres Browsers (localStorage) abgelegt, damit sie beim nächsten Besuch erhalten bleibt (§ 25 Abs. 2 Nr. 2 TDDDG). Sie können sie jederzeit in Ihren Browsereinstellungen löschen.",
-          "en": "This website sets no cookies and uses no analytics or tracking services. If you choose a language via “de / en”, this choice is stored in your browser (localStorage) so it is kept for your next visit (§ 25(2) no. 2 TDDDG). You can delete it at any time in your browser settings."
+          "de": "Um zu sehen, wie oft die Seiten aufgerufen werden und wie schnell sie laden, nutze ich Vercel Web Analytics und Vercel Speed Insights der Vercel Inc. (siehe Hosting). Dabei werden keine Cookies gesetzt und nichts in Ihrem Browser gespeichert. Erfasst werden die aufgerufene Seite, die Seite, von der Sie kommen, der ungefähre Standort (Land, Region, Stadt), Browser, Betriebssystem, Gerätetyp und die Ladezeiten. Um wiederholte Aufrufe zu erkennen, bildet Vercel aus der Anfrage einen Hashwert, der nach 24 Stunden verworfen wird. Ich sehe nur zusammengefasste Zahlen, keine einzelnen Personen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO, das berechtigte Interesse an einer funktionierenden und schnellen Website.",
+          "en": "To see how often the pages are visited and how fast they load, I use Vercel Web Analytics and Vercel Speed Insights by Vercel Inc. (see Hosting). No cookies are set and nothing is stored in your browser. The data collected are the page visited, the page you came from, your approximate location (country, region, city), browser, operating system, device type and loading times. To recognise repeat visits, Vercel creates a hash from the request, which is discarded after 24 hours. I only see aggregated figures, never individual people. The legal basis is Art. 6(1)(f) GDPR, the legitimate interest in a working and fast website."
+        }
+      },
+      {
+        "heading": { "de": "Keine Cookies", "en": "No cookies" },
+        "text": {
+          "de": "Diese Website setzt keine Cookies. Wenn Sie über „de / en“ eine Sprache wählen, wird diese Wahl im Speicher Ihres Browsers (localStorage) abgelegt, damit sie beim nächsten Besuch erhalten bleibt (§ 25 Abs. 2 Nr. 2 TDDDG). Sie können sie jederzeit in Ihren Browsereinstellungen löschen.",
+          "en": "This website sets no cookies. If you choose a language via “de / en”, this choice is stored in your browser (localStorage) so it is kept for your next visit (§ 25(2) no. 2 TDDDG). You can delete it at any time in your browser settings."
         }
       },
       {

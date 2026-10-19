@@ -66,6 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return a === 10 || (a === 192 && b === 168) || (a === 172 && b >= 16 && b <= 31);
     }
 
+    // Statistik (Tom 2026-10-19): Vercel Web Analytics und Speed Insights, nur auf der Live-Domain, damit Vorschau
+    // und Tests nicht mitzählen. Keine Cookies, kein Browserspeicher; die Skripte kommen von der eigenen Domain (/_vercel/…)
+    const LIVE_HOSTS = ['www.tomhenkel.xyz', 'tomhenkel.xyz'];
+    if (LIVE_HOSTS.includes(location.hostname)) {
+        ['/_vercel/insights/script.js', '/_vercel/speed-insights/script.js'].forEach((src) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.defer = true;
+            document.head.appendChild(script);
+        });
+    }
+
     if (isDevHost(location.hostname)) {
         const gridColumns = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--grid-columns'), 10) || 12;
         const gridOverlay = document.createElement('div');
