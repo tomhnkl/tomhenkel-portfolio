@@ -1143,6 +1143,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Nächstes Video komplett als Blob vorladen (Safari/iOS ignorieren <link rel=prefetch>).
     // Nur beim automatischen Wechsel und sichtbarer Seite; reduzierte Bewegung und Datensparen sind in cycleEnabled
+    // Das laufende Video liegt bis zu seinem Ende im Puffer (mobil ohne Schleife: bis PREVIEW_MAX_S)
+    function bufferedEnough(video) {
+        const b = video.buffered;
+        if (!b.length || !isFinite(video.duration)) return false;
+        const need = video.loop ? video.duration : Math.min(video.duration, PREVIEW_MAX_S);
+        return b.end(b.length - 1) >= need - 0.25;
+    }
+
     function preloadNextVideo(video) {
         if (!cycleEnabled() || document.hidden || !window.fetch || !window.AbortController) return;
         const src = previewVideoSrc(featuredProjects[nextPreviewIndex()]);
@@ -1276,10 +1284,14 @@ document.addEventListener('DOMContentLoaded', () => {
         video.muted = true;
         initStepControls();
 
-        // Sobald das aktuelle Video läuft, das nächste vorladen (konkurriert nicht mit dessen Start)
+        // Das nächste Video erst vorladen, wenn das laufende vollständig im Puffer liegt: sonst teilen sich beide
+        // die Leitung und das laufende stockt (schwaches 4G, perf:mobile 2026-10-15)
         video.addEventListener('playing', () => {
             video.classList.add('visible');
-            preloadNextVideo(video);
+            if (bufferedEnough(video)) preloadNextVideo(video);
+        });
+        video.addEventListener('progress', () => {
+            if (!video.paused && bufferedEnough(video)) preloadNextVideo(video);
         });
         video.addEventListener('error', () => {
             if (!video.getAttribute('src')) return;
