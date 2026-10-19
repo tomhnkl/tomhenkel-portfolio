@@ -1320,6 +1320,7 @@ html.lenis body {
 .pd-hero .hero-film {
   -o-object-fit: contain;
      object-fit: contain;
+  background-color: #111; /* Letterbox bars (16:9 film in the 3:2 phone hero) cover the teaser/still behind it */
   opacity: 0;
   transition: opacity var(--duration-base) var(--ease-out);
 }
@@ -1405,14 +1406,18 @@ html.lenis body {
 .pd-hero .hero-controls #btn-sound {
   top: calc(var(--hero-tap) / 2);
 }
-.pd-hero .hero-controls {
+.pd-hero .hero-controls #btn-fullscreen {
+  top: calc(var(--hero-tap) * 1.5);
+}
+.pd-hero .hero-controls { /* "vollbild" below the sound (Tom 2026-10-19) */
   /* Labels (text from site-content.json ui.*.player): play at UI size like the nav, sound small */
 }
 .pd-hero .hero-controls #btn-play {
   font-size: var(--fs-ui);
   line-height: var(--lh-ui);
 }
-.pd-hero .hero-controls #btn-sound {
+.pd-hero .hero-controls #btn-sound,
+.pd-hero .hero-controls #btn-fullscreen {
   font-size: var(--fs-small);
   line-height: var(--lh-small);
 }
@@ -1459,9 +1464,74 @@ html.lenis body {
   align-items: flex-end;
 }
 .pd-hero.is-playing .hero-controls #btn-play,
-.pd-hero.is-playing .hero-controls #btn-sound {
+.pd-hero.is-playing .hero-controls #btn-sound,
+.pd-hero.is-playing .hero-controls #btn-fullscreen {
   position: static;
   transform: none;
+}
+.pd-hero {
+  /* Timeline at the bottom edge (Tom 2026-10-19): the watched part white over a faint track, tap or drag to jump.
+     The tap area is taller than the 2px line; above the click overlay (9, earlier in the markup), below the buttons (10) */
+}
+.pd-hero .hero-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  z-index: 9;
+  cursor: pointer;
+  touch-action: none; /* Dragging seeks instead of scrolling the page */
+}
+.pd-hero .hero-progress[hidden] {
+  display: none;
+}
+.pd-hero .hero-progress::before,
+.pd-hero .hero-progress .hero-progress-bar {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+}
+.pd-hero .hero-progress::before {
+  background: rgba(255, 255, 255, 0.3);
+}
+.pd-hero .hero-progress .hero-progress-bar {
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.pd-hero .hero-progress:focus-visible {
+  outline-offset: -2px;
+}
+.pd-hero .hero-progress { /* Inside the hero, which clips overflow */ }
+.pd-hero {
+  /* Fullscreen: the whole hero (film with its own controls) on black; iPhone uses the system player instead */
+}
+.pd-hero:fullscreen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  background: #000;
+}
+.pd-hero:fullscreen .hero-film {
+  background-color: #000;
+}
+.pd-hero:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  background: #000;
+}
+.pd-hero:-webkit-full-screen .hero-film {
+  background-color: #000;
+}
+.pd-hero::backdrop {
+  background: #000;
 }
 .pd-hero {
   /* Hovering the film underlines the word it would trigger (pointer devices only) */

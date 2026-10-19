@@ -33,7 +33,10 @@
         "play": "abspielen",
         "pause": "pause",
         "sound_on": "ton an",
-        "sound_off": "ton aus"
+        "sound_off": "ton aus",
+        "fullscreen": "vollbild",
+        "fullscreen_exit": "vollbild aus",
+        "timeline": "Filmposition"
       },
       "menu": {
         "open": "menü",
@@ -78,7 +81,10 @@
         "play": "play",
         "pause": "pause",
         "sound_on": "sound on",
-        "sound_off": "sound off"
+        "sound_off": "sound off",
+        "fullscreen": "fullscreen",
+        "fullscreen_exit": "exit fullscreen",
+        "timeline": "Film position"
       },
       "menu": {
         "open": "menu",

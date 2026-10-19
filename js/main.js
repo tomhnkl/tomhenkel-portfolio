@@ -340,7 +340,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Vor dem Klick geht keine Anfrage an den Anbieter (Datenschutz); der Klick erlaubt auch den Ton.
     // Steuerung (D11): "abspielen" mittig über dem Film; läuft er, stehen "pause" und darunter der Ton unten rechts, immer sichtbar.
     // Zustand der eigenen Steuerung; Start = pausiert. film = Film geladen
-    let heroState = { paused: true, muted: false, film: false };
+    let heroState = { paused: true, muted: false, film: false, fullscreen: false };
+    // Vollbild (Tom 2026-10-19): Element-Vollbild, wo es geht; iPhone kennt das nur für <video> (System-Player mit Zeitleiste)
+    const fullscreenEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+    const canFullscreen = () => {
+        const film = document.getElementById('hero-player');
+        return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || (film && film.webkitEnterFullscreen));
+    };
+    const clock = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+    const SEEK_STEP_S = 5; // Pfeiltasten springen so weit
+    let heroKeySeek = null; // Springen per Pfeiltaste im aktuellen Hero-Film (initHeroPlayer setzt es)
     const IFRAME_START_MS = 4000; // Vimeo/YouTube: läuft der Film bis dahin nicht, übernimmt die Anzeige des Anbieters
     const MUTE_SYNC_MS = 500; // Abgleich des Ton-Zustands mit dem Player
     const HLS_SCRIPT = '/js/vendor/hls.light.min.js'; // hls.js 1.7.3 (light), selbst gehostet, lädt erst beim ersten Klick
@@ -554,6 +563,16 @@ document.addEventListener('DOMContentLoaded', () => {
         setWords(btnPlay, heroState.paused ? labels.play : labels.pause);
         setWords(btnSound, heroState.muted ? labels.sound_on : labels.sound_off);
         btnSound.hidden = !heroState.film; // Der Teaser hat keinen Ton
+        const btnFull = document.getElementById('btn-fullscreen');
+        if (btnFull) {
+            setWords(btnFull, heroState.fullscreen ? labels.fullscreen_exit : labels.fullscreen);
+            btnFull.hidden = !heroState.film || !canFullscreen();
+        }
+        const progress = document.getElementById('hero-progress');
+        if (progress) {
+            progress.hidden = !heroState.film;
+            progress.setAttribute('aria-label', labels.timeline);
+        }
         document.getElementById('hero-wrapper').classList.toggle('is-playing', !heroState.paused); // Steuerung unten rechts
     }
 
@@ -584,6 +603,8 @@ document.addEventListener('DOMContentLoaded', () => {
             el.classList.add('hero-film');
             wrapper.insertBefore(el, overlay || controls);
             current = el;
+            el.addEventListener('timeupdate', showProgress);
+            el.addEventListener('durationchange', showProgress);
             setState({ film: true, paused: false }); // Absicht des Klicks; der tatsächliche Zustand kommt vom Player
 
             // Film sichtbar, sobald er läuft; der Teaser hält so lange an
@@ -601,6 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const handOver = ({ keepControls }) => {
                 if (overlay) overlay.remove();
                 if (controls && !keepControls) controls.remove();
+                const progress = document.getElementById('hero-progress');
+                if (progress) progress.remove(); // die Leiste des Browsers hat eine eigene Zeitleiste
                 showFilm();
                 if (!provider.iframe) el.controls = true;
                 el.style.pointerEvents = 'auto';
@@ -674,6 +697,70 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(() => (provider.iframe ? handOver({ keepControls: false }) : reset()));
         }
 
+        // Zeitleiste am unteren Rand (Tom 2026-10-19): gesehener Teil weiß, antippen oder ziehen springt dorthin;
+        // Pfeiltasten ±SEEK_STEP_S, solange der Hero im Bild ist. Nur eigenes <video> (Bunny), nicht im iframe
+        const progress = document.getElementById('hero-progress');
+        const bar = progress && progress.querySelector('.hero-progress-bar');
+        const filmVideo = () => (current && current.tagName === 'VIDEO' ? current : null);
+        function showProgress() {
+            const v = filmVideo();
+            if (!v || !bar || !isFinite(v.duration) || !v.duration) return;
+            const f = Math.min(1, v.currentTime / v.duration);
+            bar.style.transform = `scaleX(${f})`;
+            progress.setAttribute('aria-valuenow', String(Math.round(f * 100)));
+            progress.setAttribute('aria-valuetext', `${clock(v.currentTime)} / ${clock(v.duration)}`);
+        }
+        const seekTo = (t) => {
+            const v = filmVideo();
+            if (!v || !isFinite(v.duration)) return;
+            v.currentTime = Math.max(0, Math.min(v.duration - 0.1, t));
+            showProgress();
+        };
+        heroKeySeek = (delta) => {
+            const v = filmVideo();
+            if (!v) return false;
+            seekTo(v.currentTime + delta);
+            return true;
+        };
+        if (progress) {
+            const fromPointer = (e) => {
+                const v = filmVideo();
+                const r = progress.getBoundingClientRect();
+                if (v && isFinite(v.duration) && r.width) seekTo(((e.clientX - r.left) / r.width) * v.duration);
+            };
+            progress.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                progress.setPointerCapture(e.pointerId);
+                fromPointer(e);
+            });
+            progress.addEventListener('pointermove', (e) => { if (progress.hasPointerCapture(e.pointerId)) fromPointer(e); });
+            progress.addEventListener('keydown', (e) => {
+                const v = filmVideo();
+                if (!v || (e.key !== 'Home' && e.key !== 'End')) return;
+                e.preventDefault();
+                seekTo(e.key === 'Home' ? 0 : v.duration);
+            });
+        }
+
+        // Vollbild: der ganze Hero (Film mit eigener Steuerung), auf dem iPhone der System-Player des Films
+        const btnFull = document.getElementById('btn-fullscreen');
+        if (btnFull) btnFull.addEventListener('click', () => {
+            if (fullscreenEl()) {
+                Promise.resolve((document.exitFullscreen || document.webkitExitFullscreen).call(document)).catch(() => {});
+                return;
+            }
+            const v = filmVideo();
+            if (document.fullscreenEnabled && wrapper.requestFullscreen) {
+                wrapper.requestFullscreen().then(() => {
+                    try { screen.orientation.lock('landscape').catch(() => {}); } catch (_) { /* nur Android dreht mit */ }
+                }).catch(() => {});
+            } else if (document.webkitFullscreenEnabled && wrapper.webkitRequestFullscreen) {
+                wrapper.webkitRequestFullscreen();
+            } else if (v && v.webkitEnterFullscreen) {
+                try { v.webkitEnterFullscreen(); } catch (_) { /* nur mit Geste und geladenem Film; sonst bleibt der Film eingebettet */ }
+            }
+        });
+
         // Erster Klick lädt den Film (Start mit Ton), danach abspielen / pausieren
         const togglePlay = () => {
             if (!playerSynced) {
@@ -698,6 +785,27 @@ document.addEventListener('DOMContentLoaded', () => {
             (connected ? apply(connected) : playerSynced.then(apply)).catch(() => {});
         });
     }
+
+    // Einmal für die ganze Seite: Pfeiltasten springen im Film, solange er geladen und der Hero im Bild ist;
+    // Vollbild-Wechsel (auch per Esc) aktualisiert die Beschriftung und gibt die Drehung wieder frei
+    document.addEventListener('keydown', (e) => {
+        if (!heroState.film || !heroKeySeek || e.altKey || e.ctrlKey || e.metaKey) return;
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
+        const hero = document.getElementById('hero-wrapper');
+        const r = hero && hero.getBoundingClientRect();
+        if (!r || r.bottom < 0 || r.top > window.innerHeight) return;
+        if (heroKeySeek(e.key === 'ArrowRight' ? SEEK_STEP_S : -SEEK_STEP_S)) e.preventDefault();
+    });
+    const onFullscreenChange = () => {
+        Object.assign(heroState, { fullscreen: !!fullscreenEl() });
+        if (!heroState.fullscreen) {
+            try { screen.orientation.unlock(); } catch (_) { /* nicht überall vorhanden */ }
+        }
+        updateHeroControls();
+    };
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 
     // Core Functions ---
     function setLanguage(lang) {
@@ -1450,7 +1558,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="hero-controls">
                     <button id="btn-play" type="button"></button>
                     <button id="btn-sound" type="button" hidden></button>
-                </div>` : '';
+                    <button id="btn-fullscreen" type="button" hidden></button>
+                </div>
+                <div class="hero-progress" id="hero-progress" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><div class="hero-progress-bar"></div></div>` : '';
         return `<div class="pd-hero" id="hero-wrapper">${media ? mediaHTML(media, lang, { eager: true, sizes: cellSizes(12) }) : ''}${filmControls}</div>`;
     }
 
