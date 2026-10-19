@@ -140,6 +140,20 @@
     inset: 0;
     z-index: -1; /* Behind the content, above the black page background */
     background-color: #000;
+
+    /* Scrim behind the project list (Tom 2026-10-19, O1): full up to 350px (list text 67–332px above the bottom),
+       fading out by 500px; above the stills (0) and the video (1), never clickable */
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 500px;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.45) 70%, rgba(0, 0, 0, 0.369) 77.5%, rgba(0, 0, 0, 0.225) 85.0%, rgba(0, 0, 0, 0.081) 92.5%, rgba(0, 0, 0, 0) 100%);
+    }
   }
 
   .home-container {
@@ -151,11 +165,7 @@
 
   .home-list {
     align-self: stretch;
-    mix-blend-mode: difference; /* Inverts over the video like nav and footer */
-    /* iOS composites the video in its own layer; difference only blends with it when the list is composited too
-       (verified on Tom's iPhone 2026-10-11; fixed nav/footer are composited anyway) */
-    will-change: transform;
-    transform: translateZ(0);
+    /* Plain white over the scrim (.home-visual::after); difference vanished over mid-tones (Tom 2026-10-19, O1) */
   }
 
   /* Tapping the free area changes the project (main.js initStepControls); cursor: pointer lets iOS report the tap */
@@ -176,8 +186,7 @@
     font-family: var(--font-family-base);
     font-size: var(--fs-ui);
     line-height: var(--lh-ui);
-    mix-blend-mode: difference;
-    cursor: pointer;
+    cursor: pointer; /* White over the scrim like the list (Tom 2026-10-19, O1) */
 
     @media (hover: hover) {
       &:hover { @include underline; }

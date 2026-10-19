@@ -173,6 +173,28 @@
     }
   }
 
+  /* Phones (Tom 2026-10-19, O1): "abspielen" plain white over a soft spot behind it instead of difference;
+     the spot sits below the overlay (9) and the buttons (10) and fades out while the film plays */
+  @media (max-width: $bp-mobile) {
+    .hero-controls { mix-blend-mode: normal; }
+
+    &:has(.hero-controls)::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 240px;
+      height: 130px;
+      transform: translate(-50%, -50%);
+      z-index: 8;
+      pointer-events: none;
+      background: radial-gradient(closest-side, rgba(0, 0, 0, 0.45) 40%, rgba(0, 0, 0, 0.248) 68%, rgba(0, 0, 0, 0));
+      transition: opacity var(--duration-base) var(--ease-out);
+    }
+
+    &.is-playing::after { opacity: 0; }
+  }
+
   /* While the film plays (.is-playing, main.js): "pause" and the sound below it fixed in the film's bottom right corner,
      always visible (Tom 2026-10-11: corner of the film, even where it meets the fixed footer "de / en" at the top of the page).
      The labels sit on the page margin; the 44px tap areas reach past it
